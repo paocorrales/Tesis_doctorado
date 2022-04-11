@@ -47,25 +47,13 @@ preface: |
   (for LaTeX) and the R bookdown package, in general.
   
 # Specify the location of the bibliography below
-bibliography: bib/thesis.bib
+bibliography: bib/tesis_doctorado.bib
 # Download your specific csl file and refer to it in the line below.
 csl: csl/apa.csl
 lot: true
 lof: true
 ---
 
-<!--
-Above is the YAML (YAML Ain't Markup Language) header that includes a lot of 
-metadata used to produce the document.  Be careful with spacing in this header!
-
-If you'd prefer to not include a Dedication, for example, simply delete the section entirely, or silence them (add # before each line). 
-
-If you have other LaTeX packages you would like to include, delete the # before header-includes and list the packages after hyphens on new lines.
-
-If you'd like to include a comment that won't be produced in your resulting file enclose it in a block like this.
-
-If you receive a duplicate label error after knitting, make sure to delete the index.Rmd file and then knit again.
--->
 
 ```{r include_packages, include=FALSE}
 # This chunk ensures that the thesisdown package is
@@ -99,51 +87,116 @@ library(thesisdown)
 options(width = 70)
 ```
 
-<!--
-The acknowledgments, preface, dedication, and abstract are added into the PDF
-version automatically by inputting them in the YAML at the top of this file.
-Alternatively, you can put that content in files like 00--prelim.Rmd and
-00-abstract.Rmd like done below.
--->
-
-
-
-```{r eval=!knitr::is_latex_output(), child=here::here("prelims", "00--prelim.Rmd")}
+```{r setup}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	message = FALSE,
+	warning = FALSE
+)
+library(here)
 
 ```
 
-```{r eval=!knitr::is_latex_output(), child=here::here("prelims", "00-abstract.Rmd")}
 
+# Introducción {.unnumbered}
+
+## Pronostico de eventos severos
+
+La simulación numérica de la atmósfera, es decir, la integración de las ecuaciones que rigen la evolución del sistema atmósferico es la base para la predicción del tiempo en diversas escalas temporales desde horas a semanas.
+
+La predicción de fenómenos meteorológicos extremos es de particular importancia ya que pueden producir cuantiosas pérdidas humanas y materiales. En Argentina, una gran cantidad de estos fenómenos están asociados a la ocurrencia de convección profunda entre los que se cuentan tornados, ráfagas intensas, precipitaciones extremas en cortos períodos de tiempo, granizo de gran tamaño y actividad eléctrica. Es por tal motivo necesario avanzar en el conocimiento de estos fenómenos y en la capacidad de pronosticar la ocurrencia de los mismos.
+
+Si se cuenta con condiciones de borde apropiadas, es decir, una correcta representación de las características de la superficie terrestre y el tope de la atmósfera, la integración de un modelo atmosférico es un problema de condiciones iniciales. La generación de pronósticos de calidad dependerá entonces, de la capacidad del modelo para representar los procesos atmosféricos y la exactitud de las condiciones iniciales usadas [@kalnay2002].
+
+El pronóstico de los fenómenos severos es a su vez un desafío científico y tecnológico muy complejo debido a la predictibilidad limitada en la mesoescala y debido a la dificultad de conocer o diagnosticar el estado de la atmósfera en escalas espaciales pequeñas y tiempos cortos (por ejemplo de 1 a 10 km y del orden de los minutos). 
+
+Uno de los métodos que pueden utilizarse para el pronóstico de fenómenos meteorológicos severos es la utilización de modelos numéricos de la atmósfera que resuelvan explícitamente la convección profunda. Diversos estudios, han comprobado que estos modelos agregan valor al pronóstico a corto plazo y que en muchos casos proveen información sobre el modo de organización de las celdas convectivas y su intensidad [@stensrud2013; @aksoy2010]. No obstante, la capacidad de los modelos numéricos en anticipar la ubicación y tiempo de ocurrencia de eventos extremos asociados a convección es muy limitada si no se cuenta con una detallada información sobre el estado de la atmósfera en la escala de las tormentas en el momento en el que se inicializan los pronósticos numéricos [@clark2009].
+
+## Asimilación de datos como posible solución
+
+Por otro lado es posible aplicar técnicas de asimilación de datos para generar una mejor estimación de las condiciones iniciales necesarias para integrar un modelo numérico. La asimilación de datos combina de manera optima un pronóstico numérico o campo preliminar en un tiempo t con las observaciones disponibles para ese mismo tiempo, generando un análisis. Esta combinación optima toma en cuenta el error asociado a al modelo meteorológico (errores de pronóstico) y el error de las observaciones (instrumental, de representatividad) y si ambos tienen una distribución Gaussiana, el error resultante será menor a los errores originales. Por esta razón el análisis es considerado la *mejor aproximación* disponible del estado real de la atmósfera.     
+
+(ref:ciclo-asimilacion-teorico) Esquema de un ciclo de asimilación típico. El tiempo de las observaciones y el campo preliminar deberá coincidir.
+
+```{r ciclo-asimilacion-teorico, fig.align='center', out.width='100%',  fig.cap='(ref:ciclo-asimilacion-teorico)'}
+knitr::include_graphics(here("figure/ciclo_asimilacion_teorico.png"))
 ```
 
-<!-- The {.unnumbered} option here means that the introduction will be 
-"Chapter 0." You can also use {-} for no numbers on chapters.
--->
+En el caso de modelos globales, típicamente cada ciclo de asimilación de 6 horas utiliza el campo preliminar previo, es decir el pronóstico a 6 horas inicializado a partir del análisis anterior y las observaciones disponibles para las 6 horas previas o en un periodo similar centrado en la hora del análisis. 
+Para poder comparar el campo preliminar con las observaciones, este es interpolado a la ubicación de las observaciones. En determinados casos, por ejemplo cuando se trabaja con observaciones de satélite o radar), será necesario transformar las variables del modelo para obtener las variables observadas. En la siguiente ecuación $H$ es el operador de las observaciones que se encarga de las interpolaciones y transformaciones necesarias sobre el campo preliminar $x_b$. 
 
-# Introduction {.unnumbered}
 
-Welcome to the _R Markdown_ thesis template. This template is based on (and in many places copied directly from) the Reed College LaTeX template, but hopefully it will provide a nicer interface for those that have never used TeX or LaTeX before.  Using _R Markdown_ will also allow you to easily keep track of your analyses in **R** chunks of code, with the resulting plots and output included as well.  The hope is this _R Markdown_ template gets you in the habit of doing reproducible research, which benefits you long-term as a researcher, but also will greatly help anyone that is trying to reproduce or build onto your results down the road.
+$$ x_a = x_b + W[y_o - H(x_b )] $$
+La diferencia entre las observaciones $y_o$ y el campo preliminar se denomina innovación. El análisi $x_a$ se obtiene aplicando las innovaciones al campo preliminar teniendo en cuenta un peso $W$ que incluye información sobre los errores del pronóstico y de las observaciones.
 
-Hopefully, you won't have much of a learning period to go through and you will reap the benefits of a nicely formatted thesis.  The use of LaTeX in combination with _Markdown_ is more consistent than the output of a word processor, much less prone to corruption or crashing, and the resulting file is smaller than a Word file. While you may have never had problems using Word in the past, your thesis is likely going to be about twice as large and complex as anything you've written before, taxing Word's capabilities.  After working with _Markdown_ and **R** together for a few weeks, we are confident this will be your reporting style of choice going forward.
+Existen diferentes metodologías para obtener $x_a$. Los métodos variacionales, 3D-Var y 4D-Var, definen una función de costo que es proporcial a la distrancia entre el análisis y simultaneamente, el campo preliminar y las obvservaciones. Esta función de costo $J$ es minimizada para obtener el análisis. 
 
-<!-- 
-If you're still on the fence about using _R Markdown_, check out the resource
-for newbies available at <https://rbasics.netlify.com>. 
--->
+$$ J = \frac{1}{2} {[y_o - H (x_a)]^T R^{-1} [y_o - H (x_a)] + (x_a - x_b )^T B^{-1} (x_a - x_b )} $$
+En la ecuación, el primer término corresponde a la distancia entre el campo del análisis y las observaciones, pesado por la covarianza de los errores de las observaciones $R$. El segundo término a la distancia entre el campo del análisis y el campo preliminar pesado por la covarianza de los errores del pronóstico $B$. Para el caso más simple, es decir, una variable de modelo y una observación, $R$ y $B$ son escalares. Para el caso real, serán matrices de covarianza de dimension XXX que deben ser estimadas. Las ecuaciones 1 y 2 son análogas si se define a W como:
 
-**Why use it?**
+$$ W = BH^T (HBH^T + R^{-1})^{-1} $$
+El método 4D-Var extiende el uso del método 3D-Var para incluir la distancia temporal a las observaciones dentro de la ventana de asimilalción en la misma función de peso. 
 
-_R Markdown_ creates a simple and straightforward way to interface with the beauty of LaTeX.  Packages have been written in **R** to work directly with LaTeX to produce nicely formatting tables and paragraphs. In addition to creating a user friendly interface to LaTeX, _R Markdown_ also allows you to read in your data, to analyze it and to visualize it using **R** functions, and also to provide the documentation and commentary on the results of your project.  Further, it allows for **R** results to be passed inline to the commentary of your results.  You'll see more on this later.  
+Los métodos secuenciales y en particular el filtro de Kalman extendido, actualizan el análisis a medida que las observaciones están disponibles. Este método tiene la ventaja de actualizar la matriz $B$ junto con el análisis. En este caso la matriz $W$ toma el nombre de $K$ o ganancia de Kalman y se actualiza en cada ciclo de asimilación $t_i$. 
 
-<!-- 
-Having your code and commentary all together in one place has a plethora of 
-benefits!
--->
+$$ K_i = B(t_i) H^T (HB(t_i)H^T + R^{-1})^{-1}$$
+La estimación de $B$ es particularmente costosa en terminos computacionales por lo que que en la práctica se utiliza el filtro de Kalman por ensambles o EnKF. Un ensamble consiste en un conjunto de simulaciones ligeramente diferentes que se resuelven simultaneamente para incluir los posibles estados de la atmósfera y provee información dependiente de la la dinámica durante la ventana de asimilación. A partir del ensamble, la matriz $B$ se estima como:
 
-**Who should use it?**
+$$ B \approx \frac{1}{m-1} \sum_{k=1}^{m}(x_{b}^{k}-\overline{x}_b)(x_{b}^{k}-\overline{x}_b)^T$$
+donde $k \; \epsilon \; [1,m]$ el miembro *k-ésimo* del ensamble. Esta estimación será buena si el ensamble logra capturar los posibles estados futuros o en otras palabras el spread se mantiene establa a lo largo de los ciclos de asimilación. Sin embargo, este método no es aplicable a menos que el tamaño del ensamble sea comparable a los grados de libertad de un modelo que resuelve $10^9$ variables de estado, lo que resulta computacionalmente inviable. 
 
-Anyone who needs to use data analysis, math, tables, a lot of figures, complex cross-references, or who just cares about the final appearance of their document should use _R Markdown_. Of particular use should be anyone in the sciences, but the user-friendly nature of _Markdown_ and its ability to keep track of and easily include figures, automatically generate a table of contents, index, references, table of figures, etc. should make it of great benefit to nearly anyone writing a thesis project.
+El método Local Ensemble Transform Kalman Filter (LETKF) busca resolver los problemas anteriores restringiendo el área de influencia de las observaciones a un determinado radio de localización reduciendo el costo computacional necesario. Además, calcula el análisis para cada punto de retícula uno a uno, incorporando todas las observaciones que puedan tener influencia en ese punto al mismo tiempo. De esta manera este método es hasta un orden de magnitud más rápido comparado con otros métodos desarrollados previamente [@whitaker2008].
 
-**For additional help with bookdown** 
+Independientemente de la metodología aplicada, el modelo cumple un rol fundamental en la asimilación de datos ya que *transporta* información de regiones donde existe mucha información disponible (por ejemplo, los continentes) a regiones donde las observaciones son escasas (zonas oceánicas) manteniendo los balances físicos que que rigen los procesos atmosféricos. 
 
-Please visit [the free online bookdown reference guide](https://bookdown.org/yihui/bookdown/).
+## Resultados previos de asimilación de distintas fuentes de observaciones
+
+Para que los métodos de asimilación de datos tengan éxito, deben utilizarse redes de observación con suficiente resolución temporal y espacial capaces de captar la variabilidad en las escalas que se quieren resolver, por ejemplo, la mesoescala.  
+
+@wheatley2010 investigó el impacto de la asimilación de datos de presión de superficie en un sistema de asimilación de datos basado en conjuntos de mesoescala, pero encontró un impacto limitado en dos estudios de caso relacionados con sistemas convectivos de mesoescala. @ha2014 demostró que la asimilación de la temperatura y la temperatura del punto de rocío de las redes de estaciones meteorológicas de superficie de alta resolución mejoraba sistemáticamente la estructura de la capa límite planetaria simulada y mejoraba la previsión de precipitaciones de corto alcance sobre los Estados Unidos. @chang2017, @bae2022 y @chen2016 informaron sobre los efectos beneficiosos de la asimilación de observaciones de estaciones meteorológicas de superficie en un sistema de asimilación de datos de alta resolución utilizando las metodologías de EnKF, 3D-Var y 4D-Var, respectivamente, encontrando impactos positivos en el pronóstico de la temperatura y la humedad en la capa límite planetaria y en la localización de los sistemas de precipitación. @sobash2015 demostró en un sistema de asimilación de datos de mesoescala que el impacto sobre la iniciación de la convección y el pronóstico de la precipitación de corto alcance es positivo si los datos se asimilan con frecuencia (en el orden de minutos, en lugar de en el orden de horas). @maejima2019 investigó el impacto de la asimilación con frecuencia de 1 minutos de observaciones sintéticas en un caso de precipitación intensa, encontrando que la asimilación de observaciones de alta frecuencia y espacialmente espacialmente densas conducen a una mejor representación de la circulación de mesoescala aunque el número de observaciones proporcionadas por las estaciones de superficie es mucho menor que el proporcionado por los radares meteorológicos.  @gasperoni2018 realizó un estudio de caso para evaluar el impacto de la asimilación de las observaciones producidas por estaciones meteorológicas privadas que no se incorporan a los análisis operativos globales. Encontró un efecto positivo al asimilar estas observaciones sobre el inicio de la convección húmeda profunda a lo largo de una línea seca. Este resultado es especialmente importante para regiones con pocos datos, como el sur de Sudamérica, donde las redes operativas no son lo suficientemente densas como para captar los detalles de la mesoescala. En ese sentido, @dillon2021 intentó utilizar por primera vez observaciones de estaciones meteorológicas automáticas de redes privadas en el sur de Sudamérica, sin embargo, la contribución específica de este tipo de observaciones sobre esta región, no ha sido investigada hasta ahora.
+
+Se ha investigado el impacto de otros tipos de observaciones de resolución espacial y temporal relativamente alta, como observaciones de satélites, en el contexto de la asimilación de datos de mesoescala. Estas observaciones incluyen radianzas y productos derivados, @wu2014, @cherubini2006 y @sawada2019 observaron un impacto positivo de la asimilación de viento derivado de información satelital de alta frecuencia en un estudio de caso de un ciclón tropical utilizando un sistema de asimilación de datos basado en ensambles. Por otro lado, @gao2015 encontró un impacto positivo en la asimilación de viento estimado a partir de las observaciones de satélites geoestacionarios. 
+
+### Asimilación de radianzas de satélites
+
+Uno de los objetivos y aporte original de este trabajo es la asimilación de radianzas para aplicaciones de mesoescala, por lo que en esta sección se resumirá los alvances en la asimilación de estas observaciones a nivel global y regional. 
+
+Los primeros satélites de orbita polar en proveer información meteorológica fueron desarrollados en las décadas de los 60 y 70. Incluian sensores infrarrojos y de microondas para monitorear la temperatura y humedad. Hacia finales de la década de los 70, Estados Unidos, Europa y Japón ya habían lazando los primeros satélites geoestacionarios. Pocos años despues este tipo de observaciones se incorporaban al Sistema de Observación Global (Global Observing System en inglés). 
+
+El primer conjunto de satélites compuesto por los sensores HIRS, MSU y SSU (sistema TOVS) podían cubrir el globo completo cada 12 hs. Si bien cada uno de estos sensores generaba información complementaria en la tropósfera y baja estratósfera, la resolución horizontal y vertical era limitada. En particular HIRS, un sensor infrarrojo tiene una resolución horizontal de 40 km, mientras que MSU y SSU, sensores sensibles en las microondas, tiene una resolución de 160 y 200 km respectivamente. En la vertical, la función de peso de los distintos canales ronda entre los 5 y 10 km y aún en los casos donde los canales se solapan, la resolución apenas alcanza los 3 km. 
+
+Las primeras pruebas de asimilación de observaciones de satélites fueron desarrolladas principalmente en Australia, motivadas particulamente por la escases de observaciones en el hemisferio sur. @kelly1978 mostró una importante mejora en pronósticos a 24 horas de altura geopotencial entre 1000 y 200 hPa cuando se asimilaba de manera continua perfiles de temperatura derivados del satélite Nimbus-6, conocidos tambien como retrievals. A nivel global @ohring1979 resumen los avances de la década indicando los impactos son positivos aunque pequeños y que la mayor mejora se observa en los pronósticos en el hemisferio sur. Al mismo tiempo @ohring1979 señala algunos de los posibles problemas asociados, por ejemplo la baja resolución vertical de los perfiles de las distintas variables y problemas en la generación de los mismos. 
+
+A principios de los 80 los centros de pronóstico mundiales continuaron estudiando la posibilidad de asimilar observaciones satelitales obteniendo resultados similares y tomando una mejora en la calidad de los perfiles de temperatura generados [@eyre2020]. En particular el ECMWF Seminar on Data Assimilation Systems and Observing System Experiments concluye que la asimilación de estas observaciones cumple un rol importante en el análisis de systemas meteorológicos de larga escala en latitudes medias y altas, y en particular en el hemisferio sur. Sin embargo, hacia finales de los 80, los modelos de pronóstico habían mejorado sustancialmente haciendo que el potencial impacto de observaciones erroneas u observaciones asimiladas de manera incorrecta degradaran sustancialmente el pronóstico particularmente en el hemisferio norte. @andersson1991 mostró que los incrementos en el análisis presentaba patrones con importante sesgo cuando se asimilaba retrievals de TOVS. 
+
+@eyre2020 explica que la principal razón por la que los resultados obtenidos no fuera bueno era que se trataba a los retrievals como "sondeos de baja calidad" sin tener en cuenta las características particulares de las observaciones de satélite. 
+
+En la decada de los 90, luego de que los centros de asimilación comenzaran a utilizar técnicas avanzadas de asimilación de datos como 3D-Var, se dieron las condiciones necesarias para asimilar radianzas de satélites de manera directa. Sin embargo, la correcta asimilación de estas observaciones depende de 3 factores, que las observaciones no tengan sesgo, que sus errores tengan una distribución Gaussiana y que el problema no es afectado fuertemente por procesos no lineales [@eyre2022]. Para asegurar estas condiciones fue necesario el desarrollo de técnicas de detección de nubes que permitan filtrar las regiones afectadas por nubosidad, principalmente para observaciones de sensores infrarrojos. Otro importante avance fue el desarrollo de modelos de transferencia radiativa que pudieran transformar el campo preliminar en radianzas comparables con las observaciones en tiempos razonables para ser usados de manera operativa. Finalmente, el desarrollo de métodos de corrección del bias de radianzas aplicados directamente en el proceso de asimilación fue determinante para la asimilación directa de este tipo de obvservaciones. 
+
+Justo al desarrollo de la asimilación de radianzas, tambien continuó el desarrollo de nuevos sensores, como la serie AMSU-A y AMSU-B y el sistema ATOVS (Advance TOVS) que cuenta con mayores canales y por lo tanto una mayor resolución vertical. Posteriormente el desarrollo de los sensores multiespectrales como IASI y AIRS permitieron obtener información con mayor resolución vertical al contar con más de 3000 canales en la región infrarroja del espectro electromagnético.
+
+Una parte importante del desarrollo la asimilación de datos en los últimos 20 años tiene que ver con el desarrollo de de metodologías que tengan en cuenta la influencia de la superficie y la interacción entre las nubes y la energía electromagnética para los distintos canales infrarrojo y microondas. Inicialmente solo se asimilaron observaciones sobre agua y durante cielos despejados. Sin embargo mejoras en los modelos de transferencia radiativa respecto del tratamiento de los distintos tipos de superficie y la representación y tratamiendo de las nubes permiten en la actualidad incorporar observaciones que usualmente no podrían asimilarse.  
+
+Mientras que la asimilación directa de radianzas en modelos globales está establecida y estudiada [], la las aplicaciones en modelos regionales, sin embargo, sigue siendo un desafío debido a la escasa cobertura de las observaciones debido a la orbita de los satélites, la corrección del sesgo y el tope de la atmósfera bajos usados en modelos regionales. @bao2015 estudió el impacto de la asimilación de datos de radiancia de microondas e infrarrojo en el pronóstico de temperatura y humedad en el oeste de EE.UU. y encontró una reducción del sesgo de la temperatura en niveles bajos y medios como resultado de las observaciones de microondas, pero un efecto opuesto cuando se asimilaban radianzas en el infrarrojo. Más recientemente, @zhu2019 estudió el impacto de la asimilación frecuente de radiancias de satélites para un sistema regional y mostró una mejora para todas las variables, en particular para la humedad relativa en los niveles superiores. @wang2021 estudiaron el impacto de la asimilación de radiancias en el Reanálisis Regional Europeo Copernicus de alta resolución e informaron de que las observaciones de radiancia de satélite tuvieron un impacto neutro en los análisis de la altura geopotencial en la tropósfera baja, mientras que el impacto fue ligeramente negativo para la tropósfera superior y estratosfera. También observaron resultados similares para pronósticos a 3 hs inicializados a partir del análisis, pero un impacto positivo en las previsiones de mediano plazo (12 y 24 hs). Teniendo en cuenta los variados resultados, es necesario continuar estudiando la utilidad de asimilar las observaciones de radiancia en un sistema de asimilación de datos de área limitada sobre tierra. El estudio de la asimilación de radianzas a nivel regional cobra aún mayor importancia en Sudamérica ya que no se conocen estudios realizados previamente. 
+
+
+## Asimilación de datos en Sudamérica
+
+La historia de la asimilación de datos en Sudamérca y en particular en Argentina es relativamente corta. A principios de la decada del 90 @vera1992 en su tesis doctoral desarrolló un Sistema de Asimilación de Datos Intermitente que utilizaba la interpolación optima en un modelo cuasigeostrófico en la región sur de Sudamérica. Algunos años después, en 1997, el Servicio Meteorológico Nacional se implementó un
+análisis utilizando el método de Cressman en un modelo de 10 niveles verticales [@garciaskabar1997].
+
+Por otro lado el Centro de Pronóstico del Tiempo y Estudios Climáticos (CPTEC) de Brazil desarrollo un sistema de asimilación de datos global que utiliza el sistema Gridpoint Statistical Interpolation (GSI) en conjunto con su modelo global BAM y posteriormente aplicaciones regionales utlizando el modelo WRF en conjunto con el sistema de asimilación GSI. En particular, @goncalvesdegoncalves2015 mostró experimentos realizados en el CPTEC usando el sistema de asimilación de datos regional para simulaciones de 12, 0 y 3 kilometros durante un mes. @ferreira2017a, @baucemachado2017, @toshioinouye2017, @vendrasco2020, @ferreira2020a tambien mostraron resultados positivos al aplicar asimilación de datos en aplicaciones regionales sobre Brasil con resoluciones de entre 1 y 10 km. 
+
+En los últimos años, se documentaron importantes avances asociados a asimilación de datos en Argentina. Por ejemplo Marcos Saucedo realizó un estudio teórico de asimilación de datos utilizando LETKF acomplado al modelo WRF donde mostró con experimentos idealizados mejoras en la calidad del análisis aún cuando se asimilaban pocas observaciones. Posteriormente Maria Eugenia Dillon avanzó en su tesis de doctorado en el desarrollo de un sistema de asimilación de datos reales y concluyó que la implementción de un emsable multifísica que considere los posibles errores del modelo y la inclusión de retrievals de temperatura y humedad  en la asimilación tienen un impacto positivo en los análisis y pronósticos. Más recientemente, el Servicio Meteorológico Nacional (SMN) en conjunto con el Centro de Investigaciones del Mar y la Atmósfera desarrollaron y probaron el sistema de asimilación de actualización rápida LETKF-WRF de manera operativa durante la campaña de investigación RELAMPAGO [@nesbitt2021]. El sistemá incorporó observaciones convencionales, retrievals de satélites mutiespectrales y viento derivado de observaciones satelitales y observaciones de radar de manera horaria y generó pronósticos a 36 hs cada 3 hs. @dillon2021 mostraron que el pronóstico inicializado a partir de los análisis muestra un rendimiento general similar al de los pronósticos inicializados a partir del sistema GFS, e incluso un impacto positivo en algunos casos. Actualmente el SMN está probando un sistema de asimilación similar al implementado en @dillon2021 para utlizarlo en la generación de pronósticos de manera operativa. 
+
+## Motivación y objetivos
+
+En base a los imporantes avances en la asimilación de datos en general y en las aplicaciones regionales en Argentina y Sudamérica, el objetivo principal de este trabajo es contribuir a la cuantificación y comparación del impacto de las estaciones meteorológicas de superficie de alta resolución, las observaciones de viento derivadas de satélite y las radiancias satelitales en cielo claro, en un sistema de DA de mesoescala, frecuentemente actualizado y basado en ensambles. En particular, este trabajo se centrará en el potencial impacto de la asimilación en el contexto de los eventos de sistemas convectivos de mesoescala (SCM) debido a la importancia que cobran este tipo de eventos en la región. 
+
+En particular, este trabajo busca investigar el impacto de distintas fuentes de datos en una región donde la red de observación convencional es bastante escasa y donde las contribuciones potenciales de sistemas de observación como redes de estaciones automáticas y observaciones de satélite son mayores. Para alcanzar este objetivo, se realizaron distintos experimentos de asimilación de datos aplicados a un estudio de caso de un SCM que se desarrolló sobre el sur de Sudamérica durante el 22 y 23 de noviembre de 2018 durante el período de observación intensa de la campaña de campo RELAMPAGO.
+
+
+
+
+
+
