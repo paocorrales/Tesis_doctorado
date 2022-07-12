@@ -17,6 +17,11 @@ site: bookdown::bookdown_site
 header-includes:
     - \usepackage{setspace}\onehalfspacing
 
+
+language:
+  label:
+    fig: 'Figura '
+    tab: 'Tabla '
 # This will automatically install the {remotes} package and {thesisdown}
 # Change this to FALSE if you'd like to install them manually on your own.
 params:
@@ -49,7 +54,8 @@ preface: |
 # Specify the location of the bibliography below
 bibliography: bib/tesis_doctorado.bib
 # Download your specific csl file and refer to it in the line below.
-csl: csl/apa.csl
+csl: csl/meteorologica.csl
+link-citation: yes
 lot: true
 lof: true
 ---
@@ -87,16 +93,53 @@ library(thesisdown)
 options(width = 70)
 ```
 
-```{r setup}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(
 	echo = FALSE,
 	message = FALSE,
 	warning = FALSE
 )
+library(mesoda)
+library(metR)
+library(tidyverse)
+library(lubridate)
+library(data.table)
 library(here)
+library(patchwork)
+library(cowplot)
+library(unglue)
+library(knitr)
+library(kableExtra)
+library(tagger)
 
+map_arg <- rnaturalearth::ne_states(country = c("argentina"), 
+                                    returnclass = "sf")
+map_limitrofes <- rnaturalearth::ne_countries(country = c("Brazil", "Chile", "Uruguay", "Paraguay", "Bolivia"), returnclass = "sf")
+
+square <- fread(here("data/derived_data/sample_obs/dominio_square.csv"))
+square2 <- fread(here("data/derived_data/sample_obs/dominio_square2.csv"))
+coord <- fread(here("data/derived_data/sample_obs/coordenadas.csv"))
+
+
+geom_mapa <- function(fill = NA) {
+  list(geom_sf(data = map_arg, fill = fill, color = "black", size = 0.1, inherit.aes = FALSE),
+       geom_sf(data = map_limitrofes, fill = fill, color = "black", size = 0.1, inherit.aes = FALSE),
+       coord_sf(ylim = c(-42, -19), xlim = c(-76, -51)),
+       scale_x_longitude(ticks = 5),
+       scale_y_latitude(ticks = 5))
+}
+
+arg_topo <- metR::GetTopography(-75+360, -50+360, -20, -60, resolution = 1/10, 
+                                file.dir = here("data/derived_data/"))
+arg_topo[, lon := metR::ConvertLongitude(lon)]
 ```
 
+<!-- Required to number equations in HTML files -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
 
 # Introducción {.unnumbered}
 
@@ -125,25 +168,44 @@ knitr::include_graphics(here("figure/ciclo_asimilacion_teorico.png"))
 En el caso de modelos globales, típicamente cada ciclo de asimilación de 6 horas utiliza el campo preliminar previo, es decir el pronóstico a 6 horas inicializado a partir del análisis anterior y las observaciones disponibles para las 6 horas previas o en un periodo similar centrado en la hora del análisis. 
 Para poder comparar el campo preliminar con las observaciones, este es interpolado a la ubicación de las observaciones. En determinados casos, por ejemplo cuando se trabaja con observaciones de satélite o radar), será necesario transformar las variables del modelo para obtener las variables observadas. En la siguiente ecuación $H$ es el operador de las observaciones que se encarga de las interpolaciones y transformaciones necesarias sobre el campo preliminar $x_b$. 
 
+\begin{equation}
+  \mathrm{x_a = x_b + W[y_o - H(x_b )]}
+  (\#eq:eq1)
+\end{equation}
 
-$$ x_a = x_b + W[y_o - H(x_b )] $$
-La diferencia entre las observaciones $y_o$ y el campo preliminar se denomina innovación. El análisi $x_a$ se obtiene aplicando las innovaciones al campo preliminar teniendo en cuenta un peso $W$ que incluye información sobre los errores del pronóstico y de las observaciones.
+La diferencia entre las observaciones $y_o$ y el campo preliminar se denomina innovación. El análisis $x_a$ se obtiene aplicando las innovaciones al campo preliminar teniendo en cuenta un peso $W$ que incluye información sobre los errores del pronóstico y de las observaciones.
 
 Existen diferentes metodologías para obtener $x_a$. Los métodos variacionales, 3D-Var y 4D-Var, definen una función de costo que es proporcial a la distrancia entre el análisis y simultaneamente, el campo preliminar y las obvservaciones. Esta función de costo $J$ es minimizada para obtener el análisis. 
 
-$$ J = \frac{1}{2} {[y_o - H (x_a)]^T R^{-1} [y_o - H (x_a)] + (x_a - x_b )^T B^{-1} (x_a - x_b )} $$
-En la ecuación, el primer término corresponde a la distancia entre el campo del análisis y las observaciones, pesado por la covarianza de los errores de las observaciones $R$. El segundo término a la distancia entre el campo del análisis y el campo preliminar pesado por la covarianza de los errores del pronóstico $B$. Para el caso más simple, es decir, una variable de modelo y una observación, $R$ y $B$ son escalares. Para el caso real, serán matrices de covarianza de dimension XXX que deben ser estimadas. Las ecuaciones 1 y 2 son análogas si se define a W como:
+\begin{equation}
+  \mathrm{J = \frac{1}{2} {[y_o - H (x_a)]^T R^{-1} [y_o - H (x_a)] + (x_a - x_b )^T B^{-1} (x_a - x_b )}}
+  (\#eq:eq2)
+\end{equation}
 
-$$ W = BH^T (HBH^T + R^{-1})^{-1} $$
-El método 4D-Var extiende el uso del método 3D-Var para incluir la distancia temporal a las observaciones dentro de la ventana de asimilalción en la misma función de peso. 
+En la ecuación \@ref(eq:eq2), el primer término corresponde a la distancia entre el campo del análisis y las observaciones, pesado por la covarianza de los errores de las observaciones $R$. El segundo término a la distancia entre el campo del análisis y el campo preliminar pesado por la covarianza de los errores del pronóstico $B$. Para el caso más simple, es decir, una variable de modelo y una observación, $R$ y $B$ son escalares. Para el caso multidimensional, serán matrices de covarianza de dimension $n$ (número de observaciones) que deben ser estimadas. Las ecuaciones \@ref(eq:eq1) y \@ref(eq:eq2) son equivalentes si $H$ es un operador lineal y si se define a W como:
+
+\begin{equation}
+  \mathrm{W = BH^T (HBH^T + R^{-1})^{-1}}
+  (\#eq:eq3)
+\end{equation}
+
+El método 4D-Var extiende el uso del método 3D-Var para incluir la distancia a las observaciones que pueden estar distribuidas temporalmente dentro de la ventana de asimilación en la misma función de peso. Sin embargo minimizar la función de costo requiere desarrollar el modelo tangente lineal y su adjunto, lo que puede ser costoso cuando se trabaja con modelos no lineales. Por esta misma razón, obtener la matriz $B$ es un problema complejo y en general se la asume constante en el tiempo.
 
 Los métodos secuenciales y en particular el filtro de Kalman extendido, actualizan el análisis a medida que las observaciones están disponibles. Este método tiene la ventaja de actualizar la matriz $B$ junto con el análisis. En este caso la matriz $W$ toma el nombre de $K$ o ganancia de Kalman y se actualiza en cada ciclo de asimilación $t_i$. 
 
-$$ K_i = B(t_i) H^T (HB(t_i)H^T + R^{-1})^{-1}$$
-La estimación de $B$ es particularmente costosa en terminos computacionales por lo que que en la práctica se utiliza el filtro de Kalman por ensambles o EnKF. Un ensamble consiste en un conjunto de simulaciones ligeramente diferentes que se resuelven simultaneamente para incluir los posibles estados de la atmósfera y provee información dependiente de la la dinámica durante la ventana de asimilación. A partir del ensamble, la matriz $B$ se estima como:
+\begin{equation}
+  \mathrm{K_i = B(t_i) H^T (HB(t_i)H^T + R^{-1})^{-1}}
+  (\#eq:eq4)
+\end{equation}
 
-$$ B \approx \frac{1}{m-1} \sum_{k=1}^{m}(x_{b}^{k}-\overline{x}_b)(x_{b}^{k}-\overline{x}_b)^T$$
-donde $k \; \epsilon \; [1,m]$ el miembro *k-ésimo* del ensamble. Esta estimación será buena si el ensamble logra capturar los posibles estados futuros o en otras palabras el spread se mantiene establa a lo largo de los ciclos de asimilación. Sin embargo, este método no es aplicable a menos que el tamaño del ensamble sea comparable a los grados de libertad de un modelo que resuelve $10^9$ variables de estado, lo que resulta computacionalmente inviable. 
+La estimación de $B$ utilizando el filtro de Kalman extendido es particularmente costosa en terminos computacionales por lo que que en la práctica se utiliza el filtro de Kalman por ensambles o EnKF. Un ensamble consiste en un conjunto de simulaciones ligeramente diferentes que se resuelven simultaneamente para incluir los posibles estados de la atmósfera y provee información dependiente de la dinámica durante la ventana de asimilación. A partir del ensamble, la matriz $B$ se estima como:
+
+\begin{equation}
+  \mathrm{ B \approx \frac{1}{m-1} \sum_{k=1}^{m}(x_{b}^{k}-\overline{x}_b)(x_{b}^{k}-\overline{x}_b)^T}
+  (\#eq:eq5)
+\end{equation}
+
+donde $k \; \epsilon \; [1,m]$ el miembro *k-ésimo* del ensamble. Esta estimación será buena si el ensamble logra capturar los posibles estados futuros o en otras palabras el spread que acompañe los cambios en la incertidumbre de los pronosticos a lo largo de los ciclos de asimilación. Sin embargo, este método no es aplicable a menos que el tamaño del ensamble sea comparable a los grados de libertad de un modelo que resuelve $10^9$ variables de estado, lo que resulta computacionalmente inviable. 
 
 El método Local Ensemble Transform Kalman Filter (LETKF) busca resolver los problemas anteriores restringiendo el área de influencia de las observaciones a un determinado radio de localización reduciendo el costo computacional necesario. Además, calcula el análisis para cada punto de retícula uno a uno, incorporando todas las observaciones que puedan tener influencia en ese punto al mismo tiempo. De esta manera este método es hasta un orden de magnitud más rápido comparado con otros métodos desarrollados previamente [@whitaker2008].
 
