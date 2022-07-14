@@ -29,7 +29,7 @@ knitr::include_graphics("figure/caso_goes16-c13.png")
 Las simulaciones numéricas para el caso de estudio se realizan utilizando la versión 3.9.1 de modelo WRF (@skamarock2008). 
 Se utilizó una resolución horizontal de 10 km (150 x 200 puntos de retícula) y 37 niveles en la vertical con el tope del modelo en 50 hPa. 
 Las condiciones iniciales y de contorno surgen del análisis del Global Forecast System (GFS) (resolución horizontal de 0,25$^{circ}$ y resolución temporal de 6 horas; @cisl_rda_ds084.1). 
-El dominio cubre la zona indicada en la Figura \ref(fig:dominio) para capturar el desarrollo del SCM durante el periodo simulado. 
+El dominio cubre la zona indicada en la Figura \@ref(fig:dominio) para capturar el desarrollo del SCM durante el periodo simulado. 
 
 Los análisis se generaron utilizando la implementación LETKF (V1.3, @hunt2007) que forma parte del sistema de análisis Gridpoint Statistical Interpolation (GSI V3.8; @shao2016). 
 Se utilizó un enfoque de actualización rápida con análisis horario y una ventana de asimilación centrada, lo que significa que se asimilaron todas las observaciones dentro de $\pm$ 30 minutos del tiempo de análisis. 
@@ -154,3 +154,74 @@ ggdraw(plot_grid(plot_grid(g1, g2, ncol = 2, rel_widths = c(1, 0.5),
 ```
 
 ## Verificación: obs y metricas
+
+### Conjunto de datos de validación 
+
+Para evaluar el desempeño del sistema AD presentado en esta tesis, utilizamos los siguientes conjuntos de observaciones: 
+
+* **Multi-Network Composite Highest Resolution Radiosonde Data [@sondeos]:** radiosondeos en alta resolución lanzados desde varias ubicaciones durante el periodo de la campaña de campo de RELAMPAGO en junto con las radiosondeos operativos del SMN. Sólo se utilizaron para la validación los sondeos que no ingresaron en el sistema de asimilación. El periodo del experimento abarca las misiones IOP 7 y 8, durante las cuales se lanzaron 74 radiosondos en una pequeña zona cercana al centro del dominio experimental (Figura \@ref(fig:dominio)b). 
+
+* **IMERG Final Run [@huffman2018]:** estimación de la precipitación a partir de datos de la constelación de satelites GPM (por su nombre en inglés Global Precipitation  Measurement) con una resolución espacial de 0,01$^{circ}$ y una resolución temporal de 30 minutos para validar la habilidad de los pronósticos de 1 hora para representar la precipitación sobre el dominio. 
+
+* **Datos del Sistema Nacional de Radares Meteorológicos (SINARAME):** Se utilizaron observaciones de radar para realizar una evaluación cualitativa y visual de las características convectivas. Los datos provienen de 9 radares ubicados en el dominio y son provistos por la red de radares Doppler de doble polarización en banda C [@deelia2017] con una frecuencia temporal de 10 minutos. Para este trabajo se utilizó únicamente la máxima reflectividad de la columna (COLMAX) más cercana al momento de análisis.
+
+### Métodos de verificación
+
+Se seleccionaron un conjunto de métricas para evaluar diferentes aspectos del análisis obtenido para cada experimento y los pronósticos inicializados a partir de ellos. Estas métricas incluyen una validación de cómo se cuantifica la incertidumbre en el first guess y en el análisis, y cómo los diferentes experimentos se ajustan a un conjunto independiente de observaciones que no se asimilan. 
+
+Para evaluar la consistencia de la estimación de la incertidumbre en el first guess y en el análisis utilizamos la Reduced Centered Random Variable o RCRV (@candille2007) que se define como:
+
+\begin{equation}
+  \mathrm{RCRV = \frac{x_o - m}{\sqrt{\sigma_o^2 + \sigma^2}}}
+  (\#eq:eq6)
+\end{equation}
+
+donde $x_o$ es la observación asimilada y su error $\sigma_o$, $m$ la media ensamble del análisis en el espacio de las observaciones, y la desviación estándar $\sigma$ del ensamble 
+La media de $RCRV$ calculada sobre todas las realizaciones representa el sesgo de la media del conjunto con respecto a las observaciones normalizadas por la incertidumbre estimada:
+
+\begin{equation}
+  \mathrm{\mathit{mean RCRV} = E[RCRV]}
+  (\#eq:eq7)
+\end{equation}
+
+La desviación estándar de la $RCRV$ o $sd RCRV$ mide la concordancia de la dispersión del ensamble y el error de observación con respecto a la distancia entre la media del ensamble y las observaciones, y por lo tanto, la sobre o infradispersión sistemática del ensamble:
+
+\begin{equation}
+  \mathrm{\mathit{sd RCRV} = \sqrt{\frac{M}{M -1}E[(\mathit{RCRV} - \mathit{mean RCRV})^2]}}
+  (\#eq:eq8)
+\end{equation}
+
+donde $M$ es el tamaño del ensamble. Un sistema consistente no tendrá ningún bias ($mean RCRV = 0$) y la desviación estándar será igual a 1 ($sd RCRV = 1$). Si el ensamble tiene un bias positivo, $mean RCRV$ serán positivo, por el contrario, si el ensamble tiene un bias negativo, $mean RCRV$ será negativo. Un $sd RCRV > 1$ indica que la dispersión del ensable es baja $sd RCRV < 1$ indica que la dispersión del ensamble es alta. 
+
+Para analizar el ajuste del first guess y el análisis a un conjunto de observaciones independientes, los radiosondeos de alta resolución de RELAMPAGO, se calculó la raiz del error cuadrático medio (RMSE) y el BIAS:
+
+\begin{equation}
+  \mathrm{\mathit{RMSE} = \sqrt{\frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)^{2}}}
+  (\#eq:eq9)
+\end{equation}  
+
+
+\begin{equation}
+  \mathrm{\mathit{BIAS} = \frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)}
+  (\#eq:eq10)
+\end{equation}
+
+donde $O$ y $X$ representan las observaciones independientes y las simuladas respectivamente, y N es el tamaño de la muestra. 
+
+Para comparar la pricipitación pronísticada a 1 hora con las estimaciones de precipitación de IMERG, calculamos el Fractions Skill Score (FSS, @roberts2008) para diferentes radios de influencia y umbrales de precipitación: 
+
+\begin{equation}
+  \mathrm{\mathit{FSS} = 1-\frac{\sum_{i=1}^{N} ({P_x}_i-{P_o}_i)^{2}}{\sum_{i=1}^{N} ({P_x}_i)^{2}+\sum_{i=1}^{N} ({P_o}_i)^{2}}}
+    (\#eq:eq11)
+\end{equation}
+  
+  
+donde $P_{oi}$ es la proporción de puntos de reticula en el subdominio $i-th$ donde la que la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a @roberts2020, $P_{xi}$ se calcula sobre el ensamble completo y cuantifica de la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de cuadrícula, y luego promediando sobre el subdominio $i-th$. 
+El FSS se calculó a partir de la precipitación acumulada en ventanas moviles de 6 horas sumando los pronósticos de precipitación acumulada de 1 hora.
+
+## Recursos computacionales 
+
+Todos los experimentos corrieron en la supercomputadora Cheyenne del Centro Nacional de Investigación Atmosférica (NCAR) [@Cheyenne2019]. El posprocesamineto y análisis se realizó en [CIMA]. El análisis de datos se generó utilizando el lenguaje de programación R [@rcoreteam2020], utilizando los paquetes data.table [@dowle2020] y metR [@campitelli2020], entre otros.
+Todos los gráficos se han realizado con ggplot2 [@wickham2009] y la versión final de la tesis se generó con knitr, rmarkdown [@xie2015; @allaire2019] y tesisdown [].
+
+
