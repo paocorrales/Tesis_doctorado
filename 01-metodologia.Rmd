@@ -10,6 +10,20 @@ The {#rmd-basics} text after the chapter declaration will allow us to link throu
 
 ## El sistema de asimilación GSI
 
+GSI es un sistema de asimilación de datos de última generación, desarrollado inicialmente por el Environmental Modeling Center  (EMC) del NCEP. Se diseñó como un sistema 3DVAR tradicional aplicado en el espacio de puntos deretícula de los modelos para facilitar la implementación de covarianzas anisotrópicas no homogéneas [@wu2002; @purser2003a; @purser2003b]. Está diseñado para funcionar en varias plataformas computacionales, crear análisis para diferentes modelos numéricos de pronóstico, y seguir siendo lo suficientemente flexible como para poder manejar futuros desarrollos científicos, como el uso de nuevos tipos de observación, una mejor selección de datos y nuevas variables de estado [@kleist2009].
+
+Este sistema 3DVAR sustituyó al sistema de análisis operativo regional de punto de retícula del NCEP para el Sistema de Predicción de Mesoescala de América del Norte (NAM) en 2006 y al sistema de análisis global dSpectral Statistical Interpolation (SSI) usado para generar el Global Forecast System (GFS) en 2007 [@kleist2009]. En los últimos años, GSI ha evolucionado para incluir varias técnicas de asimilación de datos para múltiples aplicaciones operativas, incluyendo 2DVAR [por ejemplo, el sistema Real-Time Mesoscale Analysis (RTMA); @pondeca2011], la técnica híbrida EnVar [por ejemplo los sistemas de asimilación de datos para el GFS, el Rapid Refresh system (RAP), el NAM, el HWRF, etc.], y 4DVAR [por ejemplo, el sistema de asimilación de datos para el Sistema Goddard de Observación de la Tierra, versión 5 (GEOS-5) de la NASA; @zhu2008]. GSI también incluye un enfoque híbrido 4D-EnVar que actualmente se utiliza para la generación del GFS. 
+
+GSI también incluye métodos de asimilación por ensambles. El código EnKF fue desarrollado por el Earth System Research Lab  (ESRL) de la National Oceanic and Atmospheric Administration (NOAA) en colaboración con la comunidad científica. Contiene dos algoritmos distintos para calcular el incremento del anañisis, el serial Ensemble Square Root Filter (EnSRF, @whitaker2002) y el
+Local Ensemble Kalman Filter (LETKF, @hunt2007) aportado por Yoichiro Ota de la Agencia Meteorológica Japonesa (JMA). En ambos casos usa el mismo operador de las observaciones que los métodos variacionales para comparar el campo preliminar con las observaciones. 
+
+Para reducir el impacto de covarianzas espurias en el incremento que se aplica al análisis, los sistemas por ensamble aplican una localización a la matriz de covarianza K tanto en la dirección horizontal como vertical. Usa un polinomio de orden 5 para reducir el impacto de cada observación de manera gradual hasta llegar a una distancia límite a partir de la cual el impacto es cero. La escala de localización vertical se define como $-log(P/P_{ref})$ y la escala horizontal usualmente se define en kilómetros. Estos parámetros son importantes a la hora de obtener un buen análisis y dependen de factores como el tamaño del ensamble y la resolución del modelo.
+
+Otra característica importante del sistema es la implementación de un algoritmo de corrección de bias para las radiancias de satélites. La estimación hecha por el campo preliminar se compara las observaciones de radiancia para obtener la innovación. Esta innovación a su vez se utiliza para actualizar los coeficientes que permiten estimar el bias de las observaciones que se utilizá para obtener una innovación actualizada. Este proceso puede repetirse varias veces hasta que la la innovación y los coeficientes de corrección de bias converjan. Este algoritmo se describe en mayor detalle en la Sección \@ref(seccion:sat).
+
+
+ Though the amount of ingested data is rapidly increasing, the GSI code continues to be optimized to fit into limited operational windows.
+
 GSI y CRTM
 
 ## Caso de estudio
