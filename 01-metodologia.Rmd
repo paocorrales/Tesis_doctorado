@@ -1,0 +1,341 @@
+<!--
+This is for including Chapter 1.  Notice that it's also good practice to name your chunk.  This will help you debug potential issues as you knit.  The chunk above is called intro and the one below is called chapter1.  Feel free to change the name of the Rmd file as you wish, but don't forget to change it here from chap1.Rmd.
+-->
+
+<!--
+The {#rmd-basics} text after the chapter declaration will allow us to link throughout the document back to the beginning of Chapter 1.  These labels will automatically be generated (if not specified) by changing the spaces to hyphens and capital letters to lowercase.  Look for the reference to this label at the beginning of Chapter 2.
+-->
+
+# Metodología {#metodologia}
+
+## El sistema de asimilación GSI
+
+GSI por su nombre en inglés Gridpoint Statistical Interpolation, es un sistema de asimilación de datos de última generación, desarrollado inicialmente por el Environmental Modeling Center  (EMC) del NCEP. Se diseñó como un sistema 3DVAR tradicional aplicado en el espacio de puntos de retícula de los modelos para facilitar la implementación de covarianzas anisotrópicas no homogéneas [@wu2002; @purser2003a; @purser2003b]. 
+Está diseñado para funcionar en varias plataformas computacionales, crear análisis para diferentes modelos numéricos de pronóstico, y seguir siendo lo suficientemente flexible como para poder manejar futuros desarrollos científicos, como el uso de nuevos tipos de observación, una mejor selección de datos y nuevas variables de estado [@kleist2009].
+
+Este sistema 3DVAR sustituyó al sistema de análisis operativo regional de punto de retícula del NCEP por el Sistema de Predicción de Mesoescala de América del Norte (NAM) en 2006 y al sistema de análisis global Spectral Statistical Interpolation (SSI) usado para generar el Global Forecast System (GFS) en 2007 [@kleist2009]. 
+En los últimos años, GSI ha evolucionado para incluir varias técnicas de asimilación de datos para múltiples aplicaciones operativas, incluyendo 2DVAR (por ejemplo, el sistema Real-Time Mesoscale Analysis (RTMA); @pondeca2011), la técnica híbrida EnVar (por ejemplo los sistemas de asimilación de datos para el GFS, el Rapid Refresh system (RAP), el NAM, el HWRF, etc.), y 4DVAR (por ejemplo, el sistema de asimilación de datos para el Sistema Goddard de Observación de la Tierra, versión 5 (GEOS-5) de la NASA; @zhu2008). 
+GSI también incluye un enfoque híbrido 4D-EnVar que actualmente se utiliza para la generación del GFS. 
+
+Además del desarrollo de técnias híbridas, GSI permite el uso métodos de asimilación por ensambles. Para lograr esto, utiliza el mismo operador de las observaciones que los métodos variacionales para comparar el campo preliminar con las observaciones. 
+De esta manera los exaustivos controles de calidad desarrollados para los métodos variacionales también son aplicados en la asimilación por ensambles. 
+El código EnKF fue desarrollado por el Earth System Research Lab (ESRL) de la National Oceanic and Atmospheric Administration (NOAA) en colaboración con la comunidad científica. 
+Contiene dos algoritmos distintos para calcular el incremento del analisis, el serial Ensemble Square Root Filter (EnSRF, @whitaker2002) y el Local Ensemble Kalman Filter (LETKF, @hunt2007) aportado por Yoichiro Ota de la Agencia Meteorológica Japonesa (JMA). 
+
+Para reducir el impacto de covarianzas espurias en el incremento que se aplica al análisis, los sistemas por ensamble aplican una localización a la matriz de covarianza K tanto en la dirección horizontal como vertical. 
+Usa un polinomio de orden 5 para reducir el impacto de cada observación de manera gradual hasta llegar a una distancia límite a partir de la cual el impacto es cero. La escala de localización vertical se define como $-log(P/P_{ref})$ y la escala horizontal usualmente se define en kilómetros. 
+Estos parámetros son importantes a la hora de obtener un buen análisis y dependen de factores como el tamaño del ensamble y la resolución del modelo.
+
+Otra característica importante del sistema es la implementación de un algoritmo de corrección de bias para las radiancias de satélites. 
+La estimación hecha por el campo preliminar se compara las observaciones de radiancia para obtener la innovación. 
+Esta innovación a su vez se utiliza para actualizar los coeficientes que permiten estimar el bias de las observaciones que se utilizá para obtener una innovación actualizada. Este proceso puede repetirse varias veces hasta que la la innovación y los coeficientes de corrección de bias converjan. 
+Este algoritmo se describe en mayor detalle en la Sección \@ref(seccion:sat).
+
+
+## Caso de estudio
+
+Previo al desarrollo de este caso de estudio, el centro y norte de Argentina se encontraba inmerso en una masa de aire cálido y húmedo con altos valores de energía potencial disponible convectiva (CAPE), como lo muestra ERA 5 [@era5pressure] en la Figura \ref(fig:caso-estudio)a. El 22 de noviembre de 2018 un frente frío cruzó el centro de Argentina (Figura \ref(fig:caso-estudio)b). Este frente frío desencadenó el desarrollo de células convectivas aisladas que rápidamente crecieron hasta convertirse en un SCM excepcionalmente grande (Figura \@ref(fig:caso-estudio)d,e). Durante ese día, varias estaciones de superficie observaron actividad eléctrica, fuertes ráfagas de viento y lluvias intensas. Al norte de la región, el entorno cálido y húmedo contribuyó al desarrollo de convección aislada que finalmente creció y se fusionó con el SCM (Figura \ref(fig:caso-estudio)f). El SCM recorrió aproximadamente 2500 km de sur a norte, disipándose sobre Paraguay y el sur de Brasil después de 42 horas desde el inicio de su desarrollo. 
+
+(ref:caso-estudio) Presión a nivel del mar (hPa, contornos negros), espesor 1000-500 hPa (contornos rojos discontinuos) y energía potencial convectiva disponible (sombreada) según ERA5 y temperatura de brillo del canal 13 de GOES-16 para a,d) 00 y b,e) 12 UTC, 22 de Nov y c,f) 00 UTC, 23 de Nov. 
+
+```{r caso-estudio, fig.cap="(ref:caso-estudio)", fig.width=6, fig.height=4, fig.align="center", fig.env = "figure*"}
+#fig.width=7, fig.height=3.5,
+campos <- ReadNetCDF(here("data/derived_data/reanalysis/geopotential.nc")) %>% 
+  dcast(time + longitude + latitude ~ level) %>% 
+  .[order(time, -latitude, longitude)] %>% 
+  .[, ":="(msl = ReadNetCDF(here("data/derived_data/reanalysis/pressure-pw.nc"), vars = "msl", out = "vector")[[1]],
+           cape = ReadNetCDF(here("data/derived_data/reanalysis/cape-pw.nc"), vars = "cape", out = "vector")[[1]])] %>% 
+  setnames(c("longitude", "latitude"), c("lon", "lat")) %>% 
+    .[time != ymd_h(2018112312)] 
+
+xlim <- c(2700, 3950)
+ylim <- c(3800, 4950)
+
+files <- Sys.glob(here("data/derived_data/goes16/*"))
+goes <- map(files, function(f) {
+  nc <- ncdf4::nc_open(f)
+  meta <- unglue::unglue(basename(f), "OR_ABI-L1b-RadF-M3{channel}_G16_s{sdate}_e{edate}_c{cdate}.nc")
+  ReadNetCDF(f, vars = c(rad = "Rad", time = "t"), 
+             subset = list(x = xlim, y = ylim)) %>% 
+  .[, rad := calculate_rad(rad, nc)] %>% 
+  .[, tb := rad_to_tb(rad, nc)] %>% 
+  .[, time := as_datetime(time, origin = "2000-01-01 12:00:00")] %>%
+  .[, c("lon", "lat") := goes_projection(x, y, nc)] %>% 
+  .[]
+}) %>% 
+  rbindlist() %>% 
+  .[, time := floor_date(time, "hour")]
+
+campos %>% 
+  .[, source := "era5"] %>%
+  .[, time := factor(time)] %>% 
+  .[, ":="(espesor = (`500`-`1000`)/100, time = factor(time))] %>%
+  ggplot(aes(lon, lat)) +
+  geom_contour_fill(aes(z = cape, fill = stat(level_d)), breaks = seq(500, 4000, 500)) +
+  scale_fill_distiller(super = ScaleDiscretised,
+                       name = "CAPE",
+                       # palette = "PRGn", direction = 1,
+                       palette = "YlOrRd", direction = 1,
+                       guide = guide_colorsteps(barwidth = 0.5, #mid = 25,
+                                                barheight = 8,
+                                                order = 2, 
+                                                # title.position = "left",
+                                                # title.vjust = 1,
+                                                frame.colour = "black")) +
+  geom_contour2(aes(z = espesor, label = ..level..),
+                size = 0.2, color = "darkred", linetype = 2,
+                label_size = 2, label.placer = label_placer_n(n = 3)) +
+  geom_contour2(aes(z = msl/100, label = ..level..),
+                size = 0.4, color = "black", linetype = 1,
+                label_size = 2) +
+  cordillera +
+  scattermore::geom_scattermore(data = goes[, source := "goes"], aes(color = tb)) +
+  scale_color_topes(guide = guide_colorbar(barwidth = 0.5,
+                                           barheight = 8,
+                                           order = 99,
+                                           frame.colour = "black")) +
+  # guides(fill = guide_legend(" CAPE", order = 0),
+  #        color = guide_legend("BT (ºC)", order = 2)) +
+  geom_mapa() +
+  coord_sf(ylim = c(-45, -22), xlim = c(-75, -52)) +
+  facet_grid(source ~ time, labeller = labeller(time = c("2018-11-22 00:00:00" = "00 UTC, 22 de Nov",
+                                                         "2018-11-22 12:00:00" = "12 UTC, 23 de Nov",
+                                                         "2018-11-23 00:00:00" = "00 UTC, 23 de Nov"),
+                                                source = c("era5" = "ERA5",
+                                                           "goes" = "GOES-16 Canal 13"))) +
+  tag_facets() +
+  labs(x = NULL, y = NULL, fill = "CAPE", color = "TB (ºC)") +
+  theme_minimal(base_size = 9) +
+  theme(tagger.panel.tag.background = element_rect(color = "white"))
+
+```
+
+
+## Configuración del ensamble
+
+Las simulaciones numéricas para el caso de estudio se realizan utilizando la versión 3.9.1 de modelo WRF (@skamarock2008). 
+Se utilizó una resolución horizontal de 10 km (150 x 200 puntos de retícula) y 37 niveles en la vertical con el tope del modelo en 50 hPa. 
+Las condiciones iniciales y de contorno surgen del análisis del Global Forecast System (GFS) (resolución horizontal de 0,25$^{circ}$ y resolución temporal de 6 horas; @cisl_rda_ds084.1). 
+El dominio cubre la zona indicada en la Figura \@ref(fig:dominio) para capturar el desarrollo del SCM durante el periodo simulado. 
+
+Los análisis se generaron utilizando la implementación LETKF (V1.3, @hunt2007) que forma parte del sistema de análisis Gridpoint Statistical Interpolation (GSI V3.8; @shao2016). 
+Se utilizó un enfoque de actualización rápida con análisis horario y una ventana de asimilación centrada, lo que significa que se asimilaron todas las observaciones dentro de $\pm$ 30 minutos del tiempo de análisis. 
+Además, aas observaciones se asimilaron usando un enfoque 4D, es decir, comparándolas con el first guess más cercano que se genera en intervalos de 10 minutos. 
+Para las observaciones de satelite, se utilizó el Community Radiative Transfer Model versión 2.3 (CRTM; @han2006) como operador de observaciones para calcular las temperaturas de brillo simuladas por el modelo. 
+
+Utilizamos un conjunto de 60 miembros, cuya media al principio del ciclo de AD se inicializa utilizando el análisis deterministico del GFS al que se le suman perturbaciones aleatorias para generar el ensamble incial. Las perturbaciones se generaron como diferencias escaladas entre dos estados atmosféricos aleatorios obtenidos a partir de los datos del Reanálisis del Sistema de Predicción del Clima (CFSR) con una resolución horizontal de 0,5$^{circ}$ que tiene una con una evolución temporal suave [@necker2020; @maldonado2021]. De este modo, preservamos el equilibrio casi hidrostático y geostrófico de las escalas mayores. Este método ayuda a evitar una subestimación del spread del ensamble [@ouaraini2015]. Las perturbaciones  también se aplicaron en los límites para mantener niveles adecuados de spread dentro del dominio del ensamble. 
+
+Además de las perturbaciones aleatorias en los límites laterales, se utilizó un esquema de multifísicas para representar mejor la incertidumbre en el modelo dentro del sistema de AD. Utilizamos 9 configuraciones diferentes que consisten en la combinación de 3 esquemas de convección húmeda (Kain-Fritsch [@kain2004], Grell-Freitas [@grell2013], y Betts-Miller-Janjic [@janjic1994]) y 3 esquemas de capa límite planetaria (Esquema de la Universidad de Yonsei [@hong2006], Esquema Mellor-Yamada-Janjic [@janjic1994], y Mellor-Yamada Nakanishi Niino [@nakanishi2009]). La distribución de estas parametrizaciones entre los 60 miembros del ensamble se muestra en la Tabla \@ref(tab:miembros-desc). Todos los miembros del conjunto utilizan las mismas parametrizaciones del modelo de superficie terrestre (Noah-MP, @chen2001), de microfísica (esquema de un solo momento de 6 clases del WRF [@hong2006a]) y de procesos radiativos (esquema de onda corta y onda larga del RRTMG [@iacono2008]).
+
+```{r miembros-desc}
+data.table(mem = as.character(formatC(1:60, flag = "0", width = 3)),
+                     fisica = rep(c("KF-YSU", 
+                                    "BMJ-YSU",
+                                    "GF-YSU",
+                                    "KF-MYJ",
+                                    "BMJ-MYJ",
+                                    "GF-MYJ",
+                                    "KF-MYNN2",
+                                    "BMJ-MYNN2",
+                                    "GF-MYNN2"), length.out = 60)) %>% 
+  setDT() %>% 
+  .[, c("Cumulus", "PBL") := tstrsplit(fisica, split = "-")] %>% 
+  .[, .(mem = paste(as.numeric(mem), collapse = ", ")), by = .(PBL, Cumulus)] %>% 
+  dcast(Cumulus ~ PBL, value.var  = "mem") %>% 
+  kable(booktabs = TRUE, caption = "Generación de los 60 miembros del ensamble multifísica como combinación de parametrizaciones de Cumulus y PBL", 
+        align = "cccc") %>% 
+  add_header_above(c(" " = 1, PBL = 3)) %>% 
+  kable_classic_2(full_width = FALSE) %>% 
+  kable_styling(font_size = 6,
+                position = "center") %>% 
+  # column_spec(1, width = "1em") %>% 
+  column_spec(2:4, width = "7em")
+```
+
+Para reducir el efecto de las correlaciones espurias en la estimación de las covarianzas de los errores de las observaciones, utilizamos un radio de localización horizontal de 180 km y un radio de localización vertical de 0,4 (en coordenadas de presión logarítmica) como en @dillon2021 para todos los tipos de observaciones. 
+Se aplicó con un parámetro de inflación $\alpha=0,9$ para mitigar el impacto de los errores de muestreo y para considerar los errores del modelo que no se tienen en cuenta en el enfoque mutifísica del ensamble [@whitaker2012].
+
+(ref:dominio) a) Dominio utilizado para las simulaciones (recuadro negro), dominio interior utilizado para la comparación entre experimentos (recuadro rojo), la región mostrada en b) (recuadro azul claro), y la ubicación de las Estaciones Meteorológicas Automáticas (EMA, cuadrados verdes) y las Estaciones Meteorológicas Convencionales (EMC, triángulos naranjas). b) Ubicación de los lanzamientos de radiosondeos durante RELAMPAGO. Los puntos verdes corresponden a los radiosondeos lanzados durante el IOP 7, los triángulos naranjas son radiosondeos lanzados durante el IOP 8, y los cuadrados morados son radiosondeos lanzados fuera de los periodos de medición intensiva. También se muestra la topografía en metros (sombreada).
+
+```{r dominio, fig.cap="(ref:dominio)", out.width="80%", fig.align='center'}
+
+oficiales <- fread(here("data/derived_data/sample_obs/E2_asim_conv_20181121120000.ensmean"), 
+                   na.strings = c("0.100E+11", "-0.100E+06", "-99999.90", "-100000.00")) %>% 
+  .[, c("V2", "V4") := NULL] %>% 
+  setnames(colnames(.), c("var", "stationID", "type", "dhr", "lat", "lon", "pressure", "usage.flag", "flag", "obs", "obs.guess", "obs2", "obs.guess2", "rerr")) %>% 
+  .[type %in% c(181, 281)] %>% unique(by = c("stationID")) %>%
+  .[!str_detect(stationID, pattern = "[A-Z]")] %>% 
+  .[, source := "Sfc - Official"]
+
+no_oficiales <- fread(here("data/derived_data/sample_obs/E5_asim_conv_20181121120000.ensmean"), 
+                      na.strings = c("0.100E+11", "-0.100E+06", "-99999.90", "-100000.00")) %>% 
+  .[, c("V2", "V4") := NULL] %>% 
+  setnames(colnames(.), c("var", "stationID", "type", "dhr", "lat", "lon", "pressure", "usage.flag", "flag", "obs", "obs.guess", "obs2", "obs.guess2", "rerr")) %>% 
+  .[type %in% c(181, 187)] %>% 
+  .[!str_detect(stationID, "SMN")] %>%
+  .[!str_detect(stationID, "^SC")] %>%
+  .[!(stationID %in% oficiales$stationID)] %>% 
+  unique(by = c("stationID")) %>% 
+  .[, source := "Sfc - Non-official"]
+
+obs <- rbind(no_oficiales, oficiales)
+
+lista_sondeos <- fread(here("data/derived_data/sample_obs/lista_sondeos.csv")) %>% 
+  .[, periodo := fcase(nominal_launch_time %between% c(ymd_hms("20181121150000"), ymd_hms("20181121210000")),  "IOP 7", 
+                       nominal_launch_time %between% c(ymd_hms("20181122140000"), ymd_hms("20181122200000")),  "IOP 8", 
+                       default = "Otros")
+  ]
+
+dominio <- fread(here("data/derived_data/sample_obs/dominio_hgt.csv")) %>% 
+  .[, c("x", "y") := wrf_project(lon, lat)]
+
+g1 <- dominio %>% 
+  ggplot(aes(x, y)) +
+  geom_contour_fill(aes(z = hgt), proj = norargentina_lambert,
+                    breaks = seq(0, 6000, 500)) +
+  scale_fill_gradient(low = "#f2f2f2", high = "#333333",
+                      name = NULL,
+                      breaks = seq(0, 6000, 1000),
+                      guide = NULL) +
+  geom_mapa() +
+  geom_point(data = obs, aes(ConvertLongitude(lon), lat, 
+                             color = source, shape = source), 
+             size = 1, alpha = 0.8) + 
+  geom_rect(aes(xmin = -66.5, xmax = -61.5, ymin = -35.5, ymax = -29), 
+            color = "#40BDEC", alpha = 0) +
+  scale_shape_manual(name = NULL,  
+                     breaks = c("Sfc - Non-official", "Sfc - Official"),
+                     labels = c("EMA","EMC"), values = c(15, 17),
+                     guide = guide_legend(override.aes = list(size = 2))) +
+  scale_color_manual(name =  NULL, 
+                     values = c("Sfc - Non-official" = "#00695c", 
+                                "Sfc - Official" = "#FD8002"),
+                     breaks = c("Sfc - Non-official", "Sfc - Official"),
+                     labels = c("EMA","EMC"),
+                     guide = guide_legend(override.aes = list(size = 2))) +
+  geom_point(data = square, aes(lon, lat), size = 0.2) +
+  geom_point(data = square2, aes(lon, lat), size = 0.2, color = "#CC3311") +
+  theme_minimal(base_size = 10) +
+  theme(legend.box = "horizontal",
+        legend.position = c(0.1, 0.95),
+        legend.background = element_rect(fill = "white", color = "white")) 
+
+
+temp <- dominio %>% 
+  ggplot(aes(x, y)) +
+  geom_contour_fill(aes(z = hgt), proj = norargentina_lambert,
+                    breaks = seq(0, 6000, 500)) +
+  scale_fill_gradient(low = "#f2f2f2", high = "#333333",
+                      name = "Altura (m)",
+                      breaks = seq(0, 6000, 1000),
+                      guide = guide_colorstrip(barwidth = 20,
+                                               barheight = 0.5)) +
+  geom_mapa() +
+  coord_sf(ylim = c(-35.5, -29), xlim = c(-66.5, -61.5)) +
+  theme_minimal(base_size = 11) +
+  theme(legend.position = "bottom") 
+
+legend <- get_legend(temp)
+
+g2 <- dominio %>% 
+  ggplot(aes(x, y)) +
+  geom_contour_fill(aes(z = hgt), proj = norargentina_lambert,
+                    breaks = seq(0, 6000, 500)) +
+  scale_fill_gradient(low = "#f2f2f2", high = "#333333",
+                      name = NULL,
+                      breaks = seq(0, 6000, 1000),
+                      guide = NULL) +
+  geom_mapa() +
+  coord_sf(ylim = c(-35.5, -29), xlim = c(-66.5, -61.5)) +
+  geom_jitter(data = lista_sondeos, aes(lon, lat, 
+                                        color = periodo,
+                                        shape = periodo), 
+              alpha = 0.5, size = 1.5, width = 0.03, height = 0.03) +
+  scale_color_brewer(palette = "Dark2",
+                     guide = guide_legend(override.aes = list(size = 2,
+                                                              alpha = 1))) +
+  labs(color = NULL, shape = NULL) +
+  theme_minimal(base_size = 11) +
+  theme(legend.box = "horizontal",
+        legend.position = c(0.16, 0.92),
+        legend.background = element_rect(fill = "white", color = "white")) 
+
+ggdraw(plot_grid(plot_grid(g1, g2, ncol = 2, rel_widths = c(1, 0.5), 
+                           labels = c("a)", "b)"), label_size = 11), legend, 
+                 ncol = 1, rel_heights = c(1, 0.08)))
+```
+
+## Verificación: obs y metricas
+
+### Conjunto de datos de validación 
+
+Para evaluar el desempeño del sistema AD presentado en esta tesis, utilizamos los siguientes conjuntos de observaciones: 
+
+* **Datos horarios en niveles de presión de ERA5 de 1959 al presente [@era5pressure]:** Las variables de interés (temperatura del aire, humedad y viento) fueron interpoladas a la retícula del modelo para compararlas con el análisis de cada experimento. 
+
+* **Multi-Network Composite Highest Resolution Radiosonde Data [@sondeos]:** radiosondeos en alta resolución lanzados desde varias ubicaciones durante el periodo de la campaña de campo de RELAMPAGO en junto con las radiosondeos operativos del SMN. Sólo se utilizaron para la validación los sondeos que no ingresaron en el sistema de asimilación. El periodo del experimento abarca las misiones IOP 7 y 8, durante las cuales se lanzaron 74 radiosondos en una pequeña zona cercana al centro del dominio experimental (Figura \@ref(fig:dominio)b). 
+
+* **IMERG Final Run [@huffman2018]:** estimación de la precipitación a partir de datos de la constelación de satelites GPM (por su nombre en inglés Global Precipitation  Measurement) con una resolución espacial de 0,01$^{circ}$ y una resolución temporal de 30 minutos para validar la habilidad de los pronósticos de 1 hora para representar la precipitación sobre el dominio. 
+
+* **Datos del Sistema Nacional de Radares Meteorológicos (SINARAME):** Se utilizaron observaciones de radar para realizar una evaluación cualitativa y visual de las características convectivas. Los datos provienen de 9 radares ubicados en el dominio y son provistos por la red de radares Doppler de doble polarización en banda C [@deelia2017] con una frecuencia temporal de 10 minutos. Para este trabajo se utilizó únicamente la máxima reflectividad de la columna (COLMAX) más cercana al momento de análisis.
+
+### Métodos de verificación
+
+Se seleccionaron un conjunto de métricas para evaluar diferentes aspectos del análisis obtenido para cada experimento y los pronósticos inicializados a partir de ellos. Estas métricas incluyen una validación de cómo se cuantifica la incertidumbre en el first guess y en el análisis, y cómo los diferentes experimentos se ajustan a un conjunto independiente de observaciones que no se asimilan. 
+
+Para evaluar la consistencia de la estimación de la incertidumbre en el first guess y en el análisis utilizamos la Reduced Centered Random Variable o RCRV (@candille2007) que se define como:
+
+\begin{equation}
+  \mathrm{RCRV = \frac{m - x_o}{\sqrt{\sigma_o^2 + \sigma^2}}}
+  (\#eq:eq6)
+\end{equation}
+
+donde $x_o$ es la observación asimilada y su error $\sigma_o$, $m$ la media ensamble del análisis en el espacio de las observaciones, y la desviación estándar $\sigma$ del ensamble 
+La media de $RCRV$ calculada sobre todas las realizaciones representa el sesgo de la media del conjunto con respecto a las observaciones normalizadas por la incertidumbre estimada:
+
+\begin{equation}
+  \mathrm{\mathit{mean RCRV} = E[RCRV]}
+  (\#eq:eq7)
+\end{equation}
+
+La desviación estándar de la $RCRV$ o $sd RCRV$ mide la concordancia de la dispersión del ensamble y el error de observación con respecto a la distancia entre la media del ensamble y las observaciones, y por lo tanto, la sobre o infradispersión sistemática del ensamble:
+
+\begin{equation}
+  \mathrm{\mathit{sd RCRV} = \sqrt{\frac{1}{M -1}\sum_{i=1}^{M}(\mathit{RCRV_i} - \mathit{mean RCRV})^2}}
+  (\#eq:eq8)
+\end{equation}
+
+donde $M$ es el tamaño del ensamble. Suponiendo que el error de observación fue estimado con precisión, un $sd RCRV > 1$ indica que el ensamble es infradispersivo (es decir, la distancia entre las observaciones y los pronósticos es mayor de lo esperado), y un $sd RCRV < 1$ indica que el conjunto es sobredispersivo (es decir, la distancia entre las observaciones y los pronósticos es menor de lo esperado). Un sistema consistente no tendrá sesgo ($media RCRV = 0$) y una desviación estándar igual a 1 ($sd RCRV = 1$). 
+
+Para analizar el ajuste del first guess y el análisis a un conjunto de observaciones independientes, los radiosondeos de alta resolución de RELAMPAGO, se calculó la raiz del error cuadrático medio (RMSE) y el BIAS:
+
+\begin{equation}
+  \mathrm{\mathit{RMSE} = \sqrt{\frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)^{2}}}
+  (\#eq:eq9)
+\end{equation}  
+
+
+\begin{equation}
+  \mathrm{\mathit{BIAS} = \frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)}
+  (\#eq:eq10)
+\end{equation}
+
+donde $O$ y $X$ representan las observaciones independientes y las simuladas respectivamente, y N es el tamaño de la muestra. 
+
+Para comparar la pricipitación pronísticada a 1 hora con las estimaciones de precipitación de IMERG, calculamos el Fractions Skill Score (FSS, @roberts2008) para diferentes radios de influencia y umbrales de precipitación: 
+
+\begin{equation}
+  \mathrm{\mathit{FSS} = 1-\frac{\sum_{i=1}^{N} ({P_x}_i-{P_o}_i)^{2}}{\sum_{i=1}^{N} ({P_x}_i)^{2}+\sum_{i=1}^{N} ({P_o}_i)^{2}}}
+    (\#eq:eq11)
+\end{equation}
+  
+  
+donde $P_{oi}$ es la proporción de puntos de reticula en el subdominio $i-th$ donde la que la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a @roberts2020, $P_{xi}$ se calcula sobre el ensamble completo y cuantifica de la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de cuadrícula, y luego promediando sobre el subdominio $i-th$. 
+El FSS se calculó a partir de la precipitación acumulada en ventanas moviles de 6 horas sumando los pronósticos de precipitación acumulada de 1 hora.
+
+## Recursos computacionales 
+
+Todos los experimentos corrieron en la supercomputadora Cheyenne del Centro Nacional de Investigación Atmosférica (NCAR) [@Cheyenne2019]. El posprocesamineto y análisis se realizó en [CIMA]. El análisis de datos se generó utilizando el lenguaje de programación R [@rcoreteam2020], utilizando los paquetes data.table [@dowle2020] y metR [@campitelli2020], entre otros.
+Todos los gráficos se han realizado con ggplot2 [@wickham2009] y la versión final de la tesis se generó con knitr, rmarkdown [@xie2015; @allaire2019] y tesisdown [].
+
+

@@ -53,7 +53,15 @@
 % bibliography is included.
 %\usepackage{biblatex-chicago}
 %\bibliography{thesis}
-
+% \ifxetex
+%   \usepackage{polyglossia}
+%   \setmainlanguage{spanish}
+%   % Tabla en lugar de cuadro
+%   \gappto\captionsspanish{\renewcommand{\tablename}{Tabla}
+%           \renewcommand{\listtablename}{Índice de tablas}}
+% \else
+%   \usepackage[spanish,es-tabla]{babel}
+% \fi
 
 % Added by CII (Thanks, Hadley!)
 % Use ref for internal links
