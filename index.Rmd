@@ -132,6 +132,14 @@ geom_mapa <- function(fill = NA) {
 arg_topo <- metR::GetTopography(-75+360, -50+360, -20, -60, resolution = 1/10, 
                                 file.dir = here("data/derived_data/"))
 arg_topo[, lon := metR::ConvertLongitude(lon)]
+
+cordillera <- list(
+  ggnewscale::new_scale_fill(),
+  geom_contour_fill(data = arg_topo, aes(x = lon, y = lat,
+                                         z = h),
+                    breaks = seq(1500, 8000, by = 700)),
+  scale_fill_gradient(low = "#E2E6E6", high = "#7E7E7E", guide = "none",
+                      oob = scales::squish))
 ```
 
 <!-- Required to number equations in HTML files -->
