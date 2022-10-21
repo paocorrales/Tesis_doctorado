@@ -31,6 +31,16 @@ La estimación hecha por el campo preliminar se compara las observaciones de rad
 Esta innovación a su vez se utiliza para actualizar los coeficientes que permiten estimar el bias de las observaciones que se utilizá para obtener una innovación actualizada. Este proceso puede repetirse varias veces hasta que la la innovación y los coeficientes de corrección de bias converjan. 
 Este algoritmo se describe en mayor detalle en la Sección \@ref(seccion:sat).
 
+## El modelo de transferencia radiativa CRTM
+
+El Community Radiative Transfer Model (CRTM) es desarrollado por el Joint Center for Satellite Data Assimilation (JCSDA) y es usado para simular radiancias de sensores de microondas, infrarojo y visible. Está compuesto por 4 modulos para el cálculo de la transmitancia, la emisión y reflección desde la superficie, la absorción por aerosolos y scattering y un modulo para resolver la transferencia radiativa. 
+
+El modelo foward del CRTM se utiliza para simular la radiancia medida por un satélite, que puede utilizarse para verificar la precisión y errores de la observación como así también los posibles cambios del sensor a largo plazo. El módulo de la matriz k se utiliza para calcular el Jacobiano (es decir, la derivada de la radiancia con respecto a parámetros geofísicos), que se utiliza para la asimilación de radiancias. El uso de los módulos tangente-lineal y adjunto es equivalente al uso del módulo de la matriz k, y también se usa en algunas aplicaciones en la asimilación de la radiancia.
+
+La transmitancia gaseosa describe la absorción generada por los gases en la atmósfera, de modo que se puede utilizar las observaciones en los sistemas de asimilación de datos y retrievals de temperatura del aire, la humedad y los gases traza como el CO2, O3, N2O, CO y CH4. El módulo de aerosoles es fundamental para identificar el tipo y la concentración de aerosoles para estudiar la calidad del aire. El módulo de nubes contiene las propiedades ópticas de seis tipos de nubes, proporcionando información del impacto radiativo generado por las nubes que es útil en la previsión meteorológica y los estudios climáticos. El modelo de superficie del CRTM incluye la emisividad/reflectividad estática de la superficie y se basa en un atlas que incluye varios tipos de superficie. 
+
+El CRTM es usado por GSI como operador de las observaciones de radiancia debido a que soportan más de 100 sensores distintos incluyendo todos los satélites meteorológicos. También permite la inclusión de nuevos sensores que solo requiere la generación de coeficientes espectrales y de transmitancia, componente clave en el desarrollo mejores pronósticos. 
+
 
 ## Caso de estudio
 
