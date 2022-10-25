@@ -10,7 +10,7 @@ The {#rmd-basics} text after the chapter declaration will allow us to link throu
 
 ## El sistema de asimilación GSI
 
-GSI por su nombre en inglés Gridpoint Statistical Interpolation, es un sistema de asimilación de datos de última generación, desarrollado inicialmente por el Environmental Modeling Center  (EMC) del NCEP. Se diseñó como un sistema 3DVAR tradicional aplicado en el espacio de puntos de retícula de los modelos para facilitar la implementación de covarianzas anisotrópicas no homogéneas [@wu2002; @purser2003a; @purser2003b]. 
+GSI por su nombre en inglés Gridpoint Statistical Interpolation, es un sistema de asimilación de datos de última generación, desarrollado inicialmente por el Environmental Modeling Center  (EMC) del NCEP. Se diseñó como un sistema 3DVAR tradicional aplicado en el espacio de puntos de retícula de los modelos para facilitar la implementación de covarianzas anisotrópicas no homogéneas [@wu2002; @purser2003; @purser2003a]. 
 Está diseñado para funcionar en varias plataformas computacionales, crear análisis para diferentes modelos numéricos de pronóstico, y seguir siendo lo suficientemente flexible como para poder manejar futuros desarrollos científicos, como el uso de nuevos tipos de observación, una mejor selección de datos y nuevas variables de estado [@kleist2009].
 
 Este sistema 3DVAR sustituyó al sistema de análisis operativo regional de punto de retícula del NCEP por el Sistema de Predicción de Mesoescala de América del Norte (NAM) en 2006 y al sistema de análisis global Spectral Statistical Interpolation (SSI) usado para generar el Global Forecast System (GFS) en 2007 [@kleist2009]. 
@@ -29,7 +29,7 @@ Estos parámetros son importantes a la hora de obtener un buen análisis y depen
 Otra característica importante del sistema es la implementación de un algoritmo de corrección de bias para las radiancias de satélites. 
 La estimación hecha por el campo preliminar se compara las observaciones de radiancia para obtener la innovación. 
 Esta innovación a su vez se utiliza para actualizar los coeficientes que permiten estimar el bias de las observaciones que se utilizá para obtener una innovación actualizada. Este proceso puede repetirse varias veces hasta que la la innovación y los coeficientes de corrección de bias converjan. 
-Este algoritmo se describe en mayor detalle en la Sección \@ref(seccion:sat).
+Este algoritmo se describe en mayor detalle en la Sección \@ref(sat).
 
 ## El modelo de transferencia radiativa CRTM
 
@@ -44,11 +44,11 @@ El CRTM es usado por GSI como operador de las observaciones de radiancia debido 
 
 ## Caso de estudio
 
-El caso de estudio utilizado en este trabajo corresponde a un SCM durante el 22 de noviembre de 2018. Previo al desarrollo de este SCM, el centro y norte de Argentina se encontraba inmerso en una masa de aire cálido y húmedo con altos valores de energía potencial disponible convectiva (CAPE), como lo muestra ERA 5 [@era5pressure] en la Figura \ref(fig:caso-estudio)a. El 22 de noviembre de 2018 un frente frío cruzó el centro de Argentina (Figura \ref(fig:caso-estudio)b). Este frente frío desencadenó el desarrollo de células convectivas aisladas que rápidamente crecieron hasta convertirse en un SCM excepcionalmente grande (Figura \@ref(fig:caso-estudio)d,e). Durante ese día, varias estaciones de superficie observaron actividad eléctrica, fuertes ráfagas de viento y lluvias intensas. Al norte de la región, el entorno cálido y húmedo contribuyó al desarrollo de convección aislada que finalmente creció y se fusionó con el SCM (Figura \ref(fig:caso-estudio)f). El SCM recorrió aproximadamente 2500 km de sur a norte, disipándose sobre Paraguay y el sur de Brasil después de 42 horas desde el inicio de su desarrollo. 
+El caso de estudio utilizado en este trabajo corresponde a un SCM durante el 22 de noviembre de 2018. Previo al desarrollo de este SCM, el centro y norte de Argentina se encontraba inmerso en una masa de aire cálido y húmedo con altos valores de energía potencial disponible convectiva (CAPE), como lo muestra ERA 5 [@era5pressure] en la Figura \@ref(fig:caso)a. El 22 de noviembre de 2018 un frente frío cruzó el centro de Argentina (Figura \@ref(fig:caso)b). Este frente frío desencadenó el desarrollo de células convectivas aisladas que rápidamente crecieron hasta convertirse en un SCM excepcionalmente grande (Figura \@ref(fig:caso)d,e). Durante ese día, varias estaciones de superficie observaron actividad eléctrica, fuertes ráfagas de viento y lluvias intensas. Al norte de la región, el entorno cálido y húmedo contribuyó al desarrollo de convección aislada que finalmente creció y se fusionó con el SCM (Figura \@ref(fig:caso)f). El SCM recorrió aproximadamente 2500 km de sur a norte, disipándose sobre Paraguay y el sur de Brasil después de 42 horas desde el inicio de su desarrollo. 
 
-(ref:caso-estudio) Presión a nivel del mar (hPa, contornos negros), espesor 1000-500 hPa (contornos rojos discontinuos) y energía potencial convectiva disponible (sombreada) según ERA5 y temperatura de brillo del canal 13 de GOES-16 para a,d) 00 y b,e) 12 UTC, 22 de Nov y c,f) 00 UTC, 23 de Nov. 
+(ref:casoestudio) Presión a nivel del mar (hPa, contornos negros), espesor 1000-500 hPa (contornos rojos discontinuos) y energía potencial convectiva disponible (sombreada) según ERA5 y temperatura de brillo del canal 13 de GOES-16 para a,d) 00 y b,e) 12 UTC, 22 de Nov y c,f) 00 UTC, 23 de Nov. 
 
-```{r caso-estudio, fig.cap="(ref:caso-estudio)", fig.width=6, fig.height=4, fig.align="center", fig.env = "figure*"}
+```{r caso, fig.cap="(ref:caso)", fig.width=6, fig.height=4, fig.align="center", fig.env = "figure*"}
 #fig.width=7, fig.height=3.5,
 campos <- ReadNetCDF(here("data/derived_data/reanalysis/geopotential.nc")) %>% 
   dcast(time + longitude + latitude ~ level) %>% 
@@ -125,7 +125,7 @@ campos %>%
 
 Las simulaciones numéricas para el caso de estudio se realizan utilizando la versión 3.9.1 de modelo WRF (@skamarock2008). 
 Se utilizó una resolución horizontal de 10 km (150 x 200 puntos de retícula) y 37 niveles en la vertical con el tope del modelo en 50 hPa. 
-Las condiciones iniciales y de contorno surgen del análisis del Global Forecast System (GFS) (resolución horizontal de 0,25$^{circ}$ y resolución temporal de 6 horas; @cisl_rda_ds084.1). 
+Las condiciones iniciales y de contorno surgen del análisis del Global Forecast System (GFS) (resolución horizontal de 0,25$^{\circ}$ y resolución temporal de 6 horas; @cisl_rda_ds084.1). 
 El dominio cubre la zona indicada en la Figura \@ref(fig:dominio) para capturar el desarrollo del SCM durante el periodo simulado. 
 
 Los análisis se generaron utilizando la implementación LETKF (V1.3, @hunt2007) que forma parte del sistema de análisis Gridpoint Statistical Interpolation (GSI V3.8; @shao2016). 
@@ -133,7 +133,7 @@ Se utilizó un enfoque de actualización rápida con análisis horario y una ven
 Además, aas observaciones se asimilaron usando un enfoque 4D, es decir, comparándolas con el first guess más cercano que se genera en intervalos de 10 minutos. 
 Para las observaciones de satelite, se utilizó el Community Radiative Transfer Model versión 2.3 (CRTM; @han2006) como operador de observaciones para calcular las temperaturas de brillo simuladas por el modelo. 
 
-Utilizamos un conjunto de 60 miembros, cuya media al principio del ciclo de AD se inicializa utilizando el análisis deterministico del GFS al que se le suman perturbaciones aleatorias para generar el ensamble incial. Las perturbaciones se generaron como diferencias escaladas entre dos estados atmosféricos aleatorios obtenidos a partir de los datos del Reanálisis del Sistema de Predicción del Clima (CFSR) con una resolución horizontal de 0,5$^{circ}$ que tiene una con una evolución temporal suave [@necker2020; @maldonado2021]. De este modo, preservamos el equilibrio casi hidrostático y geostrófico de las escalas mayores. Este método ayuda a evitar una subestimación del spread del ensamble [@ouaraini2015]. Las perturbaciones  también se aplicaron en los límites para mantener niveles adecuados de spread dentro del dominio del ensamble. 
+Utilizamos un conjunto de 60 miembros, cuya media al principio del ciclo de AD se inicializa utilizando el análisis deterministico del GFS al que se le suman perturbaciones aleatorias para generar el ensamble incial. Las perturbaciones se generaron como diferencias escaladas entre dos estados atmosféricos aleatorios obtenidos a partir de los datos del Reanálisis del Sistema de Predicción del Clima (CFSR) con una resolución horizontal de 0,5$^{\circ}$ que tiene una con una evolución temporal suave [@necker2020; @maldonado2021]. De este modo, preservamos el equilibrio casi hidrostático y geostrófico de las escalas mayores. Este método ayuda a evitar una subestimación del spread del ensamble [@ouaraini2015]. Las perturbaciones  también se aplicaron en los límites para mantener niveles adecuados de spread dentro del dominio del ensamble. 
 
 Además de las perturbaciones aleatorias en los límites laterales, se utilizó un esquema de multifísicas para representar mejor la incertidumbre en el modelo dentro del sistema de AD. Utilizamos 9 configuraciones diferentes que consisten en la combinación de 3 esquemas de convección húmeda (Kain-Fritsch [@kain2004], Grell-Freitas [@grell2013], y Betts-Miller-Janjic [@janjic1994]) y 3 esquemas de capa límite planetaria (Esquema de la Universidad de Yonsei [@hong2006], Esquema Mellor-Yamada-Janjic [@janjic1994], y Mellor-Yamada Nakanishi Niino [@nakanishi2009]). La distribución de estas parametrizaciones entre los 60 miembros del ensamble se muestra en la Tabla \@ref(tab:miembros-desc). Todos los miembros del conjunto utilizan las mismas parametrizaciones del modelo de superficie terrestre (Noah-MP, @chen2001), de microfísica (esquema de un solo momento de 6 clases del WRF [@hong2006a]) y de procesos radiativos (esquema de onda corta y onda larga del RRTMG [@iacono2008]).
 
@@ -156,10 +156,10 @@ data.table(mem = as.character(formatC(1:60, flag = "0", width = 3)),
         align = "cccc") %>% 
   add_header_above(c(" " = 1, PBL = 3)) %>% 
   kable_classic_2(full_width = FALSE) %>% 
-  kable_styling(font_size = 6,
+  kable_styling(font_size = 9,
                 position = "center") %>% 
   # column_spec(1, width = "1em") %>% 
-  column_spec(2:4, width = "7em")
+  column_spec(2:4, width = "8em")
 ```
 
 Para reducir el efecto de las correlaciones espurias en la estimación de las covarianzas de los errores de las observaciones, utilizamos un radio de localización horizontal de 180 km y un radio de localización vertical de 0,4 (en coordenadas de presión logarítmica) como en @dillon2021 para todos los tipos de observaciones. 

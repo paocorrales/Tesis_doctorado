@@ -4,7 +4,280 @@
 
 ### Observaciones asimiladas
 
+#### Conventional 
+
+The conventional observations used are part of the Global Data Assimilation System (GDAS) data stream. Conventional observations included in the Binary Universal Form for Representation of Meteorological Data (PREPBUFR) files generated at the National Centers for Environmental Prediction (NCEP) are assimilated. These consist of surface observations from 117 Conventional Surface Weather Stations (CSWS), ships, and upper-air observations from 13 radiosondes sites and aircraft. The orange triangles in Figure \@ref(fig:dominio)a indicate the location of the surface stations included in this experiment. The frequency of these observations varied between 1 hour for surface stations and 12/24 hours for radiosondes. Wind surface observations over oceans (ASCATW) come from scatterometers and are also included in the PREPBUFR files.
+
+Table \@ref(tab:table-obs) lists all the observation types (i.e., surface pressure, temperature, specific humidity, and wind) available for each source, together with their associated errors. The observation errors were specified following the GSI default configuration. In some cases, the error varies with height and depends on the specific platform (aircraft and satellite-derived wind). In terms of quality control, a gross check was performed by the observation operator by comparing the innovation (the difference between the observation and the model-simulated observation based on the first-guess) with a predefined threshold that depends on the observation error (also included in Table \@ref(tab:table-obs)). 
+ 
+
+#### AWS networks 
+
+Data from 866 Automatic Weather Stations (AWS) that are part of 17 public and private surface networks over Southern South America are also assimilated. The dataset used in this study has been obtained from the RELAMPAGO Data Set repository [@garcia2019]. These stations are indicated as green squares in Figure \@ref(fig:dominio)a. They have higher spatial coverage than the CSWS and a sampling frequency of 10 minutes in most cases. All stations measure temperature, but only 395 stations provide humidity, 422 provide pressure, and 605 provide wind information. 
+Observation errors used to assimilate these observations are the same as for the CSWS (see Table \@ref(tab:table-obs)).
+
+
+#### Satellite-derived winds
+
+Satellite-derived wind observations are also included in the PREPBUFR files available every 6 h, and consist of estimations from GOES-16 (using the visible, infrared, and water vapor channels) and METEOSAT 8 and 11 (using the visible and water vapor channels). Due to the domain covered by each of these satellites, GOES-16 is the primary source of satellite-derived winds (99 % of the observations). Observation errors used to assimilate these observations follow the GSI default configuration and are indicated in Table \@ref(tab:table-obs). 
+
+
+```{r table-obs}
+fread(here("data/derived_data/tables/table1.csv")) %>% 
+  kbl(caption = "Characteristics of the assimilated observations: The code for each observation type and its source, the available variables, the observation error, and the gross check thresholds used.",
+      col.names = c("Code", "Platform", "Variable", "Error", "Gross check"),
+      booktabs = TRUE,
+      escape = FALSE) %>% 
+  kable_classic_2(full_width = FALSE) %>% 
+  kable_styling(font_size = 9,
+                position = "center") %>% 
+  column_spec(1, width = "4.5em") %>% 
+  column_spec(2, width = "5.5em") %>% 
+  column_spec(3, width = "6em") %>% 
+  column_spec(4:5, width = "8em") %>% 
+  collapse_rows(columns = 1:2, valign = "middle", latex_hline = "major") %>% 
+  footnote(symbol = c("Observation error varied with height.",
+                      "Observations above 600 hPa are rejected.",
+                      "Observation error depends on the report type."),
+           symbol_manual = c("*", "**", "+"))
+```
+
+
+#### Satellite radiances {#sat}
+
+Satellite radiances available through the GDAS data stream, consisting of infrared and microwave observations, are used in this study. This includes the Advanced Microwave Sounding Unit - A (AMSU-A), Microwave Humidity Sounder (MHS), and 2 multispectral sensors; the Atmospheric Infrared Sounder (AIRS) and the Infrared Atmospheric Sounding Interferometer (IASI) over several satellite platforms (see Table \@ref(tab:table-rad)). Since the regional domain is located in the mid-latitudes and the satellite platforms of interest are on polar orbits, each sensor scans the area only twice a day with a spatial coverage depending on the satellite swath. For this reason, the number of satellite observations varied significantly among cycles. In particular, the multispectral sensors provided between 100 and 1000 observations for every scan every 12 hours, contributing 88 % of the total amount of assimilated radiances in our experiment. The vertical location of each radiance observation was estimated as the model level at which its weighting function was maximized as calculated by CRTM. The multispectral sensors have good vertical coverage and are able to sense from the lower troposphere up to the lower stratosphere. 
+
+The channels adopted for assimilation and their associated errors were defined taking into account the low model top (50 hPa). The data preprocessing, which is an essential step in the assimilation of radiances, was performed within the GSI system for each sensor specifically. First, a spatial data thinning is applied using a 60 km grid following @singh2016, @jones2013, and @lin2017a, where the observations to be assimilated are chosen based on their distance to the model grid points, the observation quality (based on available data quality information), and the number of available channels (from the same pixel and sensor) that passed the quality control. Also, observations over the sea are preferred to those over land or snow [@hu2018]. 
+
+The thinned observations were then bias corrected. The bias correction (BC) has an air-mass dependent and an angle-dependent component [@zhu2014] and it is calculated as a multi-linear function of N predictors $p_i(x)$, with associated coefficients $\beta_i$. Then, the bias corrected brightness temperature ($BT_{bc}$) can be obtained as:
+
+\begin{equation}
+  \mathrm{\mathit{BT_{bc}} =\mathit{ BT} + \sum_{i = 0}^{N} \beta_i p_i (x)}
+  (\#eq:eq12)
+\end{equation}
+
+GSI has a constant offset bias correction term ($p_0 = 1$) and the remaining predictors are the cloud liquid water content (CLW), the temperature lapse rate at the pressure of maximum weight, the square of the temperature lapse rate at the pressure of maximum weight, and the emissivity sensitivity. Scan angle-dependent bias is modeled as a 4th-order polynomial [@zhu2014]. 
+
+In the GSI system, the $\beta_i$ coefficients are trained using a variational estimation method which solves the $\beta_i$ that provides the best fit between the simulation and the observations. The coefficients were initialized at 18 UTC Nov 18, 2018 with the GFS system coefficients. The assimilation system was configured to use a constant background error variance of 0.01 to avoid large adjustments in the estimated coefficients at each time. 
+
+In our experiments, only clear-sky observations are used. For microwave radiances, observations potentially contaminated by clouds are detected using the scattering and Liquid Water Path (LWP) indexes [@weston2019; @zhu2016]. For the infrared channels, cloud contaminated observations are detected using the transmittance profile calculated within the CRTM algorithms. Moreover, GSI checks the difference between the observations and simulated brightness temperature with height to detect cloudy pixels. Additionally, the GSI quality control for infrared sensors looks for observations over water with a large zenith angle (over 60°) to reject channels near the visible range that can be contaminated with reflection. It also performs an emissivity check for observations over land for both infrared and microwave radiances. 
+
+```{r table-rad}
+fread(here("data/derived_data/tables/tabla_radianzas.csv")) %>%
+  .[, ":="(sensor = toupper(sensor),
+           plataforma = toupper(plataforma),
+           prop = paste0(prop, " ", "%"))] %>%
+  .[order(.[,'sensor']), ] %>%
+  .[] %>%
+  kbl(booktabs = TRUE,
+      escape = TRUE,
+      col.names = linebreak(c("Sensor", "Platform", "Assimilated channels", "Percentage over total")),
+      caption = "List of the available sensors over several platforms, the number of accepted channels for the assimilation, and the percentage of assimilated observations calculated over all radiance observations and all cycles.") %>%
+  kable_styling(font_size = 9) %>%
+  collapse_rows(1, valign = "top") %>%
+  kable_classic_2(full_width = TRUE)
+```
+
+
+(ref:obs-horizontal) Horizontal spatial distribution of the mean available observations per analysis cycle for the a) CONV, b) AWS, c) SATWND, and d) RAD experiments calculated over 2.5$^{\circ}$ boxes.
+
+```{r obs-horizontal, fig.cap="(ref:obs-horizontal)", out.width="100%"}
+satinfo <- fread(here("data/derived_data/sample_obs/satinfo.txt")) %>% 
+  setnames(c("!sensor/instr/sat", "chan"), c("sensor", "channel"))
+
+files <- Sys.glob(here("data/derived_data/omb_diagfiles/E2/asim*ensmean"))
+
+conv <- read_diag_conv(files, exp = "E2", member = "000") 
+
+conv[, bufr_code := fcase(type %in% c(181, 187, 281, 287), "ADPSFC",
+                          type %in% c(120, 220, 221), "ADPUPA",
+                          type %in% c(130, 131, 133, 230, 231, 233), "AIRCFT",
+                          type %in% c(290), "ASCATW",
+                          type %in% c(180, 280, 183, 283, 184, 284), "SFCSHP",
+                          type %in% c(240:260), "SATWND")] %>% 
+  .[, ":="(lon.box = cut_round(lon, breaks = seq(284, 309, 2.5)),
+           lat.box = cut_round(lat, breaks = seq(-42, -17, 2.5)))] 
+
+
+files <- Sys.glob(here("data/derived_data/omb_diagfiles/E5/asim*ensmean"))
+
+aut <- read_diag_conv(files, exp = "E5", member = "000") 
+
+aut[, bufr_code := fcase(type %in% c(181, 187, 281, 287), "ADPSFC",
+                         type %in% c(120, 220, 221), "ADPUPA",
+                         type %in% c(130, 131, 133, 230, 231, 233), "AIRCFT",
+                         type %in% c(290), "ASCATW",
+                         type %in% c(180, 280, 183, 283, 184, 284), "SFCSHP",
+                         type %in% c(240:260), "SATWND")] %>% 
+  .[, ":="(lon.box = cut_round(lon, breaks = seq(284, 309, 2.5)),
+           lat.box = cut_round(lat, breaks = seq(-42, -17, 2.5)))] 
+
+files <- Sys.glob(here("data/derived_data/omb_diagfiles/E6/asim*ensmean"))
+
+satwnd <- read_diag_conv(files, exp = "E6", member = "000") 
+
+satwnd[, bufr_code := fcase(type %in% c(181, 187, 281, 287), "ADPSFC",
+                            type %in% c(120, 220, 221), "ADPUPA",
+                            type %in% c(130, 131, 133, 230, 231, 233), "AIRCFT",
+                            type %in% c(290), "ASCATW",
+                            type %in% c(180, 280, 183, 283, 184, 284), "SFCSHP",
+                            type %in% c(240:260), "SATWND")] %>% 
+  .[, ":="(lon.box = cut_round(lon, breaks = seq(284, 309, 2.5)),
+           lat.box = cut_round(lat, breaks = seq(-42, -17, 2.5)))] 
+
+
+files <- Sys.glob(here("data/derived_data/omb_diagfiles/E9/asim*ensmean"))
+
+files <- files[!str_detect(files, "conv")]
+
+rad <- read_diag_rad(files, "E9") %>% 
+  satinfo[., on = c("sensor", "channel")] %>% 
+  .[, ":="(lon.box = cut_round(lon, breaks = seq(284, 309, 2.5)),
+           lat.box = cut_round(lat, breaks = seq(-42, -17, 2.5)))] 
+
+files <- Sys.glob(here("data/derived_data/omb_diagfiles/E9/asim*ensmean"))
+
+files <- files[str_detect(files, "conv")]
+
+rad_conv <- read_diag_conv(files, exp = "E9", member = "000") 
+
+rad_conv[, bufr_code := fcase(type %in% c(181, 187, 281, 287), "ADPSFC",
+                              type %in% c(120, 220, 221), "ADPUPA",
+                              type %in% c(130, 131, 133, 230, 231, 233), "AIRCFT",
+                              type %in% c(290), "ASCATW",
+                              type %in% c(180, 280, 183, 283, 184, 284), "SFCSHP",
+                              type %in% c(240:260), "SATWND")] %>% 
+  .[, ":="(lon.box = cut_round(lon, breaks = seq(284, 309, 2.5)),
+           lat.box = cut_round(lat, breaks = seq(-42, -17, 2.5)))] 
+
+
+
+rad <- rad[, .(press, iuse, error, exp, date, lon.box, lat.box)] %>% 
+  setnames(c("press", "iuse", "error"), c("pressure", "usage.flag", "rerr"))
+
+
+rbind(conv, aut, satwnd, rad_conv) %>%
+  .[, .(pressure, usage.flag, rerr, exp, date, lon.box, lat.box)] %>% 
+  rbind(., rad) %>% 
+  .[usage.flag == 1 & rerr != 1.0e+10] %>% 
+  .[, .(count_obs = .N), by = .(exp, lon.box, lat.box, date)] %>% 
+  .[, .(obs_cycle = mean(count_obs, na.rm = TRUE)), by = .(exp, lon.box, lat.box)] %>% 
+  ggplot(aes(ConvertLongitude(lon.box), lat.box)) +
+  geom_raster(aes(fill = obs_cycle), alpha = 0.8) +
+  scale_fill_viridis_c(option = "D", trans = scales::log10_trans(),
+                       guide = guide_colorbar(barwidth = 18,
+                                              barheight = 0.5, 
+                                              title.position = "left", 
+                                              title.vjust = 1,
+                                              frame.colour = "black")) +
+  geom_mapa() +
+  facet_wrap(~exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                               E6 = "SATWND", E9 = "RAD"))) +
+  tagger::tag_facets() +
+  labs(fill = "Mean number of\nobs per cycle") +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 14),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"))
+```
+
+(ref:obs-cycle) a) Number of assimilated observations per cycle and b) time averaged number of assimilated observations per cycle divided into 50 hPa-depth vertical layers for the CONV (blue squares and line), AWS (light blue dots and line), SATWND (orange triangles and line) and RAD (red diamonds and line) experiments.
+
+```{r obs-cycle, fig.cap="(ref:obs-cycle)", fig.env="figure*", fig.height=3.5, fig.width=7}
+
+rbind(conv, aut, satwnd, rad_conv) %>%
+  .[, .(pressure, usage.flag, rerr, exp, date, lon.box, lat.box)] %>% 
+  rbind(., rad) %>% 
+  .[usage.flag == 1 & rerr != 1.0e+10] %>% 
+  .[, .(count_obs = .N), by = .(exp, date)] %>% 
+  ggplot(aes(date, count_obs)) +
+  geom_line(aes(color = exp), size = 0.2) +
+  geom_point(aes(color = exp, shape = exp), size = 1) +
+  scale_color_manual(values = colores_exp, 
+                     labels = c(E2 = "CONV", E5 = "AWS", 
+                                E6 = "SATWND", E9 = "RAD")) +
+  scale_shape_manual(values = c(15, 16, 17, 18), labels = c(E2 = "CONV", E5 = "AWS", 
+                                                            E6 = "SATWND", E9 = "RAD")) +
+  scale_y_log10() +
+  scale_date() +
+  labs(y = "Number of obs per cycle", x = "Hour (UTC)",
+       color = NULL, shape = NULL) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "bottom", 
+        panel.background = element_rect(fill = "#fbfbfb", color = NA),
+        plot.margin = unit(c(0, 0, 0, 0), "cm")) +
+  
+  rbind(conv, aut, satwnd, rad_conv) %>%
+  .[, .(pressure, usage.flag, rerr, exp, date, lon.box, lat.box)] %>% 
+  rbind(., rad) %>%  
+  .[usage.flag == 1 & rerr != 1.0e+10] %>% 
+  .[, ":="(lev.box = cut_round(pressure, breaks = seq(50, 1050, 50)))] %>% 
+  .[, .(count_obs = .N), by = .(exp, lev.box, date)] %>% 
+  .[, .(obs_cycle = mean(count_obs, na.rm = TRUE)), by = .(exp, lev.box)] %>% 
+  ggplot(aes(lev.box, obs_cycle)) +
+  geom_line(aes(color = exp), size = 0.2) +
+  geom_point(aes(color = exp, shape = exp), size = 1) +
+  scale_color_manual(values = colores_exp, 
+                     labels = c(E2 = "CONV", E5 = "AWS", 
+                                E6 = "SATWND", E9 = "RAD")) +
+  scale_shape_manual(values = c(15, 16, 17, 18), labels = c(E2 = "CONV", E5 = "AWS", 
+                                                            E6 = "SATWND", E9 = "RAD")) +
+  scale_y_log10() +
+  scale_x_reverse() +
+  coord_flip() +
+  labs(color = NULL, shape = NULL,
+       x = "Pressure level (hPa)", y = "Mean number of\nobs per cycle") +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "bottom",
+        plot.margin = unit(c(0, 0, 0, 0), "cm")) +
+  
+  plot_layout(ncol = 2, widths = c(4, 1), guides = "collect") + 
+  plot_annotation(tag_levels = 'a', tag_suffix = ")") &
+  theme(plot.tag = element_text(size = 8), 
+        legend.position = "bottom",
+        legend.margin = unit(c(0, 0, 0, 0), "cm"),
+        panel.background = element_rect(fill = "#fbfbfb", color = NA),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"))
+
+
+```
+
 ### Configuracion de los experimentos
+
+To investigate the impact of different observations upon the analysis, four DA experiments were performed using different observation sets (Table \@ref(tab:table-exp)). The CONV experiment uses only conventional observations from PREPBUFR. In a second experiment, referred to as AWS, all the observations included in CONV are assimilated plus the 10-minute frequency surface observations from AWS. In the third experiment, referred to as SATWND, the observations from the AWS experiment along with the satellite-derived winds are assimilated. Finally, a fourth experiment referred to as RAD assimilates all available clear-sky radiances from sensors onboard polar orbiting satellites as described in section \@ref(sat).
+
+```{r table-exp}
+tribble(
+  ~obs_type, ~conv, ~aut, ~satwnd, ~rad,
+  "Conventional (PREPBUFR)", "x", "x", "x", "x",
+  "Conventional (AWS)", " ", "x", "x", "x",
+  "Satellite-derived winds", " ", " ", "x", "x",
+  "Radiances", " ", " ", " ", "x",
+) %>% 
+  kbl(booktabs = TRUE, col.names = c("Obs type", "CONV", "AWS", "SATWND", "RAD"),
+      align = "lcccc",
+      caption = "Observation types assimilated in each experiment.",
+      escape = FALSE) %>% 
+  kable_classic_2(full_width = TRUE) %>% 
+  column_spec(1, width = "8em") %>% 
+  column_spec(2:3, width = "2.5em", latex_valign = "m") %>% 
+  column_spec(4:5, width = "3em", latex_valign = "m")
+```
+
+The horizontal distribution of the average number of assimilated observations per cycle in each experiment is shown in Figure \@ref(fig:obs-horizontal). The larger number of assimilated observations over the center and east of the domain corresponds to the AWS observations. In Figure \@ref(fig:obs-cycle)a the number of assimilated observations over time is shown. Local maxima at 12 and 00 UTC found mainly in CONV are attributed to operational soundings. The strong variability in the number of radiance observations per cycle is also noticeable and depends on the satellite coverage. The maxima at 13-14 and 01-02 UTC in RAD correspond to the contribution of the multispectral sensors. The vertical distribution of the mean number of observations per cycle (Figure \@ref(fig:obs-cycle)b) shows a maximum in low levels due to the AWS observations. Satellite-derived winds are maximized at the upper troposphere (between 500-250 hPa). Above 850 hPa, most of the observations correspond to radiance observations. 
+
+All the assimilation experiments start at 18 UTC Nov 20, 2018 and continue until 12 UTC Nov, 23 (totaling 67 hours/assimilation cycles). The initial 60-member ensemble is generated as explained in section \@ref(config) from a spin-up run without assimilating observations performed between 12 UTC and 18 UTC Nov, 20 (Figure \@ref(fig:cycle)). 
+
+
+(ref:cycle) Diagram of the analysis cycles between 18 UTC Nov 20, and 12 UTC Nov 23 plus spin up period of 6 hours. The zoomed section shows the hourly assimilation that is performed within a one-hour centered window and new boundary conditions from GFS every 6 hours. The two IOP missions from the RELAMPAGO field campaign and the ensemble forecast initialized at 00 and 06 UTC Nov 22 are shown.
+
+```{r cycle, echo=FALSE, fig.cap="(ref:cycle)", out.width="80%"}
+
+knitr::include_graphics(here("figure", "analysis_cycle.png"))
+
+```
+
+
 
 ## Resultados
 

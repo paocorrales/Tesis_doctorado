@@ -52,7 +52,10 @@ preface: |
   (for LaTeX) and the R bookdown package, in general.
   
 # Specify the location of the bibliography below
-bibliography: bib/tesis_doctorado.bib
+bibliography: 
+  - bib/tesis_doctorado.bib
+  - bib/era.bib
+  - bib/packages.bib
 # Download your specific csl file and refer to it in the line below.
 csl: csl/meteorologica.csl
 link-citation: yes
@@ -140,6 +143,38 @@ cordillera <- list(
                     breaks = seq(1500, 8000, by = 700)),
   scale_fill_gradient(low = "#E2E6E6", high = "#7E7E7E", guide = "none",
                       oob = scales::squish))
+
+scale_date <- function(ini = 20181120180000, end = 20181123120000,
+                       break_bin = "6 hour", ...) {
+  scale_x_datetime(breaks = seq.POSIXt(ymd_hms(ini), ymd_hms(end), by = break_bin), ..., expand = c(0, 0),
+                   labels = function(x) {
+                     fifelse(hour(x) == 0, format(x, "%H UTC\n%b %d"), format(x, "%H"))
+                   }) 
+}
+
+obs.type <- tribble(
+  ~type, ~code,
+  120, "ADPUPA",
+  130, "AIRCFT-AIREP",
+  131, "AIRCFT-AMDAR",
+  133, "AIRCAR",
+  180, "SFCSHP",
+  181, "ADPSFC",
+  187, "ADPSFC\nno pressure",
+  220, "ADPUPA",
+  221, "ADPUPA-PIBAL",
+  230, "AIRCFT-AIREP",
+  231, "AIRCFT-AMDAR",
+  233, "AIRCAR",
+  280, "SFCSHP",
+  281, "ADPSFC",
+  287, "ADPSFC\nno pressure",
+  290, "ASCATW"
+) %>% 
+  setDT()
+
+
+colores_exp <- c(E2 = "#0077BB", E5 = "#88CCEE", E6 = "#EE7733", E9 = "#CC3311")
 ```
 
 <!-- Required to number equations in HTML files -->
@@ -257,11 +292,11 @@ análisis utilizando el método de Cressman en un modelo de 10 niveles verticale
 
 Por otro lado el Centro de Pronóstico del Tiempo y Estudios Climáticos (CPTEC) de Brazil desarrolló un sistema de asimilación de datos global que utiliza el sistema Gridpoint Statistical Interpolation (GSI) en conjunto con su modelo global BAM y posteriormente aplicaciones regionales utlizando el modelo WRF en conjunto con el sistema de asimilación GSI. En particular, @goncalvesdegoncalves2015 mostró experimentos realizados en el CPTEC usando el sistema de asimilación de datos regional para simulaciones de 12, 0 y 3 kilometros durante un mes. @ferreira2017, @baucemachado2017, @toshioinouye2017 y @ferreira2020 tambien mostraron resultados positivos al aplicar asimilación de observaciones convencionales de superficie y altura yradar, en aplicaciones regionales sobre Brasil con resoluciones de entre 1 y 10 km. 
 
-En los últimos años, se documentaron importantes avances asociados a asimilación de datos en Argentina. Por ejemplo @Saucedo realizó un estudio teórico de asimilación de datos utilizando LETKF acomplado al modelo WRF donde estudio tecnicas para la representacion de diferentes fuentes de incertidumbre incluyendo los errores en las condiciones de borde y los errores de modelo. Posteriormente @dillon avanzó en su tesis de doctorado en el desarrollo de un sistema de asimilación de datos reales y concluyó que la implementción de un emsable multifísica que considere los posibles errores del modelo y la inclusión de retrievals de temperatura y humedad  en la asimilación tienen un impacto positivo en los análisis y pronósticos. [placeholder para incluir los trabajos de Paula]. Más recientemente, el Servicio Meteorológico Nacional (SMN) en conjunto con el Centro de Investigaciones del Mar y la Atmósfera desarrollaron y probaron el sistema de asimilación de actualización rápida LETKF-WRF de manera operativa durante la campaña de campo RELAMPAGO [@nesbitt2021]. El sistemá incorporó observaciones convencionales, retrievals de satélites multiespectrales y viento derivado de observaciones satelitales y observaciones de radar de manera horaria y generó pronósticos a 36 hs cada 3 hs. @dillon2021 mostraron que el pronóstico inicializado a partir de los análisis muestra un rendimiento general similar al de los pronósticos inicializados a partir del sistema GFS, e incluso un impacto positivo en algunos casos. Actualmente el SMN está probando un sistema de asimilación similar al implementado en @dillon2021 para utlizarlo en la generación de pronósticos de manera operativa. 
+En los últimos años, se documentaron importantes avances asociados a asimilación de datos en Argentina. Por ejemplo @saucedo realizó un estudio teórico de asimilación de datos utilizando LETKF acomplado al modelo WRF donde estudio tecnicas para la representacion de diferentes fuentes de incertidumbre incluyendo los errores en las condiciones de borde y los errores de modelo. Posteriormente @dillon avanzó en su tesis de doctorado en el desarrollo de un sistema de asimilación de datos reales y concluyó que la implementción de un emsable multifísica que considere los posibles errores del modelo y la inclusión de retrievals de temperatura y humedad  en la asimilación tienen un impacto positivo en los análisis y pronósticos. [placeholder para incluir los trabajos de Paula]. Más recientemente, el Servicio Meteorológico Nacional (SMN) en conjunto con el Centro de Investigaciones del Mar y la Atmósfera desarrollaron y probaron el sistema de asimilación de actualización rápida LETKF-WRF de manera operativa durante la campaña de campo RELAMPAGO [@nesbitt2021]. El sistemá incorporó observaciones convencionales, retrievals de satélites multiespectrales y viento derivado de observaciones satelitales y observaciones de radar de manera horaria y generó pronósticos a 36 hs cada 3 hs. @dillon2021 mostraron que el pronóstico inicializado a partir de los análisis muestra un rendimiento general similar al de los pronósticos inicializados a partir del sistema GFS, e incluso un impacto positivo en algunos casos. Actualmente el SMN está probando un sistema de asimilación similar al implementado en @dillon2021 para utlizarlo en la generación de pronósticos de manera operativa. 
 
 ## Motivación y objetivos
 
-En base a los imporantes avances en la asimilación de datos en general y en las aplicaciones regionales en Argentina y Sudamérica, el objetivo principal de este trabajo es contribuir a la cuantificación y comparación del impacto de diversas fuentes de datos que aportan informacion en escalas espacio-temporales dentro de la mesoescala. Se utilizará el sistema WRF-GSI-LETFK para la generación de experimentos de asimilación de datos de actualización frecuente y basado en emsables. Mientras que el modelo WRF (por su nombre en inglés Weather Research and Forecasting, @skamarock2008) es uno de los más utilizados y en constante avance, con importantes antecedentes en Argentina (por ejemplo @dillon2021), el sistema de asmilación GSI (por su nombre en inglés Gridpoint Statistical Interpolation system, @Shao2016) y en particular su versión de LETKF, no ha sido probado en Argentina y es uno de los aportes originales de esta tesis. 
+En base a los imporantes avances en la asimilación de datos en general y en las aplicaciones regionales en Argentina y Sudamérica, el objetivo principal de este trabajo es contribuir a la cuantificación y comparación del impacto de diversas fuentes de datos que aportan informacion en escalas espacio-temporales dentro de la mesoescala. Se utilizará el sistema WRF-GSI-LETFK para la generación de experimentos de asimilación de datos de actualización frecuente y basado en emsables. Mientras que el modelo WRF (por su nombre en inglés Weather Research and Forecasting, @skamarock2008) es uno de los más utilizados y en constante avance, con importantes antecedentes en Argentina (por ejemplo @dillon2021), el sistema de asmilación GSI (por su nombre en inglés Gridpoint Statistical Interpolation system, @shao2016) y en particular su versión de LETKF, no ha sido probado en Argentina y es uno de los aportes originales de esta tesis. 
 
 Este trabajo estudiará el impacto en la asimilación de observaciones provenientes de estaciones meteorológicas de alta resolución, observaciones de viento derivadas de satélite y radiancias satelitales polares y geoestacionarios en cielo claro en el contexto de los eventos de sistemas convectivos de mesoescala (SCM) debido a la importancia que cobran este tipo de eventos en la región. En particular se espera evaluar el aporte de cada una de las fuentes de datos en una región donde la red de observación convencional es bastante escasa y donde las contribuciones potenciales de sistemas de observación como redes de estaciones automáticas y observaciones de satélite son mayores. 
 
