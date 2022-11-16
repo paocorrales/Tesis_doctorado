@@ -436,16 +436,15 @@ rbind(fread(here("data/derived_data/RCRV/rcrv_V_perfil.csv")),
 
 ### Impacto de la asimilación de las distintas observaciones 
 
-This section presents the impact of assimilating different observation types on variables which are particularly relevant for the occurrence of deep moist convection. The analysis is performed over a smaller domain (red box in Figure \@ref(fig:dominio)a) to focus on the region most directly affected by the MCS. Figures \@ref(fig:TQ-diff)a-c show the analysis difference between experiments in the spatially averaged vertical profile of temperature. By averaging the differences between two experiments the systematic impact produced by different observing systems on the analyzed state can be isolated. During the first day, the assimilation of AWS observations results in a colder PBL. This cooling effect has a clear diurnal cycle, being stronger during nighttime (Figure \@ref(fig:TQ-diff)a). During the second day of the experiment, the impact of AWS observations extends into the middle and upper troposphere coinciding with the mature stage of the MCS. The warm difference shown in AWS-CONV between 500 and 200 hPa is produced by the development of stronger convection in AWS compared to CONV. This is a good example of how low-level information provided by surface weather stations can rapidly spread into the troposphere in the presence of deep moist convection. Although the mid-to-upper circulation can have an important impact on the organization and evolution of the MCS over the region, the satellite-derived winds did not have an appreciable impact on the mean temperature and humidity (Figure \@ref(fig:TQ-diff)b-e), possibly due to the large observation errors used for the assimilation.
-During the first day of the experiment, the assimilation of radiances produces a warming effect in the PBL which partially compensates for the cooling effect of AWS observations (Figure \@ref(fig:TQ-diff)c). No clear systematic impact is found above the PBL during this period. During the second day, the impact of radiance observations is found through the troposphere with a distribution that is similar to the impact found in the AWS experiment but with the opposite sign. 
+Esta sección presenta el impacto de la asimilación de diferentes tipos de observación sobre algunas variables que son particularmente relevantes para el desarrollo de convección húmeda profunda. El análisis se realiza sobre un dominio más pequeño (recuadro rojo en la Figura \ref(fig:dominio)a) que corresponde a la región directamente afectada por el SCM. Las figuras \@ref(fig:TQ-diff)a-c muestran la diferencia entre el perfil vertical de temperatura promediado espacialmente para el análisis de los experimentos. Al promediar las diferencias entre dos experimentos se puede aislar el impacto sistemático producido por los diferentes sistemas de observación sobre la situación analizada. Durante el primer día, la asimilación de las observaciones de EMA da como resultado el desarrollo de una PBL más fría. Este efecto de enfriamiento tiene un claro ciclo diurno, siendo más fuerte durante la noche (Figura \ref(fig:TQ-diff)a). Durante el segundo día del experimento, el impacto de las observaciones de EMA se extiende a la troposfera media y alta, coincidiendo con la fase madura del SCM. La diferencia positiva que se observa en AWS-CONV entre 500 y 200 hPa se produce por el desarrollo de convección más intensa en AWS en comparación con CONV. Este es un buen ejemplo de cómo la información en niveles bajos de la atmósfera proporcionada por las estaciones meteorológicas de superficie puede extenderse rápidamente a la troposfera en presencia de convección húmeda profunda. Aunque la circulación media y alta puede tener un impacto importante en la organización y evolución del SCM sobre la región, los vientos estimados por satélite no tuvieron un impacto apreciable en la temperatura y humedad media (Figura \ref(fig:TQ-diff)b-e), posiblemente debido a alto valor del error de estas observaciones utilizados para la asimilación.
+Durante el primer día del experimento, la asimilación de las radiancias produce un efecto de calentamiento en la PBL que compensa parcialmente el efecto de enfriamiento de las observaciones de EMA (Figura \@ref(fig:TQ-diff)c). No se encuentra un impacto sistemático claro por encima de la PBL durante este periodo para estas variables. Durante el segundo día, el impacto de las observaciones de radiancia se observa en toda la troposfera con una distribución que es similar al impacto encontrado en el experimento AWS pero con signo opuesto. 
 
-Comparing the specific humidity in the experiments (Figures \@ref(fig:TQ-diff)d-f), the impact of assimilating AWS with fine spatial and temporal resolution is most substantial at low levels (Figure \@ref(fig:TQ-diff)d). The PBL in the AWS experiment is consistently moister than in the CONV experiment, particularly at nighttime. The increase in low-level moisture by a denser surface network is consistent with previously reported dry biases in the WRF model over the region [@casaretto2022, @matsudo2021, @ruiz2010]. The moistening of the PBL is mainly driven by the covariance between temperature and specific humidity within the PBL. In the experiment and over the center of the domain, this covariance remains negative, increasing low-level moisture as the observations introduce negative temperature corrections. As for the temperature, the systematic impact of satellite-derived winds on moisture is small (Figure \@ref(fig:TQ-diff)e). Figure \@ref(fig:TQ-diff)f shows that radiances reduce low-middle level moisture during the first day of the experiment. The drying effect extends to lower-middle levels during the second day of the experiment coinciding with the development of the MCS between 00 and 12 UTC Nov 22.
+Comparando la representación de la humedad específica en los experimentos (Figuras \ref(fig:TQ-diff)d-f), el impacto de la asimilación de EMA, que tienen una resolución espacial y temporal mayor, es muy importante en niveles bajos (Figura \ref(fig:TQ-diff)d). La PBL en el experimento AWS es sistemáticamente más húmeda que en el experimento CONV, especialmente durante la noche. El aumento de la humedad en niveles bajos gracias a la asimilación de observaciones de una red de superficie más densa corrige el bias seco reportado previamente en el modelo WRF sobre la región [@casaretto2022, @matsudo2021, @ruiz2010]. El humedecimiento de la PBL es impulsado principalmente por la covarianza entre la temperatura y la humedad específica dentro de la PBL. En el experimento y sobre el centro del dominio, esta covarianza se mantiene negativa, generando un aumento de la humedad en niveles bajos a medida que las observaciones introducen correcciones negativas de temperatura. Como en el caso de la temperatura, el impacto sistemático de los vientos estimados por satélite sobre la humedad es pequeño (Figura \ref(fig:TQ-diff)e). La figura \ref(fig:TQ-diff)f muestra que las radiancias reducen la humedad en niveles medios y bajos durante el primer día del experimento. El efecto de secamiento se extiende a niveles medios y bajos durante el segundo día del experimento, coincidiendo con el desarrollo del SCM entre las 00 y las 12 UTC del 22 de noviembre.
 
-
-(ref:TQ-diff) Difference between analysis ensemble mean experiments a) and d) AWS-CONV, b) and e) SATWND-AWS, and c) and f) RAD-SATWND for the spatially averaged vertical profiles of temperature (a, b, and c, in $K$) and specific humidity (d, e, and f in $g\ kg^{-1}$) calculated over the inner domain (red box in Figure \@ref(fig:dominio)a) for each analysis cycle.
+(ref:TQ-diff) Diferencia entre la media del ensamble para la media del ensamble del análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en $K$) y la humedad específica (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis.
 
 ```{r TQ-diff, fig.cap="(ref:TQ-diff)", fig.env="figure*", fig.height=5.5, fig.width=6, fig.align="center",fig.pos="ht"}
-files <- Sys.glob(here("analysis/data/derived_data/analysis_variables/perfiles_ana_E[2569].csv"))
+files <- Sys.glob(here("data/derived_data/analysis_variables/perfiles_ana_E[2569].csv"))
 
 perfiles <- purrr::map(files, function(f) {
   exp <- unglue(basename(f), "perfiles_{run}_{exp}.csv")
@@ -475,10 +474,10 @@ perfiles %>%
                                                             title.position = "left", 
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
-  labs(fill = "Temperature (K)",
+  labs(fill = "Temperatura (K)",
        x = NULL,
-       y = "Pressure (hPa)") +
-  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+       y = "Presión (hPa)") +
+  scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
   scale_date(ini = 20181121000000, break_bin = "12 hours") +
   facet_wrap(~variable, ncol = 3,
              labeller = labeller(variable = c("E5_E2" = "AWS - CONV",
@@ -509,10 +508,10 @@ perfiles %>%
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
   
-  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
   scale_date(ini = 20181121000000, break_bin = "12 hours") +
-  labs(fill = latex2exp::TeX("Specific \nhumidity ($g$ $Kg^{-1}$)"),
-       y = "Pressure (hPa)",
+  labs(fill = latex2exp::TeX("Humedad \nespecífica ($g$ $Kg^{-1}$)"),
+       y = "Presión (hPa)",
        x = NULL) +
   facet_wrap(~variable, ncol = 3,
              labeller = labeller(variable = c("E5_E2" = "AWS - CONV",
@@ -529,12 +528,12 @@ perfiles %>%
 
 ```
 
-The impacts on the wind components are shown in Figure \@ref(fig:UV-diff), along with the corresponding averaged wind component in the experiment with the largest number of assimilated observations (for example, Figure \@ref(fig:UV-diff)a shows the zonal wind difference between AWS and CONV and the zonal wind for AWS). The assimilation of AWS produces a more easterly wind and a less northerly wind at low levels during the first two days of analysis (Figures \@ref(fig:UV-diff)a,b). There is a diurnal cycle in the impact of surface weather stations on the meridional velocity (Figure \@ref(fig:UV-diff)d) with a stronger reduction of the northerly wind during night hours. This indicates that surface observations are reducing the intensity of the low level jet present in the pre-convective environment. After 18 UTC Nov 22, the opposite effect is observed when the MCS is moving through the domain to the northeast. After the initiation of the convective cells, the systematic impact on the wind field is larger at mid and upper levels (Figures \@ref(fig:UV-diff)d, f). During Nov 22 and 23 the impact of assimilating AWS observations produces an increase of northerly wind in upper levels. This could be a consequence of a stronger MCS with an increased polar side upper level outflow. Although satellite-derived wind observations produce the largest impact in mid-to-upper levels where the number of observations is largest; the systematic impact is overall smaller than the one produced by assimilating data from AWS (Figures \@ref(fig:UV-diff)b, e). The reason of the small impact observed in SATWND could be associated to the large observation error used for satellite-derived wind observations.
+El impacto en las componentes del viento se muestran en la Figura \ref(fig:UV-diff), junto con la correspondiente componente del viento promediada en el experimento con el mayor número de observaciones asimiladas (por ejemplo, la Figura \ref(fig:UV-diff)a muestra la diferencia de viento zonal entre AWS y CONV y el viento zonal para AWS). La asimilación de EMA produce un viento más del este y menos del norte en niveles bajos durante los dos primeros días de análisis (Figuras \ref(fig:UV-diff)a,b). Existe un ciclo diurno asociado al impacto de las estaciones meteorológicas automáticas sobre el viento meridional (Figura \ref(fig:UV-diff)d) con una mayor reducción del viento del norte durante las horas nocturnas. Esto indica que las observaciones en superficie están reduciendo la intensidad del jet de capaz bajas presente en el entorno preconvectivo. Después de las 18 UTC del 22 de noviembre, se observa el efecto contrario cuando el SCM se desplaza por el dominio hacia el noreste. Tras el inicio de las celdas convectivas, el impacto sistemático en el campo de viento es mayor en los niveles medios y altos (Figuras \ref(fig:UV-diff)d, f). Durante los días 22 y 23 de noviembre el impacto de asimilar EMA produce un aumento del viento del norte en los niveles superiores de la tropósfera. Esto podría ser una consecuencia de un SCM más intenso que produce un aumento del flujo de salida del lado polar de la tormenta. Aunque las observaciones de viento estimada por satélites producen el mayor impacto en niveles medios y altos, donde el número de observaciones es mayor, el impacto sistemático es en general menor que el producido por la asimilación de datos de EMA (Figuras \ref(fig:UV-diff)b, e). La razón del pequeño impacto observado en SATWND podría estar asociada al valor del error de observación utilizado para la asimilación de estas observaciones.
  
-The assimilation of radiances produces a reduction in the westerly wind compared with respect to SATWIND in low and upper levels (Figure \@ref(fig:UV-diff)c). For the meridional wind, these observations produce an enhancement on average of the northerly low-level flow of $1 ms^{-1}$, opposite to what is generated by the assimilation of AWS observations during the nights, between 03 and 12 UTC, previous to the development of the MCS (Figure \@ref(fig:UV-diff)f). At upper levels and during Nov 22 and 23 the average impact of assimilating radiances is a decrease in the wind speed. The meridional wind field at 200 hPa at different times shows that the outflow from the MCS is even more intense than in the other experiments, while the southerly wind ahead of the MCS also increases producing an average reduction of the northerly wind (Figure \@ref(fig:UV-diff)f). 
+La asimilación de las radiancias produce una reducción del viento del oeste con respecto a SATWND en niveles bajos y altos (Figura \ref(fig:UV-diff)c). Para el viento meridional, estas observaciones producen un aumento 1 $ms^{-1}$ en el flujo del norte en niveles bajos, opuesto al generado por la asimilación de las observaciones de EMA durante la noche, entre las 03 y las 12 UTC, previas al desarrollo del SCM (Figura \ref(fig:UV-diff)f). En niveles superiores y durante los días 22 y 23 de noviembre, el impacto medio de la asimilación de radiancias es una disminución de la velocidad del viento. El campo de viento meridional a 200 hPa en diferentes momentos muestra que el flujo de salida del SCM es aún más intenso que en los otros experimentos, mientras que el viento sur por delante del SCM también aumenta produciendo una reducción media del viento del norte (Figura \ref(fig:UV-diff)f). 
 
 
-(ref:UV-diff) Difference between analysis ensemble mean experiments a) and d) AWS-CONV, b) and e) SATWND-AWS, and c) and f) RAD-SATWND for the spatially averaged vertical profiles of u wind (a, b, and c, in $m\ s^{-1}$) and v wind (d, e, and f in $m\ s^{-1}$) calculated over the inner domain (red box in Figure \@ref(fig:dominio)a) for each analysis cycle. Black contours correspond to u wind and dashed contours to negative v wind for (a) AWS, (b) SATWND, and (c) RAD and v wind for (d) AWS, (e) SATWND, and (f) RAD since those experiments are the ones with more assimilated observations in each panel.
+(ref:UV-diff) Diferencia entre la media del ensamble para la media del ensamble del análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en $K$) y viento meridional (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) AWS, (b,e) SATWND, y (c,f) RAD ya que son los experimentos tienen más observaciones asimiladas en cada panel.
 
 ```{r UV-diff, fig.cap="(ref:UV-diff)", fig.env="figure*", fig.height=5.5, fig.width=6, fig.align="center", fig.pos="ht"}
 perfiles %>% 
@@ -624,32 +623,32 @@ perfiles %>%
 
 ```
 
-The difference between ERA5 reanalyses [@era5pressure`] and the ensemble mean analyses are also compared in Figure \@ref(fig:era5), which supports Figures \@ref(fig:TQ-diff) and \@ref(fig:UV-diff). Specifically, Figure \@ref(fig:era5)a shows a warm bias in low levels (i.e. CONV is warmer than ERA5) that decreases in Figure \@ref(fig:era5)b when the AWS observations are assimilated. In the same direction, Figure \@ref(fig:TQ-diff)a shows a negative difference between AWS and CONV meaning that the AWS observations are cooling the low levels. Comparing ERA5-RAD (Figure \@ref(fig:era5)d), there is a small increase in the warm bias, associated with the warming produced by the radiance observations as shown in Figure \@ref(fig:TQ-diff)c. A similar effect can be observed for specific humidity, AWS observations partially correct the dry bias present in Figure \@ref(fig:era5)e and the assimilation of radiance observations reduces the positive impact of AWS. The impact on the wind components is minor so only the meridional wind is included in Figures \@ref(fig:era5)i-l, which show that the radiance observations are mainly responsible for the positive impact observed in the analysis by reducing the distance ERA5-RAD, particularly during the mature stage of the MCS. Overall, the adjustments due to assimilating radiance and AWS observations lead to an ensemble mean analyses closer to ERA5 reanalyses.
+La diferencia entre ERA5 [@era5pressure] y la media del ensamble del análisis para cada experimento se compara en la Figura \@ref(fig:era5), apoyando los resultados observados en las Figuras \@ref(fig:TQ-diff) y \@ref(fig:UV-diff). En concreto, la Figura \@ref(fig:era5)a muestra un bias cálido en los niveles bajos (es decir, CONV es más cálido que ERA5) que disminuye en la Figura \@ref(fig:era5)b cuando se asimilan las observaciones de EMA. En la misma dirección, la Figura \ref(fig:TQ-diff)a muestra una diferencia negativa entre AWS y CONV, lo que significa que las observaciones de EMA están enfriando los niveles bajos de la atmósfera. Comparando ERA5-RAD (Figura \@ref(fig:era5)d), hay un pequeño aumento del bias cálido, asociado al calentamiento producido por la asimilación de las observaciones de radiancia, como se muestra en la Figura \@ref(fig:TQ-diff)c. Un efecto similar puede observarse en la humedad específica, las observaciones de EMA corrigen parcialmente el bias seco presente en la Figura \ref(fig:era5)e y la asimilación de las observaciones de radiancia reduce el impacto positivo de EMA. El impacto sobre las componentes del viento es menor, por lo que sólo se incluye el viento meridional en las figuras \ref(fig:era5)i-l, que muestran que las observaciones de radiancia son las principales responsables del impacto positivo observado en el análisis al reducir la distancia ERA5-RAD, en particular durante la fase madura del MCS. En general, los ajustes asociados a la asimilación de las observaciones de radiancia y de EMA conducen a un análisis más cercano a los reanálisis ERA5.
 
-(ref:era5-cap) Difference between ERA5 and the analysis ensemble mean experiments for the spatially averaged vertical profiles of air temperature (K, a--d), specific humidity ($g\ Kg^{-1}$, e--h) and meridional wind ($m\ s^{-1}$, i--l) calculated over the inner domain (red box in Figure \@ref(fig:dominio)a) for each analysis cycle.
+(ref:era5-cap) Diferencia entre la media del ensamble del análisis de cada experimento y el ERA5 para los perfiles verticales espacialmente promediados de la temperatura del aire (K, a--d), la humedad específica ($g\ Kg^{-1}$, e--h) y el viento meridional ($m\ s^{-1}$, i--l) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis.
 
 ```{r era5, fig.cap="(ref:era5-cap)", fig.env="figure*", fig.width=7.2, fig.height=6, fig.align="center", fig.pos="ht"}
-era <- fread(here("analysis/data/derived_data/reanalysis/perfiles_ana_era5.csv"))
+era <- fread(here("data/derived_data/reanalysis/perfiles_ana_era5.csv"))
 
 era[perfiles, on = c("lev", "date")] %>% 
   .[lev != 1000] %>%
   ggplot(aes(date, lev)) +
-  geom_contour_fill(aes(z = T - i.T, fill = stat(level)), 
+  geom_contour_fill(aes(z = i.T - T, fill = stat(level)), 
                     breaks = seq(-3, 3, 0.5)) +
-  geom_contour2(aes(z = T - i.T), color = "white", size = 0.1,
+  geom_contour2(aes(z = i.T - T), color = "white", size = 0.1,
                 breaks = seq(-3, 3, 0.5)) +
   scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
                                                             barheight = 0.3,
                                                             title.position = "left", 
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
-  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
   scale_date(ini = 20181121000000, break_bin = "12 hours") +
   facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
                                                               E6 = "SATWND", E9 = "RAD"))) +
-  labs(fill = "Temperature (K)",
+  labs(fill = "Temperatura (K)",
        x = NULL,
-       y = "Pressure (hPa)") +
+       y = "Presión (hPa)") +
   tag_facets(position = list(x = 0.1, y = 0.95)) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
@@ -661,22 +660,22 @@ era[perfiles, on = c("lev", "date")] %>%
 era[perfiles, on = c("lev", "date")] %>% 
   .[lev != 1000] %>%
   ggplot(aes(date, lev)) +
-  geom_contour_fill(aes(z = QVAPOR - i.QVAPOR, fill = stat(level)), 
-                    breaks = seq(-0.0015, 0.0025, 0.0004)) +
-  geom_contour2(aes(z = QVAPOR - i.QVAPOR), color = "white", size = 0.1,
-                breaks = seq(-0.0015, 0.0025, 0.0004)) +
+  geom_contour_fill(aes(z = i.QVAPOR - QVAPOR, fill = stat(level)), 
+                    breaks = seq(-0.0025, 0.0015, 0.0004)) +
+  geom_contour2(aes(z = i.QVAPOR - QVAPOR), color = "white", size = 0.1,
+                breaks = seq(-0.0025, 0.0015, 0.0004)) +
   scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
                                                             barheight = 0.3,
                                                             title.position = "left", 
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
-  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
   scale_date(ini = 20181121000000, break_bin = "12 hours") +
   facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
                                                               E6 = "SATWND", E9 = "RAD"))) +
-  labs(fill = latex2exp::TeX("Specific \nhumidity ($g$ $Kg^{-1}$)"),
+  labs(fill = latex2exp::TeX("Humedad \nespecífica ($g$ $Kg^{-1}$)"),
        x = NULL,
-       y = "Pressure (hPa)") +
+       y = "Presión (hPa)") +
   tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("e", "f", "g", "h")) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
@@ -688,22 +687,22 @@ era[perfiles, on = c("lev", "date")] %>%
   era[perfiles, on = c("lev", "date")] %>% 
     .[lev != 1000] %>%
     ggplot(aes(date, lev)) +
-    geom_contour_fill(aes(z = V - i.V, fill = stat(level)), 
-                      breaks = seq(-7, 4, 1)) +
-    geom_contour2(aes(z = V - i.V), color = "white", size = 0.1,
-                  breaks = seq(-7, 4, 1)) +
+    geom_contour_fill(aes(z = i.V - V, fill = stat(level)), 
+                      breaks = seq(-4, 7, 1)) +
+    geom_contour2(aes(z = i.V - V), color = "white", size = 0.1,
+                  breaks = seq(-4, 7, 1)) +
     scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
                                                               barheight = 0.3,
                                                               title.position = "left", 
                                                               title.vjust = 1,
                                                               frame.colour = "black")) +
-    scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+    scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
     scale_date(ini = 20181121000000, break_bin = "12 hours") +
     facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
                                                                 E6 = "SATWND", E9 = "RAD"))) +
     labs(fill = latex2exp::TeX("V ($m$ $s^{-1}$)"),
          x = NULL,
-         y = "Pressure (hPa)") +
+         y = "Presión (hPa)") +
     tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("i", "j", "k", "l")) +
     theme_minimal(base_size = 8) +
     theme(legend.position = "bottom",
@@ -715,17 +714,17 @@ era[perfiles, on = c("lev", "date")] %>%
   plot_layout(ncol = 1, heights = c(1, 1, 1)) 
 ```
 
-To investigate how changes in the PBL can modify the pre-convective environment, the analysis mean horizontal distribution of the low level northerly flow (for the first 7 sigma levels), precipitable water, low level temperature, and CAPE are compared. At 00 UTC Nov 22 (after 30 assimilation cycles) the first convective cells were developing over the southern region of the domain along the cold front. Figure \@ref(fig:summary-fields)a shows the precipitable water (shaded) and the vertically averaged low-level meridional wind component (contours). It shows that the moist tongue extending over the northern part of the domain is enhanced by the assimilation of denser surface observations. The moisture increase is particularly strong at the southern tip of this tongue, just ahead of the cold front where convection initiation was taking place. AWS and SATWND experiments are very similar, with values of precipitable water over 55 $kgm^{-2}$ north of 30$^{\circ}$S and a similar vertical distribution of specific humidity (not shown). RAD has lower precipitable water content than AWS and SATWND, but higher than CONV. The distribution of moisture at low levels in RAD seems to be the result of the combination of the moistening effect of assimilating AWS -- partially compensated by the assimilation of radiance observations -- and a reduced meridional moisture transport due to the weaker northerly flow over the center of the domain compared to CONV.
+Para investigar cómo los cambios en la PBL pueden modificar el entorno preconvectivo, se compara la distribución horizontal media de análisis del viento meridional del norte (para los primeros 7 niveles sigma), el agua precipitable, la temperatura en niveles bajos y el CAPE. A las 00 UTC del 22 de noviembre (después de 30 ciclos de asimilación) las primeras células convectivas se estaban desarrollando sobre la región sur del dominio a lo largo del frente frío. La figura \ref(fig:summary-fields)a muestra el agua precipitable (sombreada) y la componente de viento meridional en niveles bajos promediada verticalmente (contornos). La figura muestra que la región húmeda que se extiende en la zona norte del dominio se ve reforzada por la asimilación de las observaciones de superficie de EMA. El aumento de la humedad es particularmente intenso en el extremo sur de esta región, justo por delante del frente frío donde se produce la iniciación de la convección. Los experimentos AWS y SATWND son muy similares, con valores de agua precipitable superiores a 55 $kgm^{-2}$ al norte de 30$^{circ}$S y una distribución vertical similar de la humedad específica (no mostrada). RAD tiene un contenido de agua precipitable menor que AWS y SATWND, pero mayor que CONV. La distribución de la humedad en niveles bajos en RAD parece ser el resultado de la combinación del efecto de humedecimiento de la asimilación de EMA -compensado parcialmente por la asimilación de las observaciones de radiancia- y un menor transporte meridional de humedad debido al flujo más débil del norte sobre el centro del dominio en comparación con CONV.
 
-The analyzed distribution of temperature and moisture in the PBL (Figure \@ref(fig:summary-fields)b) resembles the characteristics observed in the temperature profiles (Figure \@ref(fig:TQ-diff)a-c) where AWS produces a colder PBL than CONV while the PBL in RAD is warmer than in SATWND. On average the PBL in AWS and SATWND is colder than in CONV, while RAD shows a warmer PBL than AWS due to the assimilation of radiance observations. A warmer PBL increases the potential instability and helps to generate a suitable environment for the development of deep convection. Figure \@ref(fig:summary-fields)c shows the most unstable convective available potential energy (MCAPE, shaded) and the 0 to 6 $km$ wind shear. The values of MCAPE in CONV do not exceed 2000 $J\ Kg^{-1}$ while the rest of the experiments show maximum MCAPE over 4000 $J\ Kg^{-1}$. MCAPE in the RAD experiment is lower compared to AWS or SATWND. This is consistent with less humidity in the PBL with respect to these experiments but may be partially compensated by a slightly warmer PBL in the RAD experiment. The 0-6 km wind shear is more intense in AWS, SATWND, and RAD reaching values over 15 $m\ s^{-1}$ at the southern tip of the region with positive MCAPE values. Moreover, in this same region, these experiments show larger MCAPE values than CONV. Note that wind shear over 15 $m\ s^{-1}$ is associated with the development of more intense and organized MCSs [@chen2015] and also with conditions favorable for supercells [@markowski2010]. 
+La distribución de la temperatura y la humedad en la PBL (Figura \ref(fig:summary-fields)b) se asemeja a las características observadas en los perfiles de temperatura (Figura \ref(fig:TQ-diff)a-c) donde AWS produce una PBL más fría que CONV mientras que la PBL en RAD es más cálida que en SATWND. En promedio, la PBL en AWS y SATWND es más fría que en CONV, mientras que RAD muestra una PBL más cálida que AWS debido a la asimilación de radiacias. Una PBL más cálida aumenta la inestabilidad potencial y ayuda a generar un entorno adecuado para el desarrollo de la convección profunda. La figura \ref(fig:resumen-campos)c muestra la energía potencial convectiva disponible más inestable (MCAPE, sombreada) y la cortante del viento entre 0 a 6 $km$. Los valores de MCAPE en CONV no superan los 2000 $J\ Kg^{-1}$ mientras que en el resto de los experimentos el MCAPE máximo supera los 4000 $J\ Kg^{-1}$. El MCAPE en el experimento RAD es menor en comparación con AWS o SATWND. Esto es consistente con una menor humedad en la PBL con respecto a estos experimentos pero puede ser parcialmente compensado por una PBL ligeramente más cálida en el experimento RAD. La cortante del viento es más intensa en AWS, SATWND y RAD, alcanzando valores superiores a 15 $m\ s^{-1}$ en el extremo sur de la región con valores positivos de MCAPE. Además, en esta misma región, estos experimentos muestran valores de MCAPE mayores que CONV. Cortantes de viento superior a 15 $m\ s^{-1}$ están asociadas al desarrollo de SCMs más intensos y organizados [@chen2015] y también a condiciones favorables para el desarrollo de supercélulas [@markowski2010]. 
 
 
-(ref:summary-fields) a) Precipitable water (shaded, $kg\ m^{-2}$) and average northerly wind over the first 7 sigma levels (from the surface up to approximately 800 hPa, contours, $m\ s^{-1}$), b) Average potential temperature for the PBL (first 10 sigma levels), and c) Maximum CAPE and ~0-6 km wind shear over 15 and 30 $m\ s^{-1}$ for each experiment. All fields correspond to the analysis ensemble mean for 00 UTC Nov 22. Grey filled contours correspond to topography over 1500 meters above sea level.
+(ref:summary-fields) a) Agua precipitable (sombreada, $kg\ m^{-2}$) y viento medio del norte sobre los primeros 7 niveles sigma (desde la superficie hasta aproximadamente 800 hPa, contornos, $m\ s^{-1}$), b) Temperatura potencial media para la PBL (primeros 10 niveles sigma), y c) CAPE máxima y cortante del viento en ~0-6 km para 15 y 30 $m\ s^{-1}$ en cada experimento. Todos los campos corresponden a la media del ensamble del análisis para las 00 UTC del 22 de noviembre. Los contornos rellenos de color gris corresponden a la topografía de más de 1500 metros sobre el nivel del mar.
 
 
 ```{r summary-fields, fig.cap="(ref:summary-fields)", out.width="100%", fig.height=12, fig.width=10.5, fig.env="figure*"}
 
-files <- Sys.glob(here("analysis/data/derived_data/analysis_variables/pw/pw_ana_E[2569]_20181122000000.nc"))
+files <- Sys.glob(here("data/derived_data/analysis_variables/pw/pw_ana_E[2569]_20181122000000.nc"))
 
 dates <- c("20181122000000")
 
@@ -743,7 +742,7 @@ pw <- purrr::map(files, function(f) {
   rbindlist() %>% 
   .[, c("x", "y") := wrf_project(lon, lat)]
 
-files <- Sys.glob(here("analysis/data/derived_data/analysis_variables/mcape/mcape_ana_E[2569]_20181122000000.nc"))
+files <- Sys.glob(here("data/derived_data/analysis_variables/mcape/mcape_ana_E[2569]_20181122000000.nc"))
 
 mucape <- purrr::map(files, function(f) {
   details <- unglue::unglue(basename(f), "mcape_ana_{exp}_{date}.nc")[[1]]
@@ -762,7 +761,7 @@ mucape <- purrr::map(files, function(f) {
 fcsts <- expand_grid(fcsts = c("20181122000000"),
                      exp = c("E2", "E5", "E6", "E9"))
 
-dir <- here("analysis/data/derived_data/analysis_variables")
+dir <- here("data/derived_data/analysis_variables")
 
 ana <- lapply(seq_len(nrow(fcsts)), function(f) {
   
@@ -803,7 +802,7 @@ ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)),
                 breaks = c(-10, -5)) +
   scale_size_continuous(breaks = c(-10, -5), range = c(0.6, 0.4),
                         labels = c("-10", "-5")) +
-  labs(fill = latex2exp::TeX("Precipitable\nwater ($Kg$ $m^{-2}$)"), size = latex2exp::TeX("V ($m$ $s^{-1})")) +
+  labs(fill = latex2exp::TeX("Agua\nprecipitable ($Kg$ $m^{-2}$)"), size = latex2exp::TeX("V ($m$ $s^{-1})")) +
   cordillera +
   geom_mapa() +
   facet_grid(. ~ exp, 
@@ -829,7 +828,7 @@ ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)),
                                                 title.position = "left", 
                                                 title.vjust = 1,
                                                 frame.colour = "black")) +
-  labs(fill = "Potential\ntemperature (K)") +
+  labs(fill = "Temperatura\npotencial (K)") +
   cordillera +
   geom_mapa() +
   facet_grid(. ~ exp, 
@@ -864,7 +863,7 @@ ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)),
                 breaks = c(15, 30)) +
   scale_size_continuous(breaks = c(15, 30), range = c(0.6, 0.4),
                         labels = c("15", "30")) +
-  labs(fill = latex2exp::TeX("MCAPE ($J$ $Kg^{-1}$)"), size = latex2exp::TeX("Wind\nshear ($m$ $s^{-1}$)")) +
+  labs(fill = latex2exp::TeX("MCAPE ($J$ $Kg^{-1}$)"), size = latex2exp::TeX("Cortante\ndel viento ($m$ $s^{-1}$)")) +
   cordillera +
   geom_mapa() +
   facet_grid(. ~ exp, 
