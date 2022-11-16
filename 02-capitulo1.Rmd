@@ -281,13 +281,872 @@ knitr::include_graphics(here("figure", "analisis.png"))
 
 ## Resultados
 
+### Consistencia del ensamble 
+
+Para investigar la capacidad de la media del ensamble del first-guess para ajustarse a las observaciones teniendo en cuenta las incertidumbres del pronóstico y de las observaciones, se calcularo el $meanRCRV$ y el $sdRCRV$ para el experimento RAD. Como este experimento asimila todos los tipos de observaciones utilizados en este trabajo, es posible analizar la coherencia del ensamble comparándolo con cada tipo de observación. La figura \@ref(fig:rcrv-sfc) muestra el $sdRCRV$ para las observaciones de superficie promediadas en una retícula de 2,5°. El $sdRCRV$ para las observaciones del viento (Figura \@ref(fig:rcrv-sfc)a) es cercano a 1, lo que sugiere una buena concordancia entre la dispersión del ensamble, el error de pronóstico y el error de observación. Para la temperatura (Figura \ref(fig:rcrv-sfc)b), los resultados son similares, salvo que para algunas zonas del oeste del dominio donde el $sdRCRV$ puede llegar a ser de 4,5. Estos valores más altos de $sdRCRV$ pueden estar asociados a errores sistemáticos derivados de las diferencias entre la topografía del modelo y al altura a la que están ubicadas las observaciones. La circulación de pequeña escala asociada al terreno complejo y podrían no estar bien resueltas por el modelo también podría contribuir a aumentar la distancia entre el pronóstico y las observaciones. Estos aspectos no suelen ser captados por la dispersión del ensamble, a menos que se utilice un esquema de inflación dependiente del espacio bien ajustado, lo que conduce a mayores valores de $sdRCRV$.
+ 
+La figura \@ref(fig:rcrv-profile) muestra la media y el desvío estándar del RCRV para las observaciones de altura. Las figuras \ref(fig:rcrv-profile)a-b muestran las estadísticas de RCRV para los sondeos (ADPUPA) y aviones (AIRCAR y AIRCFT). Tanto ADPUPA como AIRCFT muestran, en general, un buen acuerdo entre la dispersión del ensamble y el error de observación. Como las observaciones de sondeo y sus errores asociados son considerados de buena calidad, este resultado indica que el ensamble tiene una dispersión adecuada. AIRCAR presenta un perfil irregular con valores $sdRCRV$ que sugieren que el error de este tipo de observación está sobreestimado. ADPUPA y AIRCAR presentan un perfil de $meanRCRV$ cercano a cero en los niveles medios y altos. En niveles bajos, el perfil $meanRCRV$ es positivo, mostrando un bias cálido presente en el modelo, característica ya estudiada en @ruiz2010 y @dillon2021.
+
+Las observaciones de vientos estimadas por satélites varían en número dependiendo del satélite y del nivel. En la Figura \ref(fig:rcrv-profile)c sólo se incluye el $RCRV$ calculado con al menos 100 observaciones disponibles para cada sensor y nivel. En niveles bajos, donde no hay muchas observaciones disponibles, los perfiles de $meanRCRV$ y $sdRCRV$ muestran una mayor desviación del comportamiento esperado con un bias negativo, y una posible sobreestimación del error de observación. Las estimaciones del viento derivadas de los canales de vapor de agua son abundantes por encima de 500 hPa, donde su bias es cercano a cero. La única excepción son las observaciones de EUMETSAT que contribuyen muy poco en la región. 
+
+Los perfiles de $meanRCRV$ calculados a partir de las observaciones de radiancias (Figura \ref(fig:rcrv-profile)d) no muestran casi ningún bias y lo mismo ocurre si se calcula el $mean RCRV$ sobre cada canal de cada sensor (no incluido en el trabajo). Esto indica que el algoritmo de corrección del bias funciona como se esperaba. Los valores de $sd RCRV$ son inferiores a 1 para todos los sensores, posiblemente debido a una sobreestimación de los errores de observación para reducir la influencia de las observaciones potencialmente erróneas. 
+
+En general, estos resultados indican que la dispersión del ensamble es coherente con el error de pronóstico a corto plazo y que los errores sistemáticos son relativamente pequeños para la mayoría de los tipos de observación utilizados en este trabajo. Además, estos resultados sugieren que el parámetro de inflación $\alpha = 0,9$ es adecuado para el sistema. 
 
 
-### Ensamble
+(ref:rcrv-sfc) $sd RCRV$ calculado para observaciones de superficie (de PREPBUFR y EMA) de a) viento, y b) temperatura promediados en cajas de 2.5º para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario paa todo el periodo del experimento. 
 
-### Impacto en el analisis
+```{r rcrv-sfc, fig.cap="(ref:rcrv-sfc)", out.width="100%", fig.height=5}
 
-### Verificacion
+rbind(fread(here("data/derived_data/RCRV/rcrv_V_box.csv")),
+      fread(here("data/derived_data/RCRV/rcrv_t_box.csv"))) %>%   
+  .[, type.obs := type] %>% 
+  .[, type.obs := fcase(type.obs == 181, 281,
+                        type.obs == 187, 287,
+                        type.obs == 281, 281,
+                        type.obs == 287, 287)] %>% 
+  .[, sd.y := mean(sd.y), by = .(lon.box, lat.box, var)] %>% 
+  .[, var := factor(var, levels = c("v", "t"))] %>% 
+  ggplot(aes(ConvertLongitude(lon.box), lat.box)) +
+  geom_raster(aes(fill = sd.y)) +
+  geom_mapa() +
+  scale_fill_viridis_c(breaks = seq(0, 5, 0.5),
+                       limits = c(0, 5),
+                       direction = -1,
+                       guide = guide_colorsteps(inside = TRUE,
+                                                barwidth = 20,
+                                                barheight = 0.5, 
+                                                title.position = "left", 
+                                                title.vjust = 1,
+                                                frame.colour = "black")) +
+  facet_wrap(~var, labeller = labeller(var = c("v" = "Viento",
+                                               "t" = "Temperatura"))) +
+  tag_facets() +
+  labs(fill = latex2exp::TeX("sd RCRV")) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 14),
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3))
 
-### Conclusiones
+```
+
+(ref:rcrv-profile) Perfiles verticales de $mean RCRV$ (línea punteada) y $sd RCRV$ (línea sólida) para observaciones de  a) temperatura y b) viento de sondeos y aviones, c) viento estimado por satélites, y d) temperatura de brillo para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario paa todo el periodo del experimento. 
+
+```{r rcrv-profile, fig.cap="(ref:rcrv-profile)", fig.env="figure*", fig.height=3.5, fig.width=7}
+
+rbind(fread(here("data/derived_data/RCRV/rcrv_V_perfil.csv")), 
+      fread(here("data/derived_data/RCRV/rcrv_t_perfil.csv"))) %>% 
+  obs.type[., on = "type"] %>%   
+  .[type != 130] %>%
+  melt(measure.vars = c("mean.y", "sd.y")) %>% 
+  ggplot(aes(error.level, value)) +
+  geom_hline(yintercept = c(0, 1), color = "grey20") +
+  geom_line(aes(linetype = variable, color = code)) +
+  scale_linetype_manual(values = c("dashed", "solid"),
+                        labels = c("mean RCRV", "sd RCRV")) +
+  scale_color_brewer(palette = "Dark2") +
+  guides(linetype = guide_legend(order = 1),
+         color = guide_legend(order = 10)) +
+  # scale_color_discrete() +
+  scale_x_level(name =  "Presión (hPa)", breaks = c(1000, 500, 250, 125, 50)) +
+  coord_flip() +
+  facet_wrap(~ var, labeller = labeller(var = c("t" = "Temperatura",
+                                                "v" = "Viento"))) +
+  tag_facets() +
+  labs(x = "Presión (hPa)", y = NULL,
+       linetype = NULL, color = "Observaciones\nde altura") +
+  guides(color = guide_legend(keyheight = 0.4, default.unit = "cm"),
+         linetype = guide_legend(keyheight = 0.4, default.unit = "cm")) +
+  theme_minimal(base_size = 8) +
+  theme(legend.box = "vertical",
+        legend.title = element_text(size = 6),
+        panel.background = element_rect(fill = "#fbfbfb", color = NA),
+        tagger.panel.tag.text = element_text(size = 8)) +
+  
+  
+  read_csv(here("data/derived_data/RCRV/rcrv_satwind.csv")) %>% 
+  setDT() %>% 
+  .[!(sat_type %in% c("GOES visible", "EUMETSAT visible") & error.level == 700)] %>% 
+  .[, sat_type := fifelse(sat_type == "EUMETSAT WV deep layer winds", "EUMETSAT WV", sat_type)] %>% 
+  melt(measure.vars = c("mean.y", "sd.y")) %>%
+  ggplot(aes(error.level, value)) +
+  geom_hline(yintercept = c(0, 1), color = "grey20") +
+  geom_line(aes(color = sat_type, linetype = variable)) +
+  scale_linetype_manual(values = c("dashed", "solid"),
+                        labels = c("mean RCRV", "sd RCRV")) +
+  # scale_color_brewer(palette = "Set1") +
+  scale_x_level(breaks = c(1000, 500, 250, 125, 50), limits = c(1000, 50)) +
+  coord_flip() +
+  facet_wrap(~ var, scales = "free_x", labeller = labeller(var = c("u" = "Viento U",
+                                                                   "v" = "Viento estimado\npor satélite"))) +
+  tag_facets(tag_pool = c("c")) +
+  labs(x = NULL, y = latex2exp::TeX("mean RCRV (----) / sd RCRV (――)"),
+       linetype = NULL, color = "Viento estimado\npor satélite") +
+  guides(color = guide_legend(keyheight = 0.4, default.unit = "cm"),
+         linetype = guide_legend(keyheight = 0.4, default.unit = "cm")) +
+  theme_minimal(base_size = 8) +
+  theme(legend.box = "vertical",
+        legend.spacing.y = unit(0.1, 'mm'),
+        legend.title = element_text(size = 6),
+        panel.background = element_rect(fill = "#fbfbfb", color = NA),
+        tagger.panel.tag.text = element_text(size = 8)) +
+  
+  purrr::map(Sys.glob(here("data/derived_data/RCRV/rcrv_*_perfil.csv"))[1:6], function(f) {
+    meta <- unglue::unglue(basename(f), "rcrv_{sensor}_perfil.csv")
+    fread(f) %>%
+      .[, sensor := meta[[1]][["sensor"]]]
+  }) %>%
+  rbindlist() %>% 
+  .[sensor %in% c("airs", "amsua", "iasi", "mhs")] %>% 
+  separate(sensor, into = c("sensor", "plat"), sep = "_") %>% 
+  setDT() %>% 
+  melt(measure.vars = c("mean.y", "sd.y")) %>% 
+  .[, .(value = mean(value, na.rm = TRUE),
+        var = "Temperatura\nde brillo"), by = .(sensor, level, variable)] %>% 
+  ggplot(aes(level, value)) +
+  geom_hline(yintercept = c(0, 1), color = "grey20") +
+  geom_line(aes(color = sensor, linetype = variable)) +
+  scale_linetype_manual(values = c("dashed", "solid"),
+                        labels = c("mean RCRV", "sd RCRV")) +
+  scale_color_discrete(labels = toupper) +
+  coord_flip() +
+  scale_x_level(breaks = c(1000, 500, 250, 125, 50)) +
+  facet_wrap(~ var, scales = "free_x") +
+  tag_facets(tag_pool = c("d")) +
+  labs(x = NULL, y = NULL,
+       linetype = NULL, color = "Radiancias") +
+  guides(color = guide_legend(keyheight = 0.4, default.unit = "cm"),
+         linetype = guide_legend(keyheight = 0.4, default.unit = "cm")) +
+  theme_minimal(base_size = 8) +
+  theme(legend.box = "vertical",
+        legend.spacing.y = unit(0.1, 'mm'),
+        legend.title = element_text(size = 6),
+        tagger.panel.tag.text = element_text(size = 8)) +
+  
+  plot_layout(ncol = 3, widths = c(1, 1, 1), guides = "collect") & 
+  theme(legend.box = "vertical",
+        legend.spacing.y = unit(0.1, 'mm'),
+        legend.title = element_text(size = 6),
+        panel.background = element_rect(fill = "#fbfbfb", color = NA),
+        tagger.panel.tag.text = element_text(size = 8))
+
+
+```
+
+### Impacto de la asimilación de las distintas observaciones 
+
+This section presents the impact of assimilating different observation types on variables which are particularly relevant for the occurrence of deep moist convection. The analysis is performed over a smaller domain (red box in Figure \@ref(fig:dominio)a) to focus on the region most directly affected by the MCS. Figures \@ref(fig:TQ-diff)a-c show the analysis difference between experiments in the spatially averaged vertical profile of temperature. By averaging the differences between two experiments the systematic impact produced by different observing systems on the analyzed state can be isolated. During the first day, the assimilation of AWS observations results in a colder PBL. This cooling effect has a clear diurnal cycle, being stronger during nighttime (Figure \@ref(fig:TQ-diff)a). During the second day of the experiment, the impact of AWS observations extends into the middle and upper troposphere coinciding with the mature stage of the MCS. The warm difference shown in AWS-CONV between 500 and 200 hPa is produced by the development of stronger convection in AWS compared to CONV. This is a good example of how low-level information provided by surface weather stations can rapidly spread into the troposphere in the presence of deep moist convection. Although the mid-to-upper circulation can have an important impact on the organization and evolution of the MCS over the region, the satellite-derived winds did not have an appreciable impact on the mean temperature and humidity (Figure \@ref(fig:TQ-diff)b-e), possibly due to the large observation errors used for the assimilation.
+During the first day of the experiment, the assimilation of radiances produces a warming effect in the PBL which partially compensates for the cooling effect of AWS observations (Figure \@ref(fig:TQ-diff)c). No clear systematic impact is found above the PBL during this period. During the second day, the impact of radiance observations is found through the troposphere with a distribution that is similar to the impact found in the AWS experiment but with the opposite sign. 
+
+Comparing the specific humidity in the experiments (Figures \@ref(fig:TQ-diff)d-f), the impact of assimilating AWS with fine spatial and temporal resolution is most substantial at low levels (Figure \@ref(fig:TQ-diff)d). The PBL in the AWS experiment is consistently moister than in the CONV experiment, particularly at nighttime. The increase in low-level moisture by a denser surface network is consistent with previously reported dry biases in the WRF model over the region [@casaretto2022, @matsudo2021, @ruiz2010]. The moistening of the PBL is mainly driven by the covariance between temperature and specific humidity within the PBL. In the experiment and over the center of the domain, this covariance remains negative, increasing low-level moisture as the observations introduce negative temperature corrections. As for the temperature, the systematic impact of satellite-derived winds on moisture is small (Figure \@ref(fig:TQ-diff)e). Figure \@ref(fig:TQ-diff)f shows that radiances reduce low-middle level moisture during the first day of the experiment. The drying effect extends to lower-middle levels during the second day of the experiment coinciding with the development of the MCS between 00 and 12 UTC Nov 22.
+
+
+(ref:TQ-diff) Difference between analysis ensemble mean experiments a) and d) AWS-CONV, b) and e) SATWND-AWS, and c) and f) RAD-SATWND for the spatially averaged vertical profiles of temperature (a, b, and c, in $K$) and specific humidity (d, e, and f in $g\ kg^{-1}$) calculated over the inner domain (red box in Figure \@ref(fig:dominio)a) for each analysis cycle.
+
+```{r TQ-diff, fig.cap="(ref:TQ-diff)", fig.env="figure*", fig.height=5.5, fig.width=6, fig.align="center",fig.pos="ht"}
+files <- Sys.glob(here("analysis/data/derived_data/analysis_variables/perfiles_ana_E[2569].csv"))
+
+perfiles <- purrr::map(files, function(f) {
+  exp <- unglue(basename(f), "perfiles_{run}_{exp}.csv")
+  fread(f) %>% 
+    .[, exp := exp[[1]][["exp"]]]
+  
+}) %>% 
+  rbindlist() %>% 
+  .[, date := as_datetime(date)] %>% 
+  .[date %between% c(as_datetime("2018-11-20 18:00:00"),
+                     as_datetime("2018-11-23 12:00:00"))]
+
+
+perfiles %>% 
+  dcast(lev + date ~ exp, value.var = "T") %>% 
+  .[, ":="(E5_E2 = E5 - E2,
+           E6_E5 = E6 - E5,
+           E9_E6 = E9 - E6)] %>% 
+  melt(measure.vars = c("E5_E2", "E6_E5", "E9_E6")) %>% 
+  ggplot(aes(date, lev)) +
+  geom_contour_fill(aes(z = value, fill = stat(level)),
+                    breaks = c(seq(-2, 2, 0.2), Inf)) +
+  geom_contour2(aes(z = value), color = "white", size = 0.1,
+                breaks = c(seq(-2, 2, 0.2), Inf)) +
+  scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
+                                                            barheight = 0.3,
+                                                            title.position = "left", 
+                                                            title.vjust = 1,
+                                                            frame.colour = "black")) +
+  labs(fill = "Temperature (K)",
+       x = NULL,
+       y = "Pressure (hPa)") +
+  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  facet_wrap(~variable, ncol = 3,
+             labeller = labeller(variable = c("E5_E2" = "AWS - CONV",
+                                              "E6_E5" = "SATWND - AWS",
+                                              "E9_E6" = "RAD - SATWND"))) +
+  tag_facets(position = list(x = 0.1, y = 0.96)) +
+  theme_minimal(base_size = 8) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 8),
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3)) +
+  
+  
+  perfiles %>% 
+  dcast(lev + date ~ exp, value.var = "QVAPOR") %>% 
+  .[, ":="(E5_E2 = E5 - E2,
+           E6_E5 = E6 - E5,
+           E9_E6 = E9 - E6)] %>% 
+  melt(measure.vars = c("E5_E2", "E6_E5", "E9_E6")) %>% 
+  ggplot(aes(date, lev)) +
+  geom_contour_fill(aes(z = value*1000, fill = stat(level)), 
+                    breaks = c(seq(-1.6, 1.6, 0.2), Inf)) +
+  geom_contour2(aes(z = value), color = "white", size = 0.1,
+                breaks = c(seq(-1.6, 1.6, 0.2), Inf)) +
+  scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
+                                                            barheight = 0.3, 
+                                                            title.position = "left", 
+                                                            title.vjust = 1,
+                                                            frame.colour = "black")) +
+  
+  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  labs(fill = latex2exp::TeX("Specific \nhumidity ($g$ $Kg^{-1}$)"),
+       y = "Pressure (hPa)",
+       x = NULL) +
+  facet_wrap(~variable, ncol = 3,
+             labeller = labeller(variable = c("E5_E2" = "AWS - CONV",
+                                              "E6_E5" = "SATWND - AWS",
+                                              "E9_E6" = "RAD - SATWND"))) +
+  tag_facets(tag_pool = c("d", "e", "f"), position = list(x = 0.1, y = 0.96)) +
+  theme_minimal(base_size = 8) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 8),
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3)) +
+  
+  plot_layout(ncol = 1, heights = c(1, 1))
+
+```
+
+The impacts on the wind components are shown in Figure \@ref(fig:UV-diff), along with the corresponding averaged wind component in the experiment with the largest number of assimilated observations (for example, Figure \@ref(fig:UV-diff)a shows the zonal wind difference between AWS and CONV and the zonal wind for AWS). The assimilation of AWS produces a more easterly wind and a less northerly wind at low levels during the first two days of analysis (Figures \@ref(fig:UV-diff)a,b). There is a diurnal cycle in the impact of surface weather stations on the meridional velocity (Figure \@ref(fig:UV-diff)d) with a stronger reduction of the northerly wind during night hours. This indicates that surface observations are reducing the intensity of the low level jet present in the pre-convective environment. After 18 UTC Nov 22, the opposite effect is observed when the MCS is moving through the domain to the northeast. After the initiation of the convective cells, the systematic impact on the wind field is larger at mid and upper levels (Figures \@ref(fig:UV-diff)d, f). During Nov 22 and 23 the impact of assimilating AWS observations produces an increase of northerly wind in upper levels. This could be a consequence of a stronger MCS with an increased polar side upper level outflow. Although satellite-derived wind observations produce the largest impact in mid-to-upper levels where the number of observations is largest; the systematic impact is overall smaller than the one produced by assimilating data from AWS (Figures \@ref(fig:UV-diff)b, e). The reason of the small impact observed in SATWND could be associated to the large observation error used for satellite-derived wind observations.
+ 
+The assimilation of radiances produces a reduction in the westerly wind compared with respect to SATWIND in low and upper levels (Figure \@ref(fig:UV-diff)c). For the meridional wind, these observations produce an enhancement on average of the northerly low-level flow of $1 ms^{-1}$, opposite to what is generated by the assimilation of AWS observations during the nights, between 03 and 12 UTC, previous to the development of the MCS (Figure \@ref(fig:UV-diff)f). At upper levels and during Nov 22 and 23 the average impact of assimilating radiances is a decrease in the wind speed. The meridional wind field at 200 hPa at different times shows that the outflow from the MCS is even more intense than in the other experiments, while the southerly wind ahead of the MCS also increases producing an average reduction of the northerly wind (Figure \@ref(fig:UV-diff)f). 
+
+
+(ref:UV-diff) Difference between analysis ensemble mean experiments a) and d) AWS-CONV, b) and e) SATWND-AWS, and c) and f) RAD-SATWND for the spatially averaged vertical profiles of u wind (a, b, and c, in $m\ s^{-1}$) and v wind (d, e, and f in $m\ s^{-1}$) calculated over the inner domain (red box in Figure \@ref(fig:dominio)a) for each analysis cycle. Black contours correspond to u wind and dashed contours to negative v wind for (a) AWS, (b) SATWND, and (c) RAD and v wind for (d) AWS, (e) SATWND, and (f) RAD since those experiments are the ones with more assimilated observations in each panel.
+
+```{r UV-diff, fig.cap="(ref:UV-diff)", fig.env="figure*", fig.height=5.5, fig.width=6, fig.align="center", fig.pos="ht"}
+perfiles %>% 
+  dcast(lev + date ~ exp, value.var = "U") %>% 
+  .[, ":="(E5_E2 = E5 - E2,
+           E6_E5 = E6 - E5,
+           E9_E6 = E9 - E6)] %>% 
+  melt(measure.vars = c("E5_E2", "E6_E5", "E9_E6")) %>% 
+  ggplot(aes(date, lev)) +
+  # geom_contour(aes(z = value)) +
+  geom_contour_fill(aes(z = value, fill = stat(level)), breaks = c(seq(-2, 2, 0.2), Inf)) +
+  scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
+                                                            barheight = 0.3, 
+                                                            title.position = "left", 
+                                                            title.vjust = 1,
+                                                            frame.colour = "black")) +
+  geom_contour2(aes(z = value), color = "white", size = 0.1,
+                breaks = c(seq(-2, 2, 0.2), Inf)) +
+  geom_contour2(data = ~.x[, .(lev, date, E5_E2 = E5, E6_E5 = E6, E9_E6 = E9)] %>%
+                  melt(id.vars = c("lev", "date")) %>% unique(), aes(z = value),
+                breaks = seq(0, 30, 3), size = 0.2, linetype = 1, color = "grey30") +
+  geom_text_contour(data = ~.x[, .(lev, date, E5_E2 = E5, E6_E5 = E6, E9_E6 = E9)] %>%
+                      melt(id.vars = c("lev", "date")) %>% unique(), aes(z = value),
+                    breaks = seq(0, 30, 3), color = "grey30", skip = 1,
+                    size = 2, stroke = 0.1) +
+  labs(fill = latex2exp::TeX("U ($m$ $s^{-1}$)"),
+       x = NULL,
+       y = NULL) +
+  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  facet_wrap(~variable, ncol = 3,
+             labeller = labeller(variable = c("E5_E2" = "**AWS** - CONV",
+                                              "E6_E5" = "**SATWND** - AWS",
+                                              "E9_E6" = "**RAD** - SATWND"))) +
+  tag_facets(position = list(x = 0.1, y = 0.96)) +
+  theme_minimal(base_size = 8) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 8),
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3), 
+        strip.text = ggtext::element_markdown()) +
+  
+  
+  perfiles %>% 
+  dcast(lev + date ~ exp, value.var = "V") %>% 
+  .[, ":="(E5_E2 = E5 - E2,
+           E6_E5 = E6 - E5,
+           E9_E6 = E9 - E6)] %>% 
+  melt(measure.vars = c("E5_E2", "E6_E5", "E9_E6")) %>% 
+  ggplot(aes(date, lev)) +
+  geom_contour_fill(aes(z = value, fill = stat(level)), 
+                    breaks = c(-Inf, seq(-1.6, 1.6, 0.2), Inf)) +
+  geom_contour2(aes(z = value), color = "white", size = 0.1,
+                breaks = c(-Inf, seq(-1.6, 1.6, 0.2), Inf)) +
+  scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
+                                                            barheight = 0.3, 
+                                                            title.position = "left", 
+                                                            title.vjust = 1,
+                                                            frame.colour = "black")) +
+  geom_contour2(data = ~.x[, .(lev, date, E5_E2 = E5, E6_E5 = E6, E9_E6 = E9)] %>% 
+                  melt(id.vars = c("lev", "date")) %>% unique(), 
+                aes(z = value, linetype = factor(-sign(..level..))), 
+                breaks = seq(-10, 4, 2), size = 0.2, color = "grey30") +
+  geom_text_contour(data = ~.x[, .(lev, date, E5_E2 = E5, E6_E5 = E6, E9_E6 = E9)] %>% 
+                      melt(id.vars = c("lev", "date")) %>% unique(), aes(z = value), 
+                    breaks = seq(-10, 4, 2), color = "grey30", skip = 1, 
+                    size = 2, stroke = 0.1) +
+  labs(fill = latex2exp::TeX("V ($m$ $s^{-1}$)"),
+       x = NULL,
+       y = NULL) +
+  scale_linetype(guide = NULL) +
+  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  facet_wrap(~variable, ncol = 3,
+             labeller = labeller(variable = c("E5_E2" = "**AWS** - CONV",
+                                              "E6_E5" = "**SATWND** - AWS",
+                                              "E9_E6" = "**RAD** - SATWND"))) +
+  tag_facets(tag_pool = c("d", "e", "f"), position = list(x = 0.1, y = 0.96)) +
+  theme_minimal(base_size = 8) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 8),
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3),
+        strip.text = ggtext::element_markdown()) +
+  plot_layout(ncol = 1, heights = c(1, 1))
+
+
+```
+
+The difference between ERA5 reanalyses [@era5pressure`] and the ensemble mean analyses are also compared in Figure \@ref(fig:era5), which supports Figures \@ref(fig:TQ-diff) and \@ref(fig:UV-diff). Specifically, Figure \@ref(fig:era5)a shows a warm bias in low levels (i.e. CONV is warmer than ERA5) that decreases in Figure \@ref(fig:era5)b when the AWS observations are assimilated. In the same direction, Figure \@ref(fig:TQ-diff)a shows a negative difference between AWS and CONV meaning that the AWS observations are cooling the low levels. Comparing ERA5-RAD (Figure \@ref(fig:era5)d), there is a small increase in the warm bias, associated with the warming produced by the radiance observations as shown in Figure \@ref(fig:TQ-diff)c. A similar effect can be observed for specific humidity, AWS observations partially correct the dry bias present in Figure \@ref(fig:era5)e and the assimilation of radiance observations reduces the positive impact of AWS. The impact on the wind components is minor so only the meridional wind is included in Figures \@ref(fig:era5)i-l, which show that the radiance observations are mainly responsible for the positive impact observed in the analysis by reducing the distance ERA5-RAD, particularly during the mature stage of the MCS. Overall, the adjustments due to assimilating radiance and AWS observations lead to an ensemble mean analyses closer to ERA5 reanalyses.
+
+(ref:era5-cap) Difference between ERA5 and the analysis ensemble mean experiments for the spatially averaged vertical profiles of air temperature (K, a--d), specific humidity ($g\ Kg^{-1}$, e--h) and meridional wind ($m\ s^{-1}$, i--l) calculated over the inner domain (red box in Figure \@ref(fig:dominio)a) for each analysis cycle.
+
+```{r era5, fig.cap="(ref:era5-cap)", fig.env="figure*", fig.width=7.2, fig.height=6, fig.align="center", fig.pos="ht"}
+era <- fread(here("analysis/data/derived_data/reanalysis/perfiles_ana_era5.csv"))
+
+era[perfiles, on = c("lev", "date")] %>% 
+  .[lev != 1000] %>%
+  ggplot(aes(date, lev)) +
+  geom_contour_fill(aes(z = T - i.T, fill = stat(level)), 
+                    breaks = seq(-3, 3, 0.5)) +
+  geom_contour2(aes(z = T - i.T), color = "white", size = 0.1,
+                breaks = seq(-3, 3, 0.5)) +
+  scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
+                                                            barheight = 0.3,
+                                                            title.position = "left", 
+                                                            title.vjust = 1,
+                                                            frame.colour = "black")) +
+  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                                              E6 = "SATWND", E9 = "RAD"))) +
+  labs(fill = "Temperature (K)",
+       x = NULL,
+       y = "Pressure (hPa)") +
+  tag_facets(position = list(x = 0.1, y = 0.95)) +
+  theme_minimal(base_size = 8) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 8),
+        plot.margin = margin(0, 0, 0, 0, "cm"),
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3)) +
+
+era[perfiles, on = c("lev", "date")] %>% 
+  .[lev != 1000] %>%
+  ggplot(aes(date, lev)) +
+  geom_contour_fill(aes(z = QVAPOR - i.QVAPOR, fill = stat(level)), 
+                    breaks = seq(-0.0015, 0.0025, 0.0004)) +
+  geom_contour2(aes(z = QVAPOR - i.QVAPOR), color = "white", size = 0.1,
+                breaks = seq(-0.0015, 0.0025, 0.0004)) +
+  scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
+                                                            barheight = 0.3,
+                                                            title.position = "left", 
+                                                            title.vjust = 1,
+                                                            frame.colour = "black")) +
+  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                                              E6 = "SATWND", E9 = "RAD"))) +
+  labs(fill = latex2exp::TeX("Specific \nhumidity ($g$ $Kg^{-1}$)"),
+       x = NULL,
+       y = "Pressure (hPa)") +
+  tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("e", "f", "g", "h")) +
+  theme_minimal(base_size = 8) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 8),
+        plot.margin = margin(0, 0, 0, 0, "cm"),
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3)) +
+
+  era[perfiles, on = c("lev", "date")] %>% 
+    .[lev != 1000] %>%
+    ggplot(aes(date, lev)) +
+    geom_contour_fill(aes(z = V - i.V, fill = stat(level)), 
+                      breaks = seq(-7, 4, 1)) +
+    geom_contour2(aes(z = V - i.V), color = "white", size = 0.1,
+                  breaks = seq(-7, 4, 1)) +
+    scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
+                                                              barheight = 0.3,
+                                                              title.position = "left", 
+                                                              title.vjust = 1,
+                                                              frame.colour = "black")) +
+    scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+    scale_date(ini = 20181121000000, break_bin = "12 hours") +
+    facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                                                E6 = "SATWND", E9 = "RAD"))) +
+    labs(fill = latex2exp::TeX("V ($m$ $s^{-1}$)"),
+         x = NULL,
+         y = "Pressure (hPa)") +
+    tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("i", "j", "k", "l")) +
+    theme_minimal(base_size = 8) +
+    theme(legend.position = "bottom",
+          tagger.panel.tag.text = element_text(size = 8),
+          plot.margin = margin(0, 0, 0, 0, "cm"),
+          panel.ontop = TRUE,
+          panel.grid = element_line(linetype = 3)) +
+  
+  plot_layout(ncol = 1, heights = c(1, 1, 1)) 
+```
+
+To investigate how changes in the PBL can modify the pre-convective environment, the analysis mean horizontal distribution of the low level northerly flow (for the first 7 sigma levels), precipitable water, low level temperature, and CAPE are compared. At 00 UTC Nov 22 (after 30 assimilation cycles) the first convective cells were developing over the southern region of the domain along the cold front. Figure \@ref(fig:summary-fields)a shows the precipitable water (shaded) and the vertically averaged low-level meridional wind component (contours). It shows that the moist tongue extending over the northern part of the domain is enhanced by the assimilation of denser surface observations. The moisture increase is particularly strong at the southern tip of this tongue, just ahead of the cold front where convection initiation was taking place. AWS and SATWND experiments are very similar, with values of precipitable water over 55 $kgm^{-2}$ north of 30$^{\circ}$S and a similar vertical distribution of specific humidity (not shown). RAD has lower precipitable water content than AWS and SATWND, but higher than CONV. The distribution of moisture at low levels in RAD seems to be the result of the combination of the moistening effect of assimilating AWS -- partially compensated by the assimilation of radiance observations -- and a reduced meridional moisture transport due to the weaker northerly flow over the center of the domain compared to CONV.
+
+The analyzed distribution of temperature and moisture in the PBL (Figure \@ref(fig:summary-fields)b) resembles the characteristics observed in the temperature profiles (Figure \@ref(fig:TQ-diff)a-c) where AWS produces a colder PBL than CONV while the PBL in RAD is warmer than in SATWND. On average the PBL in AWS and SATWND is colder than in CONV, while RAD shows a warmer PBL than AWS due to the assimilation of radiance observations. A warmer PBL increases the potential instability and helps to generate a suitable environment for the development of deep convection. Figure \@ref(fig:summary-fields)c shows the most unstable convective available potential energy (MCAPE, shaded) and the 0 to 6 $km$ wind shear. The values of MCAPE in CONV do not exceed 2000 $J\ Kg^{-1}$ while the rest of the experiments show maximum MCAPE over 4000 $J\ Kg^{-1}$. MCAPE in the RAD experiment is lower compared to AWS or SATWND. This is consistent with less humidity in the PBL with respect to these experiments but may be partially compensated by a slightly warmer PBL in the RAD experiment. The 0-6 km wind shear is more intense in AWS, SATWND, and RAD reaching values over 15 $m\ s^{-1}$ at the southern tip of the region with positive MCAPE values. Moreover, in this same region, these experiments show larger MCAPE values than CONV. Note that wind shear over 15 $m\ s^{-1}$ is associated with the development of more intense and organized MCSs [@chen2015] and also with conditions favorable for supercells [@markowski2010]. 
+
+
+(ref:summary-fields) a) Precipitable water (shaded, $kg\ m^{-2}$) and average northerly wind over the first 7 sigma levels (from the surface up to approximately 800 hPa, contours, $m\ s^{-1}$), b) Average potential temperature for the PBL (first 10 sigma levels), and c) Maximum CAPE and ~0-6 km wind shear over 15 and 30 $m\ s^{-1}$ for each experiment. All fields correspond to the analysis ensemble mean for 00 UTC Nov 22. Grey filled contours correspond to topography over 1500 meters above sea level.
+
+
+```{r summary-fields, fig.cap="(ref:summary-fields)", out.width="100%", fig.height=12, fig.width=10.5, fig.env="figure*"}
+
+files <- Sys.glob(here("analysis/data/derived_data/analysis_variables/pw/pw_ana_E[2569]_20181122000000.nc"))
+
+dates <- c("20181122000000")
+
+pw <- purrr::map(files, function(f) {
+  details <- unglue::unglue(basename(f), "pw_ana_{exp}_{date}.nc")[[1]]
+  
+  if (details$date %in% dates) {
+    
+    ReadNetCDF(f, vars = c(value = "pw", lon = "XLONG", lat = "XLAT")) %>% 
+      .[, `:=`(exp = details$exp, 
+               date = lubridate::ymd_hms(details$date))] %>%
+      .[]
+  }
+}) %>% 
+  rbindlist() %>% 
+  .[, c("x", "y") := wrf_project(lon, lat)]
+
+files <- Sys.glob(here("analysis/data/derived_data/analysis_variables/mcape/mcape_ana_E[2569]_20181122000000.nc"))
+
+mucape <- purrr::map(files, function(f) {
+  details <- unglue::unglue(basename(f), "mcape_ana_{exp}_{date}.nc")[[1]]
+  
+  if (details$date %in% dates) {
+    
+    ReadNetCDF(f, vars = c(value = "cape_2d", lon = "XLONG", lat = "XLAT")) %>% 
+      .[, `:=`(exp = details$exp, 
+               date = lubridate::ymd_hms(details$date))] %>%
+      setnames(old = "mcape_mcin_lcl_lfc", new = "variable") %>% 
+      .[]
+  }
+}) %>% 
+  rbindlist() 
+
+fcsts <- expand_grid(fcsts = c("20181122000000"),
+                     exp = c("E2", "E5", "E6", "E9"))
+
+dir <- here("analysis/data/derived_data/analysis_variables")
+
+ana <- lapply(seq_len(nrow(fcsts)), function(f) {
+  
+  tmp <- ReadNetCDF(paste0(dir, "/u_", fcsts[f, 1], "_", fcsts[f, 2], ".nc"), vars = c(u = "uvmet")) %>% 
+    .[, v := ReadNetCDF(paste0(dir, "/v_", fcsts[f, 1], "_", fcsts[f, 2], ".nc"), vars = c(v = "uvmet"), out = "vector")] %>% 
+    .[, q := ReadNetCDF(paste0(dir, "/q_", fcsts[f, 1], "_", fcsts[f, 2], ".nc"), vars = c(q = "QVAPOR"), out = "vector")] %>% 
+    .[, theta := ReadNetCDF(paste0(dir, "/theta_", fcsts[f, 1], "_", fcsts[f, 2], ".nc"), vars = c(th = "theta"), out = "vector")] %>%
+    .[, date :=  ymd_hms(fcsts[f, 1])] %>% 
+    .[, exp := fcsts[f, 2]] %>%  
+    .[]
+}) %>% 
+  rbindlist() 
+
+cor <- ana[bottom_top %in% c(1, 16)] %>% 
+  dcast(date + exp + south_north + west_east ~ bottom_top, value.var = c("u", "v")) %>% 
+  .[, cortante := Mag(u_16 - u_1, v_16 - v_1)] %>% 
+  .[, ":="(u_1 = NULL, 
+           u_16 = NULL,
+           v_1 = NULL,
+           v_16 = NULL)]
+
+ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)), 
+    by = .(south_north, west_east, date, exp)] %>% 
+  .[pw, on = .NATURAL] %>% 
+  .[, v_mean_suave := metR:::smooth2d(x, y, v_mean, kx = 0.2, ky = 0.2), by = .(exp)] %>% 
+  ggplot(aes(x, y)) +
+  geom_contour_fill(aes(z = value, fill = stat(level_d)),
+                    proj = norargentina_lambert) +
+  colorspace::scale_fill_continuous_divergingx(super = ScaleDiscretised,
+                                               palette = "PRGn", mid = 25,
+                                               guide = guide_colorsteps(barwidth = 25,
+                                                                        barheight = 0.5, 
+                                                                        title.position = "left", 
+                                                                        title.vjust = 1,
+                                                                        frame.colour = "black")) +
+  geom_contour2(data = ~.[x %between% c(-950000, 950000)], aes(z = v_mean_suave, size = stat(level)),
+                proj = norargentina_lambert, color = "black", 
+                breaks = c(-10, -5)) +
+  scale_size_continuous(breaks = c(-10, -5), range = c(0.6, 0.4),
+                        labels = c("-10", "-5")) +
+  labs(fill = latex2exp::TeX("Precipitable\nwater ($Kg$ $m^{-2}$)"), size = latex2exp::TeX("V ($m$ $s^{-1})")) +
+  cordillera +
+  geom_mapa() +
+  facet_grid(. ~ exp, 
+             labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                         E6 = "SATWND", E9 = "RAD"))) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3)) +
+  
+  
+  ana[bottom_top %between% c(1, 10), .(theta_mean = mean(theta)), 
+      by = .(south_north, west_east, date, exp)] %>% 
+  .[pw, on = .NATURAL] %>% 
+  ggplot(aes(x, y)) +
+  geom_contour_fill(aes(z = theta_mean, fill = stat(level_d)),
+                    proj = norargentina_lambert,
+                    breaks = c(-Inf, seq(290, 314, 2), Inf), limits = c(-Inf, Inf)) +
+  scale_fill_distiller(super = ScaleDiscretised,
+                       palette = "RdYlBu", direction = -1,
+                       guide = guide_colorsteps(barwidth = 25,
+                                                barheight = 0.5, 
+                                                title.position = "left", 
+                                                title.vjust = 1,
+                                                frame.colour = "black")) +
+  labs(fill = "Potential\ntemperature (K)") +
+  cordillera +
+  geom_mapa() +
+  facet_grid(. ~ exp, 
+             labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                         E6 = "SATWND", E9 = "RAD"))) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3),
+        strip.text = element_blank(), 
+        strip.background = element_blank()) +
+  
+  
+  mucape %>% 
+  .[variable == "mcape"] %>% 
+  .[, c("x", "y") := wrf_project(lon, lat)] %>% 
+  .[cor, on = .NATURAL] %>% 
+  .[, cortante_suave := metR:::smooth2d(x, y, cortante, kx = 0.2, ky = 0.2), by = .(exp)] %>% 
+  ggplot(aes(x, y)) +
+  geom_contour_fill(aes(z = value, fill = stat(level_d)), 
+                    proj = norargentina_lambert, limits = c(500, 6000)) +
+  scale_fill_distiller(super = ScaleDiscretised,
+                       palette = "YlOrRd", direction = 1,
+                       guide = guide_colorsteps(barwidth = 25,
+                                                barheight = 0.5, 
+                                                title.position = "left", 
+                                                title.vjust = 1,
+                                                frame.colour = "black")) +
+  geom_contour2(data = ~.[x %between% c(-950000, 950000) &
+                           y %between% c(-1170000, 1170000)], aes(z = cortante_suave, size = stat(level)),
+                proj = norargentina_lambert, color = "black", 
+                breaks = c(15, 30)) +
+  scale_size_continuous(breaks = c(15, 30), range = c(0.6, 0.4),
+                        labels = c("15", "30")) +
+  labs(fill = latex2exp::TeX("MCAPE ($J$ $Kg^{-1}$)"), size = latex2exp::TeX("Wind\nshear ($m$ $s^{-1}$)")) +
+  cordillera +
+  geom_mapa() +
+  facet_grid(. ~ exp, 
+             labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                         E6 = "SATWND", E9 = "RAD"))) +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3),
+        strip.text = element_blank(), 
+        strip.background = element_blank()) +
+  
+  plot_layout(ncol = 1, heights = c(1, 1, 1)) +
+  plot_annotation(tag_levels = "a", tag_suffix = ")")
+```
+
+
+
+### Validation against independent observations
+
+First, the impact of assimilating different observation types in terms of the representation of the MCS and its associated precipitation is analyzed. Figure \@ref(fig:pp-hov)a shows the hourly accumulated precipitation as estimated by IMERG, and the probability matched mean (PM) [@clark2017] for the first-guess hourly accumulated precipitation as averaged between 67$^{\circ}$W and 54.5$^{\circ}$W as a function of time and latitude in the different experiments. The heaviest precipitation (over 12 $mmh^{-1}$) starts during the afternoon of Nov 22 and continues during Nov 23 after the end of the simulated period (Figure \@ref(fig:pp-hov)a). In all the experiments, the accumulated precipitation in the short-range forecasts is underestimated. This is particularly evident in CONV (Figure \@ref(fig:pp-hov)b), where the convection initiation is delayed and occurs further north with respect to the observed initiation. AWS, SATWND, and RAD better capture the timing and location of convective initiation (Figures \@ref(fig:pp-hov)c-e). AWS and RAD show a more fragmented distribution compared with SATWND, possibly due to the development of less organized convection during Nov 22. After 18 UTC Nov 22, RAD shows improvements in the precipitation rate and its distribution compared to the other experiments as a result of enhanced development of the convection.
+
+
+(ref:pphov) Hövmoller diagram of probability matched mean hourly accumulated 1-h forecast precipitation for each latitude band estimated by IMERG (left) and simulated (right), for the ensemble mean of each experiment, averaged over a longitude range between 67$^{\circ}$W and 54.5$^{\circ}$W. Contours drawn every 0.5 $mm\ h^{-1}$, starting at 0.5 $mm\ h^{-1}$.
+
+```{r pp-hov, fig.cap="(ref:pphov)", fig.height=4, fig.width=6, fig.env="figure*", fig.pos="h", fig.align="center"}
+
+files <- Sys.glob(here("analysis/data/derived_data/analysis_variables/pp_pmm/E[2569]_ana*_pp_pmm.rds"))
+
+ppacum_1h <- purrr::map(files, function(f) {
+  
+  readRDS(f) %>% 
+    .[, c("lon", "lat") := wrf_project(x, y, inverse = TRUE, round = FALSE)] %>% 
+    .[, ":="(rank = NULL, ens_mean = NULL)] %>% 
+  setnames(c("pp_pmm"), c("pp_acum"))
+  
+}) %>% rbindlist() %>% 
+  .[x %between% c(-300000, 800000) & y %between% c(-800000, 1090000)] 
+
+
+readRDS(here("analysis/data/derived_data/observations/IMERG_1h.rds")) %>% 
+  .[, c("lon", "lat") := wrf_project(x, y, inverse = TRUE, round = FALSE)] %>% 
+  .[x %between% c(-300000, 800000) & y %between% c(-800000, 1090000)] %>% 
+  .[end_date %between% c(as_datetime("20181121180000"), as_datetime("20181123120000"))] %>% 
+  .[, .(pp_acum = mean(pp_acum),
+        lat = mean(lat),
+        exp = "IMERG"), by = .(end_date, y)] %>% 
+  ggplot(aes(end_date, lat)) +
+  geom_contour_fill(aes(z = pp_acum, fill = stat(level)), breaks = c(seq(0.5, 13, 0.5), Inf)) +
+  geom_contour2(aes(z = pp_acum), color = "black", size = 0.02, breaks = seq(0.5, 13, 0.5)) +
+  # scale_fill_viridis_c(option = "A",
+  scale_fill_distiller(palette = "YlGnBu",
+                       direction = 1,
+                       labels = function(x) JumpBy(x, 2, fill = ""),
+                       super = ScaleDiscretised,
+                       guide = guide_colorsteps(barwidth = 25,
+                                                barheight = 0.3, 
+                                                title.position = "left", 
+                                                title.vjust = 1,
+                                                frame.colour = "black")) +
+  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  scale_y_latitude(breaks = seq(-40, -20, 5)) +
+  facet_wrap(~ exp) +
+  tag_facets(position = list(x = 0.1, y = 0.96)) +
+  labs(x = NULL, y = NULL, fill = latex2exp::TeX("Accumulated\nprecipitation ($mm$ $h^{-1}$)")) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 9)) +
+  
+  ppacum_1h %>% 
+  .[exp %in% c("E2", "E5", "E6", "E9")] %>%
+  .[, lat := lat[1], by = .(y)] %>% 
+  .[, .(pp_acum = mean(pp_acum)), by = .(exp, date, y, lat)] %>% 
+   .[date %between% c(as_datetime("20181121180000"), as_datetime("20181123120000"))] %>% 
+  ggplot(aes(date, lat)) +
+  geom_contour_fill(aes(z = pp_acum, fill = stat(level)), breaks = c(seq(0.5, 13, 0.5), Inf)) +
+  geom_contour2(aes(z = pp_acum), color = "black", size = 0.02, breaks = seq(0.5, 13, 0.5)) +
+  # scale_fill_viridis_c(option = "A",
+  scale_fill_distiller(palette = "YlGnBu",
+                       direction = 1,
+                       labels = function(x) JumpBy(x, 2, fill = ""),
+                       super = ScaleDiscretised,
+                       guide = guide_colorsteps(barwidth = 25,
+                                                barheight = 0.3, 
+                                                title.position = "left", 
+                                                title.vjust = 1,
+                                                frame.colour = "black")) +
+  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  scale_y_latitude(breaks = seq(-40, -20, 5), labels = NULL) +
+  facet_wrap(~ exp, ncol = 4, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                                          E6 = "SATWND", E9 = "RAD"))) +
+  tag_facets(tag_pool = c("b", "c", "d", "e"), position = list(x = 0.1, y = 0.96)) +
+  labs(x = NULL, y = NULL, fill = latex2exp::TeX("Accumulated\nprecipitation ($mm$ $h^{-1}$)")) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        panel.spacing = unit(1, "lines"),
+        tagger.panel.tag.text = element_text(size = 9)) +
+  
+  plot_layout(ncol = 2, widths = c(0.2, 0.8), guides = "collect") & theme(legend.position = 'bottom')
+```
+
+
+The FSS is computed to quantify the spatial match between the observed precipitation and the first-guess hourly accumulated precipitation for the different experiments (Figure \@ref(fig:fss)). For each threshold and spatial scale, Equation \@red(eq:eq7) is applied in 6-hours rolling windows throughout the experiment period. All experiments show similar values of FSS during the initiation of the convection before 06 UTC Nov 22 except for RAD which performs better than the rest of the experiments during this period. This indicates that radiance observations have a positive impact on the analysis. The FSS for CONV is the lowest compared to the rest of the experiments and the differences are larger during the mature stage of the MCS. AWS and SATWND show similar FSSs indicating that satellite-derived wind assimilation has little impact on the precipitation for this case study. The assimilation of radiances led to an overall improvement of the 1-hour forecast precipitation, particularly for the 25 mm threshold during the period of heaviest precipitation on Nov 22 (Figure \@ref(fig:fss)b,d). The enhancement is also important at the developing stage of the MCS (between 00 and 12 UTC Nov, 22 and also for spatial scales above 500 km, not shown). 
+
+(ref:fss) FSS calculated over 1-h forecast precipitation accumulated in a 6-hour moving window for 1 mm (a and c) and 25 mm (b and d) thresholds, on 10 km (a and b) and 100 km (c and d) scales, for the first-guess of CONV (blue line), AWS (light blue line), SATWND (orange line) and RAD (red line) experiments.
+
+```{r fss, fig.cap="(ref:fss)", fig.width=3.5, fig.height=3.5, fig.pos="t"}
+files <- Sys.glob(here("analysis/data/derived_data/FSS/fss_6h_ana_ens_E[2569].csv"))
+
+fss <- purrr::map(files, function(f) {
+  
+  fread(f) %>% 
+    .[, date := as_datetime(date)]
+}) %>% 
+  rbindlist()
+
+fss %>% 
+  .[w %in% c(1, 11) & q %in% c(1, 25) & exp %in% c("E2", "E5", "E6", "E9")] %>% 
+  .[, ":="(q_label = factor(q, labels = c("1~mm~h^{-1}", "25~mm~h^{-1}")),
+           w_label = factor(w, labels = c("10~km", "100~km")))] %>% 
+  ggplot(aes(date, fss)) +
+  geom_hline(yintercept = 1, color = "darkgray") +
+  geom_line(aes(color = exp)) +
+  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS", 
+                                                      E6 = "SATWND", E9 = "RAD")) +
+  scale_date(20181122000000, 20181123000000, "12 hours") +
+  coord_cartesian(xlim = c(ymd_hms(20181122000000), ymd_hms(20181123120000))) +
+  facet_grid(w_label ~ q_label, labeller = label_parsed) +
+  tagger::tag_facets(position = list(x = 0.05, y = 0.90)) +
+  labs(color = NULL, x = NULL, y = "FSS") +
+  theme_minimal(base_size = 8) +
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
+```
+
+To complement the analysis, Figure \@ref(fig:dbz-mean) shows the observed maximum reflectivity in the vertical column (COLMAX) and the ensemble mean COLMAX for the CONV and RAD experiments at different times between 10 and 19 UTC Nov 22. These experiments were chosen because they represent the analysis with the minimum (CONV) and maximum (RAD) number of assimilated observations. In addition, they are the worst (CONV) and best (RAD) performing experiments in terms of the 1-hour precipitation forecast skill (Figure \@ref(fig:fss)). Overall, none of the short-range forecasts capture the mesoscale details in the reflectivity distribution. This is partially expected considering the coarse horizontal grid spacing (10 km), which is not enough to appropriately represent the strength of the convective band associated with the MCS. RAD better represents the observed features of the system showing a stronger and more organized MCS than CONV, over the domain center at 10 and 13 UTC (first and second columns in Figure \@ref(fig:dbz-mean)). The convective cells that initiate after 16 UTC along the warm front in the northeast part of the domain are well captured by both experiments but are better represented in terms of strength in RAD. In addition, CONV captures the location of the MCS, but the convection seems to be less organized and much weaker than in RAD. Before and after the times shown in Figure \@ref(fig:dbz-mean), the agreement between location of the observed convective cells and the simulated in the experiment is quite good in the regions where radar data are available, especially for RAD. 
+
+Finally, Figure \@ref(fig:soundings) shows the RMSE and bias calculated by comparing the experiments with radiosonde data from the RELAMPAGO missions, IOP 7 from 15 to 21 UTC Nov 21 (including 30 radiosondes), and IOP 8 from 14 to 20 UTC Nov 22 (including 22 radiosondes). 
+
+IOP 7 (Figures \@ref(fig:soundings)a-d) provides a good characterization of the pre-convective environment during the first day of our experiments. The area where the observations were taken was characterized by mostly clear skies and a low-level northerly flow associated with warm and moist advection. In general, the experiments show a similar RMSE and bias for all the variables. AWS observations were able to reduce the RMSE for temperature and dew point temperature in the PBL and reduce a small dry bias. However, in this region (Figure \@ref(fig:dominio)b) and for this period, AWS increments (Figure \@ref(fig:UV-diff)d) degrades the zonal wind between 7 and 12 km increasing the bias and RMSE (Figure \@ref(fig:soundings)c).
+
+
+(ref:dbz-mean) Maximum reflectivity in the column (COLMAX in $dBZ$), observed (upper row) and 1-hr forecast probability matched mean column maximum reflectivity for CONV (second row) and RAD (third row) at 10 UTC (first column), 13 UTC (second column), 16 UTC (third column), and 19 UTC (fourth column) Nov 22, 2018. Black circles in first row show the observation range of each radar. 
+
+```{r dbz-mean, fig.cap="(ref:dbz-mean)", out.width="100%", fig.height=6.5, fig.width=8, fig.env="figure*", fig.pos="ht"}
+proj_radar <- "+proj=tmerc +lon_0=-61.5 +lat_0=-32 +k_0=1 +ellps=WGS84"
+
+rad_loc <- fread(here("analysis/data/derived_data/sample_obs/radar_loc.csv")) %>% 
+  .[, run := "OBSERVATIONS"]
+
+files <- Sys.glob(here("analysis/data/derived_data/observations/*.nc"))
+# Solo un par de horarios 10, 13, 16 y 19 UTC
+
+dbz_obs <- purrr::map(files, function(f) {
+  
+  
+  ReadNetCDF(f, vars = "DBZH_cor") %>%
+    .[!is.na(DBZH_cor)] %>% 
+    .[, .(DBZH_cor = max(DBZH_cor, na.rm = TRUE)), by = .(x, y)] %>% 
+    .[, max_dbz := 10 * log10(DBZH_cor)] %>% 
+    .[, ":="(date = ymd_hms(str_remove(basename(f), ".nc")),
+             DBZH_cor = NULL)] %>% 
+    .[, c("lon", "lat") := proj4::project(list(x, y), proj_radar, inverse = TRUE)]
+  
+}) %>% rbindlist() %>% 
+  .[, run := "OBSERVATIONS"]
+
+files <- Sys.glob(here("analysis/data/derived_data/analysis_variables/dbz_pmm/E[29]_ana_*_dbz_pmm.rds"))
+
+dbz_ana <- purrr::map(files, function(f){
+  
+  read_rds(f)
+
+}) %>% 
+  rbindlist()  %>% 
+  .[, run := fifelse(exp == "E9", "RAD", "CONV")] %>%
+  .[, ":="(ens_mean = NULL,
+           rank = NULL,
+           exp = NULL)]
+
+values <- c(9, 12, 15, 16.5, 18, 19.5, 21,
+            22.5, 24, 25.5, 27, 28.5, 30, 31.5, 33, 34.5, 36, 37.5, 39, 40.5,
+            42, 43.5, 45, 46.5, 48, 49.5, 51, 52.5, 54, 55.5, 57, 58.5, 60,
+            61.5, 63, 64.5, 66, 69, 76.5)
+
+colours <- c("#2F89B9", "#2896C7", "#24A4CF", "#2AB1D6", "#53F336", "#4BE231", 
+             "#44D12F", "#3FC12B", "#3AAF25", "#32A11F", "#2C881E", "#227216", 
+             "#EEEF39", "#DEE539", "#D7DA35", "#CED130", "#C4C52B", "#CBAE1F", 
+             "#D59716", "#DB8116", "#EC0A2E", "#CB001A", "#C20013", "#B10009", 
+             "#990000", "#C3005D", "#D600A2", "#E901E9", "#CC00CC", "#B100B5", 
+             "#9800A0", "#FEFFFF", "#DFF5EC", "#C5F1E0", "#B7ECD8", "#A6ECCF", 
+             "#95E3C5", "#85E0BD")
+
+
+rbind(dbz_obs, dbz_ana) %>% 
+  .[, ":="(date = factor(date),
+           run = fct_relevel(run, "OBSERVATIONS", "CONV", "RAD"))] %>% 
+  ggplot(aes(x, y)) +
+  geom_contour_fill(data = ~.x[run == "OBSERVATIONS"], aes(z = max_dbz, fill = stat(level)),
+                    proj = proj_radar,
+                    breaks = values) +
+  geom_contour_fill(data = ~.x[run != "OBSERVATIONS"], aes(z = max_dbz, fill = stat(level)), 
+                    proj = proj_radar,
+                    breaks = values) +
+  scale_fill_manual(values = colours, 
+                    labels = function(x) JumpBy(x, 3, fill = ""),
+                    drop = FALSE, 
+                    # limits = c(10, 76.5),
+                    guide = guide_colorsteps(barwidth = 25,
+                                             barheight = 0.4, 
+                                             title.position = "left", 
+                                             title.vjust = 1,
+                                             frame.colour = "black")) +
+  geom_path(data = rad_loc, aes(lon, lat, group = ID), size = 0.2, color = "grey20") +
+  geom_mapa() +
+  coord_sf(ylim = c(-42, -19), xlim = c(-76, -51)) +
+  scale_x_longitude(ticks = 5) +
+  facet_grid(factor(run, levels = c("OBSERVATIONS", "CONV", "RAD")) ~ date, 
+             labeller = labeller(date = c("2018-11-22 10:00:00" = "10 UTC",
+                                                      "2018-11-22 13:00:00" = "13 UTC",
+                                                      "2018-11-22 16:00:00" = "16 UTC",
+                                                      "2018-11-22 19:00:00" = "19 UTC"))) +
+  labs(x = NULL, y = NULL, fill = "COLMAX (dBZ)") +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        plot.margin = margin(t = 0, r = 0, b = 0, l = 0, unit = "pt"),
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3)) 
+
+```
+
+
+For IOP 8 (Figures \@ref(fig:soundings)e-h), the densely observed area was behind the MCS, but far enough from it to not be directly affected by its mesoscale circulation. This area was also behind the cold front and affected by low-level cold advection. The assimilation of AWS, SATWND, and RAD reduces the cold bias and RMSE for temperature between 5 and 12 km and the RMSE in the PBL compared with CONV (Figure \@ref(fig:soundings)e). The reduction of bias and RMSE is also important for dew point temperature (Figure \@ref(fig:soundings)f) with SATWND showing the biggest impact followed by AWS and RAD. The zonal wind is overestimated in the analyses and only RAD shows an improvement with respect to CONV in the upper troposphere (Figure \@ref(fig:soundings)g). At low levels the meridional wind (Figure \@ref(fig:soundings)g) presents a negative bias, indicating an underestimation of the southerly wind behind the cold front principally in AWS, SATWND, and RAD. In fact, low level biases in these experiments are higher than in the CONV experiment, indicating a detrimental effect of the additional observations (possibly associated with the effect of AWS). 
+
+(ref:soundings) RMSE (solid line) and Bias (dashed line) of a) temperature ($K$), b) dew point temperature ($K$), c) u wind ($m\ s^{-1}$) and d) v wind ($m\ s^{-1}$) calculated by comparing the analysis of each experiment with the RELAMPAGO soundings during IOP 7 and IOP 8. The blue line corresponds to CONV, the light blue line to AWS, SATWND is represented with an orange line, and RAD with a red line.
+
+```{r soundings, fig.cap="(ref:soundings)", fig.width=6, fig.height=4, fig.env="figure*", fig.pos="ht", fig.align="center"}
+files <- Sys.glob(here("analysis/data/derived_data/soundings/sondeo_E[2569]_ana*"))
+
+sondeos <- purrr::map(files, function(f){
+  
+  fread(f) %>% 
+    .[, value := fifelse(variable %in% c("t", "td"), value + 273.15, value)] %>% 
+    .[, launch_time := as_datetime(launch_time)]
+  
+}) %>% 
+  rbindlist()
+
+IOP <- tribble(
+  ~iop, ~ini, ~end,
+  "IOP07", ymd_hms("20181121150000"), ymd_hms("20181121210000"),
+  "IOP08", ymd_hms("20181122140000"), ymd_hms("20181122200000")
+) %>% setDT()
+
+
+sondeos %>% 
+  .[, iop := fcase(launch_time %between% c(ymd_hms("20181121150000"), ymd_hms("20181121210000")), "IOP07",
+                   launch_time %between% c(ymd_hms("20181122140000"), ymd_hms("20181122200000")), "IOP08")] %>% 
+  .[variable %in% c("t", "td", "u", "v") & !str_detect(site, "/") & !is.na(fcst_value) & !is.na(iop)] %>% 
+  .[site != "Sao Borja, Brazil"] %>% 
+  .[, lev := cut_round(alt, c(seq(0, 3000, 500), seq(4000, 21000, 1000)))] %>% 
+  .[, ":="(RMSE = mean(sqrt((fcst_value - value)^2), na.rm = TRUE), 
+           BIAS = mean(fcst_value - value, na.rm = TRUE)), by = .(iop, exp, variable, lev)] %>% 
+  melt(measure.vars = c("RMSE", "BIAS"), variable.name = "estadistico", value.name = "value.est") %>% 
+  .[lev <= 15000] %>% 
+  .[, ":="(iop_labels = factor(iop, labels = c("IOP~7", "IOP~8")),
+           variable_labels = factor(variable, labels = c("Temperature~(K)", "Dew~point~temperature~(K)", 
+                                                         "U~wind~(m~s^{-1})", "V~wind~(m~s^{-1})")))] %>% 
+  ggplot(aes(lev/1000, value.est)) +
+  geom_hline(yintercept = 0, color = "grey30") +
+  geom_line(aes(color = exp, linetype = estadistico)) +
+  scale_color_manual(values = c(colores_exp), labels = c(E2 = "CONV", E5 = "AWS", 
+                                                                  E6 = "SATWND", E9 = "RAD")) +
+  coord_flip() +
+  facet_grid(iop_labels ~ variable_labels, scales = "free_x", 
+             labeller = label_parsed) +
+   tagger::tag_facets(position = list(x = 0.05, y = 0.95)) +
+  labs(y = "Bias/RMSE", x = "Height (Km)", color = NULL, linetype = NULL) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
+```
+
+## Conclusiones
 
