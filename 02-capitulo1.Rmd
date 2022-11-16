@@ -4,28 +4,28 @@
 
 ### Observaciones asimiladas
 
-#### Conventional 
+#### Conventionales 
 
-The conventional observations used are part of the Global Data Assimilation System (GDAS) data stream. Conventional observations included in the Binary Universal Form for Representation of Meteorological Data (PREPBUFR) files generated at the National Centers for Environmental Prediction (NCEP) are assimilated. These consist of surface observations from 117 Conventional Surface Weather Stations (CSWS), ships, and upper-air observations from 13 radiosondes sites and aircraft. The orange triangles in Figure \@ref(fig:dominio)a indicate the location of the surface stations included in this experiment. The frequency of these observations varied between 1 hour for surface stations and 12/24 hours for radiosondes. Wind surface observations over oceans (ASCATW) come from scatterometers and are also included in the PREPBUFR files.
+Las observaciones convencionales (EMC) utilizadas forman parte del flujo de datos del Sistema Global de Asimilación de Datos (GDAS). Se asimilarán las observaciones convencionales incluidas en los archivos Binary Universal Form for Representation of Meteorological Data (PREPBUFR) generados por NCEP. Los archivos PREPBUFR incluyen observaciones de superficie procedentes de 117 estaciones meteorológicas de superficie (EMS), barcos, y observaciones de altura procedentes de 13 sitios de lanzamiento de radiosondeos y aviones. Los triángulos naranjas de la Figura \ref(fig:dominio)a indican la ubicación de las estaciones de superficie incluidas en este experimento. La frecuencia de estas observaciones varia entre 1 hora para las estaciones de superficie y 12/24 horas para las radiosondas. Las observaciones del viento en superficie sobre los océanos (ASCATW) proceden de los dispersómetros y también se incluyen en los archivos PREPBUFR.
 
-Table \@ref(tab:table-obs) lists all the observation types (i.e., surface pressure, temperature, specific humidity, and wind) available for each source, together with their associated errors. The observation errors were specified following the GSI default configuration. In some cases, the error varies with height and depends on the specific platform (aircraft and satellite-derived wind). In terms of quality control, a gross check was performed by the observation operator by comparing the innovation (the difference between the observation and the model-simulated observation based on the first-guess) with a predefined threshold that depends on the observation error (also included in Table \@ref(tab:table-obs)). 
- 
-
-#### AWS networks 
-
-Data from 866 Automatic Weather Stations (AWS) that are part of 17 public and private surface networks over Southern South America are also assimilated. The dataset used in this study has been obtained from the RELAMPAGO Data Set repository [@garcia2019]. These stations are indicated as green squares in Figure \@ref(fig:dominio)a. They have higher spatial coverage than the CSWS and a sampling frequency of 10 minutes in most cases. All stations measure temperature, but only 395 stations provide humidity, 422 provide pressure, and 605 provide wind information. 
-Observation errors used to assimilate these observations are the same as for the CSWS (see Table \@ref(tab:table-obs)).
+La tabla \@ref(tab:tabla-obs) enumera todos los tipos de observación (presión en superficie, temperatura, humedad específica y viento) disponibles para cada fuente de observación, junto el error asociado para cada una definidos de acuerdo a la configuración por defecto de GSI. En algunos casos, el error varía con la altura y depende de la plataforma específica (avión y viento derivado del satélite). En cuanto al control de calidad aplicado a las observaciones convencionales, el operador de la observación realiza una primera comparación entre la innovación (la diferencia entre la observación y la observación simulada por el modelo para el campo preliminar) y un umbral predefinido que depende del error de observación (también incluido en la Tabla \@ref(tab:tabla-obs)). 
 
 
-#### Satellite-derived winds
+#### Red de Estaciones Meteorológicas Automáticas 
 
-Satellite-derived wind observations are also included in the PREPBUFR files available every 6 h, and consist of estimations from GOES-16 (using the visible, infrared, and water vapor channels) and METEOSAT 8 and 11 (using the visible and water vapor channels). Due to the domain covered by each of these satellites, GOES-16 is the primary source of satellite-derived winds (99 % of the observations). Observation errors used to assimilate these observations follow the GSI default configuration and are indicated in Table \@ref(tab:table-obs). 
+También se asimilaron observaciones de 866 Estaciones Meteorológicas Automáticas (EMA) que forman parte de 17 redes de superficie públicas y privadas en la región. El conjunto de datos utilizado en este estudio fue obtenido del repositorio de datos de RELAMPAGO [@garcia2019]. Estas estaciones se indican como cuadrados verdes en la Figura \ref(fig:dominio)a. Tienen mayor cobertura espacial que las EMC y una frecuencia de muestreo de 10 minutos en la mayoría de los casos. Todas las estaciones miden temperatura, pero sólo 395 estaciones proporcionan humedad, 422 la presión y 605 el viento. 
+Los errores de observación utilizados para asimilar estas observaciones son los mismos que para las observaciones de EMC (véase la tabla \ref(tab:tabla-obs)).
 
 
-```{r table-obs}
+#### Vientos estimados por satélite
+
+Las observaciones de viento derivadas de los satélites también se incluyen en los archivos PREPBUFR disponibles cada 6 hs, y consisten en estimaciones de GOES-16 (utilizando los canales visible, infrarrojo y de vapor de agua) y METEOSAT 8 y 11 (utilizando los canales visible y de vapor de agua). Debido al dominio elegido y la cobertura de estos satélites, GOES-16 es la principal fuente de observaciones de vientos derivados de los satélites (99 % de las observaciones). Los errores de observación utilizados para asimilar estas observaciones siguen la configuración por defecto del GSI y se indican en la Tabla \ref(tab:tabla-obs).
+
+
+```{r tabla-obs}
 fread(here("data/derived_data/tables/table1.csv")) %>% 
-  kbl(caption = "Characteristics of the assimilated observations: The code for each observation type and its source, the available variables, the observation error, and the gross check thresholds used.",
-      col.names = c("Code", "Platform", "Variable", "Error", "Gross check"),
+  kbl(caption = "Características de las observaciones asimiladas: El código de cada tipo de observación y su fuente, las variables disponibles, el error de observación y los umbrales de control de calidad utilizados.",
+      col.names = c("Código", "Plataforma", "Variable", "Error", "Umbral de error"),
       booktabs = TRUE,
       escape = FALSE) %>% 
   kable_classic_2(full_width = FALSE) %>% 
@@ -36,31 +36,31 @@ fread(here("data/derived_data/tables/table1.csv")) %>%
   column_spec(3, width = "6em") %>% 
   column_spec(4:5, width = "8em") %>% 
   collapse_rows(columns = 1:2, valign = "middle", latex_hline = "major") %>% 
-  footnote(symbol = c("Observation error varied with height.",
-                      "Observations above 600 hPa are rejected.",
-                      "Observation error depends on the report type."),
+  footnote(symbol = c("El error de la observación varía con la altura.",
+                      "Observationes por encima de 600 hPa son rechazadas.",
+                      "El error de la observación depende del tipo de reporte."),
            symbol_manual = c("*", "**", "+"))
 ```
 
 
-#### Satellite radiances {#sat}
+#### Radiancias de aatélite {#sat}
 
-Satellite radiances available through the GDAS data stream, consisting of infrared and microwave observations, are used in this study. This includes the Advanced Microwave Sounding Unit - A (AMSU-A), Microwave Humidity Sounder (MHS), and 2 multispectral sensors; the Atmospheric Infrared Sounder (AIRS) and the Infrared Atmospheric Sounding Interferometer (IASI) over several satellite platforms (see Table \@ref(tab:table-rad)). Since the regional domain is located in the mid-latitudes and the satellite platforms of interest are on polar orbits, each sensor scans the area only twice a day with a spatial coverage depending on the satellite swath. For this reason, the number of satellite observations varied significantly among cycles. In particular, the multispectral sensors provided between 100 and 1000 observations for every scan every 12 hours, contributing 88 % of the total amount of assimilated radiances in our experiment. The vertical location of each radiance observation was estimated as the model level at which its weighting function was maximized as calculated by CRTM. The multispectral sensors have good vertical coverage and are able to sense from the lower troposphere up to the lower stratosphere. 
+En este capítulo se utilizaron radiancias de satélites disponibles a través del flujo de datos del GDAS, que incluye observaciones en el espectro infrarrojos y microondas. Los sensores incluidos son el Advanced Microwave Sounding Unit - A (AMSU-A), Microwave Humidity Sounder (MHS), y 2 sensores multiespectrales; el Atmospheric Infrared Sounder (AIRS) y el Infrared Atmospheric Sounding Interferometer (IASI)  ubicados en distintas plataformas (ver Tabla \ref(tab:table-rad)). Dado que el dominio regional se encuentra en latitudes medias y que los satélite de interés están en órbitas polares, cada sensor escanea la zona sólo dos veces al día con una cobertura espacial que depende de la franja de covertura satélite. Por esta razón, el número de observaciones de los satélites varía significativamente entre en cada ciclo de asimilación. En particular, los sensores multiespectrales proporcionaron entre 100 y 1000 observaciones por cada escaneo cada 12 horas, contribuyendo al 88 % de la cantidad total de radiancias asimiladas en los experimentos. La ubicación vertical de cada observación de radiancia se estimó como el nivel del modelo en el que se maximizaba su función de peso calculada por el CRTM. Los sensores multiespectrales tienen una buena cobertura vertical y son capaces de captar desde la baja troposfera hasta la baja estratosfera.
 
-The channels adopted for assimilation and their associated errors were defined taking into account the low model top (50 hPa). The data preprocessing, which is an essential step in the assimilation of radiances, was performed within the GSI system for each sensor specifically. First, a spatial data thinning is applied using a 60 km grid following @singh2016, @jones2013, and @lin2017a, where the observations to be assimilated are chosen based on their distance to the model grid points, the observation quality (based on available data quality information), and the number of available channels (from the same pixel and sensor) that passed the quality control. Also, observations over the sea are preferred to those over land or snow [@hu2018]. 
+Los canales elegidos para la asimilación y sus errores asociados se definieron teniendo en cuenta el tope del modelo (50 hPa). El preprocesamiento de datos, que es un paso esencial en la asimilación de radiancias, se realizó dentro del sistema GSI para cada sensor específicamente. En primer lugar, se aplicó un thinning espacial de los datos utilizando una retícula de 60 km siguiendo a @singh2016, @jones2013 y @lin2017a, donde las observaciones que se van a asimilar se eligen en función de su distancia a los puntos de la retícula del modelo, la calidad de la observación (basada en la información disponible sobre la calidad de los datos) y el número de canales disponibles (para el mismo píxel y sensor) que han pasado el control de calidad. Además, el algoritmo prefiere las observaciones sobre el mar a las de la tierra o nieve [@hu2018]. 
 
-The thinned observations were then bias corrected. The bias correction (BC) has an air-mass dependent and an angle-dependent component [@zhu2014] and it is calculated as a multi-linear function of N predictors $p_i(x)$, with associated coefficients $\beta_i$. Then, the bias corrected brightness temperature ($BT_{bc}$) can be obtained as:
+Luego del thinning, se aplica la corrección de bias. La corrección de bias (CB) tiene una componente dependiente de características termodinámicas del aire y otro dependiente del ángulo de escaneo [@zhu2014] y se calcula como una polinomio lineal de N predictores $p_i(x)$, con coeficientes asociados $\beta_i$. Por lo tanto, la temperatura de brillo corregida por bias ($BT_{cb}$) puede obtenerse como
 
 \begin{equation}
-  \mathrm{\mathit{BT_{bc}} =\mathit{ BT} + \sum_{i = 0}^{N} \beta_i p_i (x)}
+  \mathrm{\mathit{BT_{cb}} =\mathit{ BT} + \sum_{i = 0}^{N} \beta_i p_i (x)}
   (\#eq:eq12)
 \end{equation}
 
-GSI has a constant offset bias correction term ($p_0 = 1$) and the remaining predictors are the cloud liquid water content (CLW), the temperature lapse rate at the pressure of maximum weight, the square of the temperature lapse rate at the pressure of maximum weight, and the emissivity sensitivity. Scan angle-dependent bias is modeled as a 4th-order polynomial [@zhu2014]. 
+GSI tiene un término de corrección de bias constante ($p_0 = 1$) mientras que los términos restantes y sus predictores son el contenido de agua líquida de las nubes (CLW), la tasa de cambio de temperatura con la presión, el cuadrado de la tasa de y la sensibilidad de la emisividad de la superficie. El bias dependiente del ángulo de escaneo se modela como un polinomio de 4$^\circ$ orden [@zhu2014]. 
 
-In the GSI system, the $\beta_i$ coefficients are trained using a variational estimation method which solves the $\beta_i$ that provides the best fit between the simulation and the observations. The coefficients were initialized at 18 UTC Nov 18, 2018 with the GFS system coefficients. The assimilation system was configured to use a constant background error variance of 0.01 to avoid large adjustments in the estimated coefficients at each time. 
+En el sistema GSI, los coeficientes $\beta_i$ se entrenan utilizando un método de estimación variacional que genera los $\beta_i$ que proporciona el mejor ajuste entre la simulación y las observaciones. Los coeficientes se inicializaron a las 18 UTC del 18 de noviembre de 2018 con los coeficientes generados para la misma hora por el sistema GFS. El sistema de asimilación se configuró para utilizar una varianza de error de los coeficientes constante de 0,01 para evitar grandes ajustes en los coeficientes estimados en cada momento. 
 
-In our experiments, only clear-sky observations are used. For microwave radiances, observations potentially contaminated by clouds are detected using the scattering and Liquid Water Path (LWP) indexes [@weston2019; @zhu2016]. For the infrared channels, cloud contaminated observations are detected using the transmittance profile calculated within the CRTM algorithms. Moreover, GSI checks the difference between the observations and simulated brightness temperature with height to detect cloudy pixels. Additionally, the GSI quality control for infrared sensors looks for observations over water with a large zenith angle (over 60°) to reject channels near the visible range that can be contaminated with reflection. It also performs an emissivity check for observations over land for both infrared and microwave radiances. 
+En nuestros experimentos, sólo se utilizan observaciones de cielo claro. Para las radiancias de microondas, las observaciones potencialmente contaminadas por nubes se detectan utilizando los índices de dispersión y del  Liquid Water Path (LWP) [@weston2019; @zhu2016]. Para los canales infrarrojos, las observaciones contaminadas por nubes se detectan utilizando el perfil de transmitancia calculado dentro de los algoritmos CRTM. Además, GSI comprueba la diferencia entre las observaciones y la temperatura de brillo simulada en cada nivel para detectar los píxeles nublados. Por otro lado, el control de calidad de GSI aplicado a los sensores infrarrojos busca observaciones sobre agua con un gran ángulo cenital (más de 60°) para rechazar los canales cercanos al rango visible que pueden estar contaminados por reflexión. Para las observaciones en el infrarrojos y de microondas también realiza una chequeo de la emisividad para detectar observaciones contaminadas por efecto de la superficie. 
 
 ```{r table-rad}
 fread(here("data/derived_data/tables/tabla_radianzas.csv")) %>%
@@ -71,15 +71,15 @@ fread(here("data/derived_data/tables/tabla_radianzas.csv")) %>%
   .[] %>%
   kbl(booktabs = TRUE,
       escape = TRUE,
-      col.names = linebreak(c("Sensor", "Platform", "Assimilated channels", "Percentage over total")),
-      caption = "List of the available sensors over several platforms, the number of accepted channels for the assimilation, and the percentage of assimilated observations calculated over all radiance observations and all cycles.") %>%
+      col.names = linebreak(c("Sensor", "Plataforma", "Canales asimilados", "Porcentaje sobre el total")),
+      caption = "Lista de los sensores disponibles cada plataforma, el número de canales aceptados para su asimilación y el porcentaje de observaciones asimiladas calculado sobre todas las observaciones de radiancias y todos los ciclos de asimilación.") %>%
   kable_styling(font_size = 9) %>%
   collapse_rows(1, valign = "top") %>%
   kable_classic_2(full_width = TRUE)
 ```
 
 
-(ref:obs-horizontal) Horizontal spatial distribution of the mean available observations per analysis cycle for the a) CONV, b) AWS, c) SATWND, and d) RAD experiments calculated over 2.5$^{\circ}$ boxes.
+(ref:obs-horizontal) Distribución espacial horizontal media de las observaciones disponibles en cada ciclo de asmilación para los experimentos a) CONV, b) AWS, c) SATWND y d) RAD calculados sobre cajas de 2,5$^{circ}$.
 
 ```{r obs-horizontal, fig.cap="(ref:obs-horizontal)", out.width="100%"}
 satinfo <- fread(here("data/derived_data/sample_obs/satinfo.txt")) %>% 
@@ -174,16 +174,16 @@ rbind(conv, aut, satwnd, rad_conv) %>%
   facet_wrap(~exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
                                                E6 = "SATWND", E9 = "RAD"))) +
   tagger::tag_facets() +
-  labs(fill = "Mean number of\nobs per cycle") +
+  labs(fill = "Cantidad media de \nobservaciones por ciclo") +
   theme_minimal(base_size = 13) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 14),
         plot.margin = unit(c(0, 0, 0, 0), "cm"))
 ```
 
-(ref:obs-cycle) a) Number of assimilated observations per cycle and b) time averaged number of assimilated observations per cycle divided into 50 hPa-depth vertical layers for the CONV (blue squares and line), AWS (light blue dots and line), SATWND (orange triangles and line) and RAD (red diamonds and line) experiments.
+(ref:obs-cycle) a) Número de observaciones asimiladas por ciclo y b) número medio de observaciones asimiladas por ciclo dividido en capas verticales de 50 hPa de espesor para los experimentos CONV (cuadrados azules), AWS (puntos celestes), SATWND (triángulos naranjas) y RAD (diamantes rojos).
 
-```{r obs-cycle, fig.cap="(ref:obs-cycle)", fig.env="figure*", fig.height=3.5, fig.width=7}
+```{r obs-cycle, fig.cap="(ref:obs-cycle)", fig.height=3.5, fig.width=6}
 
 rbind(conv, aut, satwnd, rad_conv) %>%
   .[, .(pressure, usage.flag, rerr, exp, date, lon.box, lat.box)] %>% 
@@ -200,7 +200,7 @@ rbind(conv, aut, satwnd, rad_conv) %>%
                                                             E6 = "SATWND", E9 = "RAD")) +
   scale_y_log10() +
   scale_date() +
-  labs(y = "Number of obs per cycle", x = "Hour (UTC)",
+  labs(y = "Número de obs por ciclo", x = "Hora (UTC)",
        color = NULL, shape = NULL) +
   theme_minimal(base_size = 10) +
   theme(legend.position = "bottom", 
@@ -226,7 +226,7 @@ rbind(conv, aut, satwnd, rad_conv) %>%
   scale_x_reverse() +
   coord_flip() +
   labs(color = NULL, shape = NULL,
-       x = "Pressure level (hPa)", y = "Mean number of\nobs per cycle") +
+       x = "Nivel de presión (hPa)", y = "Cantidad media de \nobs por ciclo") +
   theme_minimal(base_size = 10) +
   theme(legend.position = "bottom",
         plot.margin = unit(c(0, 0, 0, 0), "cm")) +
@@ -244,19 +244,20 @@ rbind(conv, aut, satwnd, rad_conv) %>%
 
 ### Configuracion de los experimentos
 
-To investigate the impact of different observations upon the analysis, four DA experiments were performed using different observation sets (Table \@ref(tab:table-exp)). The CONV experiment uses only conventional observations from PREPBUFR. In a second experiment, referred to as AWS, all the observations included in CONV are assimilated plus the 10-minute frequency surface observations from AWS. In the third experiment, referred to as SATWND, the observations from the AWS experiment along with the satellite-derived winds are assimilated. Finally, a fourth experiment referred to as RAD assimilates all available clear-sky radiances from sensors onboard polar orbiting satellites as described in section \@ref(sat).
+Para investigar el impacto de las diferentes observaciones en el análisis, se realizaron cuatro experimentos de asimilación de datos utilizando diferentes conjuntos de observaciones (Tabla \ref(tab:table-exp)). El experimento CONV utiliza únicamente las observaciones convencionales de PREPBUFR. En un segundo experimento, denominado AWS, se asimilan todas las observaciones incluidas en CONV más las observaciones de EMA con 10 minutos de frecuencia. En el tercer experimento, denominado SATWND, se asimilan las observaciones del experimento AWS junto con los vientos estimados por satélite. Por último, un cuarto experimento, denominado RAD, asimila todas las observaciones mencionadas previamente más las radiancias en cielo claro procedentes de los sensores a bordo de los satélites de órbita polar, como se describe en la sección \@ref(sat).
+
 
 ```{r table-exp}
 tribble(
   ~obs_type, ~conv, ~aut, ~satwnd, ~rad,
-  "Conventional (PREPBUFR)", "x", "x", "x", "x",
-  "Conventional (AWS)", " ", "x", "x", "x",
-  "Satellite-derived winds", " ", " ", "x", "x",
-  "Radiances", " ", " ", " ", "x",
+  "Convencional (PREPBUFR)", "x", "x", "x", "x",
+  "Convencional (EMA)", " ", "x", "x", "x",
+  "Vionto estimado por satélite", " ", " ", "x", "x",
+  "Radiancias", " ", " ", " ", "x",
 ) %>% 
   kbl(booktabs = TRUE, col.names = c("Obs type", "CONV", "AWS", "SATWND", "RAD"),
       align = "lcccc",
-      caption = "Observation types assimilated in each experiment.",
+      caption = "Tipos de observaciones asimiladas en cada experimento.",
       escape = FALSE) %>% 
   kable_classic_2(full_width = TRUE) %>% 
   column_spec(1, width = "8em") %>% 
@@ -264,22 +265,23 @@ tribble(
   column_spec(4:5, width = "3em", latex_valign = "m")
 ```
 
-The horizontal distribution of the average number of assimilated observations per cycle in each experiment is shown in Figure \@ref(fig:obs-horizontal). The larger number of assimilated observations over the center and east of the domain corresponds to the AWS observations. In Figure \@ref(fig:obs-cycle)a the number of assimilated observations over time is shown. Local maxima at 12 and 00 UTC found mainly in CONV are attributed to operational soundings. The strong variability in the number of radiance observations per cycle is also noticeable and depends on the satellite coverage. The maxima at 13-14 and 01-02 UTC in RAD correspond to the contribution of the multispectral sensors. The vertical distribution of the mean number of observations per cycle (Figure \@ref(fig:obs-cycle)b) shows a maximum in low levels due to the AWS observations. Satellite-derived winds are maximized at the upper troposphere (between 500-250 hPa). Above 850 hPa, most of the observations correspond to radiance observations. 
+La distribución horizontal del promedio de observaciones asimiladas en cada ciclo de asimilación de cada experimento se muestra en la Figura \ref(fig:obs-horizontal). El mayor número de observaciones asimiladas sobre el centro y el este del dominio corresponde a las observaciones de EMA. En la Figura \@ref(fig:obs-cycle)a se muestra el número de observaciones asimiladas a lo largo del tiempo. Los máximos locales a las 12 y a las 00 UTC encontrados principalmente en CONV corresponden a las observaciones obtenidas con los sondeos operativos. La fuerte variabilidad en el número de observaciones de radiancias por ciclo es también notable y depende de la cobertura de cada satélite. Los máximos a las 13-14 y 01-02 UTC en RAD corresponden a la contribución de los sensores multiespectrales. La distribución vertical del número medio de observaciones por ciclo (Figura \ref(fig:obs-cycle)b) muestra un máximo en niveles bajos debido a las observaciones de EMA. Los vientos estimados por satélite tienen un máximo en la troposfera alta (entre 500-250 hPa). Por encima de 850 hPa, la mayoría de las observaciones corresponden a radiancias. 
 
-All the assimilation experiments start at 18 UTC Nov 20, 2018 and continue until 12 UTC Nov, 23 (totaling 67 hours/assimilation cycles). The initial 60-member ensemble is generated as explained in section \@ref(config) from a spin-up run without assimilating observations performed between 12 UTC and 18 UTC Nov, 20 (Figure \@ref(fig:cycle)). 
+Todos los experimentos de asimilación comienzan a las 18 UTC del 20 de noviembre de 2018 y continúan hasta las 12 UTC del 23 de noviembre (un total de 67 horas/ciclos de asimilación). El ensamble inicial de 60 miembros se genera según se explica en la sección \ref(config) y todos los experimentos se inician con un periodo de spin up sin asimilación de observaciones entre las 12 UTC y las 18 UTC de Nov, 20 (Figura \ref(fig:cycle)). 
 
-
-(ref:cycle) Diagram of the analysis cycles between 18 UTC Nov 20, and 12 UTC Nov 23 plus spin up period of 6 hours. The zoomed section shows the hourly assimilation that is performed within a one-hour centered window and new boundary conditions from GFS every 6 hours. The two IOP missions from the RELAMPAGO field campaign and the ensemble forecast initialized at 00 and 06 UTC Nov 22 are shown.
+(ref:cycle) Diagrama de los ciclos de asimilación entre las 18 UTC del 20 de noviembre y las 12 UTC del 23 de noviembre más el periodo de spin up de 6 horas. La sección ampliada muestra la asimilación horaria que se realiza dentro de una ventana centrada de una hora y la incorporación de condiciones de borde del GFS cada 6 horas. Se muestran las dos misiones IOP de la campaña RELAMPAGO.
 
 ```{r cycle, echo=FALSE, fig.cap="(ref:cycle)", out.width="80%"}
 
-knitr::include_graphics(here("figure", "analysis_cycle.png"))
+knitr::include_graphics(here("figure", "analisis.png"))
 
 ```
 
 
 
 ## Resultados
+
+
 
 ### Ensamble
 
