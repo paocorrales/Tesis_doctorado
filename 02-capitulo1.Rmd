@@ -1,6 +1,8 @@
 # Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares
 
-## Presentación y metodología
+Este capítulo se analiza buscar contribuir a la cuantificación y comparación del impacto de asimilar observaciones de las estaciones meteorológicas automáticas de alta resolución, viento estimando por satélite y radiancias de cielo claro de satélites polaresa la hora de aplicar la asimilación de datos para mejorar los pronósticos numéricos de eventos severes) sobre Sudamérica, donde la red de observación convencional es bastante escasa y otras fuentes de información podrían potencialmente cubrir las áreas menos observadas. 
+
+## Metodología
 
 ### Observaciones asimiladas
 
@@ -81,7 +83,7 @@ fread(here("data/derived_data/tables/tabla_radianzas.csv")) %>%
 
 (ref:obs-horizontal) Distribución espacial horizontal media de las observaciones disponibles en cada ciclo de asmilación para los experimentos a) CONV, b) AWS, c) SATWND y d) RAD calculados sobre cajas de 2,5$^{circ}$.
 
-```{r obs-horizontal, fig.cap="(ref:obs-horizontal)", out.width="100%", fig.width=6}
+```{r obs-horizontal, fig.cap="(ref:obs-horizontal)", fig.width=6}
 satinfo <- fread(here("data/derived_data/sample_obs/satinfo.txt")) %>% 
   setnames(c("!sensor/instr/sat", "chan"), c("sensor", "channel"))
 
@@ -175,7 +177,7 @@ rbind(conv, aut, satwnd, rad_conv) %>%
                                                E6 = "SATWND", E9 = "RAD"))) +
   tagger::tag_facets() +
   labs(fill = "Cantidad media de \nobservaciones por ciclo") +
-  theme_minimal(base_size = 13) +
+  theme_minimal(base_size = 11) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 14),
         plot.margin = unit(c(0, 0, 0, 0), "cm"))
@@ -443,7 +445,7 @@ Comparando la representación de la humedad específica en los experimentos (Fig
 
 (ref:TQ-diff) Diferencia entre la media del ensamble para la media del ensamble del análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en $K$) y la humedad específica (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis.
 
-```{r TQ-diff, fig.cap="(ref:TQ-diff)", fig.height=5.5, fig.width=6, fig.align="center",fig.pos="ht"}
+```{r TQ-diff, fig.cap="(ref:TQ-diff)", fig.height=5.5, fig.width=7, fig.align="center"}
 files <- Sys.glob(here("data/derived_data/analysis_variables/perfiles_ana_E[2569].csv"))
 
 perfiles <- purrr::map(files, function(f) {
@@ -467,7 +469,7 @@ perfiles %>%
   ggplot(aes(date, lev)) +
   geom_contour_fill(aes(z = value, fill = stat(level)),
                     breaks = c(seq(-2, 2, 0.2), Inf)) +
-  geom_contour2(aes(z = value), color = "white", size = 0.1,
+  geom_contour2(aes(z = value), color = "white", size = 0.05,
                 breaks = c(seq(-2, 2, 0.2), Inf)) +
   scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
                                                             barheight = 0.3,
@@ -500,7 +502,7 @@ perfiles %>%
   ggplot(aes(date, lev)) +
   geom_contour_fill(aes(z = value*1000, fill = stat(level)), 
                     breaks = c(seq(-1.6, 1.6, 0.2), Inf)) +
-  geom_contour2(aes(z = value), color = "white", size = 0.1,
+  geom_contour2(aes(z = value), color = "white", size = 0.05,
                 breaks = c(seq(-1.6, 1.6, 0.2), Inf)) +
   scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
                                                             barheight = 0.3, 
@@ -535,7 +537,7 @@ La asimilación de las radiancias produce una reducción del viento del oeste co
 
 (ref:UV-diff) Diferencia entre la media del ensamble para la media del ensamble del análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en $K$) y viento meridional (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) AWS, (b,e) SATWND, y (c,f) RAD ya que son los experimentos tienen más observaciones asimiladas en cada panel.
 
-```{r UV-diff, fig.cap="(ref:UV-diff)", fig.height=5.5, fig.width=6, fig.align="center", fig.pos="ht"}
+```{r UV-diff, fig.cap="(ref:UV-diff)", fig.height=5.5, fig.width=7, fig.align="center"}
 perfiles %>% 
   dcast(lev + date ~ exp, value.var = "U") %>% 
   .[, ":="(E5_E2 = E5 - E2,
@@ -550,11 +552,11 @@ perfiles %>%
                                                             title.position = "left", 
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
-  geom_contour2(aes(z = value), color = "white", size = 0.1,
+  geom_contour2(aes(z = value), color = "white", size = 0.05,
                 breaks = c(seq(-2, 2, 0.2), Inf)) +
   geom_contour2(data = ~.x[, .(lev, date, E5_E2 = E5, E6_E5 = E6, E9_E6 = E9)] %>%
                   melt(id.vars = c("lev", "date")) %>% unique(), aes(z = value),
-                breaks = seq(0, 30, 3), size = 0.2, linetype = 1, color = "grey30") +
+                breaks = seq(0, 30, 3), size = 0.1, linetype = 1, color = "grey30") +
   geom_text_contour(data = ~.x[, .(lev, date, E5_E2 = E5, E6_E5 = E6, E9_E6 = E9)] %>%
                       melt(id.vars = c("lev", "date")) %>% unique(), aes(z = value),
                     breaks = seq(0, 30, 3), color = "grey30", skip = 1,
@@ -586,7 +588,7 @@ perfiles %>%
   ggplot(aes(date, lev)) +
   geom_contour_fill(aes(z = value, fill = stat(level)), 
                     breaks = c(-Inf, seq(-1.6, 1.6, 0.2), Inf)) +
-  geom_contour2(aes(z = value), color = "white", size = 0.1,
+  geom_contour2(aes(z = value), color = "white", size = 0.05,
                 breaks = c(-Inf, seq(-1.6, 1.6, 0.2), Inf)) +
   scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
                                                             barheight = 0.3, 
@@ -596,7 +598,7 @@ perfiles %>%
   geom_contour2(data = ~.x[, .(lev, date, E5_E2 = E5, E6_E5 = E6, E9_E6 = E9)] %>% 
                   melt(id.vars = c("lev", "date")) %>% unique(), 
                 aes(z = value, linetype = factor(-sign(..level..))), 
-                breaks = seq(-10, 4, 2), size = 0.2, color = "grey30") +
+                breaks = seq(-10, 4, 2), size = 0.1, color = "grey30") +
   geom_text_contour(data = ~.x[, .(lev, date, E5_E2 = E5, E6_E5 = E6, E9_E6 = E9)] %>% 
                       melt(id.vars = c("lev", "date")) %>% unique(), aes(z = value), 
                     breaks = seq(-10, 4, 2), color = "grey30", skip = 1, 
@@ -627,7 +629,7 @@ La diferencia entre ERA5 [@era5pressure] y la media del ensamble del análisis p
 
 (ref:era5-cap) Diferencia entre la media del ensamble del análisis de cada experimento y el ERA5 para los perfiles verticales espacialmente promediados de la temperatura del aire (K, a--d), la humedad específica ($g\ Kg^{-1}$, e--h) y el viento meridional ($m\ s^{-1}$, i--l) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis.
 
-```{r era5, fig.cap="(ref:era5-cap)", fig.width=6.5, fig.height=6, fig.align="center", fig.pos="ht"}
+```{r era5, fig.cap="(ref:era5-cap)", fig.width=6.5, fig.height=6, fig.align="center"}
 era <- fread(here("data/derived_data/reanalysis/perfiles_ana_era5.csv"))
 
 era[perfiles, on = c("lev", "date")] %>% 
@@ -635,7 +637,7 @@ era[perfiles, on = c("lev", "date")] %>%
   ggplot(aes(date, lev)) +
   geom_contour_fill(aes(z = i.T - T, fill = stat(level)), 
                     breaks = seq(-3, 3, 0.5)) +
-  geom_contour2(aes(z = i.T - T), color = "white", size = 0.1,
+  geom_contour2(aes(z = i.T - T), color = "white", size = 0.05,
                 breaks = seq(-3, 3, 0.5)) +
   scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
                                                             barheight = 0.3,
@@ -662,7 +664,7 @@ era[perfiles, on = c("lev", "date")] %>%
   ggplot(aes(date, lev)) +
   geom_contour_fill(aes(z = i.QVAPOR - QVAPOR, fill = stat(level)), 
                     breaks = seq(-0.0025, 0.0015, 0.0004)) +
-  geom_contour2(aes(z = i.QVAPOR - QVAPOR), color = "white", size = 0.1,
+  geom_contour2(aes(z = i.QVAPOR - QVAPOR), color = "white", size = 0.05,
                 breaks = seq(-0.0025, 0.0015, 0.0004)) +
   scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
                                                             barheight = 0.3,
@@ -689,7 +691,7 @@ era[perfiles, on = c("lev", "date")] %>%
     ggplot(aes(date, lev)) +
     geom_contour_fill(aes(z = i.V - V, fill = stat(level)), 
                       breaks = seq(-4, 7, 1)) +
-    geom_contour2(aes(z = i.V - V), color = "white", size = 0.1,
+    geom_contour2(aes(z = i.V - V), color = "white", size = 0.05,
                   breaks = seq(-4, 7, 1)) +
     scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
                                                               barheight = 0.3,
@@ -722,7 +724,7 @@ La distribución de la temperatura y la humedad en la PBL (Figura \@ref(fig:summ
 (ref:summary-fields) a) Agua precipitable (sombreada, $kg\ m^{-2}$) y viento medio del norte sobre los primeros 7 niveles sigma (desde la superficie hasta aproximadamente 800 hPa, contornos, $m\ s^{-1}$), b) Temperatura potencial media para la PBL (primeros 10 niveles sigma), y c) CAPE máxima y cortante del viento en ~0-6 km para 15 y 30 $m\ s^{-1}$ en cada experimento. Todos los campos corresponden a la media del ensamble del análisis para las 00 UTC del 22 de noviembre. Los contornos rellenos de color gris corresponden a la topografía de más de 1500 metros sobre el nivel del mar.
 
 
-```{r summary-fields, fig.cap="(ref:summary-fields)", out.width="100%", fig.height=12, fig.width=10.5}
+```{r summary-fields, fig.cap="(ref:summary-fields)", fig.height=12, fig.width=10.5, out.width="100%"}
 
 files <- Sys.glob(here("data/derived_data/analysis_variables/pw/pw_ana_E[2569]_20181122000000.nc"))
 
@@ -889,7 +891,7 @@ En primer lugar, se analizó el impacto de la asimilación de diferentes tipos d
 
 (ref:pphov) Diagrama de Hövmoller de la media ajustada a la probabilidad de la precipitación acumulada horaria para cada banda de latitud estimada por IMERG (izquierda) y simulada (derecha) por cada experimento, promediada en un rango de longitudes entre 67$^{circ}$W y 54,5$^{circ}$W. Los contornos se dibujan cada 0,5 $mm^{-1}$, comenzando en 0,5 $mm^{-1}$.
 
-```{r pp-hov, fig.cap="(ref:pphov)", fig.height=4, fig.width=7, fig.pos="h", fig.align="center"}
+```{r pp-hov, fig.cap="(ref:pphov)", fig.height=4, fig.width=7, fig.align="center"}
 
 files <- Sys.glob(here("data/derived_data/analysis_variables/pp_pmm/E[2569]_ana*_pp_pmm.rds"))
 
@@ -970,7 +972,7 @@ El FSS se calcula para cuantificar la coincidencia espacial entre la precipitaci
 
 (ref:fss) FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el first-guess de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja).
 
-```{r fss, fig.cap="(ref:fss)", fig.width=5, fig.height=5, fig.pos="t"}
+```{r fss, fig.cap="(ref:fss)", fig.width=5, fig.height=5}
 files <- Sys.glob(here("data/derived_data/FSS/fss_6h_ana_ens_E[2569].csv"))
 
 fss <- purrr::map(files, function(f) {
@@ -1008,7 +1010,7 @@ El IOP 7 (Figuras \@ref(fig:soundings)a-d) proporciona una buena caracterizació
 
 (ref:dbz-mean) Reflectividad máxima en la columna (COLMAX en $dBZ$), observada (fila superior) y pronósticada a 1 hora por los experimentos CONV (segunda fila) y RAD (tercera fila) a las 10 UTC (primera columna), 13 UTC (segunda columna), 16 UTC (tercera columna) y 19 UTC (cuarta columna) del 22 de noviembre de 2018. Los círculos negros en la primera fila muestran el rango de observación de cada radar. 
 
-```{r dbz-mean, fig.cap="(ref:dbz-mean)", out.width="100%", fig.height=6.5, fig.width=8, fig.pos="ht"}
+```{r dbz-mean, fig.cap="(ref:dbz-mean)", out.width="100%", fig.height=6.5, fig.width=8, dev="png", dpi=150}
 proj_radar <- "+proj=tmerc +lon_0=-61.5 +lat_0=-32 +k_0=1 +ellps=WGS84"
 
 rad_loc <- fread(here("data/derived_data/sample_obs/radar_loc.csv")) %>% 
@@ -1100,7 +1102,7 @@ Durante el IOP 8 (Figuras \@ref(fig:soundings)e-h), la zona densamente observada
 
 (ref:soundings) RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando el análisis de cada experimento con los sondeos de RELAMPAGO durante el IOP 7 y el IOP 8. La línea azul corresponde a CONV, la línea celesnte a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
 
-```{r soundings, fig.cap="(ref:soundings)", fig.width=6, fig.height=4, fig.pos="ht", fig.align="center"}
+```{r soundings, fig.cap="(ref:soundings)", fig.width=6, fig.height=4, fig.align="center"}
 files <- Sys.glob(here("data/derived_data/soundings/sondeo_E[2569]_ana*"))
 
 sondeos <- purrr::map(files, function(f){
