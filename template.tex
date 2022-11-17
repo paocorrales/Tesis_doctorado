@@ -24,7 +24,7 @@
 %% Preamble
 %%
 % \documentclass{<something>} must begin each LaTeX document
-\documentclass[12pt,twoside]{reedthesis}
+\documentclass[12pt,oneside]{reedthesis}
 % Packages are extensions to the basic LaTeX functions. Whatever you
 % want to typeset, there is probably a package out there for it.
 % Chemistry (chemtex), screenplays, you name it.
@@ -66,9 +66,9 @@
 % Added by CII (Thanks, Hadley!)
 % Use ref for internal links
 \renewcommand{\hyperref}[2][???]{\autoref{#1}}
-\def\chapterautorefname{Chapter}
-\def\sectionautorefname{Section}
-\def\subsectionautorefname{Subsection}
+\def\chapterautorefname{chapter}
+\def\sectionautorefname{section}
+\def\subsectionautorefname{subsection}
 % End of CII addition
 
 % Added by CII
@@ -97,6 +97,8 @@ $endif$
 $if(altadvisor)$
 \altadvisor{$altadvisor$}
 $endif$
+\consejera{$consejera$}
+\place{$place$}
 % End of CII addition
 
 %%% Remember to use the correct department!
@@ -121,6 +123,10 @@ $endif$
     \Gin@nat@width
   \fi
 }
+\makeatother
+
+\makeatletter
+\renewcommand{\@chapapp}{Capítulo}
 \makeatother
 
 % From {rticles}
@@ -154,7 +160,7 @@ $if(csl-refs)$
 \newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 $endif$
 
-\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\contentsname}{Índice}
 % End of CII addition
 
 \setlength{\parskip}{0pt}

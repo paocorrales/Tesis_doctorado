@@ -210,6 +210,8 @@
 \global\let\@altadvisor\@empty
 \newif\if@altadvisor
 \@altadvisorfalse
+\def\consejera#1{\gdef \@consejera{#1}}
+\def\place#1{\gdef \@place{#1}}
 
 \renewcommand\l@chapter[2]{%
   \ifnum \c@tocdepth >\m@ne
@@ -285,63 +287,44 @@
 
 \renewcommand{\maketitle}{%
   {\pagestyle{empty}
-  \fontsize{12}{14}\selectfont
+  %\fontsize{14}{16}\selectfont
   \begin{titlepage}
   \newpage
-  \let\footnotesize\small
+  %\let\footnotesize\small
   \let\footnoterule\relax
   \let \footnote \thanks
 
   \baselineskip = 1.4\baselineskip
-  \setbox0=\hbox{of the Requirements for the Degree}
 
   \begin{center}
     \setcounter{page}{1}
-    \null\vfil
-    {\fontsize{12}{14}\selectfont \@title}
+    \includegraphics[scale=0.7]{logo_exactas.png} \\
+    \@institution \\
+    \@division \\
+    \@department \\
     \vfil
-    \centerline{\hbox to \wd0 {\hbox{}\hrulefill\hbox{}}}
+    {\fontsize{20}{20}\selectfont \textbf{\@title}}
     \vfil
-    A Thesis \\
-    Presented to \\
-    \@thedivisionof \ \@division \\
-    \@institution
+    \@degree \\
     \vfil
-    \centerline{\hbox to \wd0 {\hbox{}\hrulefill\hbox{}}}
-    \vfil
-    In Partial Fulfillment \\
-    of the Requirements for the Degree \\
-    \@degree
-    \vfil
-    \centerline{\hbox to \wd0 {\hbox{}\hrulefill\hbox{}}}
-    \bigskip
-    \centerline{}
-    \bigskip
-    {\fontsize{12}{14}\selectfont \lineskip .75em
-    \begin{tabular}[t]{c}%
-      \@author
-    \end{tabular}\par}
-    \vskip 1.5em
+
+
+ {\fontsize{20}{20}\selectfont \textbf{\@author}}
+  \end{center}
+\noindent
+  Directora: \textbf{\@advisor} \\
+  Co-Director: \textbf{\@altadvisor} \\
+\noindent
+  Consejera de estudios: \textbf{\@consejera} \\
+      \vfil
+\noindent
+  Lugar de trabajo: \@place \\
+
+  \begin{center}
     {\fontsize{12}{14}\selectfont \@date \par}
   \end{center}\par
   \end{titlepage}
 
-%% Approved for the division page
-  \cleardoublepage
-  {\fontsize{12}{14}
-  \setbox0=\hbox{Approved for the \@approvedforthe}
-  \thispagestyle{empty}
-  \null\vfil		% just below center of page
-  \par\vskip 6cm	% below center, not center
-  \centerline{\copy0}	% approved
-  \centerline{(\@department)} %major
-  \vskip 1cm		%space to sign
-  \centerline{\makebox[\wd0][c]{\hrulefill}
-	\if@altadvisor \makebox[.5in]{} \makebox[\wd0][c]{\hrulefill} \fi}
-  \centerline{\makebox[\wd0][c]{\@advisor}
-	\if@altadvisor \makebox[.5in]{} \makebox[\wd0][c]{\@altadvisor} \fi}
-  \par\vfil\null}
-  \cleardoublepage
   }
 }
 
