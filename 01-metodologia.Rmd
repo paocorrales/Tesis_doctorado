@@ -6,14 +6,14 @@ This is for including Chapter 1.  Notice that it's also good practice to name yo
 The {#rmd-basics} text after the chapter declaration will allow us to link throughout the document back to the beginning of Chapter 1.  These labels will automatically be generated (if not specified) by changing the spaces to hyphens and capital letters to lowercase.  Look for the reference to this label at the beginning of Chapter 2.
 -->
 
-# Metodología {#metodologia} {.unnumbered}
+# Metodología {.unnumbered}
 
-## El sistema de asimilación GSI
+## El sistema de asimilación GSI {.unnumbered}
 
 GSI por su nombre en inglés Gridpoint Statistical Interpolation, es un sistema de asimilación de datos de última generación, desarrollado inicialmente por el Environmental Modeling Center  (EMC) del NCEP. Se diseñó como un sistema 3DVAR tradicional aplicado en el espacio de puntos de retícula de los modelos para facilitar la implementación de covarianzas anisotrópicas no homogéneas [@wu2002; @purser2003; @purser2003a]. 
 Está diseñado para funcionar en varias plataformas computacionales, crear análisis para diferentes modelos numéricos de pronóstico, y seguir siendo lo suficientemente flexible como para poder manejar futuros desarrollos científicos, como el uso de nuevos tipos de observación, una mejor selección de datos y nuevas variables de estado [@kleist2009].
 
-Este sistema 3DVAR sustituyó al sistema de análisis operativo regional de punto de retícula del NCEP por el Sistema de Predicción de Mesoescala de América del Norte (NAM) en 2006 y al sistema de análisis global Spectral Statistical Interpolation (SSI) usado para generar el Global Forecast System (GFS) en 2007 [@kleist2009]. 
+Este sistema 3DVAR sustituyó al sistema de análisis operativo regional de punto de retícula del NCEP por el Sistema de Predicción de Mesoescala de América del Norte (NAM) en 2006 y al sistema de análisis global Spectral Statistical Interpolation (SSI) usado para generar las condiciones iniciales del Global Forecast System (GFS) en 2007 [@kleist2009]. 
 En los últimos años, GSI ha evolucionado para incluir varias técnicas de asimilación de datos para múltiples aplicaciones operativas, incluyendo 2DVAR (por ejemplo, el sistema Real-Time Mesoscale Analysis (RTMA); @pondeca2011), la técnica híbrida EnVar (por ejemplo los sistemas de asimilación de datos para el GFS, el Rapid Refresh system (RAP), el NAM, el HWRF, etc.), y 4DVAR (por ejemplo, el sistema de asimilación de datos para el Sistema Goddard de Observación de la Tierra, versión 5 (GEOS-5) de la NASA; @zhu2008). 
 GSI también incluye un enfoque híbrido 4D-EnVar que actualmente se utiliza para la generación del GFS. 
 
@@ -22,29 +22,38 @@ De esta manera los exaustivos controles de calidad desarrollados para los métod
 El código EnKF fue desarrollado por el Earth System Research Lab (ESRL) de la National Oceanic and Atmospheric Administration (NOAA) en colaboración con la comunidad científica. 
 Contiene dos algoritmos distintos para calcular el incremento del analisis, el serial Ensemble Square Root Filter (EnSRF, @whitaker2002) y el Local Ensemble Kalman Filter (LETKF, @hunt2007) aportado por Yoichiro Ota de la Agencia Meteorológica Japonesa (JMA). 
 
-Para reducir el impacto de covarianzas espurias en el incremento que se aplica al análisis, los sistemas por ensamble aplican una localización a la matriz de covarianza K tanto en la dirección horizontal como vertical. 
-Usa un polinomio de orden 5 para reducir el impacto de cada observación de manera gradual hasta llegar a una distancia límite a partir de la cual el impacto es cero. La escala de localización vertical se define como $-log(P/P_{ref})$ y la escala horizontal usualmente se define en kilómetros. 
+Para reducir el impacto de covarianzas espurias en el incremento que se aplica al análisis, los sistemas por ensamble aplican una localización a la matriz de covarianza de los errores de las observaciones $R$ tanto en la dirección horizontal como vertical. 
+Usa un polinomio de orden 5 para reducir el impacto de cada observación de manera gradual hasta llegar a una distancia límite a partir de la cual el impacto es cero. La escala de localización vertical se define cen términos del logarítmo de la presión y la escala horizontal usualmente se define en kilómetros. 
 Estos parámetros son importantes a la hora de obtener un buen análisis y dependen de factores como el tamaño del ensamble y la resolución del modelo.
 
-Otra característica importante del sistema es la implementación de un algoritmo de corrección de bias para las radiancias de satélites. 
-La estimación hecha por el campo preliminar se compara las observaciones de radiancia para obtener la innovación. 
+A su vez utiliza el Community Radiative Transfer Model (CRTM, @han2006) como operador de las observaciones de radiancias que calcula la temperatura de brillo simulada por el modelo para poder compararlo con las observaciones de sensores satelitales. 
+GSI, además implementa de un algoritmo de corrección de bias de las observaciones de radiancias de satélites.
+La estimación hecha por el campo preliminar obtenida con el CRMT se compara las observaciones de radiancia para obtener la innovación. 
 Esta innovación a su vez se utiliza para actualizar los coeficientes que permiten estimar el bias de las observaciones que se utilizá para obtener una innovación actualizada. Este proceso puede repetirse varias veces hasta que la la innovación y los coeficientes de corrección de bias converjan. 
 Este algoritmo se describe en mayor detalle en la Sección \@ref(sat).
 
-## El modelo de transferencia radiativa CRTM
+## El modelo de transferencia radiativa CRTM {.unnumbered}
 
-El Community Radiative Transfer Model (CRTM) es desarrollado por el Joint Center for Satellite Data Assimilation (JCSDA) y es usado para simular radiancias de sensores de microondas, infrarojo y visible. Está compuesto por 4 modulos para el cálculo de la transmitancia, la emisión y reflección desde la superficie, la absorción por aerosolos y scattering y un modulo para resolver la transferencia radiativa. 
+El Community Radiative Transfer Model (CRTM, @han2006) es un modelo de transferencia radiativa rápido que fue desarrollado conjuntamente por el NOAA Center for Satellite Applications and Research y el Joint Center for Satellite Data Assimilation (JCSDA). Es un modelo utilizado ampliamente por la comunidad de sensoramiento remoto (aca poner un par de citas, te puedo ayudar con esto pero por ejemplo el paper de Fede seguro), para la calibracion de instrumentos satelitales (cita), y a su vez para generar retrievals a partir de observaciones satelites (citas). De especial importancia para este trabajo, es utilizado en diferentes centros meteorologicos del mundo como operador de observaciones en la asimilacion de radianzas satelitales (citas). 
 
-El modelo foward del CRTM se utiliza para simular la radiancia medida por un satélite, que puede utilizarse para verificar la precisión y errores de la observación como así también los posibles cambios del sensor a largo plazo. El módulo de la matriz k se utiliza para calcular el Jacobiano (es decir, la derivada de la radiancia con respecto a parámetros geofísicos), que se utiliza para la asimilación de radiancias. El uso de los módulos tangente-lineal y adjunto es equivalente al uso del módulo de la matriz k, y también se usa en algunas aplicaciones en la asimilación de la radiancia.
+El CRTM es capaz de simular radiancias de microondas, infrarrojas y visibles utilizando perfiles atmosféricos de presión, temperatura, humedad y otras especies como el ozono. Recientemente @cutraro2021 evaluaron su despeño en la region con buenos resultados en la simulación de observaciones de GOES-16. 
 
-La transmitancia gaseosa describe la absorción generada por los gases en la atmósfera, de modo que se puede utilizar las observaciones en los sistemas de asimilación de datos y retrievals de temperatura del aire, la humedad y los gases traza como el CO2, O3, N2O, CO y CH4. El módulo de aerosoles es fundamental para identificar el tipo y la concentración de aerosoles para estudiar la calidad del aire. El módulo de nubes contiene las propiedades ópticas de seis tipos de nubes, proporcionando información del impacto radiativo generado por las nubes que es útil en la previsión meteorológica y los estudios climáticos. El modelo de superficie del CRTM incluye la emisividad/reflectividad estática de la superficie y se basa en un atlas que incluye varios tipos de superficie. 
+El CRTM está compuesto por 4 modulos para el cálculo de la transmitancia, la emisión y reflección desde la superficie, la absorción por aerosoles y scattering y un modulo para resolver la transferencia radiativa. La transmitancia gaseosa describe la absorción generada por los gases en la atmósfera, de modo que se puede utilizar las observaciones en los sistemas de asimilación de datos y retrievals de temperatura del aire, la humedad y los gases traza como el CO2, O3, N2O, CO y CH4. El módulo de nubes contiene las propiedades ópticas de seis tipos de nubes, proporcionando información del impacto radiativo generado por las nubes que es útil en la previsión meteorológica y los estudios climáticos. El modelo de superficie del CRTM incluye la emisividad/reflectividad estática de la superficie y se basa en un atlas que incluye varios tipos de superficie. 
 
-El CRTM es usado por GSI como operador de las observaciones de radiancia debido a que soportan más de 100 sensores distintos incluyendo todos los satélites meteorológicos. También permite la inclusión de nuevos sensores que solo requiere la generación de coeficientes espectrales y de transmitancia, componente clave en el desarrollo mejores pronósticos. 
+El modelo forward del CRTM permite simular observaciones satelitales de radiancias a partir del estado de la atmósfera. Esto es necesario para la asimilación de radiancias para también es utilizado para verificar la precisión y los errores de estas observaciones.  
+
+El cálculo de las observaciones simuladas tiene un costo computacional muy alto ya que requiere transporner un matriz de grandes dimensiones y la minimización de una función de costo. Esta matriz K se construye a partir de las derivadas parciales de las radiancias con respecto a parámetros geofísicos. CRTM permite hacer estos cálculos de manera rápida para que pueda usarse en contextos operacionales. 
+
+Para obtener resultados rápidos, CRTM aplica ciertas simplificaciones y aproximaciones a la hora de resolver la ecuación de transferencia radiativa. En primer lugar asume que la atmósfera terrestre está formada por capas plano-paralelas y homogeneas en equilibrio termodinámico y donde los efectos tridimensionales y de polarización pueden ser ignorados.
+
+En contextos de cielos despejados, además se asume que no existe dispersión y solo se considera la absorción molecular. Mientras que para cielos nubosos y canales en el infrarrojo también se asume que no existe dispersión, en el caso de canales de microondas la dispersión generada por las nubes es incluida. En este caso la ecuación de transferencia radiativa no se puede resolver anaíticamente y se recurre a modelos numéricos. 
+
+El cálculo de la transmitancia entre capas se aproxima utilizando un polinomio de Taylor multivariado. Los predictores del polinomio se estiman en función de variables atmosféricas como la presión, la temperatura y la consentración de especies que absorben la radiación y el coseno del ángulo cenital. Los coeficientes utilizados en el polinomio son precalculados a partir de datos de entramiento que incluye perfiles atmosféricos que representen la variabilidad de la atmósfera. Estos coeficientes también pueden depender de características específicas de cada canal y sensor que suelen estar asociadas a cambios en los sensores luego del lanzamiento del satélite. 
 
 
-## Caso de estudio
+## Caso de estudio {.unnumbered}
 
-El caso de estudio utilizado en este trabajo corresponde a un SCM durante el 22 de noviembre de 2018. Previo al desarrollo de este SCM, el centro y norte de Argentina se encontraba inmerso en una masa de aire cálido y húmedo con altos valores de energía potencial disponible convectiva (CAPE), como lo muestra ERA 5 [@era5pressure] en la Figura \@ref(fig:caso)a. El 22 de noviembre de 2018 un frente frío cruzó el centro de Argentina (Figura \@ref(fig:caso)b). Este frente frío desencadenó el desarrollo de células convectivas aisladas que rápidamente crecieron hasta convertirse en un SCM excepcionalmente grande (Figura \@ref(fig:caso)d,e). Durante ese día, varias estaciones de superficie observaron actividad eléctrica, fuertes ráfagas de viento y lluvias intensas. Al norte de la región, el entorno cálido y húmedo contribuyó al desarrollo de convección aislada que finalmente creció y se fusionó con el SCM (Figura \@ref(fig:caso)f). El SCM recorrió aproximadamente 2500 km de sur a norte, disipándose sobre Paraguay y el sur de Brasil después de 42 horas desde el inicio de su desarrollo. 
+El caso de estudio utilizado en este trabajo corresponde a un SCM que se inicio y alcanzo su madurez durante durante el 22 de noviembre de 2018. Previo al desarrollo de este SCM, el centro y norte de Argentina se encontraba inmerso en una masa de aire cálido y húmedo con altos valores de energía potencial disponible convectiva (CAPE), como lo muestra ERA 5 [@era5pressure] en la Figura \@ref(fig:caso)a. El 22 de noviembre de 2018 un frente frío cruzó el centro de Argentina (Figura \@ref(fig:caso)b). Este frente frío desencadenó el desarrollo de células convectivas aisladas que rápidamente crecieron hasta convertirse en un SCM excepcionalmente grande (Figura \@ref(fig:caso)d,e). Durante ese día, varias estaciones de superficie observaron actividad eléctrica, fuertes ráfagas de viento y lluvias intensas. Al norte de la región, el entorno cálido y húmedo contribuyó al desarrollo de convección aislada que finalmente creció y se fusionó con el SCM (Figura \@ref(fig:caso)f). El SCM recorrió aproximadamente 2500 km de sur a norte, disipándose sobre Paraguay y el sur de Brasil después de 42 horas desde el inicio de su desarrollo. Este caso estudio es de particular interes por desarrollarse durante la campaña RELAMPAGO donde se generaron observaciones extraordinarias que serán utilizadas en la verificación de los experimentos desarrollados. 
 
 (ref:caso) Presión a nivel del mar (hPa, contornos negros), espesor 1000-500 hPa (contornos rojos discontinuos) y energía potencial convectiva disponible (sombreada) según ERA5 y temperatura de brillo del canal 13 de GOES-16 para a,d) 00 y b,e) 12 UTC, 22 de Nov y c,f) 00 UTC, 23 de Nov. 
 
@@ -121,21 +130,21 @@ campos %>%
 ```
 
 
-## Configuración del ensamble
+## Configuración del sistema de asimilación {.unnumbered} {#config}
 
-Las simulaciones numéricas para el caso de estudio se realizan utilizando la versión 3.9.1 de modelo WRF (@skamarock2008). 
-Se utilizó una resolución horizontal de 10 km (150 x 200 puntos de retícula) y 37 niveles en la vertical con el tope del modelo en 50 hPa. 
+Las simulaciones numéricas que conforman los experimentos que se discuten en este trabajo se realizan utilizando la versión 3.9.1 de modelo WRF (@skamarock2008). 
+Se utilizó una resolución horizontal de 10 km y 37 niveles en la vertical con el tope del modelo en 50 hPa. 
 Las condiciones iniciales y de contorno surgen del análisis del Global Forecast System (GFS) (resolución horizontal de 0,25$^{\circ}$ y resolución temporal de 6 horas; @cisl_rda_ds084.1). 
-El dominio cubre la zona indicada en la Figura \@ref(fig:dominio) para capturar el desarrollo del SCM durante el periodo simulado. 
+El dominio de 150 x 200 puntos de retícula cubre la zona indicada en la Figura \@ref(fig:dominio) para capturar el desarrollo del SCM durante el periodo simulado. 
 
 Los análisis se generaron utilizando la implementación LETKF (V1.3, @hunt2007) que forma parte del sistema de análisis Gridpoint Statistical Interpolation (GSI V3.8; @shao2016). 
 Se utilizó un enfoque de actualización rápida con análisis horario y una ventana de asimilación centrada, lo que significa que se asimilaron todas las observaciones dentro de $\pm$ 30 minutos del tiempo de análisis. 
-Además, aas observaciones se asimilaron usando un enfoque 4D, es decir, comparándolas con el first guess más cercano que se genera en intervalos de 10 minutos. 
+Además, las observaciones se asimilaron usando un enfoque 4D, es decir, comparándolas con el first guess más cercano disponible con una frecuencia de 10 minutos. 
 Para las observaciones de satelite, se utilizó el Community Radiative Transfer Model versión 2.3 (CRTM; @han2006) como operador de observaciones para calcular las temperaturas de brillo simuladas por el modelo. 
 
-Utilizamos un conjunto de 60 miembros, cuya media al principio del ciclo de AD se inicializa utilizando el análisis deterministico del GFS al que se le suman perturbaciones aleatorias para generar el ensamble incial. Las perturbaciones se generaron como diferencias escaladas entre dos estados atmosféricos aleatorios obtenidos a partir de los datos del Reanálisis del Sistema de Predicción del Clima (CFSR) con una resolución horizontal de 0,5$^{\circ}$ que tiene una con una evolución temporal suave [@necker2020; @maldonado2021]. De este modo, preservamos el equilibrio casi hidrostático y geostrófico de las escalas mayores. Este método ayuda a evitar una subestimación del spread del ensamble [@ouaraini2015]. Las perturbaciones  también se aplicaron en los límites para mantener niveles adecuados de spread dentro del dominio del ensamble. 
+Utilizamos un conjunto de 60 miembros, cuya media al principio del ciclo de AD se inicializa utilizando el análisis deterministico del GFS al que se le suman perturbaciones aleatorias para generar el ensamble incial. Las perturbaciones se generaron como diferencias escaladas entre dos estados atmosféricos aleatorios obtenidos a partir de los datos del Reanálisis del Sistema de Predicción del Clima (CFSR) con una resolución horizontal de 0,5$^{\circ}$ que tiene una evolución temporal suave [@necker2020; @maldonado2021]. De este modo, preservamos el equilibrio casi hidrostático y geostrófico de las escalas mayores. Este método ayuda a evitar una subestimación del spread del ensamble [@ouaraini2015]. Las perturbaciones  también se aplicaron en los bordes laterales para mantener niveles adecuados de spread dentro del dominio del ensamble. 
 
-Además de las perturbaciones aleatorias en los límites laterales, se utilizó un esquema de multifísicas para representar mejor la incertidumbre en el modelo dentro del sistema de AD. Utilizamos 9 configuraciones diferentes que consisten en la combinación de 3 esquemas de convección húmeda (Kain-Fritsch [@kain2004], Grell-Freitas [@grell2013], y Betts-Miller-Janjic [@janjic1994]) y 3 esquemas de capa límite planetaria (Esquema de la Universidad de Yonsei [@hong2006], Esquema Mellor-Yamada-Janjic [@janjic1994], y Mellor-Yamada Nakanishi Niino [@nakanishi2009]). La distribución de estas parametrizaciones entre los 60 miembros del ensamble se muestra en la Tabla \@ref(tab:miembros-desc). Todos los miembros del conjunto utilizan las mismas parametrizaciones del modelo de superficie terrestre (Noah-MP, @chen2001), de microfísica (esquema de un solo momento de 6 clases del WRF [@hong2006a]) y de procesos radiativos (esquema de onda corta y onda larga del RRTMG [@iacono2008]).
+Además de las perturbaciones aleatorias en los bordes laterales, se utilizó un esquema de multifísicas para representar mejor la incertidumbre en el modelo dentro del sistema de AD. Utilizamos 9 configuraciones diferentes que consisten en la combinación de 3 esquemas de convección húmeda (Kain-Fritsch, @kain2004; Grell-Freitas, @grell2013; y Betts-Miller-Janjic, @janjic1994) y 3 esquemas de capa límite planetaria (Esquema de la Universidad de Yonsei, @hong2006; Esquema Mellor-Yamada-Janjic, @janjic1994; y Mellor-Yamada Nakanishi Niino, @nakanishi2009). La distribución de estas parametrizaciones entre los 60 miembros del ensamble se muestra en la Tabla \@ref(tab:miembros-desc). Todos los miembros del conjunto utilizan las mismas parametrizaciones del modelo de superficie terrestre (Noah-MP, @chen2001), de microfísica (esquema de un solo momento de 6 clases del WRF, @hong2006a) y de procesos radiativos (esquema de onda corta y onda larga del RRTMG [@iacono2008]).
 
 ```{r miembros-desc}
 data.table(mem = as.character(formatC(1:60, flag = "0", width = 3)),
@@ -162,7 +171,8 @@ data.table(mem = as.character(formatC(1:60, flag = "0", width = 3)),
   column_spec(2:4, width = "8em")
 ```
 
-Para reducir el efecto de las correlaciones espurias en la estimación de las covarianzas de los errores de las observaciones, utilizamos un radio de localización horizontal de 180 km y un radio de localización vertical de 0,4 (en coordenadas de presión logarítmica) como en @dillon2021 para todos los tipos de observaciones. 
+
+Para reducir el efecto de las correlaciones espurias en la estimación de las covarianzas de los errores de las observaciones, utilizamos un radio de localización horizontal de 180 km y un radio de localización vertical de 0,4 (en coordenadas del logaritmo de la presion ) como en @dillon2021 para todos los tipos de observaciones. 
 Se aplicó con un parámetro de inflación $\alpha=0,9$ para mitigar el impacto de los errores de muestreo y para considerar los errores del modelo que no se tienen en cuenta en el enfoque mutifísica del ensamble [@whitaker2012].
 
 (ref:dominio) a) Dominio utilizado para las simulaciones (recuadro negro), dominio interior utilizado para la comparación entre experimentos (recuadro rojo), la región mostrada en b) (recuadro azul claro), y la ubicación de las Estaciones Meteorológicas Automáticas (EMA, cuadrados verdes) y las Estaciones Meteorológicas Convencionales (EMC, triángulos naranjas). b) Ubicación de los lanzamientos de radiosondeos durante RELAMPAGO. Los puntos verdes corresponden a los radiosondeos lanzados durante el IOP 7, los triángulos naranjas son radiosondeos lanzados durante el IOP 8, y los cuadrados morados son radiosondeos lanzados fuera de los periodos de medición intensiva. También se muestra la topografía en metros (sombreada).
@@ -275,28 +285,32 @@ ggdraw(plot_grid(plot_grid(g1, g2, ncol = 2, rel_widths = c(1, 0.5),
                  ncol = 1, rel_heights = c(1, 0.08)))
 ```
 
-## Verificación: obs y metricas
+## Observaciones {.unnumbered}
 
-### Conjunto de datos de validación 
+### Conjuntos de observaciones asimiladas {.unnumbered}
 
-Para evaluar el desempeño del sistema AD presentado en esta tesis, utilizamos los siguientes conjuntos de observaciones: 
+Mover acá lo del ch 1
 
-* **Datos horarios en niveles de presión de ERA5 de 1959 al presente [@era5pressure]:** Las variables de interés (temperatura del aire, humedad y viento) fueron interpoladas a la retícula del modelo para compararlas con el análisis de cada experimento. 
+### Conjuntos de observaciones para verificación {.unnumbered}
 
-* **Multi-Network Composite Highest Resolution Radiosonde Data [@sondeos]:** radiosondeos en alta resolución lanzados desde varias ubicaciones durante el periodo de la campaña de campo de RELAMPAGO en junto con las radiosondeos operativos del SMN. Sólo se utilizaron para la validación los sondeos que no ingresaron en el sistema de asimilación. El periodo del experimento abarca las misiones IOP 7 y 8, durante las cuales se lanzaron 74 radiosondos en una pequeña zona cercana al centro del dominio experimental (Figura \@ref(fig:dominio)b). 
+Para evaluar el desempeño del sistema de asimilación de datos presentado en esta tesis, utilizamos los siguientes conjuntos de observaciones: 
 
-* **IMERG Final Run [@huffman2018]:** estimación de la precipitación a partir de datos de la constelación de satelites GPM (por su nombre en inglés Global Precipitation  Measurement) con una resolución espacial de 0,01$^{circ}$ y una resolución temporal de 30 minutos para validar la habilidad de los pronósticos de 1 hora para representar la precipitación sobre el dominio. 
+* **Datos horarios en niveles de presión de ERA5 [@era5pressure]:** Las variables de interés (temperatura del aire, humedad y viento) fueron interpoladas desde la reticula del reanalisis que tiene una resolución de 0.25$^{\circ}$ a la retícula del modelo para compararlas con el análisis de cada experimento. 
 
-* **Datos del Sistema Nacional de Radares Meteorológicos (SINARAME):** Se utilizaron observaciones de radar para realizar una evaluación cualitativa y visual de las características convectivas. Los datos provienen de 9 radares ubicados en el dominio y son provistos por la red de radares Doppler de doble polarización en banda C [@deelia2017] con una frecuencia temporal de 10 minutos. Para este trabajo se utilizó únicamente la máxima reflectividad de la columna (COLMAX) más cercana al momento de análisis.
+* **Multi-Network Composite Highest Resolution Radiosonde Data [@sondeos]:** radiosondeos en alta resolución lanzados desde varias ubicaciones durante el periodo de la campaña de campo RELAMPAGO en conjunto con las radiosondeos operativos del SMN. Sólo se utilizaron para la validación los sondeos que no ingresaron en el sistema de asimilación y que corresponden a los sitios de observación de la campaña. El periodo del experimento abarca las misiones IOP 7 y 8, durante las cuales se lanzaron 74 radiosondos en una pequeña zona cercana al centro del dominio experimental (Figura \@ref(fig:dominio)b). Estas observaciones son de particular importancia ya que si bien corresponden a una región acotada del dominio, aportar información de alta resolución vertical y temporal ya que operacionalmente se lanzan sondeos una o dos veces al día.
 
-### Métodos de verificación
+* **IMERG Final Run [@huffman2018]:** estimación de la precipitación a partir de datos de la constelación de satelites GPM (por su nombre en inglés Global Precipitation  Measurement) con una resolución espacial de 0,01$^{\circ}$ y una resolución temporal de 30 minutos para validar la habilidad de los pronósticos de 1 hora para representar la precipitación sobre el dominio. La estimación de la precipitación se realiza combinando observaciones de sensores de microondas activos y pasivos que se complementa con estimaciones provenientes de sensores infrarojos a bordo de satélites polares. 
+
+* **Datos del Sistema Nacional de Radares Meteorológicos (SINARAME):** Se utilizaron observaciones de radar para realizar una evaluación cualitativa y visual de de la ubicacion e intensidad de la actividad convectiva. Los datos provienen de 9 radares ubicados en el dominio y son provistos por la red de radares Doppler de doble polarización en banda C [@deelia2017] con una frecuencia temporal de 10 minutos. Para este trabajo se utilizó únicamente la máxima reflectividad de la columna (COLMAX) más cercana al momento de análisis.
+
+## Métodos de verificación {.unnumbered}
 
 Se seleccionaron un conjunto de métricas para evaluar diferentes aspectos del análisis obtenido para cada experimento y los pronósticos inicializados a partir de ellos. Estas métricas incluyen una validación de cómo se cuantifica la incertidumbre en el first guess y en el análisis, y cómo los diferentes experimentos se ajustan a un conjunto independiente de observaciones que no se asimilan. 
 
 Para evaluar la consistencia de la estimación de la incertidumbre en el first guess y en el análisis utilizamos la Reduced Centered Random Variable o RCRV (@candille2007) que se define como:
 
 \begin{equation}
-  \mathrm{RCRV = \frac{m - x_o}{\sqrt{\sigma_o^2 + \sigma^2}}}
+  \mathrm{RCRV} = \frac{m - x_o}{\sqrt{\sigma_o^2 + \sigma^2}}
   (\#eq:eq6)
 \end{equation}
 
@@ -308,31 +322,31 @@ La media de $RCRV$ calculada sobre todas las realizaciones representa el sesgo d
   (\#eq:eq7)
 \end{equation}
 
-La desviación estándar de la $RCRV$ o $sd RCRV$ mide la concordancia de la dispersión del ensamble y el error de observación con respecto a la distancia entre la media del ensamble y las observaciones, y por lo tanto, la sobre o infradispersión sistemática del ensamble:
+La desviación estándar de la $RCRV$ o $sd RCRV$ mide la concordancia de la dispersión del ensamble y el error de observación con respecto a la distancia entre la media del ensamble y las observaciones, y por lo tanto, la sobre o subdispersión sistemática del ensamble:
 
 \begin{equation}
-  \mathrm{\mathit{sd RCRV} = \sqrt{\frac{1}{M -1}\sum_{i=1}^{M}(\mathit{RCRV_i} - \mathit{mean RCRV})^2}}
+  \mathit{sd RCRV} = \sqrt{\frac{1}{M -1}\sum_{i=1}^{M}(RCRV_i - \mathit{mean RCRV})^2}
   (\#eq:eq8)
 \end{equation}
 
-donde $M$ es el tamaño del ensamble. Suponiendo que el error de observación fue estimado con precisión, un $sd RCRV > 1$ indica que el ensamble es infradispersivo (es decir, la distancia entre las observaciones y los pronósticos es mayor de lo esperado), y un $sd RCRV < 1$ indica que el conjunto es sobredispersivo (es decir, la distancia entre las observaciones y los pronósticos es menor de lo esperado). Un sistema consistente no tendrá sesgo ($media RCRV = 0$) y una desviación estándar igual a 1 ($sd RCRV = 1$). 
+donde $M$ es el tamaño del ensamble. Suponiendo que el error de observación fue estimado con precisión, un $sd RCRV > 1$ indica que el ensamble es subdispersivo (es decir, la distancia entre las observaciones y los pronósticos es mayor de lo esperado), y un $sd RCRV < 1$ indica que el conjunto es sobredispersivo (es decir, la distancia entre las observaciones y los pronósticos es menor de lo esperado). Un sistema consistente no tendrá sesgo ($media RCRV = 0$) y una desviación estándar igual a 1 ($sd RCRV = 1$). 
 
-Para analizar el ajuste del first guess y el análisis a un conjunto de observaciones independientes, los radiosondeos de alta resolución de RELAMPAGO, se calculó la raiz del error cuadrático medio (RMSE) y el BIAS:
+Para analizar el ajuste del first guess y el análisis a un conjunto de observaciones independientes se calculó la raiz del error cuadrático medio (RMSE) y el BIAS:
 
 \begin{equation}
-  \mathrm{\mathit{RMSE} = \sqrt{\frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)^{2}}}
+  \mathit{RMSE} = \sqrt{\frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)^{2}}
   (\#eq:eq9)
 \end{equation}  
 
 
 \begin{equation}
-  \mathrm{\mathit{BIAS} = \frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)}
+  \mathit{BIAS} = \frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)
   (\#eq:eq10)
 \end{equation}
 
-donde $O$ y $X$ representan las observaciones independientes y las simuladas respectivamente, y N es el tamaño de la muestra. 
+donde $X$ representa el modelo interpolado al espacio de la observaciones, $O$ las observaciones independientes, y N es el tamaño de la muestra. 
 
-Para comparar la pricipitación pronísticada a 1 hora con las estimaciones de precipitación de IMERG, calculamos el Fractions Skill Score (FSS, @roberts2008) para diferentes radios de influencia y umbrales de precipitación: 
+Para comparar la precipitación pronosticada por el first-guess con las estimaciones de precipitación de IMERG, calculamos el Fractions Skill Score (FSS, @roberts2008) para diferentes radios de influencia y umbrales de precipitación: 
 
 \begin{equation}
   \mathrm{\mathit{FSS} = 1-\frac{\sum_{i=1}^{N} ({P_x}_i-{P_o}_i)^{2}}{\sum_{i=1}^{N} ({P_x}_i)^{2}+\sum_{i=1}^{N} ({P_o}_i)^{2}}}
@@ -340,10 +354,11 @@ Para comparar la pricipitación pronísticada a 1 hora con las estimaciones de p
 \end{equation}
   
   
-donde $P_{oi}$ es la proporción de puntos de reticula en el subdominio $i-th$ donde la que la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a @roberts2020, $P_{xi}$ se calcula sobre el ensamble completo y cuantifica de la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de cuadrícula, y luego promediando sobre el subdominio $i-th$. 
-El FSS se calculó a partir de la precipitación acumulada en ventanas moviles de 6 horas sumando los pronósticos de precipitación acumulada de 1 hora.
+donde $P_{oi}$ es la proporción de puntos de reticula en el subdominio $i-th$, definido por el radio de influencia, donde la que la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a @roberts2020, $P_{xi}$ se calcula sobre el ensamble completo y cuantifica de la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de cuadrícula, y luego promediando sobre el subdominio $i-th$. 
 
-## Recursos computacionales 
+Para los pronósticos por ensambles se calculó la probabilidad de precipitación por encima de determinados umbrales en cada punto de retícula como la proporción de miembros del ensamble que pronósticaron precipitación por encima de cada umbral. Además se generaron gráficos de confiabilidad [@wilks2011] con intervalos de probabilidades pronósticadas de 10% para analizar la calibración de los pronósticos inicializados a partir de los análisis de cada experimento.  
+
+## Recursos computacionales {.unnumbered}
 
 Todos los experimentos corrieron en la supercomputadora Cheyenne del Centro Nacional de Investigación Atmosférica (NCAR) [@Cheyenne2019]. El posprocesamineto y análisis se realizó en [CIMA]. El análisis de datos se generó utilizando el lenguaje de programación R [@rcoreteam2020], utilizando los paquetes data.table [@dowle2020] y metR [@campitelli2020], entre otros.
 Todos los gráficos se han realizado con ggplot2 [@wickham2009] y la versión final de la tesis se generó con knitr, rmarkdown [@xie2015; @allaire2019] y tesisdown [].
