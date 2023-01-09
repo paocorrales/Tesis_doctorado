@@ -4,84 +4,28 @@ Este capítulo se busca contribuir a la cuantificación y comparación del impac
 
 ## Metodología
 
-### Observaciones asimiladas
+### Configuracion de los experimentos
 
-#### Convencionales 
-
-Las observaciones convencionales (EMC) utilizadas forman parte del flujo de datos del Sistema Global de Asimilación de Datos (GDAS). Se asimilarán las observaciones convencionales incluidas en los archivos Binary Universal Form for Representation of Meteorological Data (PREPBUFR) generados por NCEP. Los archivos PREPBUFR incluyen observaciones de superficie procedentes de 117 estaciones meteorológicas de superficie (EMS), barcos, y observaciones de altura procedentes de 13 sitios de lanzamiento de radiosondeos y aviones dentro del área en estudio. Los triángulos naranjas de la Figura \@ref(fig:dominio)a indican la ubicación de las estaciones de superficie incluidas en este experimento. La frecuencia de estas observaciones varia entre 1 hora para las estaciones de superficie y 12/24 horas para las radiosondas. Las observaciones del viento en superficie sobre los océanos (ASCATW) proceden de los dispersómetros y también se incluyen en los archivos PREPBUFR.
-
-La tabla \@ref(tab:tabla-obs) enumera todos los tipos de observación (presión en superficie, temperatura, humedad específica y viento) disponibles para cada fuente de observación, junto con el error asociado para cada una definidos de acuerdo a la configuración por defecto de GSI. En algunos casos, el error varía con la altura y depende de la plataforma específica (avión y viento derivado del satélite). En cuanto al control de calidad aplicado a las observaciones convencionales, el operador de la observación realiza una primera comparación entre la innovación (la diferencia entre la observación y la observación simulada por el modelo para el campo preliminar) y un umbral predefinido que depende del error de observación (también incluido en la Tabla \@ref(tab:tabla-obs)). 
+Para investigar el impacto de las diferentes observaciones en el análisis, se realizaron cuatro experimentos de asimilación de datos utilizando diferentes conjuntos de observaciones (Tabla \@ref(tab:table-exp)). El experimento CONV utiliza únicamente las observaciones convencionales de PREPBUFR. En un segundo experimento, denominado AWS, se asimilan todas las observaciones incluidas en CONV más las observaciones de EMA con 10 minutos de frecuencia. En el tercer experimento, denominado SATWND, se asimilan las observaciones del experimento AWS junto con los vientos estimados por satélite. Por último, un cuarto experimento, denominado RAD, asimila todas las observaciones mencionadas previamente más las radiancias en cielo claro procedentes de los sensores a bordo de los satélites de órbita polar, como se describe en la sección \@ref(sat).
 
 
-#### Red de Estaciones Meteorológicas Automáticas 
-
-También se asimilaron observaciones de 866 Estaciones Meteorológicas Automáticas (EMA) que forman parte de 17 redes de superficie públicas y privadas en la región. El conjunto de datos utilizado en este estudio fue obtenido del repositorio de datos de RELAMPAGO [@garcia2019]. Estas estaciones se indican como cuadrados verdes en la Figura \@ref(fig:dominio)a. Tienen mayor cobertura espacial que las EMC y una frecuencia de muestreo de 10 minutos en la mayoría de los casos. Todas las estaciones miden temperatura, pero sólo 395 estaciones proporcionan humedad, 422 la presión y 605 el viento. 
-Los errores de observación utilizados para asimilar estas observaciones son los mismos que para las observaciones de EMC (véase la tabla \@ref(tab:tabla-obs)).
-
-
-#### Vientos estimados por satélite
-
-Las observaciones de viento derivadas de los satélites también se incluyen en los archivos PREPBUFR disponibles cada 6 hs, y consisten en estimaciones de GOES-16 (utilizando los canales visible, infrarrojo y de vapor de agua) y METEOSAT 8 y 11 (utilizando los canales visible y de vapor de agua). Estos satélites son geoestacionarios y tienen una frecuencia de escaneo de 15 minutos, por lo que, ante la presencia de nubosidad para estimar el viento, generarán estimaciones que estarán diponibles en cada ciclo de asimilación. Las observaciones de viento derivadas de los satélites METEOSAT tienen una resolución de 3 km mientras que las de GOES-16 tienen una resolución de 10 km. Debido al dominio elegido y la cobertura de estos satélites, GOES-16 es la principal fuente de observaciones de vientos derivados de los satélites (99 % de las observaciones). Los errores de observación utilizados para asimilar estas observaciones siguen la configuración por defecto del GSI y se indican en la Tabla \@ref(tab:tabla-obs).
-
-
-```{r tabla-obs}
-fread(here("data/derived_data/tables/table1.csv")) %>% 
-  kbl(caption = "Características de las observaciones asimiladas: El código de cada tipo de observación y su fuente, las variables disponibles, el error de observación y los umbrales de control de calidad utilizados.",
-      col.names = c("Código", "Plataforma", "Variable", "Error", "Umbral de error"),
-      booktabs = TRUE,
+```{r table-exp}
+tribble(
+  ~obs_type, ~conv, ~aut, ~satwnd, ~rad,
+  "Convencional (PREPBUFR)", "x", "x", "x", "x",
+  "Convencional (EMA)", " ", "x", "x", "x",
+  "Vionto estimado por satélite", " ", " ", "x", "x",
+  "Radiancias", " ", " ", " ", "x",
+) %>% 
+  kbl(booktabs = TRUE, col.names = c("Obs type", "CONV", "AWS", "SATWND", "RAD"),
+      align = "lcccc",
+      caption = "Tipos de observaciones asimiladas en cada experimento.",
       escape = FALSE) %>% 
-  kable_classic_2(full_width = FALSE) %>% 
-  kable_styling(font_size = 9,
-                position = "center") %>% 
-  column_spec(1, width = "4.5em") %>% 
-  column_spec(2, width = "5.5em") %>% 
-  column_spec(3, width = "6em") %>% 
-  column_spec(4:5, width = "8em") %>% 
-  collapse_rows(columns = 1:2, valign = "middle", latex_hline = "major") %>% 
-  footnote(symbol = c("El error de la observación varía con la altura.",
-                      "Observationes por encima de 600 hPa son rechazadas.",
-                      "El error de la observación depende del tipo de reporte."),
-           symbol_manual = c("*", "**", "+"))
+  kable_classic_2(full_width = TRUE) %>% 
+  column_spec(1, width = "8em") %>% 
+  column_spec(2:3, width = "2.5em", latex_valign = "m") %>% 
+  column_spec(4:5, width = "3em", latex_valign = "m")
 ```
-
-
-#### Radiancias de satélite {#sat}
-
-En este capítulo se utilizaron radiancias de satélites disponibles a través del flujo de datos del GDAS, que incluye observaciones en el espectro infrarrojos y microondas. Los sensores incluidos son el Advanced Microwave Sounding Unit - A (AMSU-A), Microwave Humidity Sounder (MHS), y 2 sensores multiespectrales; el Atmospheric Infrared Sounder (AIRS) y el Infrared Atmospheric Sounding Interferometer (IASI)  ubicados en distintas plataformas (ver Tabla \@ref(tab:table-rad)). Dado que el dominio regional se encuentra en latitudes medias y que los satélite de interés están en órbitas polares, cada sensor escanea la zona sólo dos veces al día con una cobertura espacial que depende de la franja de covertura satélite. Por esta razón, el número de observaciones de los satélites varía significativamente en cada ciclo de asimilación. En particular, los sensores multiespectrales proporcionaron entre 100 y 1000 observaciones por cada escaneo cada 12 horas, contribuyendo al 88 % de la cantidad total de radiancias asimiladas en los experimentos. La ubicación vertical de cada observación de radiancia se estimó como el nivel del modelo en el que se maximizaba su función de peso calculada por el CRTM. Los sensores multiespectrales tienen una buena cobertura vertical y son capaces de captar desde la baja troposfera hasta la baja estratosfera.
-
-Los canales elegidos para la asimilación y sus errores asociados se definieron teniendo en cuenta el tope del modelo (50 hPa). El preprocesamiento de datos, que es un paso esencial en la asimilación de radiancias, se realizó dentro del sistema GSI para cada sensor específicamente. En primer lugar, se aplicó un thinning espacial de los datos utilizando una retícula de 60 km siguiendo a @singh2016, @jones2013 y @lin2017a, donde las observaciones que se van a asimilar se eligen en función de su distancia a los puntos de la retícula del modelo, la calidad de la observación (basada en la información disponible sobre la calidad de los datos) y el número de canales disponibles (para el mismo píxel y sensor) que han pasado el control de calidad. Además, el algoritmo prefiere las observaciones sobre el mar a las de la tierra o nieve [@hu2018]. 
-
-Luego del thinning, se aplica la corrección de bias. La corrección de bias (CB) tiene una componente dependiente de características termodinámicas del aire y otro dependiente del ángulo de escaneo [@zhu2014] y se calcula como una polinomio lineal de N predictores $p_i(x)$, con coeficientes asociados $\beta_i$. Por lo tanto, la temperatura de brillo corregida por bias ($BT_{cb}$) puede obtenerse como
-
-\begin{equation}
-  \mathrm{\mathit{BT_{cb}} =\mathit{ BT} + \sum_{i = 0}^{N} \beta_i p_i (x)}
-  (\#eq:eq12)
-\end{equation}
-
-GSI tiene un término de corrección de bias constante ($p_0 = 1$) mientras que los términos restantes y sus predictores son el contenido de agua líquida de las nubes (CLW), la tasa de cambio de temperatura con la presión, el cuadrado de la tasa de y la sensibilidad de la emisividad de la superficie. El bias dependiente del ángulo de escaneo se modela como un polinomio de 4$^\circ$ orden [@zhu2014]. 
-
-En el sistema GSI, los coeficientes $\beta_i$ se entrenan utilizando un método de estimación variacional que genera los $\beta_i$ que proporciona el mejor ajuste entre la simulación y las observaciones. 
-
-Los coeficientes se inicializaron a las 18 UTC del 18 de noviembre de 2018 con los coeficientes generados para la misma hora por el sistema GFS. El sistema de asimilación se configuró para utilizar una varianza de error de los coeficientes constante de 0,01 para evitar grandes ajustes en los coeficientes estimados en cada momento. 
-
-En nuestros experimentos, sólo se utilizan observaciones de cielo claro. Para las radiancias de microondas, las observaciones potencialmente contaminadas por nubes se detectan utilizando los índices de dispersión y del  Liquid Water Path (LWP) calculados a partir de diferencias entre distintos canales de cada sensor [@weston2019; @zhu2016]. Para los canales infrarrojos, las observaciones contaminadas por nubes se detectan utilizando el perfil de transmitancia calculado dentro de los algoritmos CRTM. Además, GSI comprueba la diferencia entre las observaciones y la temperatura de brillo simulada para detectar los píxeles nublados. Por otro lado, el control de calidad de GSI aplicado a los sensores infrarrojos busca observaciones sobre agua con un gran ángulo cenital (más de 60°) para rechazar los canales cercanos al rango visible que pueden estar contaminados por reflexión. Para las observaciones en el infrarrojos y de microondas también realiza una chequeo de la emisividad para detectar observaciones contaminadas por efecto de la superficie. 
-
-```{r table-rad}
-fread(here("data/derived_data/tables/tabla_radianzas.csv")) %>%
-  .[, ":="(sensor = toupper(sensor),
-           plataforma = toupper(plataforma),
-           prop = paste0(prop, " ", "%"))] %>%
-  .[order(.[,'sensor']), ] %>%
-  .[] %>%
-  kbl(booktabs = TRUE,
-      escape = TRUE,
-      col.names = linebreak(c("Sensor", "Plataforma", "Canales asimilados", "Porcentaje sobre el total")),
-      caption = "Lista de los sensores disponibles cada plataforma, el número de canales aceptados para su asimilación y el porcentaje de observaciones asimiladas calculado sobre todas las observaciones de radiancias y todos los ciclos de asimilación.") %>%
-  kable_styling(font_size = 9) %>%
-  collapse_rows(1, valign = "top") %>%
-  kable_classic_2(full_width = TRUE)
-```
-
 
 (ref:obs-horizontal) Distribución espacial horizontal media de las observaciones disponibles en cada ciclo de asmilación para los experimentos a) CONV, b) AWS, c) SATWND y d) RAD calculados sobre cajas de 2,5$^{\circ}$.
 
@@ -244,29 +188,6 @@ rbind(conv, aut, satwnd, rad_conv) %>%
         plot.margin = unit(c(0, 0, 0, 0), "cm"))
 
 
-```
-
-### Configuracion de los experimentos
-
-Para investigar el impacto de las diferentes observaciones en el análisis, se realizaron cuatro experimentos de asimilación de datos utilizando diferentes conjuntos de observaciones (Tabla \@ref(tab:table-exp)). El experimento CONV utiliza únicamente las observaciones convencionales de PREPBUFR. En un segundo experimento, denominado AWS, se asimilan todas las observaciones incluidas en CONV más las observaciones de EMA con 10 minutos de frecuencia. En el tercer experimento, denominado SATWND, se asimilan las observaciones del experimento AWS junto con los vientos estimados por satélite. Por último, un cuarto experimento, denominado RAD, asimila todas las observaciones mencionadas previamente más las radiancias en cielo claro procedentes de los sensores a bordo de los satélites de órbita polar, como se describe en la sección \@ref(sat).
-
-
-```{r table-exp}
-tribble(
-  ~obs_type, ~conv, ~aut, ~satwnd, ~rad,
-  "Convencional (PREPBUFR)", "x", "x", "x", "x",
-  "Convencional (EMA)", " ", "x", "x", "x",
-  "Vionto estimado por satélite", " ", " ", "x", "x",
-  "Radiancias", " ", " ", " ", "x",
-) %>% 
-  kbl(booktabs = TRUE, col.names = c("Obs type", "CONV", "AWS", "SATWND", "RAD"),
-      align = "lcccc",
-      caption = "Tipos de observaciones asimiladas en cada experimento.",
-      escape = FALSE) %>% 
-  kable_classic_2(full_width = TRUE) %>% 
-  column_spec(1, width = "8em") %>% 
-  column_spec(2:3, width = "2.5em", latex_valign = "m") %>% 
-  column_spec(4:5, width = "3em", latex_valign = "m")
 ```
 
 La distribución horizontal del promedio de observaciones asimiladas en cada ciclo de asimilación de cada experimento se muestra en la Figura \@ref(fig:obs-horizontal). El mayor número de observaciones asimiladas sobre el centro y el este del dominio corresponde a las observaciones de EMA. En la Figura \@ref(fig:obs-cycle)a se muestra el número de observaciones asimiladas a lo largo del tiempo. Los máximos locales a las 12 y a las 00 UTC encontrados principalmente en CONV corresponden a las observaciones obtenidas con los sondeos operativos. La fuerte variabilidad en el número de observaciones de radiancias por ciclo es también notable y depende de la cobertura de cada satélite. Los máximos a las 13-14 y 01-02 UTC en RAD corresponden a la contribución de los sensores multiespectrales. La distribución vertical del número medio de observaciones por ciclo (Figura \@ref(fig:obs-cycle)b) muestra un máximo en niveles bajos debido a las observaciones de EMA. Los vientos estimados por satélite tienen un máximo en la troposfera alta (entre 500-250 hPa). Por encima de 850 hPa, la mayoría de las observaciones corresponden a radiancias. 
