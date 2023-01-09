@@ -232,13 +232,33 @@
   \fi}
 
 %%% Added by CII
+\newenvironment{abstract}{%
+  \if@twocolumn
+    \@restonecoltrue\onecolumn
+  % \else
+  %   \@restonecolfalse
+  \fi
+  \chapter*{Abstract}
+  \fontsize{12}{14}\selectfont
+}{\clearpage \if@restonecol\twocolumn\fi}%
+
+\newenvironment{resumen}{%
+  \if@twocolumn
+    \@restonecoltrue\onecolumn
+  % \else
+  %   \@restonecolfalse
+  \fi
+  \chapter*{Resumen}
+  \fontsize{12}{14}\selectfont
+}{\clearpage \if@restonecol\twocolumn\fi}%
+
 \newenvironment{acknowledgements}{%
   \if@twocolumn
     \@restonecoltrue\onecolumn
   \else
     \@restonecolfalse
   \fi
-  \chapter*{Acknowledgements}
+  \chapter*{Agradecimientos}
   \fontsize{12}{14}\selectfont
 }{\clearpage \if@restonecol\twocolumn\fi}%
 
@@ -253,15 +273,7 @@
 }{\clearpage \if@restonecol\twocolumn\fi}%
 % End of CII add
 
-\newenvironment{abstract}{%
-  \if@twocolumn
-    \@restonecoltrue\onecolumn
-  \else
-    \@restonecolfalse
-  \fi
-  \chapter*{Abstract}
-  \fontsize{12}{14}\selectfont
-}{\clearpage \if@restonecol\twocolumn\fi}%
+
 
 \newenvironment{dedication}{%
   \if@twocolumn
@@ -334,6 +346,7 @@
 %\newcommand{\Shorttitle}[1]{\def\@Shorttitle{#1}}
 \newcommand{\Plainauthor}[1]{\def\@Plainauthor{#1}}
 \newcommand{\Abstract}[1]{\def\@Abstract{#1}}
+\newcommand{\Resumen}[1]{\def\@Resumen{#1}}
 %\newcommand{\Keywords}[1]{\def\@Keywords{#1}}
 %\newcommand{\Plainkeywords}[1]{\def\@Plainkeywords{#1}}
 \newcommand{\Acknowledgements}[1]{\def\@Acknowledgements{#1}}
