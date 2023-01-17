@@ -8,49 +8,6 @@ The {#rmd-basics} text after the chapter declaration will allow us to link throu
 
 # Metodología {.unnumbered}
 
-## El sistema de asimilación GSI {.unnumbered}
-
-GSI por su nombre en inglés Gridpoint Statistical Interpolation, es un sistema de asimilación de datos de última generación, desarrollado inicialmente por el Environmental Modeling Center  (EMC) del NCEP. Se diseñó como un sistema 3DVAR tradicional aplicado en el espacio de puntos de retícula de los modelos para facilitar la implementación de covarianzas anisotrópicas no homogéneas [@wu2002; @purser2003; @purser2003a]. 
-Está diseñado para funcionar en varias plataformas computacionales, crear análisis para diferentes modelos numéricos de pronóstico, y seguir siendo lo suficientemente flexible como para poder manejar futuros desarrollos científicos, como el uso de nuevos tipos de observación, una mejor selección de datos y nuevas variables de estado [@kleist2009].
-
-Este sistema 3DVAR sustituyó al sistema de análisis operativo regional de punto de retícula del NCEP por el Sistema de Predicción de Mesoescala de América del Norte (NAM) en 2006 y al sistema de análisis global Spectral Statistical Interpolation (SSI) usado para generar las condiciones iniciales del Global Forecast System (GFS) en 2007 [@kleist2009]. 
-En los últimos años, GSI ha evolucionado para incluir varias técnicas de asimilación de datos para múltiples aplicaciones operativas, incluyendo 2DVAR (por ejemplo, el sistema Real-Time Mesoscale Analysis (RTMA); @pondeca2011), la técnica híbrida EnVar (por ejemplo los sistemas de asimilación de datos para el GFS, el Rapid Refresh system (RAP), el NAM, el HWRF, etc.), y 4DVAR (por ejemplo, el sistema de asimilación de datos para el Sistema Goddard de Observación de la Tierra, versión 5 (GEOS-5) de la NASA; @zhu2008). 
-GSI también incluye un enfoque híbrido 4D-EnVar que actualmente se utiliza para la generación del GFS. 
-
-Además del desarrollo de técnias híbridas, GSI permite el uso métodos de asimilación por ensambles. Para lograr esto, utiliza el mismo operador de las observaciones que los métodos variacionales para comparar el campo preliminar con las observaciones. 
-De esta manera los exaustivos controles de calidad desarrollados para los métodos variacionales también son aplicados en la asimilación por ensambles. 
-El código EnKF fue desarrollado por el Earth System Research Lab (ESRL) de la National Oceanic and Atmospheric Administration (NOAA) en colaboración con la comunidad científica. 
-Contiene dos algoritmos distintos para calcular el incremento del analisis, el serial Ensemble Square Root Filter (EnSRF, @whitaker2002) y el Local Ensemble Kalman Filter (LETKF, @hunt2007) aportado por Yoichiro Ota de la Agencia Meteorológica Japonesa (JMA). 
-
-Para reducir el impacto de covarianzas espurias en el incremento que se aplica al análisis, los sistemas por ensamble aplican una localización a la matriz de covarianza de los errores de las observaciones $R$ tanto en la dirección horizontal como vertical. 
-Usa un polinomio de orden 5 para reducir el impacto de cada observación de manera gradual hasta llegar a una distancia límite a partir de la cual el impacto es cero. La escala de localización vertical se define cen términos del logarítmo de la presión y la escala horizontal usualmente se define en kilómetros. 
-Estos parámetros son importantes a la hora de obtener un buen análisis y dependen de factores como el tamaño del ensamble y la resolución del modelo.
-
-A su vez utiliza el Community Radiative Transfer Model (CRTM, @han2006) como operador de las observaciones de radiancias que calcula la temperatura de brillo simulada por el modelo para poder compararlo con las observaciones de sensores satelitales. 
-GSI, además implementa de un algoritmo de corrección de bias de las observaciones de radiancias de satélites.
-La estimación hecha por el campo preliminar obtenida con el CRMT se compara las observaciones de radiancia para obtener la innovación. 
-Esta innovación a su vez se utiliza para actualizar los coeficientes que permiten estimar el bias de las observaciones que se utilizá para obtener una innovación actualizada. Este proceso puede repetirse varias veces hasta que la la innovación y los coeficientes de corrección de bias converjan. 
-Este algoritmo se describe en mayor detalle en la Sección \@ref(sat).
-
-## El modelo de transferencia radiativa CRTM {.unnumbered}
-
-El Community Radiative Transfer Model (CRTM, @han2006) es un modelo de transferencia radiativa rápido que fue desarrollado conjuntamente por el NOAA Center for Satellite Applications and Research y el Joint Center for Satellite Data Assimilation (JCSDA). Es un modelo utilizado ampliamente por la comunidad de sensoramiento remoto (aca poner un par de citas, te puedo ayudar con esto pero por ejemplo el paper de Fede seguro), para la calibracion de instrumentos satelitales (cita), y a su vez para generar retrievals a partir de observaciones satelites (citas). De especial importancia para este trabajo, es utilizado en diferentes centros meteorologicos del mundo como operador de observaciones en la asimilacion de radianzas satelitales (citas). 
-
-El CRTM es capaz de simular radiancias de microondas, infrarrojas y visibles utilizando perfiles atmosféricos de presión, temperatura, humedad y otras especies como el ozono. Recientemente @cutraro2021 evaluaron su despeño en la region con buenos resultados en la simulación de observaciones de GOES-16. 
-
-El CRTM está compuesto por 4 modulos para el cálculo de la transmitancia, la emisión y reflección desde la superficie, la absorción por aerosoles y scattering y un modulo para resolver la transferencia radiativa. La transmitancia gaseosa describe la absorción generada por los gases en la atmósfera, de modo que se puede utilizar las observaciones en los sistemas de asimilación de datos y retrievals de temperatura del aire, la humedad y los gases traza como el CO2, O3, N2O, CO y CH4. El módulo de nubes contiene las propiedades ópticas de seis tipos de nubes, proporcionando información del impacto radiativo generado por las nubes que es útil en la previsión meteorológica y los estudios climáticos. El modelo de superficie del CRTM incluye la emisividad/reflectividad estática de la superficie y se basa en un atlas que incluye varios tipos de superficie. 
-
-El modelo forward del CRTM permite simular observaciones satelitales de radiancias a partir del estado de la atmósfera. Esto es necesario para la asimilación de radiancias para también es utilizado para verificar la precisión y los errores de estas observaciones.  
-
-El cálculo de las observaciones simuladas tiene un costo computacional muy alto ya que requiere transporner un matriz de grandes dimensiones y la minimización de una función de costo. Esta matriz K se construye a partir de las derivadas parciales de las radiancias con respecto a parámetros geofísicos. CRTM permite hacer estos cálculos de manera rápida para que pueda usarse en contextos operacionales. 
-
-Para obtener resultados rápidos, CRTM aplica ciertas simplificaciones y aproximaciones a la hora de resolver la ecuación de transferencia radiativa. En primer lugar asume que la atmósfera terrestre está formada por capas plano-paralelas y homogeneas en equilibrio termodinámico y donde los efectos tridimensionales y de polarización pueden ser ignorados.
-
-En contextos de cielos despejados, además se asume que no existe dispersión y solo se considera la absorción molecular. Mientras que para cielos nubosos y canales en el infrarrojo también se asume que no existe dispersión, en el caso de canales de microondas la dispersión generada por las nubes es incluida. En este caso la ecuación de transferencia radiativa no se puede resolver anaíticamente y se recurre a modelos numéricos. 
-
-El cálculo de la transmitancia entre capas se aproxima utilizando un polinomio de Taylor multivariado. Los predictores del polinomio se estiman en función de variables atmosféricas como la presión, la temperatura y la consentración de especies que absorben la radiación y el coseno del ángulo cenital. Los coeficientes utilizados en el polinomio son precalculados a partir de datos de entramiento que incluye perfiles atmosféricos que representen la variabilidad de la atmósfera. Estos coeficientes también pueden depender de características específicas de cada canal y sensor que suelen estar asociadas a cambios en los sensores luego del lanzamiento del satélite. 
-
-
 ## Caso de estudio {.unnumbered}
 
 El caso de estudio utilizado en este trabajo corresponde a un SCM que se inicio y alcanzo su madurez durante durante el 22 de noviembre de 2018. Previo al desarrollo de este SCM, el centro y norte de Argentina se encontraba inmerso en una masa de aire cálido y húmedo con altos valores de energía potencial disponible convectiva (CAPE), como lo muestra ERA 5 [@era5pressure] en la Figura \@ref(fig:caso)a. El 22 de noviembre de 2018 un frente frío cruzó el centro de Argentina (Figura \@ref(fig:caso)b). Este frente frío desencadenó el desarrollo de células convectivas aisladas que rápidamente crecieron hasta convertirse en un SCM excepcionalmente grande (Figura \@ref(fig:caso)d,e). Durante ese día, varias estaciones de superficie observaron actividad eléctrica, fuertes ráfagas de viento y lluvias intensas. Al norte de la región, el entorno cálido y húmedo contribuyó al desarrollo de convección aislada que finalmente creció y se fusionó con el SCM (Figura \@ref(fig:caso)f). El SCM recorrió aproximadamente 2500 km de sur a norte, disipándose sobre Paraguay y el sur de Brasil después de 42 horas desde el inicio de su desarrollo. Este caso estudio es de particular interes por desarrollarse durante la campaña RELAMPAGO donde se generaron observaciones extraordinarias que serán utilizadas en la verificación de los experimentos desarrollados. 
@@ -128,6 +85,195 @@ campos %>%
   theme(tagger.panel.tag.background = element_rect(color = "white"))
 
 ```
+
+## Observaciones {.unnumbered}
+
+### Conjuntos de observaciones asimiladas {.unnumbered}
+
+#### Convencionales {.unnumbered}
+
+Las observaciones convencionales (EMC) utilizadas forman parte del flujo de datos del Sistema Global de Asimilación de Datos (GDAS). Se asimilarán las observaciones convencionales incluidas en los archivos Binary Universal Form for Representation of Meteorological Data (PREPBUFR) generados por NCEP. Los archivos PREPBUFR incluyen observaciones de superficie procedentes de 117 estaciones meteorológicas de superficie (EMS), barcos, y observaciones de altura procedentes de 13 sitios de lanzamiento de radiosondeos y aviones dentro del área en estudio. Los triángulos naranjas de la Figura \@ref(fig:dominio)a indican la ubicación de las estaciones de superficie incluidas en este experimento. La frecuencia de estas observaciones varia entre 1 hora para las estaciones de superficie y 12/24 horas para las radiosondas. Las observaciones del viento en superficie sobre los océanos (ASCATW) proceden de los dispersómetros y también se incluyen en los archivos PREPBUFR.
+
+La tabla \@ref(tab:tabla-obs) enumera todos los tipos de observación (presión en superficie, temperatura, humedad específica y viento) disponibles para cada fuente de observación, junto con el error asociado para cada una definidos de acuerdo a la configuración por defecto del sistema de asimilación usado en este trabajo. En algunos casos, el error varía con la altura y depende de la plataforma específica (avión y viento derivado del satélite). En cuanto al control de calidad aplicado a las observaciones convencionales, el sistema de asimilación realiza una primera comparación entre la innovación (la diferencia entre la observación y la observación simulada por el modelo para el campo preliminar) y un umbral predefinido que depende del error de observación (también incluido en la Tabla \@ref(tab:tabla-obs)).
+
+#### Red de Estaciones Meteorológicas Automáticas {.unnumbered}
+
+También se asimilaron observaciones de 866 Estaciones Meteorológicas Automáticas (EMA) que forman parte de 17 redes de superficie públicas y privadas en la región. El conjunto de datos utilizado en este estudio fue obtenido del repositorio de datos de RELAMPAGO [@garcia2019]. Estas estaciones se indican como cuadrados verdes en la Figura \@ref(fig:dominio)a. Tienen mayor cobertura espacial que las EMC y una frecuencia de muestreo de 10 minutos en la mayoría de los casos. Todas las estaciones miden temperatura, pero sólo 395 estaciones proporcionan humedad, 422 la presión y 605 el viento. 
+Los errores de observación utilizados para asimilar estas observaciones son los mismos que para las observaciones de EMC (véase la tabla \@ref(tab:tabla-obs)).
+
+
+#### Vientos estimados por satélite {.unnumbered}
+
+Las observaciones de viento derivadas de los satélites también se incluyen en los archivos PREPBUFR disponibles cada 6 hs, y consisten en estimaciones de GOES-16 (utilizando los canales visible, infrarrojo y de vapor de agua) y METEOSAT 8 y 11 (utilizando los canales visible y de vapor de agua). Estos satélites son geoestacionarios y tienen una frecuencia de escaneo de 15 minutos, por lo que, ante la presencia de nubosidad para estimar el viento, generarán estimaciones que estarán diponibles en cada ciclo de asimilación. Las observaciones de viento derivadas de los satélites METEOSAT tienen una resolución de 3 km mientras que las de GOES-16 tienen una resolución de 10 km. Debido al dominio elegido y la cobertura de estos satélites, GOES-16 es la principal fuente de observaciones de vientos derivados de los satélites (99 % de las observaciones). Los errores de observación utilizados para asimilar estas observaciones siguen la configuración por defecto del GSI y se indican en la Tabla \@ref(tab:tabla-obs).
+
+
+```{r tabla-obs}
+fread(here("data/derived_data/tables/table1.csv")) %>% 
+  kbl(caption = "Características de las observaciones asimiladas: El código de cada tipo de observación y su fuente, las variables disponibles, el error de observación y los umbrales de control de calidad utilizados.",
+      col.names = c("Código", "Plataforma", "Variable", "Error", "Umbral de error"),
+      booktabs = TRUE,
+      escape = FALSE) %>% 
+  kable_classic_2(full_width = FALSE) %>% 
+  kable_styling(font_size = 9,
+                position = "center") %>% 
+  column_spec(1, width = "4.5em") %>% 
+  column_spec(2, width = "5.5em") %>% 
+  column_spec(3, width = "6em") %>% 
+  column_spec(4:5, width = "8em") %>% 
+  collapse_rows(columns = 1:2, valign = "middle", latex_hline = "major") %>% 
+  footnote(symbol = c("El error de la observación varía con la altura.",
+                      "Observationes por encima de 600 hPa son rechazadas.",
+                      "El error de la observación depende del tipo de reporte."),
+           symbol_manual = c("*", "**", "+"))
+```
+
+#### Radiancias de satélite
+
+En este trabajo se utilizaron radiancias de satélites disponibles a través del flujo de datos del GDAS, que incluye observaciones en el espectro infrarrojos y microondas. Los sensores incluidos son el Advanced Microwave Sounding Unit - A (AMSU-A), Microwave Humidity Sounder (MHS), y 2 sensores multiespectrales; el Atmospheric Infrared Sounder (AIRS) y el Infrared Atmospheric Sounding Interferometer (IASI)  ubicados en distintas plataformas (ver Tabla \@ref(tab:table-rad)). Dado que el dominio regional se encuentra en latitudes medias y que los satélite de interés están en órbitas polares, cada sensor escanea la zona sólo dos veces al día con una cobertura espacial que depende de la franja de covertura satélite. Por esta razón, el número de observaciones de los satélites varía significativamente en cada ciclo de asimilación. En particular, los sensores multiespectrales proporcionaron entre 100 y 1000 observaciones por cada escaneo cada 12 horas, contribuyendo al 88 % de la cantidad total de radiancias asimiladas en los experimentos. La ubicación vertical de cada observación de radiancia se estimó como el nivel del modelo en el que se maximizaba su función de peso calculada por el CRTM. Los sensores multiespectrales tienen una buena cobertura vertical y son capaces de captar desde la baja troposfera hasta la baja estratosfera. Los canales elegidos para la asimilación y sus errores asociados se definieron teniendo en cuenta el tope del modelo (50 hPa).
+
+
+```{r table-rad}
+fread(here("data/derived_data/tables/tabla_radianzas.csv")) %>%
+  .[, ":="(sensor = toupper(sensor),
+           plataforma = toupper(plataforma),
+           prop = paste0(prop, " ", "%"))] %>%
+  .[order(.[,'sensor']), ] %>%
+  .[] %>%
+  kbl(booktabs = TRUE,
+      escape = TRUE,
+      col.names = linebreak(c("Sensor", "Plataforma", "Canales asimilados", "Porcentaje sobre el total")),
+      caption = "Lista de los sensores disponibles cada plataforma, el número de canales aceptados para su asimilación y el porcentaje de observaciones asimiladas calculado sobre todas las observaciones de radiancias y todos los ciclos de asimilación.") %>%
+  kable_styling(font_size = 9) %>%
+  collapse_rows(1, valign = "top") %>%
+  kable_classic_2(full_width = TRUE)
+```
+
+También se utilizaron observaciones del satélite geoestacionario XXX (GOES-16), en particular los canales sensibles al vapor de agua en distintos niveles. Estas observaciones tienen una frecuencia temporal de 15 (10 minutos a partir de XXX) y una resolución espacial de 2 kilómetros. 
+
+TODO: completar GOES
+
+### Conjuntos de observaciones para verificación {.unnumbered}
+
+Para evaluar el desempeño del sistema de asimilación de datos presentado en esta tesis, utilizamos los siguientes conjuntos de observaciones: 
+
+* **Datos horarios en niveles de presión de ERA5 [@era5pressure]:** Las variables de interés (temperatura del aire, humedad y viento) fueron interpoladas desde la reticula del reanalisis que tiene una resolución de 0.25$^{\circ}$ a la retícula del modelo para compararlas con el análisis de cada experimento. 
+
+* **Multi-Network Composite Highest Resolution Radiosonde Data [@sondeos]:** radiosondeos en alta resolución lanzados desde varias ubicaciones durante el periodo de la campaña de campo RELAMPAGO en conjunto con las radiosondeos operativos del SMN. Sólo se utilizaron para la validación los sondeos que no ingresaron en el sistema de asimilación y que corresponden a los sitios de observación de la campaña. El periodo del experimento abarca las misiones IOP 7 y 8, durante las cuales se lanzaron 74 radiosondos en una pequeña zona cercana al centro del dominio experimental (Figura \@ref(fig:dominio)b). Estas observaciones son de particular importancia ya que si bien corresponden a una región acotada del dominio, aportar información de alta resolución vertical y temporal ya que operacionalmente se lanzan sondeos una o dos veces al día.
+
+* **IMERG Final Run [@huffman2018]:** estimación de la precipitación a partir de datos de la constelación de satelites GPM (por su nombre en inglés Global Precipitation  Measurement) con una resolución espacial de 0,01$^{\circ}$ y una resolución temporal de 30 minutos para validar la habilidad de los pronósticos de 1 hora para representar la precipitación sobre el dominio. La estimación de la precipitación se realiza combinando observaciones de sensores de microondas activos y pasivos que se complementa con estimaciones provenientes de sensores infrarojos a bordo de satélites polares. 
+
+* **Datos del Sistema Nacional de Radares Meteorológicos (SINARAME):** Se utilizaron observaciones de radar para realizar una evaluación cualitativa y visual de de la ubicacion e intensidad de la actividad convectiva. Los datos provienen de 9 radares ubicados en el dominio y son provistos por la red de radares Doppler de doble polarización en banda C [@deelia2017] con una frecuencia temporal de 10 minutos. Para este trabajo se utilizó únicamente la máxima reflectividad de la columna (COLMAX) más cercana al momento de análisis.
+
+## La asimilación de datos
+
+La asimilación de datos combina de manera optima un pronóstico numérico o campo preliminar en un tiempo $t$ con las observaciones disponibles para ese mismo tiempo, generando un análisis [@carrassi2018]. Esta combinación optima toma en cuenta el error asociado al modelo meteorológico (errores de pronóstico) y el error de las observaciones (que resulta de los errores instrumentales y los errores de representatividad) y su error será menor a los errores originales. Por esta razón el análisis es considerado desde un punto de vista estadistico y bajo ciertas hipotesis, como la *mejor aproximación* disponible del estado real de la atmósfera.
+ 
+
+(ref:ciclo-asimilacion-teorico) Esquema de un ciclo de asimilación típico. El tiempo de las observaciones y el campo preliminar deberá coincidir.
+
+```{r ciclo-asimilacion-teorico, fig.align='center', out.width='100%',  fig.cap='(ref:ciclo-asimilacion-teorico)'}
+knitr::include_graphics(here("figure/ciclo_asimilacion_teorico.png"))
+```
+
+Un ciclo de asimilación de datos típico se muestra en la Figura \@ref(fig:ciclo-asimilacion-teorico). En un tiempo dado se comparan las observaciones disponibles con el campo preliminar para ese mismo tiempo, generando así el análisis que se utilizará como condición inicial para un futuro pronóstico o campo preliminar. En el caso de modelos globales, típicamente cada ciclo de asimilación de 6 horas utiliza el campo preliminar previo, es decir el pronóstico a 6 horas inicializado a partir del análisis anterior y las observaciones disponibles para las 6 horas previas o en un periodo similar centrado en la hora del análisis. 
+
+En este sentido tanto el modelo como las observaciones cumplen un rol fundamental en la asimialción. Por un lado las observaciones permiten incorporar información continua para corregir los pronósticos. Por el otro, el modelo permite *transportar* información de regiones donde existe mucha información disponible (por ejemplo, los continentes) a regiones donde las observaciones son escasas (zonas oceánicas) manteniendo los balances físicos que que rigen los procesos atmosféricos. 
+
+
+Existen distintas técnicas de asimilación de datos, cada una con sus ventajas y desventajas que fueron descriptas por @dillon en su tesis doctoral. En este trabajo, al igual que en trabajos previos en Argentina, se utilizará la técnica LETKF que forma parte de un conjunto de técnicas basadas en Filtros de Kalman por ensambles [@evensen1994]. Los Filtros de Kalman utilizan el ensamble, un conjunto de pronósticos ligeramente diferentes que se resuelven simultaneamente para incluir los posibles estados de la atmósfera y provee información dependiente de la dinámica durante la ventana de asimilación y estimar el error del modelo a lo largo del tiempo. 
+
+En el contexto de los Filtros de Kalman, el análisis o $x_a$ será el estado más probable de la atmósfera teniendo en cuenta las $m$ observaciones $y_o$ disponibles en un tiempo $t$. Para poder comparar y combinar el campo preliminar con las observaciones, este es interpolado a la ubicación de las observaciones. En determinados casos, por ejemplo cuando se trabaja con observaciones de satélite o radar, será necesario transformar las variables del modelo para obtener las variables observadas. En la siguiente ecuación $H$ es el operador de las observaciones no lineal que se encarga de las interpolaciones y transformaciones necesarias sobre el campo preliminar $x_b$, representado como un vector de dimensión $n$. 
+
+\begin{equation}
+  x_a = x_b + K[y_o - H(x_b )]
+  (\#eq:eq1)
+\end{equation}
+
+La diferencia entre las observaciones $y_o$ y el campo preliminar se denomina innovación. El análisis $x_a$ se obtiene aplicando las innovaciones al campo preliminar pesadas por una matriz $K$ o Ganancia de Kalman. Esta matriz de dimensión $nxm$ que incluye información sobre los errores del pronóstico y de las observaciones como se observa en la \@ref(eq:eq3).
+
+\begin{equation}
+  K = BH^T (HBH^T + R^{-1})^{-1}
+  (\#eq:eq3)
+\end{equation}
+
+donde $B$ es la matriz de covarianza de los errores del pronóstico y $R$ corresponde a la matriz de covarianza de los errores de las observaciones. La implementación de los los métodos de asimilación de datos suelen ser computacionalmente muy costosos, en parte debido a la estimación de la matriz $B$. Los métodos de Filtro de Kalman por Ensambles tienen la ventaja de estimar esta matriz a partir de ensamble y actualizarla en cada ciclo de asimilación para incluir los errores dependientes de la dinámica del sistema.
+
+
+\begin{equation}
+  \mathrm{ B \approx \frac{1}{m-1} \sum_{k=1}^{m}(x_{b}^{k}-\overline{x}_b)(x_{b}^{k}-\overline{x}_b)^T}
+  (\#eq:eq5)
+\end{equation}
+
+donde $k \; \epsilon \; [1,m]$ el miembro *k-ésimo* del ensamble. Esta estimación será buena si el ensamble logra capturar los posibles estados futuros o en otras palabras si la dispersión que acompañe los cambios en la incertidumbre de los pronosticos a lo largo de los ciclos de asimilación. El ensamble debe, a su vez, ser capaz de capturar la inestabilidad en el sistema cuyos errores tienen tasas de crecimiento muy rápidas. Si esto ocurre la estimación de $B$ será buena.
+
+El método Local Ensemble Transform Kalman Filter (LETKF) es una técnica eficiente ya que resuelve la \@ref(e1:eq1) en un espacio de dimensión reducida definido por los miembros del ensable. Por lo tanto la matriz $K$ no se resuelve explicitamente eliminando la necesidad de computar invesa de matrices. Cómo en el resto de los métodos usando filtro de Kalman, se localiza o restringe el área de influencia de las observaciones a un determinado radio de localización reduciendo el costo computacional necesario. La localización tiene además otra ventajas. Por un lado, y desde el punto de vista dinámico las inestabilidades en la atmósfera son de naturaleza local y por lo tanto el tamaño del ensamble necesario para representar estas inestabilidades será menor que si miramos el problema globalmente [@patil2002]. Por otro lado la localización evita la generación de covarianzas espureas entre observaciones que están alejadas entre si y son independientes reduciendo el ruido estádistico en la estimación del análisis. Además, este método calcula el análisis para cada punto de retícula individualemnte, incorporando todas las observaciones que puedan tener influencia en ese punto al mismo tiempo permitiendo paralelizar los cálculos. De esta manera este método es hasta un orden de magnitud más rápido comparado con otros métodos desarrollados previamente [@whitaker2008].
+
+
+### El sistema de asimilación GSI {.unnumbered}
+
+GSI por su nombre en inglés Gridpoint Statistical Interpolation, es un sistema de asimilación de datos de última generación, desarrollado inicialmente por el Environmental Modeling Center  (EMC) del NCEP. Se diseñó como un sistema 3DVAR tradicional aplicado en el espacio de puntos de retícula de los modelos para facilitar la implementación de covarianzas anisotrópicas no homogéneas [@wu2002; @purser2003; @purser2003a]. 
+Está diseñado para funcionar en varias plataformas computacionales, crear análisis para diferentes modelos numéricos de pronóstico, y seguir siendo lo suficientemente flexible como para poder manejar futuros desarrollos científicos, como el uso de nuevos tipos de observación, una mejor selección de datos y nuevas variables de estado [@kleist2009].
+
+Este sistema 3DVAR sustituyó al sistema de análisis operativo regional de punto de retícula del NCEP por el Sistema de Predicción de Mesoescala de América del Norte (NAM) en 2006 y al sistema de análisis global Spectral Statistical Interpolation (SSI) usado para generar las condiciones iniciales del Global Forecast System (GFS) en 2007 [@kleist2009]. 
+En los últimos años, GSI ha evolucionado para incluir varias técnicas de asimilación de datos para múltiples aplicaciones operativas, incluyendo 2DVAR (por ejemplo, el sistema Real-Time Mesoscale Analysis (RTMA); @pondeca2011), la técnica híbrida EnVar (por ejemplo los sistemas de asimilación de datos para el GFS, el Rapid Refresh system (RAP), el NAM, el HWRF, etc.), y 4DVAR (por ejemplo, el sistema de asimilación de datos para el Sistema Goddard de Observación de la Tierra, versión 5 (GEOS-5) de la NASA; @zhu2008). 
+GSI también incluye un enfoque híbrido 4D-EnVar que actualmente se utiliza para la generación del GFS. 
+
+Además del desarrollo de técnias híbridas, GSI permite el uso métodos de asimilación por ensambles. Para lograr esto, utiliza el mismo operador de las observaciones que los métodos variacionales para comparar el campo preliminar con las observaciones. 
+De esta manera los exaustivos controles de calidad desarrollados para los métodos variacionales también son aplicados en la asimilación por ensambles. 
+El código EnKF fue desarrollado por el Earth System Research Lab (ESRL) de la National Oceanic and Atmospheric Administration (NOAA) en colaboración con la comunidad científica. 
+Contiene dos algoritmos distintos para calcular el incremento del analisis, el serial Ensemble Square Root Filter (EnSRF, @whitaker2002) y el Local Ensemble Kalman Filter (LETKF, @hunt2007) aportado por Yoichiro Ota de la Agencia Meteorológica Japonesa (JMA). 
+
+Para reducir el impacto de covarianzas espurias en el incremento que se aplica al análisis, los sistemas por ensamble aplican una localización a la matriz de covarianza de los errores de las observaciones $R$ tanto en la dirección horizontal como vertical. 
+Usa un polinomio de orden 5 para reducir el impacto de cada observación de manera gradual hasta llegar a una distancia límite a partir de la cual el impacto es cero. La escala de localización vertical se define cen términos del logarítmo de la presión y la escala horizontal usualmente se define en kilómetros. 
+Estos parámetros son importantes a la hora de obtener un buen análisis y dependen de factores como el tamaño del ensamble y la resolución del modelo.
+
+A su vez utiliza el Community Radiative Transfer Model (CRTM, @han2006) como operador de las observaciones de radiancias que calcula la temperatura de brillo simulada por el modelo para poder compararlo con las observaciones de sensores satelitales. 
+GSI, además implementa de un algoritmo de corrección de bias de las observaciones de radiancias de satélites.
+La estimación hecha por el campo preliminar obtenida con el CRMT se compara las observaciones de radiancia para obtener la innovación. 
+Esta innovación a su vez se utiliza para actualizar los coeficientes que permiten estimar el bias de las observaciones que se utilizá para obtener una innovación actualizada. Este proceso puede repetirse varias veces hasta que la la innovación y los coeficientes de corrección de bias converjan. 
+Este algoritmo se describe en mayor detalle en la Sección \@ref(sat).
+
+#### Asimilación de radiancias {#sat}
+
+El preprocesamiento y control de calidad de los datos es un paso esencial en la asimilación de radiancias y depende de cada sensor y canal. Lineas generales, primero se aplicó un thinning espacial a las las observaciones provenientes de los satélites.  Durante el proceso de thinning las observaciones que se van a asimilar se eligen en función de su distancia a los puntos de la retícula del modelo, la calidad de la observación (basada en la información disponible sobre la calidad de los datos) y el número de canales disponibles (para el mismo píxel y sensor) que han pasado el control de calidad. Además, el algoritmo prefiere las observaciones sobre el mar a las de la tierra o nieve [@hu2018]. El objetivo al aplicar thinning es evitar incorporar información de procesos de escalas menores a las que puede representar el modelo. 
+
+
+Luego del thinning, se aplica la corrección de bias. La metodología de corrección de bias implementada en GSI tiene una componente dependiente de características termodinámicas del aire y otro dependiente del ángulo de escaneo [@zhu2014] y se calcula como una polinomio lineal de N predictores $p_i(x)$, con coeficientes asociados $\beta_i$. Por lo tanto, la temperatura de brillo corregida por bias ($BT_{cb}$) puede obtenerse como
+
+\begin{equation}
+  \mathrm{\mathit{BT_{cb}} =\mathit{ BT} + \sum_{i = 0}^{N} \beta_i p_i (x)}
+  (\#eq:eq12)
+\end{equation}
+
+GSI tiene un término de corrección de bias constante ($p_0 = 1$) mientras que los términos restantes y sus predictores son el contenido de agua líquida de las nubes (CLW), la tasa de cambio de temperatura con la presión, el cuadrado de la tasa de y la sensibilidad de la emisividad de la superficie. El bias dependiente del ángulo de escaneo se modela como un polinomio de 4$^\circ$ orden [@zhu2014]. 
+
+En el sistema GSI, los coeficientes $\beta_i$ se entrenan utilizando un método de estimación variacional que genera los $\beta_i$ que proporciona el mejor ajuste entre la simulación y las observaciones. 
+
+
+La detección de pixeles nubosos depende de la longitud de onda de las observaciones. Para las radiancias de microondas, las observaciones potencialmente contaminadas por nubes se detectan utilizando los índices de dispersión y del  Liquid Water Path (LWP) calculados a partir de diferencias entre distintos canales de cada sensor [@weston2019; @zhu2016]. Para los canales infrarrojos, las observaciones contaminadas por nubes se detectan utilizando el perfil de transmitancia calculado dentro de los algoritmos CRTM. Además, GSI comprueba la diferencia entre las observaciones y la temperatura de brillo simulada para detectar los píxeles nublados. Por otro lado, el control de calidad de GSI aplicado a los sensores infrarrojos busca observaciones sobre agua con un gran ángulo cenital (más de 60°) para rechazar los canales cercanos al rango visible que pueden estar contaminados por reflexión. Para las observaciones en el infrarrojos y de microondas también realiza una chequeo de la emisividad para detectar observaciones contaminadas por efecto de la superficie. Un caso particular son las las observaciones de GOES-16 ya que se utiliza la mascara de nubes que se genera como producto de nivel 2 y que está disponible con la misma resolución que las observaciones. Esta máscara de nubes se genera combinando información de 8 canales del sensor ABI desde el punto de vista espacial y temporal.  
+
+Finalmente se aplica un *gross check*, es decir, se compara la diferencia entre la observación y la observación simulada por el modelo y un umbral predefinido que depende del error de observación para rechazar observaciones erroneas.
+
+##### El modelo de transferencia radiativa CRTM {.unnumbered}
+
+El Community Radiative Transfer Model (CRTM, @han2006) es un modelo de transferencia radiativa rápido que fue desarrollado conjuntamente por el NOAA Center for Satellite Applications and Research y el Joint Center for Satellite Data Assimilation (JCSDA). Es un modelo utilizado ampliamente por la comunidad de sensoramiento remoto (aca poner un par de citas, te puedo ayudar con esto pero por ejemplo el paper de Fede seguro), para la calibracion de instrumentos satelitales (cita), y a su vez para generar retrievals a partir de observaciones satelites (citas). De especial importancia para este trabajo, es utilizado en diferentes centros meteorologicos del mundo como operador de observaciones en la asimilacion de radianzas satelitales (citas). 
+
+El CRTM es capaz de simular radiancias de microondas, infrarrojas y visibles utilizando perfiles atmosféricos de presión, temperatura, humedad y otras especies como el ozono. Recientemente @cutraro2021 evaluaron su despeño en la region con buenos resultados en la simulación de observaciones de GOES-16. 
+
+El CRTM está compuesto por 4 modulos para el cálculo de la transmitancia, la emisión y reflección desde la superficie, la absorción por aerosoles y scattering y un modulo para resolver la transferencia radiativa. La transmitancia gaseosa describe la absorción generada por los gases en la atmósfera, de modo que se puede utilizar las observaciones en los sistemas de asimilación de datos y retrievals de temperatura del aire, la humedad y los gases traza como el CO2, O3, N2O, CO y CH4. El módulo de nubes contiene las propiedades ópticas de seis tipos de nubes, proporcionando información del impacto radiativo generado por las nubes que es útil en la previsión meteorológica y los estudios climáticos. El modelo de superficie del CRTM incluye la emisividad/reflectividad estática de la superficie y se basa en un atlas que incluye varios tipos de superficie. 
+
+El modelo forward del CRTM permite simular observaciones satelitales de radiancias a partir del estado de la atmósfera. Esto es necesario para la asimilación de radiancias para también es utilizado para verificar la precisión y los errores de estas observaciones.  
+
+El cálculo de las observaciones simuladas tiene un costo computacional muy alto ya que requiere transporner un matriz de grandes dimensiones y la minimización de una función de costo. Esta matriz K se construye a partir de las derivadas parciales de las radiancias con respecto a parámetros geofísicos. CRTM permite hacer estos cálculos de manera rápida para que pueda usarse en contextos operacionales. 
+
+Para obtener resultados rápidos, CRTM aplica ciertas simplificaciones y aproximaciones a la hora de resolver la ecuación de transferencia radiativa. En primer lugar asume que la atmósfera terrestre está formada por capas plano-paralelas y homogeneas en equilibrio termodinámico y donde los efectos tridimensionales y de polarización pueden ser ignorados.
+
+En contextos de cielos despejados, además se asume que no existe dispersión y solo se considera la absorción molecular. Mientras que para cielos nubosos y canales en el infrarrojo también se asume que no existe dispersión, en el caso de canales de microondas la dispersión generada por las nubes es incluida. En este caso la ecuación de transferencia radiativa no se puede resolver anaíticamente y se recurre a modelos numéricos. 
+
+El cálculo de la transmitancia entre capas se aproxima utilizando un polinomio de Taylor multivariado. Los predictores del polinomio se estiman en función de variables atmosféricas como la presión, la temperatura y la consentración de especies que absorben la radiación y el coseno del ángulo cenital. Los coeficientes utilizados en el polinomio son precalculados a partir de datos de entramiento que incluye perfiles atmosféricos que representen la variabilidad de la atmósfera. Estos coeficientes también pueden depender de características específicas de cada canal y sensor que suelen estar asociadas a cambios en los sensores luego del lanzamiento del satélite. 
+
+
+
 
 
 ## Configuración del sistema de asimilación {.unnumbered} {#config}
@@ -285,83 +431,9 @@ ggdraw(plot_grid(plot_grid(g1, g2, ncol = 2, rel_widths = c(1, 0.5),
                  ncol = 1, rel_heights = c(1, 0.08)))
 ```
 
-## Observaciones {.unnumbered}
+Los errores de las observaciones utilizados fueron definidos de acuerdo a las tablas de errores disponibles como parte del sistema GSI. Para las observaciones de radiancias polares se aplicó un thinning con una retícula de 60 km siguiendo  @singh2016, @jones2013 y @lin2017a ya utilizan configuraciones de modelo similares a la usada en este trabajo. Para las observaciones de GOES-16 se realizaron pruebas de sensibilidad para determinar la resolución de thinning más apropiada para este tipo de observaciones que se describen el el Capítulo XXX. 
 
-### Conjuntos de observaciones asimiladas {.unnumbered}
-
-#### Convencionales {.unnumbered}
-
-Las observaciones convencionales (EMC) utilizadas forman parte del flujo de datos del Sistema Global de Asimilación de Datos (GDAS). Se asimilarán las observaciones convencionales incluidas en los archivos Binary Universal Form for Representation of Meteorological Data (PREPBUFR) generados por NCEP. Los archivos PREPBUFR incluyen observaciones de superficie procedentes de 117 estaciones meteorológicas de superficie (EMS), barcos, y observaciones de altura procedentes de 13 sitios de lanzamiento de radiosondeos y aviones dentro del área en estudio. Los triángulos naranjas de la Figura \@ref(fig:dominio)a indican la ubicación de las estaciones de superficie incluidas en este experimento. La frecuencia de estas observaciones varia entre 1 hora para las estaciones de superficie y 12/24 horas para las radiosondas. Las observaciones del viento en superficie sobre los océanos (ASCATW) proceden de los dispersómetros y también se incluyen en los archivos PREPBUFR.
-
-La tabla \@ref(tab:tabla-obs) enumera todos los tipos de observación (presión en superficie, temperatura, humedad específica y viento) disponibles para cada fuente de observación, junto con el error asociado para cada una definidos de acuerdo a la configuración por defecto de GSI. En algunos casos, el error varía con la altura y depende de la plataforma específica (avión y viento derivado del satélite). En cuanto al control de calidad aplicado a las observaciones convencionales, el operador de la observación realiza una primera comparación entre la innovación (la diferencia entre la observación y la observación simulada por el modelo para el campo preliminar) y un umbral predefinido que depende del error de observación (también incluido en la Tabla \@ref(tab:tabla-obs)).
-
-#### Red de Estaciones Meteorológicas Automáticas {.unnumbered}
-
-También se asimilaron observaciones de 866 Estaciones Meteorológicas Automáticas (EMA) que forman parte de 17 redes de superficie públicas y privadas en la región. El conjunto de datos utilizado en este estudio fue obtenido del repositorio de datos de RELAMPAGO [@garcia2019]. Estas estaciones se indican como cuadrados verdes en la Figura \@ref(fig:dominio)a. Tienen mayor cobertura espacial que las EMC y una frecuencia de muestreo de 10 minutos en la mayoría de los casos. Todas las estaciones miden temperatura, pero sólo 395 estaciones proporcionan humedad, 422 la presión y 605 el viento. 
-Los errores de observación utilizados para asimilar estas observaciones son los mismos que para las observaciones de EMC (véase la tabla \@ref(tab:tabla-obs)).
-
-
-#### Vientos estimados por satélite {.unnumbered}
-
-Las observaciones de viento derivadas de los satélites también se incluyen en los archivos PREPBUFR disponibles cada 6 hs, y consisten en estimaciones de GOES-16 (utilizando los canales visible, infrarrojo y de vapor de agua) y METEOSAT 8 y 11 (utilizando los canales visible y de vapor de agua). Estos satélites son geoestacionarios y tienen una frecuencia de escaneo de 15 minutos, por lo que, ante la presencia de nubosidad para estimar el viento, generarán estimaciones que estarán diponibles en cada ciclo de asimilación. Las observaciones de viento derivadas de los satélites METEOSAT tienen una resolución de 3 km mientras que las de GOES-16 tienen una resolución de 10 km. Debido al dominio elegido y la cobertura de estos satélites, GOES-16 es la principal fuente de observaciones de vientos derivados de los satélites (99 % de las observaciones). Los errores de observación utilizados para asimilar estas observaciones siguen la configuración por defecto del GSI y se indican en la Tabla \@ref(tab:tabla-obs).
-
-
-```{r tabla-obs}
-fread(here("data/derived_data/tables/table1.csv")) %>% 
-  kbl(caption = "Características de las observaciones asimiladas: El código de cada tipo de observación y su fuente, las variables disponibles, el error de observación y los umbrales de control de calidad utilizados.",
-      col.names = c("Código", "Plataforma", "Variable", "Error", "Umbral de error"),
-      booktabs = TRUE,
-      escape = FALSE) %>% 
-  kable_classic_2(full_width = FALSE) %>% 
-  kable_styling(font_size = 9,
-                position = "center") %>% 
-  column_spec(1, width = "4.5em") %>% 
-  column_spec(2, width = "5.5em") %>% 
-  column_spec(3, width = "6em") %>% 
-  column_spec(4:5, width = "8em") %>% 
-  collapse_rows(columns = 1:2, valign = "middle", latex_hline = "major") %>% 
-  footnote(symbol = c("El error de la observación varía con la altura.",
-                      "Observationes por encima de 600 hPa son rechazadas.",
-                      "El error de la observación depende del tipo de reporte."),
-           symbol_manual = c("*", "**", "+"))
-```
-
-#### Radiancias de satélite {#sat}
-
-En este trabajo se utilizaron radiancias de satélites disponibles a través del flujo de datos del GDAS, que incluye observaciones en el espectro infrarrojos y microondas. Los sensores incluidos son el Advanced Microwave Sounding Unit - A (AMSU-A), Microwave Humidity Sounder (MHS), y 2 sensores multiespectrales; el Atmospheric Infrared Sounder (AIRS) y el Infrared Atmospheric Sounding Interferometer (IASI)  ubicados en distintas plataformas (ver Tabla \@ref(tab:table-rad)). Dado que el dominio regional se encuentra en latitudes medias y que los satélite de interés están en órbitas polares, cada sensor escanea la zona sólo dos veces al día con una cobertura espacial que depende de la franja de covertura satélite. Por esta razón, el número de observaciones de los satélites varía significativamente en cada ciclo de asimilación. En particular, los sensores multiespectrales proporcionaron entre 100 y 1000 observaciones por cada escaneo cada 12 horas, contribuyendo al 88 % de la cantidad total de radiancias asimiladas en los experimentos. La ubicación vertical de cada observación de radiancia se estimó como el nivel del modelo en el que se maximizaba su función de peso calculada por el CRTM. Los sensores multiespectrales tienen una buena cobertura vertical y son capaces de captar desde la baja troposfera hasta la baja estratosfera. Los canales elegidos para la asimilación y sus errores asociados se definieron teniendo en cuenta el tope del modelo (50 hPa).
-
-
-```{r table-rad}
-fread(here("data/derived_data/tables/tabla_radianzas.csv")) %>%
-  .[, ":="(sensor = toupper(sensor),
-           plataforma = toupper(plataforma),
-           prop = paste0(prop, " ", "%"))] %>%
-  .[order(.[,'sensor']), ] %>%
-  .[] %>%
-  kbl(booktabs = TRUE,
-      escape = TRUE,
-      col.names = linebreak(c("Sensor", "Plataforma", "Canales asimilados", "Porcentaje sobre el total")),
-      caption = "Lista de los sensores disponibles cada plataforma, el número de canales aceptados para su asimilación y el porcentaje de observaciones asimiladas calculado sobre todas las observaciones de radiancias y todos los ciclos de asimilación.") %>%
-  kable_styling(font_size = 9) %>%
-  collapse_rows(1, valign = "top") %>%
-  kable_classic_2(full_width = TRUE)
-```
-
-También se utilizaron observaciones del satélite geoestacionario XXX (GOES-16), en particular los canales sensibles al vapor de agua en distintos niveles. Estas observaciones tienen una frecuencia temporal de 15 (10 minutos a partir de XXX) y una resolución espacial de 2 kilómetros. 
-
-TODO: completar GOES
-
-### Conjuntos de observaciones para verificación {.unnumbered}
-
-Para evaluar el desempeño del sistema de asimilación de datos presentado en esta tesis, utilizamos los siguientes conjuntos de observaciones: 
-
-* **Datos horarios en niveles de presión de ERA5 [@era5pressure]:** Las variables de interés (temperatura del aire, humedad y viento) fueron interpoladas desde la reticula del reanalisis que tiene una resolución de 0.25$^{\circ}$ a la retícula del modelo para compararlas con el análisis de cada experimento. 
-
-* **Multi-Network Composite Highest Resolution Radiosonde Data [@sondeos]:** radiosondeos en alta resolución lanzados desde varias ubicaciones durante el periodo de la campaña de campo RELAMPAGO en conjunto con las radiosondeos operativos del SMN. Sólo se utilizaron para la validación los sondeos que no ingresaron en el sistema de asimilación y que corresponden a los sitios de observación de la campaña. El periodo del experimento abarca las misiones IOP 7 y 8, durante las cuales se lanzaron 74 radiosondos en una pequeña zona cercana al centro del dominio experimental (Figura \@ref(fig:dominio)b). Estas observaciones son de particular importancia ya que si bien corresponden a una región acotada del dominio, aportar información de alta resolución vertical y temporal ya que operacionalmente se lanzan sondeos una o dos veces al día.
-
-* **IMERG Final Run [@huffman2018]:** estimación de la precipitación a partir de datos de la constelación de satelites GPM (por su nombre en inglés Global Precipitation  Measurement) con una resolución espacial de 0,01$^{\circ}$ y una resolución temporal de 30 minutos para validar la habilidad de los pronósticos de 1 hora para representar la precipitación sobre el dominio. La estimación de la precipitación se realiza combinando observaciones de sensores de microondas activos y pasivos que se complementa con estimaciones provenientes de sensores infrarojos a bordo de satélites polares. 
-
-* **Datos del Sistema Nacional de Radares Meteorológicos (SINARAME):** Se utilizaron observaciones de radar para realizar una evaluación cualitativa y visual de de la ubicacion e intensidad de la actividad convectiva. Los datos provienen de 9 radares ubicados en el dominio y son provistos por la red de radares Doppler de doble polarización en banda C [@deelia2017] con una frecuencia temporal de 10 minutos. Para este trabajo se utilizó únicamente la máxima reflectividad de la columna (COLMAX) más cercana al momento de análisis.
+Los coeficientes de corrección de bias para las observaciones de satélites polares se inicializaron a las 18 UTC del 18 de noviembre de 2018 a partir los coeficientes generados para la misma hora por el sistema GFS. El sistema de asimilación se configuró para utilizar una varianza de error de los coeficientes constante de 0,01 para evitar grandes ajustes en los coeficientes estimados en cada momento. Por razones que se describen el el Capítulo XXX se decidió no aplicar corrección de bias a las observaciones de GOES-16.
 
 ## Métodos de verificación {.unnumbered}
 
@@ -418,24 +490,7 @@ donde $P_{oi}$ es la proporción de puntos de reticula en el subdominio $i-th$, 
 
 Para los pronósticos por ensambles se calculó la probabilidad de precipitación por encima de determinados umbrales en cada punto de retícula como la proporción de miembros del ensamble que pronósticaron precipitación por encima de cada umbral. Además se generaron gráficos de confiabilidad [@wilks2011] con intervalos de probabilidades pronósticadas de 10% para analizar la calibración de los pronósticos inicializados a partir de los análisis de cada experimento.  
 
-## Asimilación de radiancias 
 
-El preprocesamiento de datos, que es un paso esencial en la asimilación de radiancias, se realizó dentro del sistema GSI para cada sensor específicamente. En primer lugar, se aplicó un thinning espacial a las las observaciones provenientes de satélites polares utilizando una retícula de 60 km siguiendo  @singh2016, @jones2013 y @lin2017a que utilizan configuraciones de modelo similares a la usada en este trabajo. Para las observaciones de GOES-16 se realizaron pruebas de sensibilidad para determinar la resolución de thinning más apropiada para este tipo de observaciones. Durante el proceso de thinning las observaciones que se van a asimilar se eligen en función de su distancia a los puntos de la retícula del modelo, la calidad de la observación (basada en la información disponible sobre la calidad de los datos) y el número de canales disponibles (para el mismo píxel y sensor) que han pasado el control de calidad. Además, el algoritmo prefiere las observaciones sobre el mar a las de la tierra o nieve [@hu2018]. 
-
-Luego del thinning, se aplica la corrección de bias. La corrección de bias (CB) tiene una componente dependiente de características termodinámicas del aire y otro dependiente del ángulo de escaneo [@zhu2014] y se calcula como una polinomio lineal de N predictores $p_i(x)$, con coeficientes asociados $\beta_i$. Por lo tanto, la temperatura de brillo corregida por bias ($BT_{cb}$) puede obtenerse como
-
-\begin{equation}
-  \mathrm{\mathit{BT_{cb}} =\mathit{ BT} + \sum_{i = 0}^{N} \beta_i p_i (x)}
-  (\#eq:eq12)
-\end{equation}
-
-GSI tiene un término de corrección de bias constante ($p_0 = 1$) mientras que los términos restantes y sus predictores son el contenido de agua líquida de las nubes (CLW), la tasa de cambio de temperatura con la presión, el cuadrado de la tasa de y la sensibilidad de la emisividad de la superficie. El bias dependiente del ángulo de escaneo se modela como un polinomio de 4$^\circ$ orden [@zhu2014]. 
-
-En el sistema GSI, los coeficientes $\beta_i$ se entrenan utilizando un método de estimación variacional que genera los $\beta_i$ que proporciona el mejor ajuste entre la simulación y las observaciones. 
-
-Los coeficientes se inicializaron a las 18 UTC del 18 de noviembre de 2018 con los coeficientes generados para la misma hora por el sistema GFS. El sistema de asimilación se configuró para utilizar una varianza de error de los coeficientes constante de 0,01 para evitar grandes ajustes en los coeficientes estimados en cada momento. 
-
-En nuestros experimentos, sólo se utilizan observaciones de cielo claro. Para las radiancias de microondas, las observaciones potencialmente contaminadas por nubes se detectan utilizando los índices de dispersión y del  Liquid Water Path (LWP) calculados a partir de diferencias entre distintos canales de cada sensor [@weston2019; @zhu2016]. Para los canales infrarrojos, las observaciones contaminadas por nubes se detectan utilizando el perfil de transmitancia calculado dentro de los algoritmos CRTM. Además, GSI comprueba la diferencia entre las observaciones y la temperatura de brillo simulada para detectar los píxeles nublados. Por otro lado, el control de calidad de GSI aplicado a los sensores infrarrojos busca observaciones sobre agua con un gran ángulo cenital (más de 60°) para rechazar los canales cercanos al rango visible que pueden estar contaminados por reflexión. Para las observaciones en el infrarrojos y de microondas también realiza una chequeo de la emisividad para detectar observaciones contaminadas por efecto de la superficie. Finalmente, para las observaciones de GOES-16 se utilizó la mascara de nubes que se genera como producto de nivel 2 y que está disponible con la misma resolución que las observaciones. Esta máscara de nubes se genera combinando información de 8 canales del sensor ABI desde el punto de vista espacial y temporal.  
 
 ## Recursos computacionales {.unnumbered}
 
