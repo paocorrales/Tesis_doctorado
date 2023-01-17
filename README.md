@@ -15,12 +15,12 @@
 		1. Asimiladas
 		2. Para verificacion
 	3. Asimilación de datos?
-	4. GSI 
-		1. Asimilación de radiancias
-			1. CRTM
-			2. QC
-			3. Thinning
-			4. BC
+		1. GSI 
+			1. Asimilación de radiancias
+				1. CRTM
+				2. QC
+				3. Thinning
+				4. BC
 	5. Configuración del sistema de asimilación
 	6. Metodos de verifiacion
 	7. Recursos computacionales
