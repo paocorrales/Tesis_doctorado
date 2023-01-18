@@ -209,16 +209,29 @@ $endif$
 \frontmatter % this stuff will be roman-numbered
 \pagestyle{empty} % this removes page numbers from the frontmatter
 
+$if(resumen)$
+  \begin{resumen}
+    $resumen$
+  \end{resumen}
+$endif$
+
+$if(abstract)$
+  \begin{abstract}
+    $abstract$
+  \end{abstract}
+$endif$
+
+$if(dedication)$
+  \begin{dedication}
+    $dedication$
+  \end{dedication}
+$endif$
+
+
 $if(acknowledgements)$
   \begin{acknowledgements}
     $acknowledgements$
   \end{acknowledgements}
-$endif$
-
-$if(preface)$
-  \begin{preface}
-    $preface$
-  \end{preface}
 $endif$
 
 $if(toc)$
@@ -234,18 +247,6 @@ $endif$
 
 $if(lof)$
   \listoffigures
-$endif$
-
-$if(abstract)$
-  \begin{abstract}
-    $abstract$
-  \end{abstract}
-$endif$
-
-$if(dedication)$
-  \begin{dedication}
-    $dedication$
-  \end{dedication}
 $endif$
 
 \mainmatter % here the regular arabic numbering starts
