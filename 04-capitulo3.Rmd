@@ -1,0 +1,17 @@
+# Asimilacion de observaciones del satélite geoestacionario GOES-16
+
+
+## Metodología
+
+### Configuracion de los experimentos
+
+## Resultados
+
+### Sensibilidad al thinning
+
+### Sensibilidad a la combinación de canales
+
+### Comparación del impacto de GOES-16 versus satélites polares
+
+## Conclusiones
+
