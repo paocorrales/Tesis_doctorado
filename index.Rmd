@@ -110,7 +110,9 @@ knitr::opts_chunk$set(
 	message = FALSE,
 	warning = FALSE,
 	cache = TRUE,
-	cache.path = "~/datosmunin3/"
+	cache.path = "~/datosmunin3/cache/",
+	dev="png", 
+	dpi=150
 )
 library(mesoda)
 library(metR)
