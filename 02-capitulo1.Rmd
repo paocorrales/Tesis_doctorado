@@ -366,7 +366,7 @@ Durante el primer día del experimento, la asimilación de las radiancias produc
 
 Comparando la representación de la humedad específica en los experimentos (Figuras \@ref(fig:TQ-diff)d-f), el impacto de la asimilación de EMA, que tienen una resolución espacial y temporal mayor, es muy importante en niveles bajos (Figura \@ref(fig:TQ-diff)d). La PBL en el experimento AWS es sistemáticamente más húmeda que en el experimento CONV, especialmente durante la noche. El aumento de la humedad en niveles bajos gracias a la asimilación de observaciones de una red de superficie más densa corrige el bias seco reportado previamente en el modelo WRF sobre la región [@casaretto2022; @matsudo2021; @ruiz2010]. El humedecimiento de la PBL es impulsado principalmente por la covarianza entre la temperatura y la humedad específica dentro de la PBL. En el experimento y sobre el centro del dominio, esta covarianza se mantiene negativa, generando un aumento de la humedad en niveles bajos a medida que las observaciones introducen correcciones negativas de temperatura. Como en el caso de la temperatura, el impacto sistemático de los vientos estimados por satélite sobre la humedad es pequeño (Figura \@ref(fig:TQ-diff)e). La figura \@ref(fig:TQ-diff)f muestra que las radiancias reducen la humedad en niveles medios y bajos durante el primer día del experimento. El efecto de secamiento se extiende a niveles medios y bajos durante el segundo día del experimento, coincidiendo con el desarrollo del SCM entre las 00 y las 12 UTC del 22 de noviembre.
 
-(ref:TQ-diff) Diferencia entre la media del ensamble para la media del ensamble del análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en $K$) y la humedad específica (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis.
+(ref:TQ-diff) Diferencia entre la media del ensamble de los análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en $K$) y la humedad específica (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis.
 
 ```{r TQ-diff, fig.cap="(ref:TQ-diff)", fig.height=5.5, fig.width=7, fig.align="center"}
 files <- Sys.glob(here("data/derived_data/analysis_variables/perfiles_ana_E[2569].csv"))
@@ -453,12 +453,93 @@ perfiles %>%
 
 ```
 
+El impacto que genera la asimilación de las observaciones de EMA se puede observar con mayor detalle en las Figuras \@ref(fig:ana-guess) donde se muestran perfiles verticales medios a lo largo del tiempo para la diferencia entre el análisis y el campo preliminar o *actualización*. Las observaciones convencionales y en particular los sondeos operativos generan un calentamiento de la PBL en CONV, particularmente previo al derarrollo de la convección (Figura \@ref(fig:ana-guess)a). Por otro lado las observaciones de EMA disminuyen la temperatura en niveles bajos durante la noche y la aumentan durante el día, lo que podría indicar que el modelo genera una PBL con menos variabilidad de temperatura. Luego del desarrollo de la convección, el impacto de las observaciones de EMA está asociado a un enfriamiento de la capa límite que podrían estar corrigiendo un frente frío débil generado por el modelo (Figura \@ref(fig:ana-guess)b). En las Figuras \@ref(fig:ana-guess)c-d se observa nuevamente un aumento de la humedad en niveles bajos gracias a la asimilación de observaciones de EMA particularmente durante la noche disminuyendo el bias seco presente en el modelo. 
+
+(ref:ana-guess) Perfiles verticales medios de la diferencia entre el análisis y el campo preliminar para a) y d) CONV, b) y b) y d) AWS para los perfiles verticales espacialmente promediados de la temperatura (a y b en $K$) y la humedad específica (d y c en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis.
+
+```{r ana-guess, fig.cap="(ref:ana-guess)", fig.height=5.5, fig.width=4, fig.align="center"}
+ana <- Sys.glob(here("data/derived_data/perfiles_ana_era5_E*.csv")) %>% 
+  map_df(function(f) {
+    
+    meta <- unglue(basename(f), "perfiles_ana_{exp}.csv")
+    
+    fread(f) #%>% .[, exp := meta[[1]][["exp"]]]
+  }) %>% 
+  setDT() %>% 
+  .[, run := "ana"]
+
+gue <- Sys.glob("~/datosmunin3/EXP/derived_data/perfiles_guess_era5_E*.csv") %>% 
+  map_df(function(f) {
+    
+    meta <- unglue(basename(f), "perfiles_guess_{exp}.csv")
+    
+    fread(f) #%>% .[, exp := meta[[1]][["exp"]]]
+  }) %>% 
+  setDT() %>% 
+  .[, run := "gue"]
+
+all <- gue[ana, on =  c("date", "lev", "variable", "exp")] %>% 
+  # melt(id.vars = c("lev", "date", "exp", "run")) %>% 
+  # dcast(lev + date + variable + exp ~ run) %>% 
+  .[, date := as_datetime(date)] %>% 
+  .[]
+
+all[variable == "T" & lev %between% c(500, 1000) & exp %in% c("E2", "E5")] %>% 
+  ggplot(aes(date, lev)) +
+  geom_contour_fill(aes(z = ana - guess, fill = ..level..), breaks = seq(-0.9, 0.9, 0.05)) +
+  scale_fill_divergent_discretised(labels = function(x) JumpBy(x, 2, fill = ""),
+                                   guide = guide_colorsteps(barwidth = 25,
+                                                            barheight = 0.3, 
+                                                            title.position = "left", 
+                                                            title.vjust = 1,
+                                                            frame.colour = "black")) +
+  scale_y_level(name = "Presión (hPa)", breaks = c(1000, 900, 800, 700, 600, 500)) +
+  scale_date(expand = c(0, 0)) +
+  facet_wrap(~exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                               E6 = "SATWND", E9 = "RAD"))) +
+  labs(fill = "Temperatura (K)",
+       y = "Presión (hPa)",
+       x = NULL) +
+  tag_facets(position = list(x = 0.05, y = 0.94)) +
+  theme_minimal(base_size = 8) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 8),
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3)) +
+
+all[variable == "QVAPOR" & lev %between% c(500, 1000) & exp %in% c("E2", "E5")] %>% 
+  ggplot(aes(date, lev)) +
+  geom_contour_fill(aes(z = (ana - guess)*1000, fill = ..level..), breaks = seq(-0.5, 1.5, 0.05)) +
+  scale_fill_divergent_discretised(labels = function(x) JumpBy(x, 2, fill = ""),
+                                   guide = guide_colorbar(barwidth = 25,
+                                                            barheight = 0.3, 
+                                                            title.position = "left", 
+                                                            title.vjust = 1,
+                                                            frame.colour = "black")) +
+  scale_y_level(name = "Presión (hPa)", breaks = c(1000, 900, 800, 700, 600, 500)) +
+  scale_date(expand = c(0, 0)) +
+  facet_wrap(~exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                               E6 = "SATWND", E9 = "RAD"))) +
+  labs(fill = latex2exp::TeX("Humedad \nespecífica ($g$ $Kg^{-1}$)"),
+       y = "Presión (hPa)",
+       x = NULL) +
+  tag_facets(tag_pool = c("c", "d"), position = list(x = 0.05, y = 0.94)) +
+  theme_minimal(base_size = 8) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 8),
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3)) +
+  
+  plot_layout(ncol = 1)
+```
+
+
 El impacto en las componentes del viento se muestran en la Figura \@ref(fig:UV-diff), junto con la correspondiente componente del viento promediada en el experimento con el mayor número de observaciones asimiladas (por ejemplo, la Figura \@ref(fig:UV-diff)a muestra la diferencia de viento zonal entre AWS y CONV y el viento zonal para AWS). La asimilación de EMA produce un viento más del este y menos del norte en niveles bajos durante los dos primeros días de análisis (Figuras \@ref(fig:UV-diff)a,b). Existe un ciclo diurno asociado al impacto de las estaciones meteorológicas automáticas sobre el viento meridional (Figura \@ref(fig:UV-diff)d) con una mayor reducción del viento del norte durante las horas nocturnas. Esto indica que las observaciones en superficie están reduciendo la intensidad del jet de capas bajas presente en el entorno preconvectivo. Después de las 18 UTC del 22 de noviembre, se observa el efecto contrario cuando el SCM se desplaza por el dominio hacia el noreste. Tras el inicio de las celdas convectivas, el impacto sistemático en el campo de viento es mayor en los niveles medios y altos (Figuras \@ref(fig:UV-diff)d, f). Durante los días 22 y 23 de noviembre el impacto de asimilar EMA produce un aumento del viento del norte en los niveles superiores de la tropósfera. Esto podría ser una consecuencia de un SCM más intenso que produce un aumento del flujo de salida del lado polar de la tormenta. Aunque las observaciones de viento estimada por satélites producen el mayor impacto en niveles medios y altos, donde el número de observaciones es mayor, el impacto sistemático es en general menor que el producido por la asimilación de datos de EMA (Figuras \@ref(fig:UV-diff)b, e). La razón del pequeño impacto observado en SATWND podría estar asociada al valor del error de observación utilizado para la asimilación de estas observaciones.
  
 La asimilación de las radiancias produce una reducción del viento del oeste con respecto a SATWND en niveles bajos y altos (Figura \@ref(fig:UV-diff)c). Para el viento meridional, estas observaciones producen un aumento 1 $ms^{-1}$ en el flujo del norte en niveles bajos, opuesto al generado por la asimilación de las observaciones de EMA durante la noche, entre las 03 y las 12 UTC, previas al desarrollo del SCM (Figura \@ref(fig:UV-diff)f). En niveles superiores y durante los días 22 y 23 de noviembre, el impacto medio de la asimilación de radiancias es una disminución de la velocidad del viento. El campo de viento meridional a 200 hPa en diferentes momentos muestra que el flujo de salida del SCM es aún más intenso que en los otros experimentos, mientras que el viento sur por delante del SCM también aumenta produciendo una reducción media del viento del norte (Figura \@ref(fig:UV-diff)f). 
 
 
-(ref:UV-diff) Diferencia entre la media del ensamble para la media del ensamble del análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en $K$) y viento meridional (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) AWS, (b,e) SATWND, y (c,f) RAD ya que son los experimentos tienen más observaciones asimiladas en cada panel.
+(ref:UV-diff) Diferencia entre la media del ensamble de los análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en $K$) y viento meridional (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) AWS, (b,e) SATWND, y (c,f) RAD ya que son los experimentos tienen más observaciones asimiladas en cada panel.
 
 ```{r UV-diff, fig.cap="(ref:UV-diff)", fig.height=5.5, fig.width=7, fig.align="center"}
 perfiles %>% 
@@ -839,7 +920,6 @@ readRDS(here("data/derived_data/observations/IMERG_1h.rds")) %>%
   ggplot(aes(end_date, lat)) +
   geom_contour_fill(aes(z = pp_acum, fill = stat(level)), breaks = c(seq(0.5, 13, 0.5), Inf)) +
   geom_contour2(aes(z = pp_acum), color = "black", size = 0.02, breaks = seq(0.5, 13, 0.5)) +
-  # scale_fill_viridis_c(option = "A",
   scale_fill_distiller(palette = "YlGnBu",
                        direction = 1,
                        labels = function(x) JumpBy(x, 2, fill = ""),
@@ -866,7 +946,6 @@ readRDS(here("data/derived_data/observations/IMERG_1h.rds")) %>%
   ggplot(aes(date, lat)) +
   geom_contour_fill(aes(z = pp_acum, fill = stat(level)), breaks = c(seq(0.5, 13, 0.5), Inf)) +
   geom_contour2(aes(z = pp_acum), color = "black", size = 0.02, breaks = seq(0.5, 13, 0.5)) +
-  # scale_fill_viridis_c(option = "A",
   scale_fill_distiller(palette = "YlGnBu",
                        direction = 1,
                        labels = function(x) JumpBy(x, 2, fill = ""),
@@ -933,7 +1012,7 @@ El IOP 7 (Figuras \@ref(fig:soundings)a-d) proporciona una buena caracterizació
 
 (ref:dbz-mean) Reflectividad máxima en la columna (COLMAX en $dBZ$), observada (fila superior) y pronósticada a 1 hora por los experimentos CONV (segunda fila) y RAD (tercera fila) a las 10 UTC (primera columna), 13 UTC (segunda columna), 16 UTC (tercera columna) y 19 UTC (cuarta columna) del 22 de noviembre de 2018. Los círculos negros en la primera fila muestran el rango de observación de cada radar. 
 
-```{r dbz-mean, fig.cap="(ref:dbz-mean)", out.width="100%", fig.height=6.5, fig.width=8, dev="png", dpi=150}
+```{r dbz-mean, fig.cap="(ref:dbz-mean)", out.width="100%", fig.height=6.5, fig.width=8}
 proj_radar <- "+proj=tmerc +lon_0=-61.5 +lat_0=-32 +k_0=1 +ellps=WGS84"
 
 rad_loc <- fread(here("data/derived_data/sample_obs/radar_loc.csv")) %>% 
