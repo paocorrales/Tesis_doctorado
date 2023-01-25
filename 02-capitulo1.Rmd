@@ -29,7 +29,7 @@ tribble(
 
 (ref:obs-horizontal) Distribución espacial horizontal media de las observaciones disponibles en cada ciclo de asmilación para los experimentos a) CONV, b) AWS, c) SATWND y d) RAD calculados sobre cajas de 2,5$^{\circ}$.
 
-```{r obs-horizontal, fig.cap="(ref:obs-horizontal)", fig.width=6}
+```{r obs-horizontal, fig.cap="(ref:obs-horizontal)", fig.width=5}
 satinfo <- fread(here("data/derived_data/sample_obs/satinfo.txt")) %>% 
   setnames(c("!sensor/instr/sat", "chan"), c("sensor", "channel"))
 
@@ -123,7 +123,7 @@ rbind(conv, aut, satwnd, rad_conv) %>%
                                                E6 = "SATWND", E9 = "RAD"))) +
   tagger::tag_facets() +
   labs(fill = "Cantidad media de \nobservaciones por ciclo") +
-  theme_minimal(base_size = 11) +
+  theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 14),
         plot.margin = unit(c(0, 0, 0, 0), "cm"))
@@ -221,7 +221,7 @@ En general, estos resultados indican que la dispersión del ensamble es coherent
 
 (ref:rcrv-sfc) $sd RCRV$ calculado para observaciones de superficie (de PREPBUFR y EMA) de a) viento, y b) temperatura promediados en cajas de 2.5º para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario paa todo el periodo del experimento. 
 
-```{r rcrv-sfc, fig.cap="(ref:rcrv-sfc)", out.width="100%", fig.height=5}
+```{r rcrv-sfc, fig.cap="(ref:rcrv-sfc)", fig.height=4}
 
 rbind(fread(here("data/derived_data/RCRV/rcrv_V_box.csv")),
       fread(here("data/derived_data/RCRV/rcrv_t_box.csv"))) %>%   
@@ -248,7 +248,7 @@ rbind(fread(here("data/derived_data/RCRV/rcrv_V_box.csv")),
                                                "t" = "Temperatura"))) +
   tag_facets() +
   labs(fill = latex2exp::TeX("sd RCRV")) +
-  theme_minimal(base_size = 13) +
+  theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 14),
         panel.ontop = TRUE,
@@ -728,7 +728,7 @@ La distribución de la temperatura y la humedad en la PBL (Figura \@ref(fig:summ
 (ref:summary-fields) a) Agua precipitable (sombreada, $kg\ m^{-2}$) y viento medio del norte sobre los primeros 7 niveles sigma (desde la superficie hasta aproximadamente 800 hPa, contornos, $m\ s^{-1}$), b) Temperatura potencial media para la PBL (primeros 10 niveles sigma), y c) CAPE máxima y cortante del viento en ~0-6 km para 15 y 30 $m\ s^{-1}$ en cada experimento. Todos los campos corresponden a la media del ensamble del análisis para las 00 UTC del 22 de noviembre. Los contornos rellenos de color gris corresponden a la topografía de más de 1500 metros sobre el nivel del mar.
 
 
-```{r summary-fields, fig.cap="(ref:summary-fields)", fig.height=12, fig.width=10.5, out.width="100%"}
+```{r summary-fields, fig.cap="(ref:summary-fields)", fig.height=10, fig.width=9, out.width="100%"}
 
 files <- Sys.glob(here("data/derived_data/analysis_variables/pw/pw_ana_E[2569]_20181122000000.nc"))
 
@@ -814,7 +814,7 @@ ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)),
   facet_grid(. ~ exp, 
              labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
                                          E6 = "SATWND", E9 = "RAD"))) +
-  theme_minimal() +
+  theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
         panel.ontop = TRUE,
         panel.grid = element_line(linetype = 3)) +
@@ -840,7 +840,7 @@ ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)),
   facet_grid(. ~ exp, 
              labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
                                          E6 = "SATWND", E9 = "RAD"))) +
-  theme_minimal() +
+  theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
         panel.ontop = TRUE,
         panel.grid = element_line(linetype = 3),
@@ -875,7 +875,7 @@ ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)),
   facet_grid(. ~ exp, 
              labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
                                          E6 = "SATWND", E9 = "RAD"))) +
-  theme_minimal() +
+  theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
         panel.ontop = TRUE,
         panel.grid = element_line(linetype = 3),
@@ -998,7 +998,7 @@ fss %>%
   facet_grid(w_label ~ q_label, labeller = label_parsed) +
   tagger::tag_facets(position = list(x = 0.05, y = 0.90)) +
   labs(color = NULL, x = NULL, y = "FSS") +
-  theme_minimal(base_size = 8) +
+  theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
