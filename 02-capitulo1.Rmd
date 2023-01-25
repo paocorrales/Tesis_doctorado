@@ -125,7 +125,7 @@ rbind(conv, aut, satwnd, rad_conv) %>%
   labs(fill = "Cantidad media de \nobservaciones por ciclo") +
   theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
-        tagger.panel.tag.text = element_text(size = 14),
+        tagger.panel.tag.text = element_text(size = 10),
         plot.margin = unit(c(0, 0, 0, 0), "cm"))
 ```
 
@@ -221,7 +221,7 @@ En general, estos resultados indican que la dispersión del ensamble es coherent
 
 (ref:rcrv-sfc) $sd RCRV$ calculado para observaciones de superficie (de PREPBUFR y EMA) de a) viento, y b) temperatura promediados en cajas de 2.5º para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario paa todo el periodo del experimento. 
 
-```{r rcrv-sfc, fig.cap="(ref:rcrv-sfc)", fig.height=4}
+```{r rcrv-sfc, fig.cap="(ref:rcrv-sfc)",  fig.height=3.5, fig.width=6}
 
 rbind(fread(here("data/derived_data/RCRV/rcrv_V_box.csv")),
       fread(here("data/derived_data/RCRV/rcrv_t_box.csv"))) %>%   
@@ -250,7 +250,7 @@ rbind(fread(here("data/derived_data/RCRV/rcrv_V_box.csv")),
   labs(fill = latex2exp::TeX("sd RCRV")) +
   theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
-        tagger.panel.tag.text = element_text(size = 14),
+        tagger.panel.tag.text = element_text(size = 10),
         panel.ontop = TRUE,
         panel.grid = element_line(linetype = 3))
 
@@ -457,8 +457,8 @@ El impacto que genera la asimilación de las observaciones de EMA se puede obser
 
 (ref:ana-guess) Perfiles verticales medios de la diferencia entre el análisis y el campo preliminar para a) y d) CONV, b) y b) y d) AWS para los perfiles verticales espacialmente promediados de la temperatura (a y b en $K$) y la humedad específica (d y c en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis.
 
-```{r ana-guess, fig.cap="(ref:ana-guess)", fig.height=5.5, fig.width=4, fig.align="center"}
-ana <- Sys.glob(here("data/derived_data/perfiles_ana_era5_E*.csv")) %>% 
+```{r ana-guess, fig.cap="(ref:ana-guess)", fig.height=5.5, fig.width=6, fig.align="center"}
+ana <- Sys.glob(here("data/derived_data/analysis_variables/perfiles_ana_era5_E*.csv")) %>% 
   map_df(function(f) {
     
     meta <- unglue(basename(f), "perfiles_ana_{exp}.csv")
@@ -468,7 +468,7 @@ ana <- Sys.glob(here("data/derived_data/perfiles_ana_era5_E*.csv")) %>%
   setDT() %>% 
   .[, run := "ana"]
 
-gue <- Sys.glob("~/datosmunin3/EXP/derived_data/perfiles_guess_era5_E*.csv") %>% 
+gue <- Sys.glob(here("data/derived_data/analysis_variables/perfiles_guess_era5_E*.csv")) %>% 
   map_df(function(f) {
     
     meta <- unglue(basename(f), "perfiles_guess_{exp}.csv")
@@ -494,7 +494,7 @@ all[variable == "T" & lev %between% c(500, 1000) & exp %in% c("E2", "E5")] %>%
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
   scale_y_level(name = "Presión (hPa)", breaks = c(1000, 900, 800, 700, 600, 500)) +
-  scale_date(expand = c(0, 0)) +
+  scale_date() +
   facet_wrap(~exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
                                                E6 = "SATWND", E9 = "RAD"))) +
   labs(fill = "Temperatura (K)",
@@ -517,7 +517,7 @@ all[variable == "QVAPOR" & lev %between% c(500, 1000) & exp %in% c("E2", "E5")] 
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
   scale_y_level(name = "Presión (hPa)", breaks = c(1000, 900, 800, 700, 600, 500)) +
-  scale_date(expand = c(0, 0)) +
+  scale_date() +
   facet_wrap(~exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
                                                E6 = "SATWND", E9 = "RAD"))) +
   labs(fill = latex2exp::TeX("Humedad \nespecífica ($g$ $Kg^{-1}$)"),
@@ -1134,7 +1134,7 @@ sondeos %>%
   melt(measure.vars = c("RMSE", "BIAS"), variable.name = "estadistico", value.name = "value.est") %>% 
   .[lev <= 15000] %>% 
   .[, ":="(iop_labels = factor(iop, labels = c("IOP~7", "IOP~8")),
-           variable_labels = factor(variable, labels = c("Temperatura~(K)", "Temperatura~de~punto~de~rocío~(K)", 
+           variable_labels = factor(variable, labels = c("Temperatura~(K)", "Temperatura~de\npunto~de~rocío~(K)", 
                                                          "Viento~U~(m~s^{-1})", "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(lev/1000, value.est)) +
   geom_hline(yintercept = 0, color = "grey30") +
