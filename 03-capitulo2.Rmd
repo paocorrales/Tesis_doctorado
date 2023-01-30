@@ -1,5 +1,68 @@
 # Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo 
 
+```{r include=FALSE}
+map_arg <- rnaturalearth::ne_states(country = c("argentina"), 
+                                    returnclass = "sf")
+map_limitrofes <- rnaturalearth::ne_countries(country = c("Brazil", "Chile", "Uruguay", "Paraguay", "Bolivia"), returnclass = "sf")
+
+square <- fread(here("data/derived_data/sample_obs/dominio_square.csv"))
+square2 <- fread(here("data/derived_data/sample_obs/dominio_square2.csv"))
+coord <- fread(here("data/derived_data/sample_obs/coordenadas.csv"))
+
+
+geom_mapa <- function(fill = NA) {
+  list(geom_sf(data = map_arg, fill = fill, color = "black", size = 0.05, inherit.aes = FALSE),
+       geom_sf(data = map_limitrofes, fill = fill, color = "black", size = 0.05, inherit.aes = FALSE),
+       coord_sf(ylim = c(-42, -19), xlim = c(-76, -51)),
+       scale_x_longitude(ticks = 5),
+       scale_y_latitude(ticks = 5))
+}
+
+arg_topo <- metR::GetTopography(-75+360, -50+360, -20, -60, resolution = 1/10, 
+                                file.dir = here("data/derived_data/"))
+arg_topo[, lon := metR::ConvertLongitude(lon)]
+
+cordillera <- list(
+  ggnewscale::new_scale_fill(),
+  geom_contour_fill(data = arg_topo, aes(x = lon, y = lat,
+                                         z = h),
+                    breaks = seq(1500, 8000, by = 700)),
+  scale_fill_gradient(low = "#E2E6E6", high = "#7E7E7E", guide = "none",
+                      oob = scales::squish))
+
+scale_date <- function(ini = 20181120180000, end = 20181123120000,
+                       break_bin = "6 hour", ...) {
+  scale_x_datetime(breaks = seq.POSIXt(ymd_hms(ini), ymd_hms(end), by = break_bin), ..., expand = c(0, 0),
+                   labels = function(x) {
+                     fifelse(hour(x) == 0, format(x, "%H UTC\n%b %d"), format(x, "%H"))
+                   }) 
+}
+
+obs.type <- tribble(
+  ~type, ~code,
+  120, "ADPUPA",
+  130, "AIRCFT-AIREP",
+  131, "AIRCFT-AMDAR",
+  133, "AIRCAR",
+  180, "SFCSHP",
+  181, "ADPSFC",
+  187, "ADPSFC\nno pressure",
+  220, "ADPUPA",
+  221, "ADPUPA-PIBAL",
+  230, "AIRCFT-AIREP",
+  231, "AIRCFT-AMDAR",
+  233, "AIRCAR",
+  280, "SFCSHP",
+  281, "ADPSFC",
+  287, "ADPSFC\nno pressure",
+  290, "ASCATW"
+) %>% 
+  setDT()
+
+
+colores_exp <- c(E2 = "#0077BB", E5 = "#88CCEE", E6 = "#EE7733", E9 = "#CC3311")
+```
+
 
 ## Metodología
 
@@ -19,11 +82,17 @@ La mayor diferencia en el viento meridional se observa en niveles altos y está 
 **¿Cómo es el campo de viento en esos niveles? y ¿cómo influye en el desarrollo de la convección?**
 
 
-(ref:era5-fcst-cap) Difference between the forecast ensemble mean experiments and ERA5 for the spatially averaged vertical profiles of air temperature (K, a--d), specific humidity ($g\ Kg^{-1}$, e--h) and meridional wind ($m\ s^{-1}$, i--l) calculated over the inner domain (red box in Figure \@ref(fig:dominio)a) for each analysis cycle.
+(ref:era5-fcst-t) Diferencia entre la media del ensamble del pronóstico inicializado a partir de cada experimento y ERA5 de los perfiles verticales promediados espacialmente de la temperatura del aire ($K$) calculado sobre el dominio de validación (cuadro rojo en la Figura \@ref(fig:dominio)a) para cada tiempo de pronóstico.
 
-```{r era5-fcst, fig.cap="(ref:era5-fcst-cap)", fig.align="center", fig.pos="ht"}
-# fig.width=7.2, fig.height=6, 
-files <- Sys.glob(here("~/datosmunin3/EXP/derived_data/perfiles_fcst_E[2569]_201811220*.csv"))
+(ref:era5-fcst-q) Cómo en la Figura \@ref(fig:era5-fcst-1) pero para la humedad específica ($g\ Kg^{-1}$).
+
+(ref:era5-fcst-v) Cómo en la Figura \@ref(fig:era5-fcst-1) pero para el viento meridional ($m\ s^{-1}$).
+
+(ref:era5-fcst-u) Cómo en la Figura \@ref(fig:era5-fcst-1) pero para el viento zonal ($m\ s^{-1}$).
+
+```{r era5-fcst, fig.cap=c("(ref:era5-fcst-t)", "(ref:era5-fcst-q)", "(ref:era5-fcst-v)", "(ref:era5-fcst-u)"), fig.align="center", fig.pos="ht"}
+
+files <- Sys.glob(here("data/derived_data/forecast_variables/perfiles_fcst_E[2569]_201811220*.csv"))
 
 perfiles <- purrr::map(files, function(f) {
   mata_exp <- unglue(basename(f), "perfiles_{run}_{exp}_{ini_date}.csv")
@@ -33,12 +102,6 @@ perfiles <- purrr::map(files, function(f) {
   
 }) %>% 
   rbindlist() 
-# .[, date := as_datetime(date)] %>% 
-# .[date %between% c(as_datetime("2018-11-20 18:00:00"),
-#                    as_datetime("2018-11-23 12:00:00"))]
-
-
-era <- fread(here("data/derived_data/reanalysis/perfiles_ana_era5.csv"))
 
 perfiles %>%
   .[variable == "T"] %>% 
@@ -52,14 +115,16 @@ perfiles %>%
                                                             title.position = "left",
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
-  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
   scale_date(ini = 20181122000000, break_bin = "12 hours") +
   facet_grid(ini_date ~ exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
-                                                         E6 = "SATWND", E9 = "RAD"))) +
-  labs(fill = "Temperature (K)",
+                                                         E6 = "SATWND", E9 = "RAD"),
+                                                 ini_date = c(`2018112200` = "00 UTC",
+                                                              `2018112206` = "06 UTC"))) +
+  labs(fill = "Temperatura (K)",
        x = NULL,
-       y = "Pressure (hPa)") +
-  # tag_facets(position = list(x = 0.1, y = 0.95)) +
+       y = "Presión (hPa)") +
+  tag_facets(position = list(x = 0.1, y = 0.95)) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -79,14 +144,16 @@ perfiles %>%
                                                             title.position = "left", 
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
-  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
   scale_date(ini = 20181121000000, break_bin = "12 hours") +
   facet_grid(ini_date ~ exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
-                                                         E6 = "SATWND", E9 = "RAD"))) +
-  labs(fill = latex2exp::TeX("Specific \nhumidity ($g$ $Kg^{-1}$)"),
+                                                         E6 = "SATWND", E9 = "RAD"),
+                                                 ini_date = c(`2018112200` = "00 UTC",
+                                                              `2018112206` = "06 UTC"))) +
+  labs(fill = latex2exp::TeX("Humedad \nespecífica ($g$ $Kg^{-1}$)"),
        x = NULL,
-       y = "Pressure (hPa)") +
-  # tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("e", "f", "g", "h")) +
+       y = "Presión (hPa)") +
+  tag_facets(position = list(x = 0.1, y = 0.95)) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -106,14 +173,16 @@ perfiles %>%
                                                             title.position = "left", 
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
-  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
   scale_date(ini = 20181121000000, break_bin = "12 hours") +
   facet_grid(ini_date ~ exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
-                                                         E6 = "SATWND", E9 = "RAD"))) +
+                                                         E6 = "SATWND", E9 = "RAD"),
+                                                 ini_date = c(`2018112200` = "00 UTC",
+                                                              `2018112206` = "06 UTC"))) +
   labs(fill = latex2exp::TeX("V ($m$ $s^{-1}$)"),
        x = NULL,
-       y = "Pressure (hPa)") +
-  # tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("i", "j", "k", "l")) +
+       y = "Presión (hPa)") +
+  tag_facets(position = list(x = 0.1, y = 0.95)) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -133,14 +202,16 @@ perfiles %>%
                                                             title.position = "left", 
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
-  scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
   scale_date(ini = 20181121000000, break_bin = "12 hours") +
   facet_grid(ini_date ~ exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
-                                                         E6 = "SATWND", E9 = "RAD"))) +
+                                                         E6 = "SATWND", E9 = "RAD"),
+                                                 ini_date = c(`2018112200` = "00 UTC",
+                                                              `2018112206` = "06 UTC"))) +
   labs(fill = latex2exp::TeX("U ($m$ $s^{-1}$)"),
        x = NULL,
-       y = "Pressure (hPa)") +
-  tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("i", "j", "k", "l")) +
+       y = "Presión (hPa)") +
+  tag_facets(position = list(x = 0.1, y = 0.95)) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -148,7 +219,6 @@ perfiles %>%
         panel.ontop = TRUE,
         panel.grid = element_line(linetype = 3)) 
 
-# plot_layout(ncol = 1, heights = c(1, 1, 1)) 
 ```
 
 ### Verificacion de los pronósticos de precipitación
@@ -158,10 +228,11 @@ Para cuantificar la habilidad de los pronósticos para predecir la precipitació
 Las observaciones de viento derivadas de satélite muestran un impacto claramente positivo en el pronóstico, a diferencia de lo que se observó al comparar el pronóstico de 1 hora con observaciones independientes en términos de precipitación. Por el contrario, las radiancias tuvieron un impacto entre neutro y ligeramente negativo en el pronóstico, a diferencia de lo que se observó al comparar el pronóstico de 1 hora con las estimaciones del IMERG. **El motivo por el que los pronósticos inicializados a partir de RAD se degradan con el tiempo debe estudiarse más a fondo.** Sin embargo, es posible que la asimilación de observaciones asociadas a canales afectados por la superficie esté contribuyendo a la degradación de la PBL en el análisis y, posteriormente, en los pronósticos. @lim2014 observó un impacto limitado al asimilar las observaciones de AIRS y atribuye este resultado al uso de canales superficiales en los que las incertidumbres asociadas a la emisividad son grandes. 
 
 
-(ref:fssfcst) FSS calculated over a 6-hour moving window for 1 mm (a and c) and 25 mm (b and d) thresholds, on 10 km (a and b) and 100 km (c and d) scales, for the forecasts initialized from CONV (blue line), AWS (light blue line), SATWND (orange line), and RAD (red line) experiments at 00 UTC (solid line) and 06 UTC (dashed line), Nov 22.
+(ref:fssfcst) FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre.
 
-```{r fssfcst, fig.cap="(ref:fssfcst)"}
-files <- Sys.glob("/home/paola.corrales/datosmunin3/EXP/derived_data/fss_6h_fcst_ens_*_E[2,5,6,8,9]_ens.csv")
+
+```{r fssfcst, fig.cap="(ref:fssfcst)", fig.width=5, fig.height=5}
+files <- Sys.glob(here("data/derived_data/FSS/fss_6h_fcst_ens_*_E[2569]_ens.csv"))
 
 fss <- purrr::map(files, function(f) {
   
@@ -175,31 +246,31 @@ fss <- purrr::map(files, function(f) {
 
 fss %>% 
   .[q %in% c(1, 25) & w %in% c(1, 11)] %>% 
+  .[, ":="(q_label = factor(q, labels = c("1~mm~h^{-1}", "25~mm~h^{-1}")),
+           w_label = factor(w, labels = c("10~km", "100~km")))] %>% 
   ggplot(aes(date, fss)) +
   geom_hline(yintercept = 1, color = "darkgray") +
   geom_line(aes(color = exp, linetype = factor(ini_date))) +
-  # geom_point(aes(color = exp)) +
   scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AUT",
                                                       E6 = "SATWND", E9 = "RAD")) +
   scale_linetype_manual(values = c(1, 2), labels = c("2018-11-22 00:00:00" = "OO UTC", 
                                                      "2018-11-22 06:00:00" = "06 UTC")) +
   scale_date(20181122000000, 20181123000000, "12 hours") +
-  facet_grid(w~q, labeller = labeller(q = c("1" = "1 mm", "5" = "5 mm", 
-                                            "10" = "10 mm", "25" = "25 mm", "50" = "50 mm"),
-                                      w = c("1" = "10 km", "5" = "50 km", 
-                                            "11" = "100 km", 
-                                            "51" = "500 km", "101" = "1000 km"))) +
-  labs(color = NULL, x = NULL, linetype = NULL) +
-  theme_minimal()
+  facet_grid(w_label ~ q_label, labeller = label_parsed) +
+  tagger::tag_facets(position = list(x = 0.05, y = 0.90)) +
+  labs(color = NULL, x = NULL, y = "FSS", linetype = NULL) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
 
 El porcentaje de área cubierta por precipitación mayor a determinados umbrales muestra una importante subestimación de la precipitación media. El área sombreada que muestra el área máxima calculada sobre todo el ensamble se acerca un poco más a lo observado pero en general y sobre todo para umbrales de pp bajos, se adelanta en el tiempo. Los pronósticos inicializados a partir de CONV subestiman el área cubierta por precipitación durante el periodo más activio y luego la sobreestima durante el 23 de noviembre. 
 
+(ref:area) Porcentaje de área cubierta por precipitación superior a $1 mmh^{-1}$ (a y c) y $5 mmh^{-1}$ (b y d) a lo largo del tiempo para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre. En línea continua negra se muetra la estimación de IMERG. 
 
+```{r area, fig.cap="(ref:area)", fig.width=6, fig.height=5}
 
-```{r}
-
-imerg <- read_rds("/home/paola.corrales/datosmunin3/EXP/derived_data/IMERG_1h.rds")
+imerg <- read_rds(here("data/derived_data/observations/IMERG_1h.rds"))
 
 q <- c(1, 5, 10, 25, 50)
 lon_band = c(-66.5, -61.5)
@@ -213,14 +284,14 @@ imerg <- purrr::map(q, function(f){
     .[, umbral := f] %>%
     .[]
 }) %>%
-  rbindlist()
+  rbindlist() 
 
 
-files <- Sys.glob("/home/paola.corrales/datosmunin3/EXP/derived_data/ppacum/E[2569]_fcst_*_area_acum_1h.rds")
+files <- Sys.glob(here("data/derived_data/forecast_variables/ppacum/E[2569]_fcst_*_area_acum_1h.rds"))
 
 pp_area <- purrr::map(files, function(f) {
   
-  meta <- unglue(f, "/home/paola.corrales/datosmunin3/EXP/derived_data/ppacum/{exp}_fcst_{ini_date}_area_acum_1h.rds")
+  meta <- unglue(basename(f), "{exp}_fcst_{ini_date}_area_acum_1h.rds")
   
   readRDS(f) %>% 
     .[, ":="(ini_date = ymd_h(meta[[1]][["ini_date"]]))]
@@ -228,33 +299,38 @@ pp_area <- purrr::map(files, function(f) {
 }) %>% rbindlist()
 
 pp_area %>% 
-  .[umbral %in% c(1, 5, 10) ] %>%
+  .[umbral %in% c(1, 5) ] %>%
   .[, .(mean_area = mean(area),
         max_area = max(area),
         min_area = min(area)), by = .(umbral, date, exp, ini_date)] %>% 
-  .[, ini_date := factor(ini_date)] %>% 
+  .[, ":="(q_label = factor(umbral, labels = c("1~mm~h^{-1}", "5~mm~h^{-1}")),
+           date_label = factor(ini_date, labels = c("00~UTC", "06~UTC")))] %>% 
   ggplot(aes(date, mean_area)) +
-  geom_line(data = imerg[umbral %in% c(1, 5, 10)], 
+  geom_line(data = imerg[umbral %in% c(1, 5)] %>% 
+              .[, q_label := factor(umbral, labels = c("1~mm~h^{-1}", "5~mm~h^{-1}"))], 
             aes(end_date, area, color = "OBS"),
             linetype = 1) +
   geom_line(aes(color = exp, linetype = factor(ini_date))) +
   geom_ribbon(aes(ymin = min_area, ymax = max_area, fill = exp, group = interaction(exp, ini_date)), alpha = .1) +
   scale_color_manual(values = c(OBS = "grey20", colores_exp),
                      labels =  c(E2 = "CONV", E5 = "ASWS", E6 = "SATWND",
-                                 E9 = "RAD", OBS = "OBS")) +
+                                 E9 = "RAD", OBS = "IMERG")) +
   scale_fill_manual(values = c(OBS = "grey20", colores_exp),
                     guide = NULL,
                     labels = c(E2 = "CONV", E5 = "ASWS", E6 = "SATWND",
                                E9 = "RAD", OBS = "OBS")) +
   scale_y_continuous(label = scales::percent_format()) +
+  scale_linetype_manual(values = c(1, 2), labels = c("2018-11-22 00:00:00" = "00 UTC", 
+                                                     "2018-11-22 06:00:00" = "06 UTC")) +
   scale_date(20181122000000, 20181123000000, "12 hours", limits = c(ymd_h(2018112200), ymd_h(2018112312))) +
-  facet_grid(ini_date~umbral, scales = "free_y", 
-             labeller = labeller(umbral = c("1" = "1 mm", "5" = "5 mm", 
-                                            "10" = "10 mm", "25" = "25 mm"))) +
-  labs(y = "Areal coverage", x = "Date", 
-       fill = NULL, color = NULL, linetype = "FCST init") +
-  theme_minimal() +
-  theme(legend.position = "bottom")
+  facet_grid(date_label~q_label, scales = "free_y", 
+             labeller = label_parsed) +
+  tagger::tag_facets(position = list(x = 0.05, y = 0.90)) +
+  labs(y = "Área cubierta por precipitación (%)", x = NULL, 
+       fill = NULL, color = NULL, linetype = NULL) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
 
 ```
 
@@ -264,63 +340,135 @@ Los pronósticos sobreestiman la ocurrencia de precipitación para los percentil
 06 UTC
 Subestiman la ocurrencia de precipitación para probabilidades bajas y la sobreestiman para probabilidades altas. Cuando los pronósticos indican una probabilidad de ocurrencia muy alta, la frecuencia observada es muy baja por lo que el pronóstico deja de ser confiable. 
 
+(ref:reliability00) Diagrama de confiabilidad calculado sobre el pronóstico inicializado a las 00UTC para probabilidades pronósticadas 0, 20, 40, 60, 80 y 100% de ocurrencia de precipitación acumulada en 3 horas mayor al percentil a) 0.95, b) 0.97, c) 0.99 y d) 0.9925. Los subplots muestran la frecuencia relativa de eventos (x 100.000) asociada a cada intervalo de probabilidad para cada percentil. 
 
-```{r eval=FALSE, include=FALSE}
+(ref:reliability06) Cómo en la Figura \@ref(fig:reliability-1) pero pera el pronóstico inicializado a las 06 UTC
 
-cut2 <- function (x, breaks) 
-{
-  # labels <- na.omit((breaks + data.table::shift(breaks, -1))/2)
-  cuts <- cut(x, breaks = breaks, labels = breaks[-1], include.lowest = TRUE)
-  as.numeric(as.character(cuts))
-}
+```{r reliability, fig.cap=c("(ref:reliability00)", "(ref:reliability06)"), fig.align="center", fig.width=5}
 
-files <- Sys.glob(here("~/datosmunin3/EXP/derived_data/ppacum/E[2,5,6,9]_fcst_*_quant_acum_3h.rds"))
+# cut2 <- function (x, breaks) 
+# {
+#   # labels <- na.omit((breaks + data.table::shift(breaks, -1))/2)
+#   cuts <- cut(x, breaks = breaks, labels = breaks[-1], include.lowest = TRUE)
+#   as.numeric(as.character(cuts))
+# }
+# 
+# files <- Sys.glob(here("~/datosmunin3/EXP/derived_data/ppacum/E[2,5,6,9]_fcst_*_quant_acum_3h.rds"))
+# 
+# pp_wrf <- purrr::map(files, function(f) {
+#   mata_exp <- unglue(basename(f), "{exp}_{run}_{ini_date}_quant_acum_3h.rds")
+#   read_rds(f) %>% 
+#     # .[, exp := mata_exp[[1]][["exp"]]] %>% 
+#     .[, ini_date := mata_exp[[1]][["ini_date"]]]
+#   
+# }) %>% 
+#   rbindlist() 
+# 
+# 
+# pp_wrf[, prop_interval2 := cut2(prop, breaks = seq(-0.2, 1, 0.2))]
+# 
+# pp_imerg <- read_rds("~/datosmunin3/EXP/derived_data/IMERG_3h.rds")
+# 
+# prop <- pp_imerg[pp_wrf, on = c("x", "y", "end_date" = "date")] %>% 
+#   .[, obs_bin := as.numeric(pp_acum >= umbral)] 
+# 
+# prop <- prop %>% 
+#   .[end_date %between% c(ymd_hms(20181122000000), ymd_hms(20181123120000)) & umbral %in% c(0.95, 0.97, 0.99, 0.9925)] %>%
+#   .[, .(freq_obs = sum(obs_bin)/.N), by = .(exp, ini_date, umbral, prop_interval2)] %>% 
+#   .[, percentil := paste0("Percentil ", umbral)] 
+# 
+# write_rds(prop, "~/datosmunin3/EXP/paper_ana_20181122-derived_data/forecast_variables/ppacum/prop_percentiles_pp.rds")
 
-pp_wrf <- purrr::map(files, function(f) {
-  mata_exp <- unglue(basename(f), "{exp}_{run}_{ini_date}_quant_acum_3h.rds")
-  read_rds(f) %>% 
-    # .[, exp := mata_exp[[1]][["exp"]]] %>% 
-    .[, ini_date := mata_exp[[1]][["ini_date"]]]
-  
-}) %>% 
-  rbindlist() 
+# n_freq <- prop %>% 
+#     .[end_date %between% c(ymd_hms(20181122000000), ymd_hms(20181123120000)) & 
+#         umbral %in% c(0.95, 0.97, 0.99, 0.9925), .N, by = .(umbral, prop_interval2, exp, ini_date)]
+# 
+# write_rds(n_freq, "~/datosmunin3/EXP/paper_ana_20181122-derived_data/forecast_variables/ppacum/n_freq_percentiles_pp.rds")
 
+n_freq <- read_rds(here("data/derived_data/forecast_variables/ppacum/n_freq_percentiles_pp.rds"))
 
-pp_wrf[, prop_interval := cut_width(prop, 0.1, boundary = 0)] %>% 
-  .[, prop_interval2 := cut2(prop, breaks = seq(0, 1, 0.2))]
+prop <- read_rds(here("data/derived_data/forecast_variables/ppacum/prop_percentiles_pp.rds"))
 
-pp_imerg <- read_rds("~/datosmunin3/EXP/derived_data/IMERG_3h.rds")
+subplots <- map(c(0.95, 0.97, 0.99, 0.9925), function(u) {
+  n_freq %>% 
+    .[ini_date == "2018112200"] %>% 
+    ggplot(aes(prop_interval2, N/100000)) +
+    geom_col(aes(fill = exp), position = "dodge") +
+    scale_fill_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
+                                                       E6 = "SATWND", E9 = "RAD"), guide = "none") +
+    scale_x_continuous(breaks = seq(0, 1, 0.2), expand = c(0,0)) +
+    # scale_y_log10() +
+    labs(color = NULL, x = NULL, y = NULL) +
+    theme_minimal(base_size = 9) +
+    theme(panel.background = element_rect(fill = "#fbfbfb", color = NA),
+          plot.background = element_rect(fill = "white", color = NA))
+})
 
-prop <- pp_imerg[pp_wrf, on = c("x", "y", "end_date" = "date")] %>% 
-  .[, obs_bin := as.numeric(pp_acum >= umbral)] 
+subplots_df <- tibble(percentil = paste0("Percentil ", c(0.95, 0.97, 0.99, 0.9925)), subplot = subplots)
 
 prop %>% 
-  .[end_date %between% c(ymd_hms(20181122000000), ymd_hms(20181123120000)) & ini_date == "2018112200"] %>%
-  .[, .(freq_obs = sum(obs_bin)/.N), by = .(exp, ini_date, umbral, prop_interval2)] %>% 
-  .[, percentil := paste0("Percentil ", umbral)] %>% 
+  .[ini_date == "2018112200" & umbral %in% c(0.95, 0.97, 0.99, 0.9925)] %>%
   ggplot(aes(prop_interval2, freq_obs)) +
   geom_abline(slope = 1, intercept = 0, color = "darkgrey") +
   geom_point(aes(color = exp)) +
   geom_line(aes(color = exp)) +
-  
-  scale_x_continuous(breaks = seq(0, 1, 0.1)) +
+  ggpp::geom_plot_npc(data = subplots_df, aes(label = subplot), npcx = 0.95, npcy = 0.05, vp.width = 0.6) +
+  scale_x_continuous(breaks = seq(0, 1, 0.2)) +
   scale_y_continuous(breaks = seq(0, 1, 0.1)) +
-  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AUT",
+  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
                                                       E6 = "SATWND", E9 = "RAD")) +
   coord_cartesian(ylim = c(0, 1)) +
-  facet_wrap(~ percentil) +
+  facet_wrap(~ percentil, ncol = 2) +
+  tagger::tag_facets(position = list(x = 0.05, y = 0.90)) +
   labs(color = NULL, x = "Probabilidad pronosticada", y = "Frecuencia relativa observada") +
-  theme_minimal()
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
 
-# a <- prop[end_date %between% c(ymd_hms(20181122060000), ymd_hms(201811220120000)) & ini_date == "2018112206" & umbral == umbral[1] & exp == "E9"] %>%
-#   with(., SpecsVerification::ReliabilityDiagram(prop, obs_bin, bins = 10, plot = TRUE, nboot = 1))
+subplots <- map(c(0.95, 0.97, 0.99, 0.9925), function(u) {
+  n_freq %>% 
+    .[ini_date == "2018112206"] %>% 
+    ggplot(aes(prop_interval2, N/100000)) +
+    geom_col(aes(fill = exp), position = "dodge") +
+    scale_fill_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
+                                                       E6 = "SATWND", E9 = "RAD"), guide = "none") +
+    scale_x_continuous(breaks = seq(0, 1, 0.2), expand = c(0,0)) +
+    # scale_y_log10() +
+    labs(color = NULL, x = NULL, y = NULL) +
+    theme_minimal(base_size = 9) +
+    theme(panel.background = element_rect(fill = "#fbfbfb", color = NA),
+          plot.background = element_rect(fill = "white", color = NA))
+})
+
+subplots_df <- tibble(percentil = paste0("Percentil ", c(0.95, 0.97, 0.99, 0.9925)), subplot = subplots)
+
+prop %>% 
+  .[ini_date == "2018112206" & umbral %in% c(0.95, 0.97, 0.99, 0.9925)] %>%
+  ggplot(aes(prop_interval2, freq_obs)) +
+  geom_abline(slope = 1, intercept = 0, color = "darkgrey") +
+  geom_point(aes(color = exp)) +
+  geom_line(aes(color = exp)) +
+  ggpp::geom_plot_npc(data = subplots_df, aes(label = subplot), npcx = 0.95, npcy = 0.05, vp.width = 0.6) +
+  scale_x_continuous(breaks = seq(0, 1, 0.2)) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1)) +
+  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
+                                                      E6 = "SATWND", E9 = "RAD")) +
+  coord_cartesian(ylim = c(0, 1)) +
+  facet_wrap(~ percentil, ncol = 2) +
+  tagger::tag_facets(position = list(x = 0.05, y = 0.90)) +
+  labs(color = NULL, x = "Probabilidad pronosticada", y = "Frecuencia relativa observada") +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
+
 ```
 
 
 
 
 ```{r}
-quantiles <- fread("~/datosmunin3/EXP/derived_data/quantiles_fcst_3h.csv") %>% 
+quantiles <- fread(here("data/derived_data/forecast_variables/ppacum/quantiles_fcst_3h.csv")) %>% 
+  .[quantile %in% c(0.95, 0.97, 0.99, 0.9925)] %>% 
   .[, value := round(value, 2)] %>% 
   dcast(exp + ini_date ~ quantile) %>% 
   .[, ":="(exp = fcase(exp == "E2", "CONV",
@@ -331,9 +479,10 @@ quantiles <- fread("~/datosmunin3/EXP/derived_data/quantiles_fcst_3h.csv") %>%
   arrange(ini_date)
 
 quantiles %>% 
-  knitr::kable() %>% 
-  kableExtra::kable_styling() %>% 
-  kableExtra::collapse_rows(columns = 2) 
+  kbl(booktabs = TRUE, col.names = c("Experimento", "Pronóstico", "0.95", "0.97", "0.99", "0.9925"),
+      caption = "Valor de la precipitación acumulada en 3 hs asociada a distintos percentiles calculados para cada inicialización de pronóstico y cada experimento.") %>% 
+  kable_classic_2() %>% 
+  collapse_rows(columns = 2) 
 
 
 ```
@@ -345,8 +494,10 @@ Entre las 2 inicializaciones se ve una clara difirencia, la probabilidad de pric
 
 SATWND tiene probabilidades mayores a los otros pronósticos. 
 
-```{r}
-files <- Sys.glob(here("~/datosmunin3/EXP/derived_data/ppacum/E[2,5,6,9]_fcst_*_prop_acum_30h.rds"))
+(ref:prob) Probabilidad de ocurrencia de precipitación acumulada en 30 hs superior a 10 mm (fila 1 y 2) y 50 mm (fila 3 y 4) para los pronósticos inicializados a las 00 y 06 UTC a partir de cada experimento. 
+
+```{r prob, fig.cap="(ref:prob)", fig.width=6, fig.height=8, fig.align="center"}
+files <- Sys.glob(here("data/derived_data/forecast_variables/ppacum/E[2,5,6,9]_fcst_*_prop_acum_30h.rds"))
 
 pp_wrf <- purrr::map(files, function(f) {
   mata_exp <- unglue(basename(f), "{exp}_{run}_{ini_date}_prop_acum_30h.rds")
@@ -357,7 +508,7 @@ pp_wrf <- purrr::map(files, function(f) {
 }) %>% 
   rbindlist() 
 
-pp_imerg <- read_rds("~/datosmunin3/EXP/derived_data/IMERG_1h.rds")
+pp_imerg <- read_rds(here("data/derived_data/observations/IMERG_1h.rds"))
 
 pp_imerg <- rbind(pp_imerg[end_date %between% c(ymd_hms(20181122010000), ymd_hms(20181123060000)),
                            .(pp_acum = sum(pp_acum),
@@ -371,65 +522,51 @@ pp_imerg <- rbind(pp_imerg[end_date %between% c(ymd_hms(20181122010000), ymd_hms
 colors_smooth_rainbow <- c("#E8ECFB", "#B997C7", "#824D99", "#4E78C4", "#57A2AC", "#7EB875", "#D0B541",
                            "#E67F33", "#CE2220", "#521A13")
 
-pp_wrf[umbral == 10 & prop > 0.09] %>% 
+pp_wrf[umbral %in% c(10, 50) & prop > 0.09] %>% 
   .[, prop := prop + abs(rnorm(.N, sd = 0.0000000001))] %>%
   .[, prop := scales::rescale(prop, to = c(0, 1))] %>% 
+  # .[, .(umbral_label = factor(umbral, labels = c("10~mm~h^{-1}", "50~mm~h^{-1}")))] %>% 
   ggplot(aes(x, y)) +
   # geom_raster(aes(fill = prop)) +
   geom_contour_fill(aes(z = prop, fill = ..level..),
                     proj = norargentina_lambert) +
-  scale_fill_manual(values = colors_smooth_rainbow) +
+  scale_fill_manual(values = colors_smooth_rainbow, guide = guide_colorsteps(barwidth = 20,
+                                                            barheight = 0.3,
+                                                            title.position = "left", 
+                                                            title.vjust = 1,
+                                                            frame.colour = "black")) +
   geom_contour2(data = pp_imerg, aes(z = pp_acum), color = "black",
                 breaks = 10,
                 proj = norargentina_lambert) +
   geom_mapa() +
-  facet_grid(ini_date ~ exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "ASWS", 
-                                                         E6 = "SATWND", E9 = "RAD"))) +
-  theme_minimal()
+  facet_grid(umbral + ini_date ~ exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                                         E6 = "SATWND", E9 = "RAD"),
+                                                         ini_date = c(`2018112200` = "00 UTC",
+                                                              `2018112206` = "06 UTC"),
+                                                         umbral = c(`10` = "10 mmh-1",
+                                                                    `50` = "50 mmh-1"))) +
+  labs(fill = "Probabilidad") + 
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom")
 
-pp_wrf[umbral == 50 & prop > 0.09] %>% 
-  .[, prop := prop + abs(rnorm(.N, sd = 0.0000000001))] %>%
-  .[, prop := scales::rescale(prop, to = c(0, 1))] %>% 
-  ggplot(aes(x, y)) +
-  # geom_raster(aes(fill = prop)) +
-  geom_contour_fill(aes(z = prop, fill = ..level..),
-                    proj = norargentina_lambert) +
-  scale_fill_manual(values = colors_smooth_rainbow) +
-  geom_contour2(data = pp_imerg, aes(z = pp_acum), color = "black",
-                breaks = 50,
-                proj = norargentina_lambert) +
-  geom_mapa() +
-  facet_grid(ini_date ~ exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "ASWS", 
-                                                         E6 = "SATWND", E9 = "RAD"))) +
-  theme_minimal()
-
-
-pp_wrf[umbral == 100 & prop > 0.09] %>% 
-  .[, prop := prop + abs(rnorm(.N, sd = 0.0000000001))] %>%
-  .[, prop := scales::rescale(prop, to = c(0, 1))] %>% 
-  ggplot(aes(x, y)) +
-  # geom_raster(aes(fill = prop)) +
-  geom_contour_fill(aes(z = prop, fill = ..level..),
-                    proj = norargentina_lambert) +
-  scale_fill_manual(values = colors_smooth_rainbow) +
-  geom_contour2(data = pp_imerg, aes(z = pp_acum), color = "black",
-                breaks = 100,
-                proj = norargentina_lambert) +
-  geom_mapa() +
-  facet_grid(ini_date ~ exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "ASWS", 
-                                                         E6 = "SATWND", E9 = "RAD"))) +
-  theme_minimal()
-
-pp_imerg %>% 
-  ggplot(aes(x, y)) +
-  geom_contour_fill(aes(z = pp_acum, fill = ..level..),
-                    proj = norargentina_lambert) +
-  facet_wrap(~ini_date) +
-  geom_mapa()
-
-
+# pp_wrf[umbral == 50 & prop > 0.09] %>% 
+#   .[, prop := prop + abs(rnorm(.N, sd = 0.0000000001))] %>%
+#   .[, prop := scales::rescale(prop, to = c(0, 1))] %>% 
+#   ggplot(aes(x, y)) +
+#   # geom_raster(aes(fill = prop)) +
+#   geom_contour_fill(aes(z = prop, fill = ..level..),
+#                     proj = norargentina_lambert) +
+#   scale_fill_manual(values = colors_smooth_rainbow) +
+#   geom_contour2(data = pp_imerg, aes(z = pp_acum), color = "black",
+#                 breaks = 50,
+#                 proj = norargentina_lambert) +
+#   geom_mapa() +
+#   facet_grid(ini_date ~ exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+#                                                          E6 = "SATWND", E9 = "RAD"))) +
+#   theme_minimal()
 
 ```
+
 ### Análisis y verificación por parametrizaciones
 
 Comparación con las observaciones de EMA durante el periodo. 
@@ -484,7 +621,7 @@ media %>%
 ```{r}
 miembros <- rbind(read_rds(paste0(derived_data, "/interp_obs/interp_obs_2018112200_mem_new.rds")),
                   read_rds(paste0(derived_data, "/interp_obs/interp_obs_2018112206_mem_new.rds"))) %>% 
-    .[, ":="(RMSE = fifelse(var == "q", RMSE*1000, RMSE),
+  .[, ":="(RMSE = fifelse(var == "q", RMSE*1000, RMSE),
            BIAS = fifelse(var == "q", BIAS*1000, BIAS))] %>% 
   .[, BIAS := -BIAS]
 
@@ -492,7 +629,7 @@ pbl <- fisica[miembros, on = .NATURAL] %>%
   separate(fisica, into = c("cumulus", "pbl")) %>% 
   .[, .(BIAS = mean(BIAS),
         RMSE = mean(RMSE)), by = .(exp, fcst_exp, pbl, var, date)] %>% 
-   setnames("pbl", "param") %>% 
+  setnames("pbl", "param") %>% 
   .[, tipo := "pbl"]
 
 pbl %>% 
@@ -505,15 +642,15 @@ pbl %>%
   geom_point(aes(color = exp, shape = param),
              size = 3) +
   scale_color_manual(guide = NULL, values = colores_exp, 
-                      labels = c(E2 = "CONV", E5 = "AUT", 
-                                 E6 = "SATWND", E9 = "RAD")) +
+                     labels = c(E2 = "CONV", E5 = "AUT", 
+                                E6 = "SATWND", E9 = "RAD")) +
   scale_shape_manual(values = c(19, 17, 15, 3, 0, 8)) +
   scale_y_discrete(labels = c(E2 = "CONV", E5 = "AUT", 
-                                 E6 = "SATWND", E9 = "RAD")) +
+                              E6 = "SATWND", E9 = "RAD")) +
   facet_grid(var ~ variable, scales = "free",   labeller = labeller(var = c("q" = "Humedad\n específica (g/kg)",
-                                         "t" = "Temperatura (K)",
-                                         "u" = "Viento zonal (m/s)",
-                                         "v" = "Viento\n meridional (m/s)"))) +
+                                                                            "t" = "Temperatura (K)",
+                                                                            "u" = "Viento zonal (m/s)",
+                                                                            "v" = "Viento\n meridional (m/s)"))) +
   labs(y = NULL, x = NULL, shape = NULL) +
   theme_minimal() +
   theme(aspect.ratio = 1/2,
@@ -536,9 +673,9 @@ pbl %>%
   scale_date() +
   labs(x = NULL, y = NULL, linetype = NULL, color = NULL) +
   facet_grid(variable ~ var, scales = "free_y", labeller = labeller(var = c("q" = "Humedad\n específica (g/kg)",
-                                         "t" = "Temperatura (K)",
-                                         "u" = "Viento zonal (m/s)",
-                                         "v" = "Viento\n meridional (m/s)"))) +
+                                                                            "t" = "Temperatura (K)",
+                                                                            "u" = "Viento zonal (m/s)",
+                                                                            "v" = "Viento\n meridional (m/s)"))) +
   theme_minimal() +
   theme(legend.position = "bottom")
 ```
@@ -592,15 +729,15 @@ cum %>%
   geom_point(aes(color = exp, shape = param),
              size = 3) +
   scale_color_manual(guide = NULL, values = colores_exp, 
-                      labels = c(E2 = "CONV", E5 = "AUT", 
-                                 E6 = "SATWND", E9 = "RAD")) +
+                     labels = c(E2 = "CONV", E5 = "AUT", 
+                                E6 = "SATWND", E9 = "RAD")) +
   scale_shape_manual(values = c(19, 17, 15, 3, 0, 8)) +
   scale_y_discrete(labels = c(E2 = "CONV", E5 = "AUT", 
-                                 E6 = "SATWND", E9 = "RAD")) +
+                              E6 = "SATWND", E9 = "RAD")) +
   facet_grid(variable ~ variable.1, scales = "free", labeller = labeller(variable = c("t" = "Temperature",
-                                              "td" = "Dew point\ntemperature",
-                                              "u" = "U wind",
-                                              "v" = "V wind"))) +
+                                                                                      "td" = "Dew point\ntemperature",
+                                                                                      "u" = "U wind",
+                                                                                      "v" = "V wind"))) +
   labs(y = NULL, x = NULL, shape = NULL) +
   theme_minimal() +
   theme(aspect.ratio = 1/2,
