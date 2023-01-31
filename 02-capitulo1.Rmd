@@ -1,5 +1,7 @@
 # Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares
 
+
+
 Este capítulo se busca contribuir a la cuantificación y comparación del impacto de asimilar observaciones de las estaciones meteorológicas automáticas de alta resolución, viento estimando por satélite y radiancias de cielo claro de satélites polares a la hora de aplicar la asimilación de datos para mejorar los pronósticos numéricos de eventos severos sobre Sudamérica, donde la red de observación convencional es bastante escasa y otras fuentes de información podrían potencialmente cubrir las áreas menos observadas y aportar información en las escalas más pequeñas. 
 
 ## Metodología
@@ -192,7 +194,7 @@ rbind(conv, aut, satwnd, rad_conv) %>%
 
 La distribución horizontal del promedio de observaciones asimiladas en cada ciclo de asimilación de cada experimento se muestra en la Figura \@ref(fig:obs-horizontal). El mayor número de observaciones asimiladas sobre el centro y el este del dominio corresponde a las observaciones de EMA. En la Figura \@ref(fig:obs-cycle)a se muestra el número de observaciones asimiladas a lo largo del tiempo. Los máximos locales a las 12 y a las 00 UTC encontrados principalmente en CONV corresponden a las observaciones obtenidas con los sondeos operativos. La fuerte variabilidad en el número de observaciones de radiancias por ciclo es también notable y depende de la cobertura de cada satélite. Los máximos a las 13-14 y 01-02 UTC en RAD corresponden a la contribución de los sensores multiespectrales. La distribución vertical del número medio de observaciones por ciclo (Figura \@ref(fig:obs-cycle)b) muestra un máximo en niveles bajos debido a las observaciones de EMA. Los vientos estimados por satélite tienen un máximo en la troposfera alta (entre 500-250 hPa). Por encima de 850 hPa, la mayoría de las observaciones corresponden a radiancias. 
 
-Todos los experimentos de asimilación comienzan a las 18 UTC del 20 de noviembre de 2018 y continúan hasta las 12 UTC del 23 de noviembre (un total de 67 horas/ciclos de asimilación). El ensamble inicial de 60 miembros se genera según se explica en la sección \@ref(config) y todos los experimentos se inician con un periodo de spin up sin asimilación de observaciones entre las 12 UTC y las 18 UTC de Nov, 20 (Figura \@ref(fig:cycle)). 
+Todos los experimentos de asimilación comienzan a las 18 UTC del 20 de noviembre de 2018 y continúan hasta las 12 UTC del 23 de noviembre (un total de 67 horas/ciclos de asimilación). El ensamble inicial de 60 miembros se genera según se explica en la sección \@ref(configmodelo) y todos los experimentos se inician con un periodo de spin up sin asimilación de observaciones entre las 12 UTC y las 18 UTC de Nov, 20 (Figura \@ref(fig:cycle)). 
 
 (ref:cycle) Diagrama de los ciclos de asimilación entre las 18 UTC del 20 de noviembre y las 12 UTC del 23 de noviembre más el periodo de spin up de 6 horas. La sección ampliada muestra la asimilación horaria que se realiza dentro de una ventana centrada de una hora y la incorporación de condiciones de borde del GFS cada 6 horas. Se muestran las dos misiones IOP de la campaña RELAMPAGO.
 
@@ -209,7 +211,7 @@ knitr::include_graphics(here("figure", "analisis.png"))
 ### Consistencia del ensamble 
 
 Para investigar la capacidad de la media del ensamble del first-guess para ajustarse a las observaciones teniendo en cuenta las incertidumbres del pronóstico y de las observaciones, se calcularo el $meanRCRV$ y el $sdRCRV$ para el experimento RAD. Como este experimento asimila todos los tipos de observaciones utilizados en este trabajo, es posible analizar la coherencia del ensamble comparándolo con cada tipo de observación. La figura \@ref(fig:rcrv-sfc) muestra el $sdRCRV$ para las observaciones de superficie promediadas en una retícula de 2,5°. El $sdRCRV$ para las observaciones del viento (Figura \@ref(fig:rcrv-sfc)a) es cercano a 1, lo que sugiere una buena concordancia entre la dispersión del ensamble, el error de pronóstico y el error de observación. Para la temperatura (Figura \@ref(fig:rcrv-sfc)b), los resultados son similares, salvo que para algunas zonas del oeste del dominio donde el $sdRCRV$ puede llegar a ser de 4,5. Estos valores más altos de $sdRCRV$ pueden estar asociados a errores sistemáticos derivados de las diferencias entre la topografía del modelo y al altura a la que están ubicadas las observaciones. La circulación de pequeña escala asociada al terreno complejo podría no estar bien resuelta por el modelo podría contribuir a aumentar la distancia entre el pronóstico y las observaciones. Estos aspectos no suelen ser captados por la dispersión del ensamble, a menos que se utilice un esquema de inflación dependiente del espacio bien ajustado, lo que conduce a mayores valores de $sdRCRV$.
- 
+
 La figura \@ref(fig:rcrv-profile) muestra la media y el desvío estándar del RCRV para las observaciones de altura. Las figuras \@ref(fig:rcrv-profile)a-b muestran las estadísticas de RCRV para los sondeos (ADPUPA) y aviones (AIRCAR y AIRCFT). Tanto ADPUPA como AIRCFT muestran, en general, un buen acuerdo entre la dispersión del ensamble y el error de observación. Como las observaciones de sondeo y sus errores asociados son considerados de buena calidad, este resultado indica que el ensamble tiene una dispersión adecuada. AIRCAR presenta un perfil irregular con valores $sdRCRV$ que sugieren que el error de este tipo de observación está sobreestimado. ADPUPA y AIRCAR presentan un perfil de $meanRCRV$ cercano a cero en los niveles medios y altos. En niveles bajos, el perfil $meanRCRV$ es positivo, mostrando un bias cálido presente en el modelo, característica ya estudiada en @ruiz2010 y @dillon2021.
 
 Las observaciones de vientos estimadas por satélites varían en número dependiendo del satélite y del nivel. En la Figura \@ref(fig:rcrv-profile)c sólo se incluye el $RCRV$ calculado con al menos 100 observaciones disponibles para cada sensor y nivel. En niveles bajos, donde no hay muchas observaciones disponibles, los perfiles de $meanRCRV$ y $sdRCRV$ muestran una mayor desviación del comportamiento esperado con un bias negativo, y una posible sobreestimación del error de observación. Las estimaciones del viento derivadas de los canales de vapor de agua son abundantes por encima de 500 hPa, donde su bias es cercano a cero. La única excepción son las observaciones de EUMETSAT que contribuyen muy poco en la región. 
@@ -506,16 +508,16 @@ all[variable == "T" & lev %between% c(500, 1000) & exp %in% c("E2", "E5")] %>%
         tagger.panel.tag.text = element_text(size = 8),
         panel.ontop = TRUE,
         panel.grid = element_line(linetype = 3)) +
-
-all[variable == "QVAPOR" & lev %between% c(500, 1000) & exp %in% c("E2", "E5")] %>% 
+  
+  all[variable == "QVAPOR" & lev %between% c(500, 1000) & exp %in% c("E2", "E5")] %>% 
   ggplot(aes(date, lev)) +
   geom_contour_fill(aes(z = (ana - guess)*1000, fill = ..level..), breaks = seq(-0.5, 1.5, 0.05)) +
   scale_fill_divergent_discretised(labels = function(x) JumpBy(x, 2, fill = ""),
                                    guide = guide_colorbar(barwidth = 25,
-                                                            barheight = 0.3, 
-                                                            title.position = "left", 
-                                                            title.vjust = 1,
-                                                            frame.colour = "black")) +
+                                                          barheight = 0.3, 
+                                                          title.position = "left", 
+                                                          title.vjust = 1,
+                                                          frame.colour = "black")) +
   scale_y_level(name = "Presión (hPa)", breaks = c(1000, 900, 800, 700, 600, 500)) +
   scale_date() +
   facet_wrap(~exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
@@ -535,7 +537,7 @@ all[variable == "QVAPOR" & lev %between% c(500, 1000) & exp %in% c("E2", "E5")] 
 
 
 El impacto en las componentes del viento se muestran en la Figura \@ref(fig:UV-diff), junto con la correspondiente componente del viento promediada en el experimento con el mayor número de observaciones asimiladas (por ejemplo, la Figura \@ref(fig:UV-diff)a muestra la diferencia de viento zonal entre AWS y CONV y el viento zonal para AWS). La asimilación de EMA produce un viento más del este y menos del norte en niveles bajos durante los dos primeros días de análisis (Figuras \@ref(fig:UV-diff)a,b). Existe un ciclo diurno asociado al impacto de las estaciones meteorológicas automáticas sobre el viento meridional (Figura \@ref(fig:UV-diff)d) con una mayor reducción del viento del norte durante las horas nocturnas. Esto indica que las observaciones en superficie están reduciendo la intensidad del jet de capas bajas presente en el entorno preconvectivo. Después de las 18 UTC del 22 de noviembre, se observa el efecto contrario cuando el SCM se desplaza por el dominio hacia el noreste. Tras el inicio de las celdas convectivas, el impacto sistemático en el campo de viento es mayor en los niveles medios y altos (Figuras \@ref(fig:UV-diff)d, f). Durante los días 22 y 23 de noviembre el impacto de asimilar EMA produce un aumento del viento del norte en los niveles superiores de la tropósfera. Esto podría ser una consecuencia de un SCM más intenso que produce un aumento del flujo de salida del lado polar de la tormenta. Aunque las observaciones de viento estimada por satélites producen el mayor impacto en niveles medios y altos, donde el número de observaciones es mayor, el impacto sistemático es en general menor que el producido por la asimilación de datos de EMA (Figuras \@ref(fig:UV-diff)b, e). La razón del pequeño impacto observado en SATWND podría estar asociada al valor del error de observación utilizado para la asimilación de estas observaciones.
- 
+
 La asimilación de las radiancias produce una reducción del viento del oeste con respecto a SATWND en niveles bajos y altos (Figura \@ref(fig:UV-diff)c). Para el viento meridional, estas observaciones producen un aumento 1 $ms^{-1}$ en el flujo del norte en niveles bajos, opuesto al generado por la asimilación de las observaciones de EMA durante la noche, entre las 03 y las 12 UTC, previas al desarrollo del SCM (Figura \@ref(fig:UV-diff)f). En niveles superiores y durante los días 22 y 23 de noviembre, el impacto medio de la asimilación de radiancias es una disminución de la velocidad del viento. El campo de viento meridional a 200 hPa en diferentes momentos muestra que el flujo de salida del SCM es aún más intenso que en los otros experimentos, mientras que el viento sur por delante del SCM también aumenta produciendo una reducción media del viento del norte (Figura \@ref(fig:UV-diff)f). 
 
 
@@ -662,8 +664,8 @@ era[perfiles, on = c("lev", "date")] %>%
         plot.margin = margin(0, 0, 0, 0, "cm"),
         panel.ontop = TRUE,
         panel.grid = element_line(linetype = 3)) +
-
-era[perfiles, on = c("lev", "date")] %>% 
+  
+  era[perfiles, on = c("lev", "date")] %>% 
   .[lev != 1000] %>%
   ggplot(aes(date, lev)) +
   geom_contour_fill(aes(z = i.QVAPOR - QVAPOR, fill = stat(level)), 
@@ -689,33 +691,33 @@ era[perfiles, on = c("lev", "date")] %>%
         plot.margin = margin(0, 0, 0, 0, "cm"),
         panel.ontop = TRUE,
         panel.grid = element_line(linetype = 3)) +
-
+  
   era[perfiles, on = c("lev", "date")] %>% 
-    .[lev != 1000] %>%
-    ggplot(aes(date, lev)) +
-    geom_contour_fill(aes(z = i.V - V, fill = stat(level)), 
-                      breaks = seq(-4, 7, 1)) +
-    geom_contour2(aes(z = i.V - V), color = "white", size = 0.05,
-                  breaks = seq(-4, 7, 1)) +
-    scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
-                                                              barheight = 0.3,
-                                                              title.position = "left", 
-                                                              title.vjust = 1,
-                                                              frame.colour = "black")) +
-    scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
-    scale_date(ini = 20181121000000, break_bin = "12 hours") +
-    facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
-                                                                E6 = "SATWND", E9 = "RAD"))) +
-    labs(fill = latex2exp::TeX("V ($m$ $s^{-1}$)"),
-         x = NULL,
-         y = "Presión (hPa)") +
-    tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("i", "j", "k", "l")) +
-    theme_minimal(base_size = 8) +
-    theme(legend.position = "bottom",
-          tagger.panel.tag.text = element_text(size = 8),
-          plot.margin = margin(0, 0, 0, 0, "cm"),
-          panel.ontop = TRUE,
-          panel.grid = element_line(linetype = 3)) +
+  .[lev != 1000] %>%
+  ggplot(aes(date, lev)) +
+  geom_contour_fill(aes(z = i.V - V, fill = stat(level)), 
+                    breaks = seq(-4, 7, 1)) +
+  geom_contour2(aes(z = i.V - V), color = "white", size = 0.05,
+                breaks = seq(-4, 7, 1)) +
+  scale_fill_divergent_discretised(guide = guide_colorsteps(barwidth = 25,
+                                                            barheight = 0.3,
+                                                            title.position = "left", 
+                                                            title.vjust = 1,
+                                                            frame.colour = "black")) +
+  scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
+  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                                              E6 = "SATWND", E9 = "RAD"))) +
+  labs(fill = latex2exp::TeX("V ($m$ $s^{-1}$)"),
+       x = NULL,
+       y = "Presión (hPa)") +
+  tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("i", "j", "k", "l")) +
+  theme_minimal(base_size = 8) +
+  theme(legend.position = "bottom",
+        tagger.panel.tag.text = element_text(size = 8),
+        plot.margin = margin(0, 0, 0, 0, "cm"),
+        panel.ontop = TRUE,
+        panel.grid = element_line(linetype = 3)) +
   
   plot_layout(ncol = 1, heights = c(1, 1, 1)) 
 ```
@@ -864,7 +866,7 @@ ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)),
                                                 title.vjust = 1,
                                                 frame.colour = "black")) +
   geom_contour2(data = ~.[x %between% c(-950000, 950000) &
-                           y %between% c(-1170000, 1170000)], aes(z = cortante_suave, size = stat(level)),
+                            y %between% c(-1170000, 1170000)], aes(z = cortante_suave, size = stat(level)),
                 proj = norargentina_lambert, color = "black", 
                 breaks = c(15, 30)) +
   scale_size_continuous(breaks = c(15, 30), range = c(0.6, 0.4),
@@ -904,7 +906,7 @@ ppacum_1h <- purrr::map(files, function(f) {
   readRDS(f) %>% 
     .[, c("lon", "lat") := wrf_project(x, y, inverse = TRUE, round = FALSE)] %>% 
     .[, ":="(rank = NULL, ens_mean = NULL)] %>% 
-  setnames(c("pp_pmm"), c("pp_acum"))
+    setnames(c("pp_pmm"), c("pp_acum"))
   
 }) %>% rbindlist() %>% 
   .[x %between% c(-300000, 800000) & y %between% c(-800000, 1090000)] 
@@ -942,7 +944,7 @@ readRDS(here("data/derived_data/observations/IMERG_1h.rds")) %>%
   .[exp %in% c("E2", "E5", "E6", "E9")] %>%
   .[, lat := lat[1], by = .(y)] %>% 
   .[, .(pp_acum = mean(pp_acum)), by = .(exp, date, y, lat)] %>% 
-   .[date %between% c(as_datetime("20181121180000"), as_datetime("20181123120000"))] %>% 
+  .[date %between% c(as_datetime("20181121180000"), as_datetime("20181123120000"))] %>% 
   ggplot(aes(date, lat)) +
   geom_contour_fill(aes(z = pp_acum, fill = stat(level)), breaks = c(seq(0.5, 13, 0.5), Inf)) +
   geom_contour2(aes(z = pp_acum), color = "black", size = 0.02, breaks = seq(0.5, 13, 0.5)) +
@@ -972,7 +974,7 @@ readRDS(here("data/derived_data/observations/IMERG_1h.rds")) %>%
 
 El FSS se calcula para cuantificar la coincidencia espacial entre la precipitación observada y la precipitación acumulada horaria simulada por el first-guess de los diferentes experimentos (Figura \@ref(fig:fss)). Para cada umbral y escala espacial, se aplica la ecuación \@ref(eq:eq11) en ventanas móviles de 6 horas a lo largo del periodo del experimento. Todos los experimentos muestran valores similares de FSS durante el inicio de la convección antes de las 06 UTC del 22 de noviembre, excepto RAD, que obtiene mejores resultados que el resto de los experimentos durante este periodo. Esto indica que las observaciones de radiancia tienen un impacto positivo en el análisis. El FSS de CONV es el más bajo en comparación con el resto de los experimentos y las diferencias son mayores durante la fase madura del SCM. AWS y SATWND muestran FSSs similares, lo que indica que la asimilación del viento estimado por satélites tiene poco impacto en la representación de la precipitación para este caso de estudio. La asimilación de radiancias conduce a una mejora general de la representación de la precipitación pronosticada a una hora, sobre todo para el umbral de 25 mm durante el periodo de mayor precipitación durante 22 de noviembre (Figura \@ref(fig:fss)b,d). La mejora también es importante en la fase de desarrollo del SCM (entre las 00 y las 12 UTC del 22 de noviembre y también para escalas espaciales superiores a 500 km, no mostradas). 
 
-(ref:fss) FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el first-guess de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja).
+(ref:fss) FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja).
 
 ```{r fss, fig.cap="(ref:fss)", fig.width=5, fig.height=5}
 files <- Sys.glob(here("data/derived_data/FSS/fss_6h_ana_ens_E[2569].csv"))
@@ -1040,7 +1042,7 @@ files <- Sys.glob(here("data/derived_data/analysis_variables/dbz_pmm/E[29]_ana_*
 dbz_ana <- purrr::map(files, function(f){
   
   read_rds(f)
-
+  
 }) %>% 
   rbindlist()  %>% 
   .[, run := fifelse(exp == "E9", "RAD", "CONV")] %>%
@@ -1087,9 +1089,9 @@ rbind(dbz_obs, dbz_ana) %>%
   scale_x_longitude(ticks = 5) +
   facet_grid(factor(run, levels = c("OBSERVACIONES", "CONV", "RAD")) ~ date, 
              labeller = labeller(date = c("2018-11-22 10:00:00" = "10 UTC",
-                                                      "2018-11-22 13:00:00" = "13 UTC",
-                                                      "2018-11-22 16:00:00" = "16 UTC",
-                                                      "2018-11-22 19:00:00" = "19 UTC"))) +
+                                          "2018-11-22 13:00:00" = "13 UTC",
+                                          "2018-11-22 16:00:00" = "16 UTC",
+                                          "2018-11-22 19:00:00" = "19 UTC"))) +
   labs(x = NULL, y = NULL, fill = "COLMAX (dBZ)") +
   theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
@@ -1134,22 +1136,22 @@ sondeos %>%
   melt(measure.vars = c("RMSE", "BIAS"), variable.name = "estadistico", value.name = "value.est") %>% 
   .[lev <= 15000] %>% 
   .[, ":="(iop_labels = factor(iop, labels = c("IOP~7", "IOP~8")),
-           variable_labels = factor(variable, labels = c("Temperatura~(K)", "Temperatura~de\npunto~de~rocío~(K)", 
-                                                         "Viento~U~(m~s^{-1})", "Viento~V~(m~s^{-1})")))] %>% 
+           variable_labels = factor(variable, labels = c("Temperatura~(K)", "atop('Temperatura de', 'punto de rocío (K)')", "Viento~U~(m~s^{-1})", "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(lev/1000, value.est)) +
   geom_hline(yintercept = 0, color = "grey30") +
   geom_line(aes(color = exp, linetype = estadistico)) +
   scale_color_manual(values = c(colores_exp), labels = c(E2 = "CONV", E5 = "AWS", 
-                                                                  E6 = "SATWND", E9 = "RAD")) +
+                                                         E6 = "SATWND", E9 = "RAD")) +
   coord_flip() +
   facet_grid(iop_labels ~ variable_labels, scales = "free_x", 
              labeller = label_parsed) +
-   tagger::tag_facets(position = list(x = 0.05, y = 0.95)) +
+  tagger::tag_facets(position = list(x = 0.05, y = 0.95)) +
   labs(y = "Bias/RMSE", x = "Altura (Km)", color = NULL, linetype = NULL) +
   theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
+
 
 ## Conclusiones
 
