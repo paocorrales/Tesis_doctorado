@@ -276,7 +276,7 @@ El cálculo de la transmitancia entre capas se aproxima utilizando un polinomio 
 
 
 
-## Configuración del sistema de asimilación {#config}
+## Configuración del sistema de asimilación {#configmodelo}
 
 Las simulaciones numéricas que conforman los experimentos que se discuten en este trabajo se realizan utilizando la versión 3.9.1 de modelo WRF (@skamarock2008). 
 Se utilizó una resolución horizontal de 10 km y 37 niveles en la vertical con el tope del modelo en 50 hPa. 
