@@ -496,7 +496,7 @@ SATWND tiene probabilidades mayores a los otros pronósticos.
 
 (ref:prob) Probabilidad de ocurrencia de precipitación acumulada en 30 hs superior a 10 mm (fila 1 y 2) y 50 mm (fila 3 y 4) para los pronósticos inicializados a las 00 y 06 UTC a partir de cada experimento. 
 
-```{r prob, fig.cap="(ref:prob)", fig.width=6, fig.height=8, fig.align="center"}
+```{r prob, fig.cap="(ref:prob)", fig.width=6, fig.height=7, fig.align="center"}
 files <- Sys.glob(here("data/derived_data/forecast_variables/ppacum/E[2,5,6,9]_fcst_*_prop_acum_30h.rds"))
 
 pp_wrf <- purrr::map(files, function(f) {
@@ -527,43 +527,27 @@ pp_wrf[umbral %in% c(10, 50) & prop > 0.09] %>%
   .[, prop := scales::rescale(prop, to = c(0, 1))] %>% 
   # .[, .(umbral_label = factor(umbral, labels = c("10~mm~h^{-1}", "50~mm~h^{-1}")))] %>% 
   ggplot(aes(x, y)) +
-  # geom_raster(aes(fill = prop)) +
   geom_contour_fill(aes(z = prop, fill = ..level..),
                     proj = norargentina_lambert) +
   scale_fill_manual(values = colors_smooth_rainbow, guide = guide_colorsteps(barwidth = 20,
-                                                            barheight = 0.3,
-                                                            title.position = "left", 
-                                                            title.vjust = 1,
-                                                            frame.colour = "black")) +
+                                                                             barheight = 0.3,
+                                                                             title.position = "left", 
+                                                                             title.vjust = 1,
+                                                                             frame.colour = "black")) +
   geom_contour2(data = pp_imerg, aes(z = pp_acum), color = "black",
                 breaks = 10,
                 proj = norargentina_lambert) +
   geom_mapa() +
-  facet_grid(umbral + ini_date ~ exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
-                                                         E6 = "SATWND", E9 = "RAD"),
-                                                         ini_date = c(`2018112200` = "00 UTC",
-                                                              `2018112206` = "06 UTC"),
-                                                         umbral = c(`10` = "10 mmh-1",
-                                                                    `50` = "50 mmh-1"))) +
+  facet_grid(umbral + ini_date ~ exp, 
+             labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                         E6 = "SATWND", E9 = "RAD"),
+                                 ini_date = c(`2018112200` = "00 UTC",
+                                              `2018112206` = "06 UTC"),
+                                 umbral = c(`10` = "10 mmh-1",
+                                            `50` = "50 mmh-1"))) +
   labs(fill = "Probabilidad") + 
   theme_minimal(base_size = 9) +
   theme(legend.position = "bottom")
-
-# pp_wrf[umbral == 50 & prop > 0.09] %>% 
-#   .[, prop := prop + abs(rnorm(.N, sd = 0.0000000001))] %>%
-#   .[, prop := scales::rescale(prop, to = c(0, 1))] %>% 
-#   ggplot(aes(x, y)) +
-#   # geom_raster(aes(fill = prop)) +
-#   geom_contour_fill(aes(z = prop, fill = ..level..),
-#                     proj = norargentina_lambert) +
-#   scale_fill_manual(values = colors_smooth_rainbow) +
-#   geom_contour2(data = pp_imerg, aes(z = pp_acum), color = "black",
-#                 breaks = 50,
-#                 proj = norargentina_lambert) +
-#   geom_mapa() +
-#   facet_grid(ini_date ~ exp, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
-#                                                          E6 = "SATWND", E9 = "RAD"))) +
-#   theme_minimal()
 
 ```
 
@@ -579,8 +563,9 @@ Para el viento zonal, no se ve muchas diferencias entre las inicializaciones o l
 
 Viento meridional, 06 UTC arranca mejor respecto del RMSE y eso se mantiene por al menos 6 horas.
 
+(ref:aut-all) RMSE (línea sólida) y Bias (línea discontinua) de a) humedad especifica ($g\ Kg{^-1}$), b) temperatura ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos de cada experimento con las observaciones de EMA. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
 
-```{r}
+```{r rmse-bias-aut, fig.cap="(ref:aut-all)", fig.align="centern", fig.width=6, fig.height=3}
 fisica <- data.table(mem = as.character(formatC(1:60, flag = "0", width = 3)),
                      fisica = rep(c("KF-YSU", 
                                     "BMJ-YSU",
@@ -592,35 +577,48 @@ fisica <- data.table(mem = as.character(formatC(1:60, flag = "0", width = 3)),
                                     "BMJ-MYNN2",
                                     "GF-MYNN2"), length.out = 60)) %>% setDT()
 
-derived_data <- "/home/paola.corrales/datosmunin3/EXP/derived_data/"
-media <- rbind(read_rds(paste0(derived_data, "/interp_obs/interp_obs_2018112200_mean_new.rds")),
-               read_rds(paste0(derived_data, "/interp_obs/interp_obs_2018112206_mean_new.rds"))) %>% 
+media <- rbind(read_rds(here("data/derived_data/forecast_variables/interp_obs_2018112200_mean_new.rds")),
+               read_rds(here("data/derived_data/forecast_variables/interp_obs_2018112206_mean_new.rds"))) %>% 
   .[, ":="(RMSE = fifelse(var == "q", RMSE*1000, RMSE),
            BIAS = fifelse(var == "q", BIAS*1000, BIAS))] %>% 
   .[, BIAS := -BIAS]
 
+hline <- data.frame(estadistinco = rep(c("RMSE", "BIAS"), each = 4),
+                    var = rep(c("t", "q", "u", "v"), 2),
+                    value =  rep(c(NA, 0), each = 4))
+
+
 media %>% 
   melt(measure.vars = c("RMSE", "BIAS"), variable.name = "estadistico") %>% 
-  # .[estadistico == "RMSE"] %>% 
+  .[, ":="(estadistico_label = factor(estadistico),
+           var_label = factor(var, labels = c("atop('Humedad', 'específica (g Kg'^-1*')')",
+                                              "Temperatura~(K)",
+                                              "Viento~U~(m~s^{-1})",
+                                              "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(date, value)) +
-  geom_hline(yintercept = 0, color = "darkgrey") +
+  geom_hline(data = hline, aes(yintercept = value), color = "darkgrey") +
   geom_line(aes(color = exp, linetype = fcst_exp)) +
-  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AUT", 
+  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS", 
                                                       E6 = "SATWND", E9 = "RAD")) +
-  scale_date() +
+  scale_linetype_manual(values = c(1, 2), labels = c("2018112200" = "00 UTC", 
+                                                     "2018112206" = "06 UTC")) +
+  scale_date(20181122000000, 20181123000000, "12 hours", 
+             limits = c(ymd_h(2018112200), ymd_h(2018112312))) +
   labs(x = NULL, y = NULL, linetype = NULL, color = NULL) +
-  facet_grid(estadistico ~ var, scales = "free_y", 
-             labeller = labeller(var = c("q" = "Humedad específica (g/kg)",
-                                         "t" = "Temperatura (K)",
-                                         "u" = "Viento zonal (m/s)",
-                                         "v" = "Viento meridional (m/s)"))) +
-  theme_minimal() +
-  theme(legend.position = "bottom")
-```
+  facet_grid(estadistico_label ~ var_label, scales = "free_y", 
+             labeller = label_parsed) +
+  tagger::tag_facets(position = list(x = 0.05, y = 0.90)) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        aspect.ratio = 1/1.5,
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
 
-```{r}
-miembros <- rbind(read_rds(paste0(derived_data, "/interp_obs/interp_obs_2018112200_mem_new.rds")),
-                  read_rds(paste0(derived_data, "/interp_obs/interp_obs_2018112206_mem_new.rds"))) %>% 
+```
+(ref:aut-all) RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (círculo), MYNN2 (triángulo) e YSU (cuadrado) para todos los pronósticos en conjunto. 
+
+```{r aut-all, fig.cap="(ref:aut-all)", fig.align="center", fig.width=7, fig.height=4}
+miembros <- rbind(read_rds(here("data/derived_data/forecast_variables/interp_obs_2018112200_mem_new.rds")),
+                  read_rds(here("data/derived_data/forecast_variables/interp_obs_2018112206_mem_new.rds"))) %>% 
   .[, ":="(RMSE = fifelse(var == "q", RMSE*1000, RMSE),
            BIAS = fifelse(var == "q", BIAS*1000, BIAS))] %>% 
   .[, BIAS := -BIAS]
@@ -638,6 +636,10 @@ pbl %>%
     by = .(var, exp, param, tipo)] %>% 
   .[var != "u"] %>% 
   melt(id.vars = c("exp", "param", "var"), measure.vars = c("RMSE", "BIAS")) %>% 
+  .[, ":="(variable_label = factor(variable),
+           var_label = factor(var, labels = c("atop('Humedad', 'específica (g Kg'^-1*')')",
+                                              "Temperatura~(K)", 
+                                              "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(value, exp)) +
   geom_point(aes(color = exp, shape = param),
              size = 3) +
@@ -645,22 +647,21 @@ pbl %>%
                      labels = c(E2 = "CONV", E5 = "AUT", 
                                 E6 = "SATWND", E9 = "RAD")) +
   scale_shape_manual(values = c(19, 17, 15, 3, 0, 8)) +
-  scale_y_discrete(labels = c(E2 = "CONV", E5 = "AUT", 
+  scale_y_discrete(labels = c(E2 = "CONV", E5 = "AWS", 
                               E6 = "SATWND", E9 = "RAD")) +
-  facet_grid(var ~ variable, scales = "free",   labeller = labeller(var = c("q" = "Humedad\n específica (g/kg)",
-                                                                            "t" = "Temperatura (K)",
-                                                                            "u" = "Viento zonal (m/s)",
-                                                                            "v" = "Viento\n meridional (m/s)"))) +
+  facet_grid(var_label ~ variable_label, scales = "free",   
+             labeller = label_parsed) +
   labs(y = NULL, x = NULL, shape = NULL) +
-  theme_minimal() +
+  tagger::tag_facets(position = list(x = 0.03, y = 0.95)) +
+  theme_minimal(base_size = 9) +
   theme(aspect.ratio = 1/2,
-        panel.background = element_rect(fill = "grey98",
-                                        color = "grey98"))
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
 
 ```
 
+(ref:aut-rad) RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (línea llena), MYNN2 (línea a rayas) e YSU (línea punteada) para todos los pronósticos en conjunto a lo largo del tiempo de pronóstico. 
 
-```{r}
+```{r aut-rad, fig.cap="(ref:aut-rad)", fig.align="center", fig.width=6, fig.height=3}
 pbl %>% 
   melt(id.vars = c("exp", "param", "fcst_exp", "date", "var"), measure.vars = c("RMSE", "BIAS")) %>% 
   .[exp == "E9" & fcst_exp == "2018112200"] %>% 
@@ -668,44 +669,53 @@ pbl %>%
   # geom_hline(yintercept = 0, color = "darkgrey") +
   geom_line(aes(color = exp, linetype = param)) +
   scale_color_manual(values = colores_exp[4], labels = c(E9 = "RAD")) +
-  # geom_hline(yintercept = 0, color = "grey30") +
   scale_linetype_manual(values = c(1, 2, 3)) +
-  scale_date() +
+  scale_date(20181122000000, 20181123000000, "12 hours", 
+             limits = c(ymd_h(2018112200), ymd_h(2018112312))) +
   labs(x = NULL, y = NULL, linetype = NULL, color = NULL) +
-  facet_grid(variable ~ var, scales = "free_y", labeller = labeller(var = c("q" = "Humedad\n específica (g/kg)",
-                                                                            "t" = "Temperatura (K)",
-                                                                            "u" = "Viento zonal (m/s)",
-                                                                            "v" = "Viento\n meridional (m/s)"))) +
+  facet_grid(variable ~ var, scales = "free_y", 
+             labeller = labeller(var = c("q" = "Humedad\n específica (g/kg)",
+                                         "t" = "Temperatura (K)",
+                                         "u" = "Viento zonal (m/s)",
+                                         "v" = "Viento\n meridional (m/s)"))) +
+  tagger::tag_facets(position = list(x = 0.05, y = 0.90)) +
   theme_minimal() +
-  theme(legend.position = "bottom")
+  theme(aspect.ratio = 1/1.5,
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
+(ref:soundings-fcst) RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando el análisis de cada experimento con los sondeos de RELAMPAGO durante el IOP 7 y el IOP 8. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
 
-```{r}
-media <- read_rds("/home/paola.corrales/datosmunin3/EXP/derived_data/sondeos_media.rds") %>% 
+```{r soundings-fcst, fig.cap="(ref:soundings-fcst)", fig.width=6, fig.height=4, fig.align="center"}
+media <- read_rds(here("data/derived_data/soundings/sondeos_media_fcst.rds")) %>% 
   .[, .(RMSE = sqrt(mean((fcst_value - value)^2, na.rm = TRUE)), 
         BIAS = mean(fcst_value - value, na.rm = TRUE)), 
     by = .(exp, variable, lev, fcst_exp)] %>% 
   melt(measure.vars = c("RMSE", "BIAS"), variable.name = "estadistico", value.name = "value.est")
 
 media %>% 
+  .[, ":="(fcst_exp_label = factor(fcst_exp, labels = c("00~UTC", "06~UTC")),
+           variable_labels = factor(variable, labels = c("Temperatura~(K)", "atop('Temperatura de', 'punto de rocío (K)')", "Viento~U~(m~s^{-1})", "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(lev/1000, value.est)) +
   geom_hline(yintercept = 0, color = "grey30") +
   geom_line(aes(color = exp, linetype = estadistico)) +
   scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AUT", 
                                                       E6 = "SATWND", E9 = "RAD")) +
   coord_flip(xlim = c(0, 15)) +
-  facet_grid(fcst_exp ~variable, scales = "free_x", 
-             labeller = labeller(variable = c("t" = "Temperature",
-                                              "td" = "Dew point\ntemperature",
-                                              "u" = "U wind",
-                                              "v" = "V wind"))) +
-  labs(y = NULL, x = "Height (Km)", color = NULL, linetype = NULL) +
-  theme_minimal()
+  facet_grid(fcst_exp_label ~ variable_labels, scales = "free_x", 
+             labeller = label_parsed) +
+  tagger::tag_facets(position = list(x = 0.05, y = 0.95)) +
+  labs(y = "Bias/RMSE", x = "Altura (Km)", color = NULL, linetype = NULL) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
 
 ```
 
-```{r}
-miembros <- read_rds("/home/paola.corrales/datosmunin3/EXP/derived_data/sondeos_agregados.rds") %>% 
+(ref:soudings-all) RMSE y BIAS calculados comparando los pronósticos con sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de convección BMJ (círculo), GF (triángulo) e KF (cuadrado) para todos los pronósticos en conjunto. 
+
+```{r soudings-all, fig.cap="(ref:soudings-all)", fig.align="center", fig.width=7, fig.height=4}
+
+miembros <- read_rds(here("data/derived_data/soundings/sondeos_agregados_fcst.rds")) %>% 
   .[, mem := formatC(mem, width = 3, flag = "0")] %>% 
   fisica[., on = "mem"] %>% 
   separate(fisica, into = c("cumulus", "pbl")) %>% 
@@ -716,14 +726,18 @@ cum <- miembros[, .(RMSE = mean(RMSE),
                     BIAS = mean(BIAS),
                     tipo = "cumulus"), 
                 by = .(exp, fcst_exp, cumulus, lev, variable)] %>% 
-  setnames("cumulus", "param")
+  setnames(c("cumulus", "variable"), c("param", "var"))
 
 cum %>% 
   .[, .(RMSE = mean(RMSE, na.rm = TRUE),
         BIAS = mean(BIAS, na.rm = TRUE)), 
-    by = .(variable, exp, param, tipo)] %>% 
-  .[variable != "u"] %>% 
-  melt(id.vars = c("exp", "param", "variable"), measure.vars = c("RMSE", "BIAS")) %>% 
+    by = .(var, exp, param, tipo)] %>% 
+  .[var != "u"] %>% 
+  melt(id.vars = c("exp", "param", "var"), measure.vars = c("RMSE", "BIAS")) %>% 
+    .[, ":="(variable_label = factor(variable),
+           var_label = factor(var, labels = c("atop('Humedad', 'específica (g Kg'^-1*')')",
+                                              "Temperatura~(K)", 
+                                              "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(value, exp)) +
   # geom_vline(xintercept = 0, color = "grey70") +
   geom_point(aes(color = exp, shape = param),
@@ -734,36 +748,38 @@ cum %>%
   scale_shape_manual(values = c(19, 17, 15, 3, 0, 8)) +
   scale_y_discrete(labels = c(E2 = "CONV", E5 = "AUT", 
                               E6 = "SATWND", E9 = "RAD")) +
-  facet_grid(variable ~ variable.1, scales = "free", labeller = labeller(variable = c("t" = "Temperature",
-                                                                                      "td" = "Dew point\ntemperature",
-                                                                                      "u" = "U wind",
-                                                                                      "v" = "V wind"))) +
+  facet_grid(var_label ~ variable_label, scales = "free", labeller = label_parsed) +
   labs(y = NULL, x = NULL, shape = NULL) +
-  theme_minimal() +
+  tagger::tag_facets(position = list(x = 0.03, y = 0.95)) +
+  theme_minimal(base_size = 9) +
   theme(aspect.ratio = 1/2,
-        panel.background = element_rect(fill = "grey98",
-                                        color = "grey98"))
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
 
 ```
+(ref:souding-rad) RMSE y BIAS calculados comparando los pronósticos con observaciones de sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de conveccón BMJ (línea llena), GF (línea a rayas) e KF (línea punteada) para todos los pronósticos en conjunto. 
 
-
-```{r}
+```{r souding-rad, fig.cap="(ref:souding-rad)", fig.width=6, fig.height=4, fig.align="center"}
 cum %>% 
   .[exp == "E9" & fcst_exp == 2018112200] %>% 
   melt(measure.vars = c("RMSE", "BIAS")) %>% 
+      .[, ":="(variable_label = factor(variable),
+           var_label = factor(var, labels = c("Temperatura~(K)", 
+                                              "atop('Temperatura de', 'punto de rocío (K)')", 
+                                              "Viento~U~(m~s^{-1})", 
+                                              "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(lev/1000, value)) +
   geom_hline(yintercept = 0, color = "grey30") +
   geom_line(aes(color = exp, linetype = param, group = interaction(exp, param))) +
   scale_linetype_manual(values = c(1, 2, 3)) +
   scale_color_manual(values = colores_exp[4], labels = c(E9 = "RAD")) +
   coord_flip(xlim = c(0, 15)) +
-  facet_grid(factor(variable.1) ~ variable, scales = "free_x", 
-             labeller = labeller(variable = c("t" = "Temperature",
-                                              "td" = "Dew point\ntemperature",
-                                              "u" = "U wind",
-                                              "v" = "V wind"))) +
-  labs(y = NULL, x = "Height (Km)", color = NULL, linetype = NULL) +
-  theme_minimal()
+  facet_grid(variable_label ~ var_label, scales = "free", labeller = label_parsed) +
+  labs(y = NULL, x = NULL, linetype = NULL, color = NULL) +
+  tagger::tag_facets(position = list(x = 0.03, y = 0.95)) +
+  theme_minimal() +
+  theme(aspect.ratio = 1,
+                legend.position = "bottom",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
 
 
