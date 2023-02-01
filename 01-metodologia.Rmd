@@ -75,7 +75,7 @@ campos %>%
   geom_mapa() +
   coord_sf(ylim = c(-45, -22), xlim = c(-75, -52)) +
   facet_grid(source ~ time, labeller = labeller(time = c("2018-11-22 00:00:00" = "00 UTC, 22 de Nov",
-                                                         "2018-11-22 12:00:00" = "12 UTC, 23 de Nov",
+                                                         "2018-11-22 12:00:00" = "12 UTC, 22 de Nov",
                                                          "2018-11-23 00:00:00" = "00 UTC, 23 de Nov"),
                                                 source = c("era5" = "ERA5",
                                                            "goes" = "GOES-16 Canal 13"))) +
