@@ -96,7 +96,7 @@ Las observaciones convencionales (EMC) utilizadas forman parte del flujo de dato
 
 La tabla \@ref(tab:tabla-obs) enumera todos los tipos de observación (presión en superficie, temperatura, humedad específica y viento) disponibles para cada fuente de observación, junto con el error asociado para cada una definidos de acuerdo a la configuración por defecto del sistema de asimilación usado en este trabajo. En algunos casos, el error varía con la altura y depende de la plataforma específica (avión y viento derivado del satélite). En cuanto al control de calidad aplicado a las observaciones convencionales, el sistema de asimilación realiza una primera comparación entre la innovación (la diferencia entre la observación y la observación simulada por el modelo para el campo preliminar) y un umbral predefinido que depende del error de observación (también incluido en la Tabla \@ref(tab:tabla-obs)).
 
-#### Red de Estaciones Meteorológicas Automáticas 
+#### Red de Estaciones Meteorológicas Automáticas {#ema}
 
 También se asimilaron observaciones de 866 Estaciones Meteorológicas Automáticas (EMA) que forman parte de 17 redes de superficie públicas y privadas en la región. El conjunto de datos utilizado en este estudio fue obtenido del repositorio de datos de RELAMPAGO [@garcia2019]. Estas estaciones se indican como cuadrados verdes en la Figura \@ref(fig:dominio)a. Tienen mayor cobertura espacial que las EMC y una frecuencia de muestreo de 10 minutos en la mayoría de los casos. Todas las estaciones miden temperatura, pero sólo 395 estaciones proporcionan humedad, 422 la presión y 605 el viento. 
 Los errores de observación utilizados para asimilar estas observaciones son los mismos que para las observaciones de EMC (véase la tabla \@ref(tab:tabla-obs)).
@@ -163,6 +163,8 @@ Para evaluar el desempeño del sistema de asimilación de datos presentado en es
 * **IMERG Final Run [@huffman2018]:** estimación de la precipitación a partir de datos de la constelación de satelites GPM (por su nombre en inglés Global Precipitation  Measurement) con una resolución espacial de 0,01$^{\circ}$ y una resolución temporal de 30 minutos para validar la habilidad de los pronósticos de 1 hora para representar la precipitación sobre el dominio. La estimación de la precipitación se realiza combinando observaciones de sensores de microondas activos y pasivos que se complementa con estimaciones provenientes de sensores infrarojos a bordo de satélites polares. 
 
 * **Datos del Sistema Nacional de Radares Meteorológicos (SINARAME):** Se utilizaron observaciones de radar para realizar una evaluación cualitativa y visual de de la ubicacion e intensidad de la actividad convectiva. Los datos provienen de 9 radares ubicados en el dominio y son provistos por la red de radares Doppler de doble polarización en banda C [@deelia2017] con una frecuencia temporal de 10 minutos. Para este trabajo se utilizó únicamente la máxima reflectividad de la columna (COLMAX) más cercana al momento de análisis.
+
+* **Observaciones de las redes de estaciones meteorógicas automáticas:** Las observaciones de EMA descriptas en la sección \@ref(ema) fueron utilizadas en la verificación de pronósticos inicializados a partir de los ánalisis generados. Estos pronósticos no incluyen asimilación de datos y por lo tanto estas observaciones son independientes y permiten evaluar calidad de los pronósticos en niveles bajos. s
 
 ## La asimilación de datos
 
