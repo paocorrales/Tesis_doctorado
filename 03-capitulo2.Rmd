@@ -1,85 +1,32 @@
 # Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo 
 
-```{r include=FALSE}
-map_arg <- rnaturalearth::ne_states(country = c("argentina"), 
-                                    returnclass = "sf")
-map_limitrofes <- rnaturalearth::ne_countries(country = c("Brazil", "Chile", "Uruguay", "Paraguay", "Bolivia"), returnclass = "sf")
-
-square <- fread(here("data/derived_data/sample_obs/dominio_square.csv"))
-square2 <- fread(here("data/derived_data/sample_obs/dominio_square2.csv"))
-coord <- fread(here("data/derived_data/sample_obs/coordenadas.csv"))
-
-
-geom_mapa <- function(fill = NA) {
-  list(geom_sf(data = map_arg, fill = fill, color = "black", size = 0.05, inherit.aes = FALSE),
-       geom_sf(data = map_limitrofes, fill = fill, color = "black", size = 0.05, inherit.aes = FALSE),
-       coord_sf(ylim = c(-42, -19), xlim = c(-76, -51)),
-       scale_x_longitude(ticks = 5),
-       scale_y_latitude(ticks = 5))
-}
-
-arg_topo <- metR::GetTopography(-75+360, -50+360, -20, -60, resolution = 1/10, 
-                                file.dir = here("data/derived_data/"))
-arg_topo[, lon := metR::ConvertLongitude(lon)]
-
-cordillera <- list(
-  ggnewscale::new_scale_fill(),
-  geom_contour_fill(data = arg_topo, aes(x = lon, y = lat,
-                                         z = h),
-                    breaks = seq(1500, 8000, by = 700)),
-  scale_fill_gradient(low = "#E2E6E6", high = "#7E7E7E", guide = "none",
-                      oob = scales::squish))
-
-scale_date <- function(ini = 20181120180000, end = 20181123120000,
-                       break_bin = "6 hour", ...) {
-  scale_x_datetime(breaks = seq.POSIXt(ymd_hms(ini), ymd_hms(end), by = break_bin), ..., expand = c(0, 0),
-                   labels = function(x) {
-                     fifelse(hour(x) == 0, format(x, "%H UTC\n%b %d"), format(x, "%H"))
-                   }) 
-}
-
-obs.type <- tribble(
-  ~type, ~code,
-  120, "ADPUPA",
-  130, "AIRCFT-AIREP",
-  131, "AIRCFT-AMDAR",
-  133, "AIRCAR",
-  180, "SFCSHP",
-  181, "ADPSFC",
-  187, "ADPSFC\nno pressure",
-  220, "ADPUPA",
-  221, "ADPUPA-PIBAL",
-  230, "AIRCFT-AIREP",
-  231, "AIRCFT-AMDAR",
-  233, "AIRCAR",
-  280, "SFCSHP",
-  281, "ADPSFC",
-  287, "ADPSFC\nno pressure",
-  290, "ASCATW"
-) %>% 
-  setDT()
-
-
-colores_exp <- c(E2 = "#0077BB", E5 = "#88CCEE", E6 = "#EE7733", E9 = "#CC3311")
-```
+En este capítulo se evaluará en impacto de la asimilación de distintas fuentes de observación en pronósticos por ensable a corto plazo inicializados a partir del análisis de los distintos experimentos descriptos en la sección \@ref(config). Estos pronósticos abarcan el periodo de iniciación, maduración y dearrollo del SCM observado durantel el 22 de noviembre de 2022. Por lo tanto se analizará el impacto de la asimilación de observaciones a lo largo de los pronósticos en un contexto de convección húmeda profunda y se evaluará si las mejoras observadas en los análisis al respresentar este caso de estudio se trasladan a los pronósticos independientes. 
 
 
 ## Metodología
 
 ### Configuracion de los experimentos
 
+Para estudiar el impacto de la asimilación de observaciones en pronósticos independientes, se generaron pronósticos por ensambles inicializados a partir de los análisis de los experimentos previamente descriptos. Estos pronósticos toman el nombre del análisis que utilizan como condición inicial, por ejemplo el pronóstico CONV será aquel que fue incializado a partir del análisis del experimento CONV. Todos los pronósticos utilizan la misma configuración de dominio y de ensamble multifísica que los análisis. Las condiciones de borde de los miembros del ensamble se generaron añadiendo perturbaciones aleatorias al pronóstico determinístico del GFS (0.25$^{\circ}$ de resolución horizontal y resolución temporal de 6 horas; @cisl_rda_ds084.1) como se muestra en la Figura \@ref(fig:cycle-fcst).
+
+Los pronósticos se inicializaron a las 00 y 06 UTC del 22 de noviembre para capturar la inicialización y desarrollo del SCM y además evaluar las posibles diferencias entre los experimentos debido a la asimilación de nuevas observaciones entre las 00 y las 06 UTC. Todos los pronósticos finalizan a las 12 UTC del 23 de noviembre cuando el SCM se encuentra en el borde noroeste del dominio y ya no puede ser representado correctamente (Figura \@ref(fig:caso)f). 
+
+
+(ref:cycle-fcst) Diagrama de los pronósticos por ensambles inicializados a las 00 y 06 UTC del 22 de noviembre y que corren hasta las 12 UTC del 23 de noviembre. Las condiciones de borde corresponden al pronóstico de GFS y se incorporan cada 6 horas.
+
+```{r cycle-fcst, echo=FALSE, fig.cap="(ref:cycle-fcst)", out.width="100%"}
+
+knitr::include_graphics(here("figure/forecast_diag.png"))
+
+```
+
 ## Resultados
 
-### Impacto de las observaciones en el pronostico
+### Impacto de las observaciones en el pronostico {#prono-impacto}
 
-Al comparar los pronósticos con ERA5, en promedio la temperatura en niveles altos es menor a lo esperado pero no se observan diferencias entre los experimentos o entre las 2 inicializaciones de los pronósticos. Esto sugiere que las condiciones iniciales no afectan particularmente esta variable en niveles altos. En niveles bajos se observa la misma tendencia que en los análisis los pronísticos inicializados a partir de AWS y SATWND muestran un bias cálido mucho menor que CONV gracias a la asimilación de observaciones de EMA. En RAD el bias vuelve a aumentar ligeramente. En niveles bajos si se ven mejoras para la inicialización de las 06 UTC, indicando que las observaciones asimiladas entre las 00 y las 06 UTC tienen un impacto positivo. 
+Al igual que en la sección \@ref(impacto-analisis), se compararon los pronósticos con ERA5. Los perfiles de temperatura de la media del ensamble promediados espacialmente menos ERA5 a lo largo del tiempo se muestran en las Figuras \@ref(fig:era5-fcst-1). En lineas generales la temperatura por encima de 750 hPa es subestimada por los pronósticos pero esto parece ser independiente de las condiciones iniciales ya que no se ven diferencias entre los experimentos y tampoco entre la hora de inicialización de los pronósticos. En niveles bajos se observa la misma tendencia que en los análisis, los pronósticos inicializados a partir de AWS y SATWND muestran un bias cálido mucho menor que CONV gracias a las condiciones iniciales que incluyen la asimilación de observaciones de EMA. En RAD el bias cálido vuelve a aumentar ligeramente manteniendo la tendencia observada en los análisis de RAD (Figuras \@ref(fig:era5-fcst-1)d y h). En niveles bajos si se ven diferencias entre las dos inicializaciones, en particular se observan mejoras para la inicialización de las 06 UTC en los casos de AWS y SATWND, indicando que las observaciones asimiladas entre las 00 y las 06 UTC tienen un impacto positivo en la representación de la temperatura cerca de superficie que se traslada a los pronósticos. 
 
-Las comparaciones para la humedad específica muestran nuevamente el bias seco presente en los análisis con una mejora notoria en los pronósticos inicializados a partir de AWS y SATWND y RAD. La inicialización de las 06 UTC no parece ser muy distinta a la primera. 
-
-La mayor diferencia en el viento meridional se observa en niveles altos y está asociado al pediodo de mayor actividad convectiva sobre el norte del dominio. En particular SATWND es el pronóstico que mejor representa el viento meridional, particularmente en el pronóstico inicializado a las 06 UTC. Algo similar se observa en la diferencia para el viento zonal.
-
-
-**¿Cómo es el campo de viento en esos niveles? y ¿cómo influye en el desarrollo de la convección?**
+Las diferencias entre los pronósticos y ERA5 para los perfiles promediados de humedad específica (Figuras \@ref(fig:era5-fcst-2)) muestran nuevamente el bias seco presente en el modelo y que es más importante en horas nocturnas. Sin embargo es notaria la mejora en los pronósticos inicializados a partir de AWS y SATWND y RAD, en comparación con CONV. Las condiciones iniciales de los pronósticos CONV tienen un bias seco muy marcado que se mantiene a lo largo de todo el periodo de pronóstico (Figuras \@ref(fig:era5-fcst-2)a y e). Las dos inicialización, en este caso, no muestran diferencias apreciables.
 
 
 (ref:era5-fcst-t) Diferencia entre la media del ensamble del pronóstico inicializado a partir de cada experimento y ERA5 de los perfiles verticales promediados espacialmente de la temperatura del aire ($K$) calculado sobre el dominio de validación (cuadro rojo en la Figura \@ref(fig:dominio)a) para cada tiempo de pronóstico.
@@ -220,12 +167,17 @@ perfiles %>%
         panel.grid = element_line(linetype = 3)) 
 
 ```
+Es interesante notar que la asimilación de radianzas que aportan información en niveles medios y altos, también produce un impacto en niveles bajos de la atmósfera. Es posible que el desarrollo nuboso que se ve influenciado por cambios de temperatura y humedad genera también cambios en la temperatura en superficie.  En este caso las mayores temperaturas observadas en los pronósticos de RAD se pueden explicar por un mayor Esto puede explicarse por una disminución en el desarrollo de nubes (no se muestra).
+
+La mayor diferencia en los perfiles promediados para el viento meridional se observa en niveles altos y está asociado al pediodo de mayor actividad convectiva sobre el norte del dominio (Figuras \@ref(fig:era5-fcst-3)). En particular SATWND es el pronóstico que mejor representa el viento meridional, particularmente en el pronóstico inicializado a las 06 UTC (Figura \@ref(fig:era5-fcst-3)g). Esto es particularmente intererante ya que el impacto de las observaciones de viento derivadas de satélite asimiladas en el experimento SATWND era marginal comparado al impacto de otra fuentes de observaciones. Sin embargo los pronósticos inicializados con condiciones incialiles que incluye información de viento derivado de satélite representan mejor el viento meridional aún en los periodos de mayor convección. Si se analizan los experimentos individualmente alrededor de las 00 UTC del 23 de noviembre, se observa que SATWND presenta mayor convergencia en niveles bajos y mayor divergencia en niveles altos cuando se lo compara con RAD. Esto podría indica que la convección en SATWND es más intensa.
+
+Algo similar se observa en la diferencia entre perfiles vericales del viento zonal en las Figuras \@ref(fig:era5-fcst-3). Los pronósticos inicializados a partir de los experimentos AWS, SATWND y RAD muestran una mejor representación del viento zonal en todos los niveles. Sin embargo las observaciones de satelites polares parecen generar un impacto negativo en las condiciones iniciales de RAD que se traslada al pronóstico aumentando la diferencia respecto de ERA5. 
 
 ### Verificacion de los pronósticos de precipitación
 
-Para cuantificar la habilidad de los pronósticos para predecir la precipitación se calculó el FSS para los pronósticos por ensambles en ventanas móviles de 6 horas para los mismos umbrales y escalas espaciales usados para la precipitación acumulada horaria del first guess (Figura \@ref(fig:fssfcst)). Los pronósticos de CONV generan valores muy bajos de FSS en comparación con los experimentos que incluyen otras fuentes de observaciones. AWS, SATWND y RAD muestran mejoras en los valores de FSS, especialmente para el umbral más alto (Figura \@ref(fig:fssfcst)b, d). Además, la inicialización de las 06 UTC obtiene mejores resultados para AWS, SATWND y RAD que el pronóstico inicializado a las 00 UTC, lo que pone de relieve el impacto positivo de las observaciones asimiladas entre las 00 y las 06 UTC. 
+Para cuantificar la habilidad de los pronósticos a 30 y 36 hs para representar la precipitación se calculó el FSS sobre ensambles de los pronósticos en ventanas móviles de 6 horas para los mismos umbrales y escalas espaciales usados para la precipitación acumulada horaria del campo preliminar (Figura \@ref(fig:fssfcst)). Los pronósticos de CONV generan valores muy bajos de FSS en comparación con los experimentos que incluyen otras fuentes de observaciones lo que indica una subestimación de la precipitación en todas las escalas. AWS, SATWND y RAD muestran mejoras en los valores de FSS, especialmente para el umbral de 25 mm (Figura \@ref(fig:fssfcst)b, d). Además, la inicialización de las 06 UTC muestra mejores resultados para AWS, SATWND y RAD que el pronóstico inicializado a las 00 UTC, lo que pone de relieve el impacto positivo de las observaciones asimiladas entre las 00 y las 06 UTC en la representación de la temperatura. 
 
-Las observaciones de viento derivadas de satélite muestran un impacto claramente positivo en el pronóstico, a diferencia de lo que se observó al comparar el pronóstico de 1 hora con observaciones independientes en términos de precipitación. Por el contrario, las radiancias tuvieron un impacto entre neutro y ligeramente negativo en el pronóstico, a diferencia de lo que se observó al comparar el pronóstico de 1 hora con las estimaciones del IMERG. **El motivo por el que los pronósticos inicializados a partir de RAD se degradan con el tiempo debe estudiarse más a fondo.** Sin embargo, es posible que la asimilación de observaciones asociadas a canales afectados por la superficie esté contribuyendo a la degradación de la PBL en el análisis y, posteriormente, en los pronósticos. @lim2014 observó un impacto limitado al asimilar las observaciones de AIRS y atribuye este resultado al uso de canales superficiales en los que las incertidumbres asociadas a la emisividad son grandes. 
+Las observaciones de viento derivadas de satélite muestran un impacto claramente positivo en los pronósticos, a diferencia de lo que se observó al comparar el pronóstico a 1 hora con observaciones independientes en la verificación de los análisis. Esto evidencia el desarrollo de convección más intensa y es coherente con lo analizado en la sección \@ref(prono-impacto) Por el contrario, las radiancias tuvieron un impacto neutro a ligeramente negativo en los pronósticos inicializados a las 00 y 06 UTC. Si bien existen muchos posibles motivos por el que los pronósticos inicializados a partir de RAD se degradan con el tiempo, es posible que la asimilación de observaciones asociadas a canales afectados por la superficie esté contribuyendo a la degradación de la capa límite en el análisis y, posteriormente, en los pronósticos. Por ejemplo, @lim2014 observó un impacto limitado al asimilar las observaciones de AIRS y atribuye este resultado al uso de canales superficiales en los que las incertidumbres asociadas a la emisividad de la superficie son grandes. 
 
 
 (ref:fssfcst) FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre.
@@ -264,7 +216,8 @@ fss %>%
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
 
-El porcentaje de área cubierta por precipitación mayor a determinados umbrales muestra una importante subestimación de la precipitación media. El área sombreada que muestra el área máxima calculada sobre todo el ensamble se acerca un poco más a lo observado pero en general y sobre todo para umbrales de pp bajos, se adelanta en el tiempo. Los pronósticos inicializados a partir de CONV subestiman el área cubierta por precipitación durante el periodo más activio y luego la sobreestima durante el 23 de noviembre. 
+
+El porcentaje de área cubierta por precipitación superior a determinados umbrales se muestra en la Figura \@ref(fig:area). Nuevamente, los pronósticos muestran una importante subestimación de la precipitación media, en particular CONV. El área sombreada que muestra el área máxima estimada sobre todos los miembros del ensamble se acerca más a lo estimado por IMERG, pero para todos los experimentos y sobre todo para el umbral de $1 mmh^{-1}$, se adelantan en el tiempo. Los pronósticos inicializados a partir de CONV subestiman el área cubierta por precipitación durante el periodo más activio y luego la sobreestiman durante el 23 de noviembre cuando ya no se observa precipitación intensa dentro del dominio de estudio. 
 
 (ref:area) Porcentaje de área cubierta por precipitación superior a $1 mmh^{-1}$ (a y c) y $5 mmh^{-1}$ (b y d) a lo largo del tiempo para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre. En línea continua negra se muetra la estimación de IMERG. 
 
@@ -304,7 +257,7 @@ pp_area %>%
         max_area = max(area),
         min_area = min(area)), by = .(umbral, date, exp, ini_date)] %>% 
   .[, ":="(q_label = factor(umbral, labels = c("1~mm~h^{-1}", "5~mm~h^{-1}")),
-           date_label = factor(ini_date, labels = c("00~UTC", "06~UTC")))] %>% 
+           date_label = factor(ini_date, labels = c("atop('00 UTC')", "atop('06 UTC')")))] %>% 
   ggplot(aes(date, mean_area)) +
   geom_line(data = imerg[umbral %in% c(1, 5)] %>% 
               .[, q_label := factor(umbral, labels = c("1~mm~h^{-1}", "5~mm~h^{-1}"))], 
@@ -340,7 +293,7 @@ Los pronósticos sobreestiman la ocurrencia de precipitación para los percentil
 06 UTC
 Subestiman la ocurrencia de precipitación para probabilidades bajas y la sobreestiman para probabilidades altas. Cuando los pronósticos indican una probabilidad de ocurrencia muy alta, la frecuencia observada es muy baja por lo que el pronóstico deja de ser confiable. 
 
-(ref:reliability00) Diagrama de confiabilidad calculado sobre el pronóstico inicializado a las 00UTC para probabilidades pronósticadas 0, 20, 40, 60, 80 y 100% de ocurrencia de precipitación acumulada en 3 horas mayor al percentil a) 0.95, b) 0.97, c) 0.99 y d) 0.9925. Los subplots muestran la frecuencia relativa de eventos (x 100.000) asociada a cada intervalo de probabilidad para cada percentil. 
+(ref:reliability00) Diagrama de confiabilidad calculado sobre el pronóstico inicializado a las 00UTC para probabilidades de 0, 20, 40, 60, 80 y 100% de ocurrencia de precipitación acumulada en 3 horas mayor al percentil a) 0.95, b) 0.97, c) 0.99 y d) 0.9925. Los subplots muestran la frecuencia relativa de eventos (x 100.000) asociada a cada intervalo de probabilidad para cada percentil. 
 
 (ref:reliability06) Cómo en la Figura \@ref(fig:reliability-1) pero pera el pronóstico inicializado a las 06 UTC
 
