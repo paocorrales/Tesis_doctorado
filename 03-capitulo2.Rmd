@@ -287,13 +287,15 @@ pp_area %>%
 
 ```
 
-00 UTC
-Los pronósticos sobreestiman la ocurrencia de precipitación para los percentiles más bajos (asociados a menor precipitación). Para humbrales más altos/percentiles mayores los pronósticos subestiman la ocurrencia de precipitación, esto es coherente con lo que se ve con el FSS. Como la pendiente es casi siempre positiva, los pronósticos son "confiables"
+Se generaron diagramas de confiabilidad usando probabilidades pronósticadas de 0, 20, 40, 60, 80 y 100% calculadas sobre el ensamble para los pronósticos inicializados a las 00 UTC (Figuras \@ref(fig:reliability-1)) y 06 UTC (Figuras \@ref(fig:reliability-2)) utilizando percentiles de precipitación calculados sobre todo el periodo pronosticado (Tabla \@ref(tab:quantiles)). En un diagrama de confiabilidad, la diagonal representa un pronóstico totalmente confiable. Por el contrario, pronósticos por debajo de la diagonal sobreestiman la ocurrencia del evento observado y pronósticos por encima de la diagonal, subestiman la ocurrencia del evento. 
 
-06 UTC
-Subestiman la ocurrencia de precipitación para probabilidades bajas y la sobreestiman para probabilidades altas. Cuando los pronósticos indican una probabilidad de ocurrencia muy alta, la frecuencia observada es muy baja por lo que el pronóstico deja de ser confiable. 
+Los pronósticos inicializados a las 00 UTC muestran curvas de confiabilidad con tendencia positiva, por lo que son considerados confiables. Sin embargo, para probabilidades de precipitación hasta 60%, los pronósticos subestiman la ocurrencia de precipitación. Esta subestimación aumenta a medida que aumenta el percentil (Figuras \@ref(fig:reliability-1)c-d), lo que indica que los pronósticos no logran generar precipitación muy intensa. En probabilidades del ensamble superiores al 60%, los pronósticos sobreestiman la ocurrencia de precipitación cuando se observan los primeros percentiles (umbrales bajos) o son incapaces de producir estos valores de probabilidad cuando se observan umbrales altos de precipitación. Esto se ve muy claramente en los gráficos de frecuencia relativa de eventos que acompañan cada diagrama de confiabilidad, donde la frecuencia de eventos con probabilidades por encima de 60% es baja o nula.  
 
-(ref:reliability00) Diagrama de confiabilidad calculado sobre el pronóstico inicializado a las 00UTC para probabilidades de 0, 20, 40, 60, 80 y 100% de ocurrencia de precipitación acumulada en 3 horas mayor al percentil a) 0.95, b) 0.97, c) 0.99 y d) 0.9925. Los subplots muestran la frecuencia relativa de eventos (x 100.000) asociada a cada intervalo de probabilidad para cada percentil. 
+Los pronósticos inicializados a las 06 UTC muestran tendencias similares, sin embargo es notorio como los umbrales de precipitación asociados a cada percentil, que se muestran en la Tabla \@ref(tab:quantiles), aumentan considerablemente respecto de los pronósticos de las 00 UTC. Es posible que las condiciones iniciales que incluyen nuevas observaciones en conjunto con condiciones de borde actualizadas de GFSF favorezcan un aumento en el desarrollo de la precipitación. 
+
+En líneas generales todos los experimentos muestran un comportamiento similar con muy pequeñas diferencias principalmente en el percentil 0.95. Para algunas probabilidades pronósticadas el experimento CONV se observa más cercano a la diagonal, es decir, es más confiable. Sin embargo esto ocurre solo para umbrales pequeños de precipitación ya que subestima umbrales más altos (Figura \@ref(fig:fssfcst)) como así tambien, el área cubierta por precipitación (Figura \@ref(fig:area))
+
+(ref:reliability00) Diagrama de confiabilidad calculado sobre el pronóstico inicializado a las 00UTC para probabilidades de 0, 20, 40, 60, 80 y 100% de ocurrencia de precipitación acumulada en 3 horas mayor al percentil a) 0.95, b) 0.97, c) 0.99 y d) 0.9925. Los gráficos secundarios dentro de cada diagrama muestran la frecuencia relativa de eventos (x 100.000) asociada a cada intervalo de probabilidad para cada percentil. 
 
 (ref:reliability06) Cómo en la Figura \@ref(fig:reliability-1) pero pera el pronóstico inicializado a las 06 UTC
 
@@ -345,11 +347,11 @@ prop <- read_rds(here("data/derived_data/forecast_variables/ppacum/prop_percenti
 subplots <- map(c(0.95, 0.97, 0.99, 0.9925), function(u) {
   n_freq %>% 
     .[ini_date == "2018112200"] %>% 
-    ggplot(aes(prop_interval2, N/100000)) +
+    ggplot(aes(prop_interval2*100, N/100000)) +
     geom_col(aes(fill = exp), position = "dodge") +
     scale_fill_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
                                                        E6 = "SATWND", E9 = "RAD"), guide = "none") +
-    scale_x_continuous(breaks = seq(0, 1, 0.2), expand = c(0,0)) +
+    scale_x_continuous(breaks = seq(0, 100, 20), expand = c(0,0)) +
     # scale_y_log10() +
     labs(color = NULL, x = NULL, y = NULL) +
     theme_minimal(base_size = 9) +
@@ -366,7 +368,7 @@ prop %>%
   geom_point(aes(color = exp)) +
   geom_line(aes(color = exp)) +
   ggpp::geom_plot_npc(data = subplots_df, aes(label = subplot), npcx = 0.95, npcy = 0.05, vp.width = 0.6) +
-  scale_x_continuous(breaks = seq(0, 1, 0.2)) +
+  scale_x_continuous(breaks = seq(0, 1, 0.2), labels = scales::percent) +
   scale_y_continuous(breaks = seq(0, 1, 0.1)) +
   scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
                                                       E6 = "SATWND", E9 = "RAD")) +
@@ -376,16 +378,17 @@ prop %>%
   labs(color = NULL, x = "Probabilidad pronosticada", y = "Frecuencia relativa observada") +
   theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
+        legend.box.margin = margin(0, 0, 0, 0),
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 
 subplots <- map(c(0.95, 0.97, 0.99, 0.9925), function(u) {
   n_freq %>% 
     .[ini_date == "2018112206"] %>% 
-    ggplot(aes(prop_interval2, N/100000)) +
+    ggplot(aes(prop_interval2*100, N/100000)) +
     geom_col(aes(fill = exp), position = "dodge") +
     scale_fill_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
                                                        E6 = "SATWND", E9 = "RAD"), guide = "none") +
-    scale_x_continuous(breaks = seq(0, 1, 0.2), expand = c(0,0)) +
+    scale_x_continuous(breaks = seq(0, 100, 20), expand = c(0,0)) +
     # scale_y_log10() +
     labs(color = NULL, x = NULL, y = NULL) +
     theme_minimal(base_size = 9) +
@@ -402,7 +405,7 @@ prop %>%
   geom_point(aes(color = exp)) +
   geom_line(aes(color = exp)) +
   ggpp::geom_plot_npc(data = subplots_df, aes(label = subplot), npcx = 0.95, npcy = 0.05, vp.width = 0.6) +
-  scale_x_continuous(breaks = seq(0, 1, 0.2)) +
+  scale_x_continuous(breaks = seq(0, 1, 0.2), labels = scales::percent) +
   scale_y_continuous(breaks = seq(0, 1, 0.1)) +
   scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
                                                       E6 = "SATWND", E9 = "RAD")) +
@@ -419,7 +422,7 @@ prop %>%
 
 
 
-```{r}
+```{r quantiles}
 quantiles <- fread(here("data/derived_data/forecast_variables/ppacum/quantiles_fcst_3h.csv")) %>% 
   .[quantile %in% c(0.95, 0.97, 0.99, 0.9925)] %>% 
   .[, value := round(value, 2)] %>% 
@@ -434,20 +437,21 @@ quantiles <- fread(here("data/derived_data/forecast_variables/ppacum/quantiles_f
 quantiles %>% 
   kbl(booktabs = TRUE, col.names = c("Experimento", "Pronóstico", "0.95", "0.97", "0.99", "0.9925"),
       caption = "Valor de la precipitación acumulada en 3 hs asociada a distintos percentiles calculados para cada inicialización de pronóstico y cada experimento.") %>% 
+  kable_styling(font_size = 10,
+                position = "center") %>% 
   kable_classic_2() %>% 
   collapse_rows(columns = 2) 
 
 
 ```
 
+Finalmente las Figuras \@ref(fig:prob) muestran la probabilidad de ocurrencia de precipitaición acumulada en en 36 hs para los pronósticos inicializados a las 00 UTC y 30 hs para los pronósticos inicializados a las 06 UTC; para distintos umbrales de precipitación.
 
-La probabilidad de pp mayor a 10 mm en un periodo de 30 hs, muestra que la pp se genera más al norter y al oeste de lo observado. Los pronósticos tardan en generar precipitación abundante al comienzo.
+Los campos de probabilidad de precipitación mayor a 10 mm (Figuras \@ref(fig:prob)a-h), muestra que la precipitación se genera más hacia el norte y oeste de lo observado (línea negra). Esto podría indicar que los pronósticos tienen un demora al generar precipitación al comienzo del periodo. Esto también se observa en la Figura \@ref(fig:fssfcst) donde se ve que los valores de FSS van aumentando en las primeras horas de pronóstico, es decir, la precipitación se acerca lo observado tanto en magnitud como en localización. Sin embargo, es notoria la mejora que se produce en los experimentos que se generaron a partir de condiciones iniciales con asimilación de EMA y vientos derivados de satélite respecto de CONV. Los pronósticos RAD si bien son mejores que CONV, subestiman la intensidad de la precipitación en mayor medida que SATWND. 
 
-Entre las 2 inicializaciones se ve una clara difirencia, la probabilidad de pricipitación para los disitntos umbrales en 06 UTC es mayor y si bien tiene un corrimiento al oeste en la región norte (es decir cuando la convección está mas concentrada en el norte del pais) ocupa una región similar a la pp observada. 
+Las Figuras \@ref(fig:prob)i-p muestran los campos de probabilidad de precipitación superior a 50 mm donde se puede apreciar una vez más como los pronósticos subestiman la precipitación, en particular para los umbrales más altos. Al igual que para el umbral de 10 mm, es interesante notar la mejora que se produce entre las inicializaciones. 06 UTC logra representar mucho mejor la distribución de precipitación en el dominio que los pronósticos de las 00 UTC. Por ejemplo, el pronóstico SATWND de las 06 UTC (Figura \@ref(fig:prob)o) captura casi la totalidad del área de precipitación observada, aunque solo para un 10% de los miembros del ensamble. 
 
-SATWND tiene probabilidades mayores a los otros pronósticos. 
-
-(ref:prob) Probabilidad de ocurrencia de precipitación acumulada en 30 hs superior a 10 mm (fila 1 y 2) y 50 mm (fila 3 y 4) para los pronósticos inicializados a las 00 y 06 UTC a partir de cada experimento. 
+(ref:prob) Probabilidad de ocurrencia de precipitación acumulada en 36 y 30 hs superior a 10 mm (fila 1 y 2) y 50 mm (fila 3 y 4) para los pronósticos inicializados a las 00 y 06 UTC respectivamente. 
 
 ```{r prob, fig.cap="(ref:prob)", fig.width=6, fig.height=7, fig.align="center"}
 files <- Sys.glob(here("data/derived_data/forecast_variables/ppacum/E[2,5,6,9]_fcst_*_prop_acum_30h.rds"))
@@ -478,6 +482,7 @@ colors_smooth_rainbow <- c("#E8ECFB", "#B997C7", "#824D99", "#4E78C4", "#57A2AC"
 pp_wrf[umbral %in% c(10, 50) & prop > 0.09] %>% 
   .[, prop := prop + abs(rnorm(.N, sd = 0.0000000001))] %>%
   .[, prop := scales::rescale(prop, to = c(0, 1))] %>% 
+  na.omit() %>% 
   # .[, .(umbral_label = factor(umbral, labels = c("10~mm~h^{-1}", "50~mm~h^{-1}")))] %>% 
   ggplot(aes(x, y)) +
   geom_contour_fill(aes(z = prop, fill = ..level..),
@@ -487,17 +492,21 @@ pp_wrf[umbral %in% c(10, 50) & prop > 0.09] %>%
                                                                              title.position = "left", 
                                                                              title.vjust = 1,
                                                                              frame.colour = "black")) +
-  geom_contour2(data = pp_imerg, aes(z = pp_acum), color = "black",
+  geom_contour2(data = copy(pp_imerg)[, umbral := 10], aes(z = pp_acum), color = "black",
                 breaks = 10,
                 proj = norargentina_lambert) +
+  geom_contour2(data = copy(pp_imerg)[, umbral := 50], aes(z = pp_acum), color = "black",
+                breaks = 50,
+                proj = norargentina_lambert) +
   geom_mapa() +
-  facet_grid(umbral + ini_date ~ exp, 
-             labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
-                                         E6 = "SATWND", E9 = "RAD"),
-                                 ini_date = c(`2018112200` = "00 UTC",
-                                              `2018112206` = "06 UTC"),
-                                 umbral = c(`10` = "10 mmh-1",
-                                            `50` = "50 mmh-1"))) +
+  ggh4x::facet_nested(umbral + ini_date ~ exp, 
+                      labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+                                                  E6 = "SATWND", E9 = "RAD"),
+                                          ini_date = c(`2018112200` = "00 UTC",
+                                                       `2018112206` = "06 UTC"),
+                                          umbral = c(`10` = "10 mm",
+                                                     `50` = "50 mm"))) +
+  tagger::tag_facets() +
   labs(fill = "Probabilidad") + 
   theme_minimal(base_size = 9) +
   theme(legend.position = "bottom")
@@ -506,19 +515,15 @@ pp_wrf[umbral %in% c(10, 50) & prop > 0.09] %>%
 
 ### Análisis y verificación por parametrizaciones
 
-Comparación con las observaciones de EMA durante el periodo. 
+En esta sección evaluamos los pronósticos de manera cuantitatva comparándolos con observaciones de EMA, que si bien son asimiladas en los experimentos de análisis, son observaciones independietes para los pronósticos y radiosondeos tanto operativos como de la campaña RELAMPAGO. 
 
-Humedad y temperatura: la diferencia principal entre las inicializaciones está en el BIAS, el error de los pronósticos tiene una componente sistemática importante. 06 UTC arranca mejor en términos de bias, no se ve mucha mejora en el RMSE. CONV mantiene un bias y rmse mayor respecto de los otros experimentos. El resto mantiene la tendencia vista en los análisis y comparación con ERA5
+En primer lugar se calculó el RMSE y BIAS respecto de las observaciones de EMA a lo largo del tiempo para cada pronóstico e inicialización. El BIAS y RMSE de la humedad específica (Figuras \@ref(fig:rmse-bias-aut)a y e) al comienzo de los pronósticos es coherente con las condiciones iniciales. Por ejemplo el BIAS seco asociado a CONV es mucho más importante que el los pronósticos inicializados a partir de AWS. También se observan mejoras en la inicialización de las 06 UTC, algo que no era evidente en el análisis de los perfiles verticales promediados espacialmente (Figura \@ref(fig:era5-fcst-2)). Los errores asociados a la temperatura (Figuras \@ref(fig:rmse-bias-aut)b y f) son muy dependientes del momento del día, con un aumento del RMSE y del BIAS cálido durante las horas nocturnas. Los pronósticos CONV y RAD para la inicialización de las 06 UTC tienen un mejor densempeño en las primeras horas de pronóstico pero luego se degradan más rápidamente que AWS o SATWND. 
 
-**¿Se ve por cuanto tiempo perdura la mejora?**
+Mientras que no hay características sobresalientes en los errores del viento zonal, en el viento meridional (Figuras \@ref(fig:rmse-bias-aut)d y h), es interesante notar que el RMSE de los pronósticos de las 06 UTC es más bajo que para los pronósticos de las 00 UTC y esta mejora se mantiene por al menos 6 horas. Esto también ocurre en el BIAS aunque en menor medida. 
 
-Para el viento zonal, no se ve muchas diferencias entre las inicializaciones o los experimentos al comienzo. Aunque hacia la mitad de 22 de noviembre se ve que 06 UTC tiene mayor bias y rmse. 
+(ref:aut-bias-aut) RMSE (línea sólida) y Bias (línea discontinua) de a) humedad especifica ($g\ Kg{^-1}$), b) temperatura ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos de cada experimento con las observaciones de EMA. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
 
-Viento meridional, 06 UTC arranca mejor respecto del RMSE y eso se mantiene por al menos 6 horas.
-
-(ref:aut-all) RMSE (línea sólida) y Bias (línea discontinua) de a) humedad especifica ($g\ Kg{^-1}$), b) temperatura ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos de cada experimento con las observaciones de EMA. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
-
-```{r rmse-bias-aut, fig.cap="(ref:aut-all)", fig.align="centern", fig.width=6, fig.height=3}
+```{r rmse-bias-aut, fig.cap="(ref:aut-bias-aut)", fig.align="centern", fig.width=6, fig.height=3}
 fisica <- data.table(mem = as.character(formatC(1:60, flag = "0", width = 3)),
                      fisica = rep(c("KF-YSU", 
                                     "BMJ-YSU",
@@ -536,9 +541,14 @@ media <- rbind(read_rds(here("data/derived_data/forecast_variables/interp_obs_20
            BIAS = fifelse(var == "q", BIAS*1000, BIAS))] %>% 
   .[, BIAS := -BIAS]
 
-hline <- data.frame(estadistinco = rep(c("RMSE", "BIAS"), each = 4),
-                    var = rep(c("t", "q", "u", "v"), 2),
-                    value =  rep(c(NA, 0), each = 4))
+hline <- data.frame(estadistico_label = factor("BIAS"),
+                    var_label = factor(c("t", "q", "u", "v"), 
+                                       labels = c("atop('Humedad', 'específica (g Kg'^-1*')')",
+                                                  "Temperatura~(K)",
+                                                  "Viento~U~(m~s^{-1})",
+                                                  "Viento~V~(m~s^{-1})")),
+                    value =  0)
+
 
 
 media %>% 
@@ -567,6 +577,10 @@ media %>%
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 
 ```
+La Figura \@ref(fig:aut-all) muestra el RMSE y BIAS calculado comparando con las observaciones de EMA sobre los miembros del ensamble que utilizan cada una de las parametrizaciones de capa límite. En este caso no se muestran las dos inicializaciones por separado ya que ambos pronósticos presentan tendencias muy similares. 
+
+Si bien sería deseable encontrar una parametrización de capa límite que represente correctamente todas las variables de interes, estudios previos (por ejemplo @ruiz2010 y @dillon2021) mostraron que distintas parametrizaciones logran representar correctamente algunas variables pero no todas y que esto puede ser dependiente del caso de estudio. Para esta situación, la parametrización MYJ presenta un menor RMSE y BIAS para las variables termodinámicas (humedad relativa y temperatura) mientras que MYNN2 representa mejor el viento. Sin embargo, a exepción del RMSE del viento, los errores tienen una variabilidad pequeña por lo que la elección de una parametrización u otra podría no tener un impacto importante en la representación de la capa límite. Esto refuerza la necesidad de generar un ensamble multifísica como el utilizado en este trabajo para poder capturar los posibles errores asociados al modelo y la representación de los procesos parametrizados. 
+
 (ref:aut-all) RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (círculo), MYNN2 (triángulo) e YSU (cuadrado) para todos los pronósticos en conjunto. 
 
 ```{r aut-all, fig.cap="(ref:aut-all)", fig.align="center", fig.width=7, fig.height=4}
@@ -583,6 +597,14 @@ pbl <- fisica[miembros, on = .NATURAL] %>%
   setnames("pbl", "param") %>% 
   .[, tipo := "pbl"]
 
+vline <- data.frame(variable_label = factor("BIAS"),
+                    var_label = factor(c("t", "q", "v"), 
+                                       labels = c("atop('Humedad', 'específica (g Kg'^-1*')')",
+                                                  "Temperatura~(K)",
+                                                  "Viento~V~(m~s^{-1})")),
+                    value =  0)
+
+
 pbl %>% 
   .[, .(RMSE = mean(RMSE, na.rm = TRUE),
         BIAS = mean(BIAS, na.rm = TRUE)), 
@@ -594,6 +616,7 @@ pbl %>%
                                               "Temperatura~(K)", 
                                               "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(value, exp)) +
+  geom_vline(data = vline, aes(xintercept = value), color = "darkgrey") +
   geom_point(aes(color = exp, shape = param),
              size = 3) +
   scale_color_manual(guide = NULL, values = colores_exp, 
@@ -612,6 +635,8 @@ pbl %>%
 
 ```
 
+Si se analiza los errores asociados a las parametrizaciones de capa límite a lo largo del periodo pronosticado (Figurs \@ref(fig:aut-rad)), en este caso solo para el experimento RAD, la tendencia observada previamente se mantiene. Más importante aún, los errores de ninguna de las parametrizaciones aumenta por sobre el resto, indicando que tienen un comportamiento consistente a lo largo de las 30 y 36 hs de pronóstico. 
+
 (ref:aut-rad) RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (línea llena), MYNN2 (línea a rayas) e YSU (línea punteada) para todos los pronósticos en conjunto a lo largo del tiempo de pronóstico. 
 
 ```{r aut-rad, fig.cap="(ref:aut-rad)", fig.align="center", fig.width=6, fig.height=3}
@@ -619,7 +644,7 @@ pbl %>%
   melt(id.vars = c("exp", "param", "fcst_exp", "date", "var"), measure.vars = c("RMSE", "BIAS")) %>% 
   .[exp == "E9" & fcst_exp == "2018112200"] %>% 
   ggplot(aes(date, value)) +
-  # geom_hline(yintercept = 0, color = "darkgrey") +
+   geom_vline(data = hline, aes(yintercept = value), color = "darkgrey") +
   geom_line(aes(color = exp, linetype = param)) +
   scale_color_manual(values = colores_exp[4], labels = c(E9 = "RAD")) +
   scale_linetype_manual(values = c(1, 2, 3)) +
@@ -636,7 +661,11 @@ pbl %>%
   theme(aspect.ratio = 1/1.5,
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
-(ref:soundings-fcst) RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando el análisis de cada experimento con los sondeos de RELAMPAGO durante el IOP 7 y el IOP 8. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
+La Figura \@ref(fig:soundings-fcst) muestra el RMSE y BIAS calculado comparando los pronósticos con los radiosondeos disponibles durante el periodo pronósticado. En líneas generales no se observan grandes diferencias entre las dos inicializaciones. Si bien los pronósticos de las 06 UTC utilizan condiciones iniciales que incluyen información actualizada del entorno, la mayoría de los radiosondeos fueron lanzados en un área muy pequeña en el centro del dominio (Figura \@ref(fig:dominio)b) que podría no haber sido muy influenciada por la asimilación de nuevas observaciones. 
+
+Es interesante comparar esta los errores asociados a los pronósticos con los errores observados 
+
+(ref:soundings-fcst) RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos de cada experimento con los sondeos operativos y de RELAMPAGO. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
 
 ```{r soundings-fcst, fig.cap="(ref:soundings-fcst)", fig.width=6, fig.height=4, fig.align="center"}
 media <- read_rds(here("data/derived_data/soundings/sondeos_media_fcst.rds")) %>% 
@@ -646,8 +675,11 @@ media <- read_rds(here("data/derived_data/soundings/sondeos_media_fcst.rds")) %>
   melt(measure.vars = c("RMSE", "BIAS"), variable.name = "estadistico", value.name = "value.est")
 
 media %>% 
-  .[, ":="(fcst_exp_label = factor(fcst_exp, labels = c("00~UTC", "06~UTC")),
-           variable_labels = factor(variable, labels = c("Temperatura~(K)", "atop('Temperatura de', 'punto de rocío (K)')", "Viento~U~(m~s^{-1})", "Viento~V~(m~s^{-1})")))] %>% 
+  .[, ":="(fcst_exp_label = factor(fcst_exp, labels = c("atop('00 UTC')", "atop('06 UTC')")),
+           variable_labels = factor(variable, labels = c("Temperatura~(K)", 
+                                                         "atop('Temperatura de', 
+                                                         'punto de rocío (K)')", 
+                                                         "Viento~U~(m~s^{-1})", "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(lev/1000, value.est)) +
   geom_hline(yintercept = 0, color = "grey30") +
   geom_line(aes(color = exp, linetype = estadistico)) +
@@ -687,7 +719,7 @@ cum %>%
     by = .(var, exp, param, tipo)] %>% 
   .[var != "u"] %>% 
   melt(id.vars = c("exp", "param", "var"), measure.vars = c("RMSE", "BIAS")) %>% 
-    .[, ":="(variable_label = factor(variable),
+  .[, ":="(variable_label = factor(variable),
            var_label = factor(var, labels = c("atop('Humedad', 'específica (g Kg'^-1*')')",
                                               "Temperatura~(K)", 
                                               "Viento~V~(m~s^{-1})")))] %>% 
@@ -715,7 +747,7 @@ cum %>%
 cum %>% 
   .[exp == "E9" & fcst_exp == 2018112200] %>% 
   melt(measure.vars = c("RMSE", "BIAS")) %>% 
-      .[, ":="(variable_label = factor(variable),
+  .[, ":="(variable_label = factor(variable),
            var_label = factor(var, labels = c("Temperatura~(K)", 
                                               "atop('Temperatura de', 'punto de rocío (K)')", 
                                               "Viento~U~(m~s^{-1})", 
@@ -731,7 +763,7 @@ cum %>%
   tagger::tag_facets(position = list(x = 0.03, y = 0.95)) +
   theme_minimal() +
   theme(aspect.ratio = 1,
-                legend.position = "bottom",
+        legend.position = "bottom",
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
 
