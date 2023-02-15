@@ -184,7 +184,7 @@ Las observaciones de viento derivadas de satélite muestran un impacto clarament
 
 
 ```{r fssfcst, fig.cap="(ref:fssfcst)", fig.width=5, fig.height=5}
-files <- Sys.glob(here("data/derived_data/FSS/fss_6h_fcst_ens_*_E[2569]_ens.csv"))
+files <- Sys.glob(here("data/derived_data/FSS/fss_6h_fcst_ens_*_E[2569]_ens*.csv"))
 
 fss <- purrr::map(files, function(f) {
   
@@ -192,9 +192,11 @@ fss <- purrr::map(files, function(f) {
   
   fread(f) %>% 
     .[, date := as_datetime(date)] %>% 
-    .[, ini_date := ymd_h(meta[[1]][["ini_date"]])]
+    .[, ini_date := ymd_h(meta[[1]][["ini_date"]])] 
 }) %>% 
   rbindlist()
+
+
 
 fss %>% 
   .[q %in% c(1, 25) & w %in% c(1, 11)] %>% 
@@ -644,7 +646,7 @@ pbl %>%
   melt(id.vars = c("exp", "param", "fcst_exp", "date", "var"), measure.vars = c("RMSE", "BIAS")) %>% 
   .[exp == "E9" & fcst_exp == "2018112200"] %>% 
   ggplot(aes(date, value)) +
-   geom_vline(data = hline, aes(yintercept = value), color = "darkgrey") +
+   geom_hline(data = hline, aes(yintercept = value), color = "darkgrey") +
   geom_line(aes(color = exp, linetype = param)) +
   scale_color_manual(values = colores_exp[4], labels = c(E9 = "RAD")) +
   scale_linetype_manual(values = c(1, 2, 3)) +
@@ -661,9 +663,11 @@ pbl %>%
   theme(aspect.ratio = 1/1.5,
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
-La Figura \@ref(fig:soundings-fcst) muestra el RMSE y BIAS calculado comparando los pronósticos con los radiosondeos disponibles durante el periodo pronósticado. En líneas generales no se observan grandes diferencias entre las dos inicializaciones. Si bien los pronósticos de las 06 UTC utilizan condiciones iniciales que incluyen información actualizada del entorno, la mayoría de los radiosondeos fueron lanzados en un área muy pequeña en el centro del dominio (Figura \@ref(fig:dominio)b) que podría no haber sido muy influenciada por la asimilación de nuevas observaciones. 
+La Figura \@ref(fig:soundings-fcst) muestra el RMSE y BIAS calculado comparando los pronósticos con los radiosondeos disponibles durante el periodo pronósticado. En líneas generales no se observan grandes diferencias entre las dos inicializaciones. Si bien los pronósticos de las 06 UTC utilizan condiciones iniciales que incluyen información actualizada del entorno, la mayoría de los radiosondeos fueron lanzados en un área muy pequeña en el centro del dominio (Figura \@ref(fig:dominio)b) que podría no haber sido particularmente influenciada por la asimilación de nuevas observaciones. 
 
-Es interesante comparar esta los errores asociados a los pronósticos con los errores observados 
+Es interesante comparar en este punto los errores asociados a los pronósticos con los errores observados en el análisis (Figura \@ref(fig:fss)e-h). En general, el rango de valores que toma el RMSE y BIAS para cada variable es similar tanto en los pronósticos como en los análisis, lo que indica que los pronósticos logran representar adecuadamente la situacición en esa región del dominio. Sin embargo, también se observa que los errores son muy parecidos entre experimentos cuando se los compara con los errores de los análisis, por lo que es posible que los errores del modelo y las condiciones de borde, iguales para todos los experimentos, tengan una influencia mayor que las condiciones iniciales de cada pronóstico. 
+
+En esta comparación, la característica sobresaliente es la disminución del RMSE y BIAS en niveles bajos en todas las variables pero particularmente el viento meridional. El aumento de los errores en los análisis puede atribuirse a la asimilación de observaciones de EMA, que si bien en general producen impactos muy positivos en la representación de la capa límite (Figura \@ref(fig:era5)), en esta región limitada parece generar el efecto contrario. En los pronósticos independiente, sin asimilación continua de estas observacios, los errores en niveles bajos disminuyen a valores cercanos a los observados en los análisis de CONV. 
 
 (ref:soundings-fcst) RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos de cada experimento con los sondeos operativos y de RELAMPAGO. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
 
@@ -696,6 +700,8 @@ media %>%
 
 ```
 
+La Figura \@ref(fig:soudings-all) muestra el RMSE y BIAS calculado comparando con los radiosondeos de RELAMPAGO sobre los miembros del ensamble que utilizan cada una de las parametrizaciones de convección. Nuevamente, se muestran las dos inicializaciones en conjunto ya ambos pronósticos presentan tendencias muy similares. Si bien el comportamiento de las parametrizaciones de convección no es tan honomegeo como si sucedía con las de capa límite, es posible identificar algunos patrones. La parametrización BMJ tiene un RMSE menor tanto para la temperatura compara la temperatura de punto de rocio mientras que la parametrización con mejor RMSE es KF. 
+
 (ref:soudings-all) RMSE y BIAS calculados comparando los pronósticos con sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de convección BMJ (círculo), GF (triángulo) e KF (cuadrado) para todos los pronósticos en conjunto. 
 
 ```{r soudings-all, fig.cap="(ref:soudings-all)", fig.align="center", fig.width=7, fig.height=4}
@@ -713,6 +719,12 @@ cum <- miembros[, .(RMSE = mean(RMSE),
                 by = .(exp, fcst_exp, cumulus, lev, variable)] %>% 
   setnames(c("cumulus", "variable"), c("param", "var"))
 
+vline <- data.frame(variable_label = factor("BIAS"),
+                    var_label = factor(c("t", "q", "v"), 
+                                       labels = c("Temperatura~(K)",
+                                              "atop('Temperatura', 'de punto de rocío (K)')",
+                                              "Viento~V~(m~s^{-1})")),
+                    value =  0)
 cum %>% 
   .[, .(RMSE = mean(RMSE, na.rm = TRUE),
         BIAS = mean(BIAS, na.rm = TRUE)), 
@@ -720,11 +732,11 @@ cum %>%
   .[var != "u"] %>% 
   melt(id.vars = c("exp", "param", "var"), measure.vars = c("RMSE", "BIAS")) %>% 
   .[, ":="(variable_label = factor(variable),
-           var_label = factor(var, labels = c("atop('Humedad', 'específica (g Kg'^-1*')')",
-                                              "Temperatura~(K)", 
+           var_label = factor(var, labels = c("Temperatura~(K)",
+                                              "atop('Temperatura', 'de punto de rocío (K)')",
                                               "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(value, exp)) +
-  # geom_vline(xintercept = 0, color = "grey70") +
+  geom_vline(data = vline, aes(xintercept = value), color = "darkgrey") +
   geom_point(aes(color = exp, shape = param),
              size = 3) +
   scale_color_manual(guide = NULL, values = colores_exp, 
@@ -741,6 +753,11 @@ cum %>%
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 
 ```
+
+Si analizamos los perfiles verticales de RMSE y BIAS para cada parametrización, calculados solo sobre los pronósticos RAD, podemos ver que BMJ es la parametrización que mejor representa la humedad en niveles medios pero KF representa mejor la mayoría de las variables en niveles bajos. 
+
+Si bien no es posible elegir solo una parametrización de convección que mejor represente todas las variables, es interesante observar la buena performance de BMJ ya que @dillon2021, utilizando una configuración del ensamble multifísica similar a este trabajo, encontró que esta parametrización era la que peor representaba la precipitación cuantificada utilizando FSS. Analísis similares para este trabajo mostraron la misma tendencia encontrada por @dillon2021 (no se muestra). Teniendo en cuenta este resultado y ante la poca variabilidad en los valores de los errores asociados a temperatura, humedad y viento, es posible que el reemplazo de BMJ por otra parametrización de convección de mejores resultados en términos de la representación de la precipitación sin producir mayor impacto en la temperatura, humedad y viento.
+
 (ref:souding-rad) RMSE y BIAS calculados comparando los pronósticos con observaciones de sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de conveccón BMJ (línea llena), GF (línea a rayas) e KF (línea punteada) para todos los pronósticos en conjunto. 
 
 ```{r souding-rad, fig.cap="(ref:souding-rad)", fig.width=6, fig.height=4, fig.align="center"}
