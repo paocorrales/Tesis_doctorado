@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo</title>
+  <meta name="description" content="Chapter 4 Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  <meta name="generator" content="bookdown 0.24.9 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  
+  
+  
+
+<meta name="author" content="Lic. Paola Corrales" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="3-metodología.html"/>
+<link rel="next" href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"></a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introducción<span></span></a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#pronostico-de-eventos-severos"><i class="fa fa-check"></i><b>1.1</b> Pronostico de eventos severos<span></span></a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#asimilación-de-datos-para-estimar-condiciones-iniciales"><i class="fa fa-check"></i><b>1.2</b> Asimilación de datos para estimar condiciones iniciales<span></span></a><ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#asimilación-de-datos-en-sudamérica"><i class="fa fa-check"></i><b>1.2.1</b> Asimilación de datos en Sudamérica<span></span></a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#asimilación-de-radianzas-de-satélites"><i class="fa fa-check"></i><b>1.2.2</b> Asimilación de radianzas de satélites<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#motivación-y-objetivos"><i class="fa fa-check"></i><b>1.3</b> Motivación y objetivos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-resumen.html"><a href="2-resumen.html"><i class="fa fa-check"></i><b>2</b> Resumen<span></span></a><ul>
+<li><a href="2-resumen.html#utilización-de-datos-satelitales-para-la-evaluación-y-mejora-de-los-pronósticos-numéricos-en-alta-resolución-a-muy-corto-plazo">Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo<span></span></a></li>
+</ul></li>
+<li><a href="abstract.html#abstract">Abstract<span></span></a><ul>
+<li><a href="abstract.html#use-of-satellite-data-for-the-evaluation-and-improvement-of-short-term-high-resolution-numerical-forecasts">Use of satellite data for the evaluation and improvement of short-term high-resolution numerical forecasts<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-metodología.html"><a href="3-metodología.html"><i class="fa fa-check"></i><b>3</b> Metodología<span></span></a><ul>
+<li class="chapter" data-level="3.1" data-path="3-metodología.html"><a href="3-metodología.html#caso-de-estudio"><i class="fa fa-check"></i><b>3.1</b> Caso de estudio<span></span></a></li>
+<li class="chapter" data-level="3.2" data-path="3-metodología.html"><a href="3-metodología.html#observaciones"><i class="fa fa-check"></i><b>3.2</b> Observaciones<span></span></a><ul>
+<li class="chapter" data-level="3.2.1" data-path="3-metodología.html"><a href="3-metodología.html#conjuntos-de-observaciones-asimiladas"><i class="fa fa-check"></i><b>3.2.1</b> Conjuntos de observaciones asimiladas<span></span></a></li>
+<li class="chapter" data-level="3.2.2" data-path="3-metodología.html"><a href="3-metodología.html#conjuntos-de-observaciones-para-verificación"><i class="fa fa-check"></i><b>3.2.2</b> Conjuntos de observaciones para verificación<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="3-metodología.html"><a href="3-metodología.html#la-asimilación-de-datos"><i class="fa fa-check"></i><b>3.3</b> La asimilación de datos<span></span></a><ul>
+<li class="chapter" data-level="3.3.1" data-path="3-metodología.html"><a href="3-metodología.html#el-sistema-de-asimilación-gsi"><i class="fa fa-check"></i><b>3.3.1</b> El sistema de asimilación GSI<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="3-metodología.html"><a href="3-metodología.html#configmodelo"><i class="fa fa-check"></i><b>3.4</b> Configuración del sistema de asimilación<span></span></a></li>
+<li class="chapter" data-level="3.5" data-path="3-metodología.html"><a href="3-metodología.html#métodos-de-verificación"><i class="fa fa-check"></i><b>3.5</b> Métodos de verificación<span></span></a></li>
+<li class="chapter" data-level="3.6" data-path="3-metodología.html"><a href="3-metodología.html#recursos-computacionales"><i class="fa fa-check"></i><b>3.6</b> Recursos computacionales<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><i class="fa fa-check"></i><b>4</b> Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares<span></span></a><ul>
+<li class="chapter" data-level="4.1" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#metodología-1"><i class="fa fa-check"></i><b>4.1</b> Metodología<span></span></a><ul>
+<li class="chapter" data-level="4.1.1" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#config"><i class="fa fa-check"></i><b>4.1.1</b> Configuracion de los experimentos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#resultados"><i class="fa fa-check"></i><b>4.2</b> Resultados<span></span></a><ul>
+<li class="chapter" data-level="4.2.1" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#consistencia-del-ensamble"><i class="fa fa-check"></i><b>4.2.1</b> Consistencia del ensamble<span></span></a></li>
+<li class="chapter" data-level="4.2.2" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#impacto-analisis"><i class="fa fa-check"></i><b>4.2.2</b> Impacto de la asimilación de las distintas observaciones<span></span></a></li>
+<li class="chapter" data-level="4.2.3" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#validación-con-observaciones-independientes"><i class="fa fa-check"></i><b>4.2.3</b> Validación con observaciones independientes<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#conclusiones"><i class="fa fa-check"></i><b>4.3</b> Conclusiones<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><i class="fa fa-check"></i><b>5</b> Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo<span></span></a><ul>
+<li class="chapter" data-level="5.1" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#metodología-2"><i class="fa fa-check"></i><b>5.1</b> Metodología<span></span></a><ul>
+<li class="chapter" data-level="5.1.1" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#configuracion-de-los-experimentos"><i class="fa fa-check"></i><b>5.1.1</b> Configuracion de los experimentos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#resultados-1"><i class="fa fa-check"></i><b>5.2</b> Resultados<span></span></a><ul>
+<li class="chapter" data-level="5.2.1" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#prono-impacto"><i class="fa fa-check"></i><b>5.2.1</b> Impacto de las observaciones en el pronostico<span></span></a></li>
+<li class="chapter" data-level="5.2.2" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#verificacion-de-los-pronósticos-de-precipitación"><i class="fa fa-check"></i><b>5.2.2</b> Verificacion de los pronósticos de precipitación<span></span></a></li>
+<li class="chapter" data-level="5.2.3" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#análisis-y-verificación-por-parametrizaciones"><i class="fa fa-check"></i><b>5.2.3</b> Análisis y verificación por parametrizaciones<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#conclusiones-1"><i class="fa fa-check"></i><b>5.3</b> Conclusiones<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><i class="fa fa-check"></i><b>6</b> Asimilacion de observaciones del satélite geoestacionario GOES-16<span></span></a><ul>
+<li class="chapter" data-level="6.1" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#metodología-3"><i class="fa fa-check"></i><b>6.1</b> Metodología<span></span></a><ul>
+<li class="chapter" data-level="6.1.1" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#asimilación-de-observaciones-de-goes"><i class="fa fa-check"></i><b>6.1.1</b> Asimilación de observaciones de goes<span></span></a></li>
+<li class="chapter" data-level="6.1.2" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#configuracion-de-los-experimentos-1"><i class="fa fa-check"></i><b>6.1.2</b> Configuracion de los experimentos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#resultados-2"><i class="fa fa-check"></i><b>6.2</b> Resultados<span></span></a><ul>
+<li class="chapter" data-level="6.2.1" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#sensibilidad-a-la-combinación-de-canales"><i class="fa fa-check"></i><b>6.2.1</b> Sensibilidad a la combinación de canales<span></span></a></li>
+<li class="chapter" data-level="6.2.2" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#sensibilidad-al-thinning"><i class="fa fa-check"></i><b>6.2.2</b> Sensibilidad al thinning<span></span></a></li>
+<li class="chapter" data-level="6.2.3" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#comparación-del-impacto-de-goes-16-versus-satélites-polares"><i class="fa fa-check"></i><b>6.2.3</b> Comparación del impacto de GOES-16 versus satélites polares<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#conclusiones-2"><i class="fa fa-check"></i><b>6.3</b> Conclusiones<span></span></a></li>
+</ul></li>
+<li><a href="conclusiones-generales.html#conclusiones-generales">Conclusiones Generales<span></span></a></li>
+<li class="appendix"><span><b>Appendix<span></span></b></span></li>
+<li class="chapter" data-level="A" data-path="A-corrección-del-bias-de-observaciones-de-satélite.html"><a href="A-corrección-del-bias-de-observaciones-de-satélite.html"><i class="fa fa-check"></i><b>A</b> Corrección del bias de observaciones de satélite<span></span></a></li>
+<li><a href="referencias.html#referencias">Referencias<span></span></a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares" class="section level1 hasAnchor">
+<h1><span class="header-section-number">Chapter 4</span> Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares<a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Este capítulo se busca contribuir a la cuantificación y comparación del impacto de asimilar observaciones de las estaciones meteorológicas automáticas de alta resolución, viento estimando por satélite y radiancias de cielo claro de satélites polares a la hora de aplicar la asimilación de datos para mejorar los pronósticos numéricos de eventos severos sobre Sudamérica, donde la red de observación convencional es bastante escasa y otras fuentes de información podrían potencialmente cubrir las áreas menos observadas y aportar información en las escalas más pequeñas.</p>
+<div id="metodología-1" class="section level2 hasAnchor">
+<h2><span class="header-section-number">4.1</span> Metodología<a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#metodología-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="config" class="section level3 hasAnchor">
+<h3><span class="header-section-number">4.1.1</span> Configuracion de los experimentos<a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#config" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para investigar el impacto de las diferentes observaciones en el análisis, se realizaron cuatro experimentos de asimilación de datos utilizando diferentes conjuntos de observaciones (Tabla <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#tab:table-exp">4.1</a>). El experimento CONV utiliza únicamente las observaciones convencionales de PREPBUFR. En un segundo experimento, denominado AWS, se asimilan todas las observaciones incluidas en CONV más las observaciones de EMA con 10 minutos de frecuencia. En el tercer experimento, denominado SATWND, se asimilan las observaciones del experimento AWS junto con los vientos estimados por satélite. Por último, un cuarto experimento, denominado RAD, asimila todas las observaciones mencionadas previamente más las radiancias en cielo claro procedentes de los sensores a bordo de los satélites de órbita polar, como se describe en la sección <a href="3-metodología.html#sat">3.3.1.1</a>.</p>
+<table class=" lightable-classic-2" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'>
+<caption>
+<span id="tab:table-exp">Table 4.1: </span>Tipos de observaciones asimiladas en cada experimento.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Obs type
+</th>
+<th style="text-align:center;">
+CONV
+</th>
+<th style="text-align:center;">
+AWS
+</th>
+<th style="text-align:center;">
+SATWND
+</th>
+<th style="text-align:center;">
+RAD
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 8em; ">
+Convencional (PREPBUFR)
+</td>
+<td style="text-align:center;width: 2.5em; ">
+x
+</td>
+<td style="text-align:center;width: 2.5em; ">
+x
+</td>
+<td style="text-align:center;width: 3em; ">
+x
+</td>
+<td style="text-align:center;width: 3em; ">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 8em; ">
+Convencional (EMA)
+</td>
+<td style="text-align:center;width: 2.5em; ">
+</td>
+<td style="text-align:center;width: 2.5em; ">
+x
+</td>
+<td style="text-align:center;width: 3em; ">
+x
+</td>
+<td style="text-align:center;width: 3em; ">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 8em; ">
+Vionto estimado por satélite
+</td>
+<td style="text-align:center;width: 2.5em; ">
+</td>
+<td style="text-align:center;width: 2.5em; ">
+</td>
+<td style="text-align:center;width: 3em; ">
+x
+</td>
+<td style="text-align:center;width: 3em; ">
+x
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 8em; ">
+Radiancias
+</td>
+<td style="text-align:center;width: 2.5em; ">
+</td>
+<td style="text-align:center;width: 2.5em; ">
+</td>
+<td style="text-align:center;width: 3em; ">
+</td>
+<td style="text-align:center;width: 3em; ">
+x
+</td>
+</tr>
+</tbody>
+</table>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:obs-horizontal"></span>
+<img src="thesis_files/figure-html/obs-horizontal-1.png" alt="Distribución espacial horizontal media de las observaciones disponibles en cada ciclo de asmilación para los experimentos a) CONV, b) AWS, c) SATWND y d) RAD calculados sobre cajas de 2,5\(^{\circ}\)." width="750" />
+<p class="caption">
+Figure 4.1: Distribución espacial horizontal media de las observaciones disponibles en cada ciclo de asmilación para los experimentos a) CONV, b) AWS, c) SATWND y d) RAD calculados sobre cajas de 2,5<span class="math inline">\(^{\circ}\)</span>.
+</p>
+</div>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:obs-cycle"></span>
+<img src="thesis_files/figure-html/obs-cycle-1.png" alt="a) Número de observaciones asimiladas por ciclo y b) número medio de observaciones asimiladas por ciclo dividido en capas verticales de 50 hPa de espesor para los experimentos CONV (cuadrados azules), AWS (puntos celestes), SATWND (triángulos naranjas) y RAD (diamantes rojos)." width="900" />
+<p class="caption">
+Figure 4.2: a) Número de observaciones asimiladas por ciclo y b) número medio de observaciones asimiladas por ciclo dividido en capas verticales de 50 hPa de espesor para los experimentos CONV (cuadrados azules), AWS (puntos celestes), SATWND (triángulos naranjas) y RAD (diamantes rojos).
+</p>
+</div>
+<p>La distribución horizontal del promedio de observaciones asimiladas en cada ciclo de asimilación de cada experimento se muestra en la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:obs-horizontal">4.1</a>. El mayor número de observaciones asimiladas sobre el centro y el este del dominio corresponde a las observaciones de EMA. En la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:obs-cycle">4.2</a>a se muestra el número de observaciones asimiladas a lo largo del tiempo. Los máximos locales a las 12 y a las 00 UTC encontrados principalmente en CONV corresponden a las observaciones obtenidas con los sondeos operativos. La fuerte variabilidad en el número de observaciones de radiancias por ciclo es también notable y depende de la cobertura de cada satélite. Los máximos a las 13-14 y 01-02 UTC en RAD corresponden a la contribución de los sensores multiespectrales. La distribución vertical del número medio de observaciones por ciclo (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:obs-cycle">4.2</a>b) muestra un máximo en niveles bajos debido a las observaciones de EMA. Los vientos estimados por satélite tienen un máximo en la troposfera alta (entre 500-250 hPa). Por encima de 850 hPa, la mayoría de las observaciones corresponden a radiancias.</p>
+<p>Todos los experimentos de asimilación comienzan a las 18 UTC del 20 de noviembre de 2018 y continúan hasta las 12 UTC del 23 de noviembre (un total de 67 horas/ciclos de asimilación). El ensamble inicial de 60 miembros se genera según se explica en la sección <a href="3-metodología.html#configmodelo">3.4</a> y todos los experimentos se inician con un periodo de spin up sin asimilación de observaciones entre las 12 UTC y las 18 UTC de Nov, 20 (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:cycle">4.3</a>).</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cycle"></span>
+<img src="figure/analisis.png" alt="Diagrama de los ciclos de asimilación entre las 18 UTC del 20 de noviembre y las 12 UTC del 23 de noviembre más el periodo de spin up de 6 horas. La sección ampliada muestra la asimilación horaria que se realiza dentro de una ventana centrada de una hora y la incorporación de condiciones de borde del GFS cada 6 horas. Se muestran las dos misiones IOP de la campaña RELAMPAGO." width="100%" />
+<p class="caption">
+Figure 4.3: Diagrama de los ciclos de asimilación entre las 18 UTC del 20 de noviembre y las 12 UTC del 23 de noviembre más el periodo de spin up de 6 horas. La sección ampliada muestra la asimilación horaria que se realiza dentro de una ventana centrada de una hora y la incorporación de condiciones de borde del GFS cada 6 horas. Se muestran las dos misiones IOP de la campaña RELAMPAGO.
+</p>
+</div>
+</div>
+</div>
+<div id="resultados" class="section level2 hasAnchor">
+<h2><span class="header-section-number">4.2</span> Resultados<a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#resultados" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="consistencia-del-ensamble" class="section level3 hasAnchor">
+<h3><span class="header-section-number">4.2.1</span> Consistencia del ensamble<a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#consistencia-del-ensamble" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para investigar la capacidad de la media del ensamble del first-guess para ajustarse a las observaciones teniendo en cuenta las incertidumbres del pronóstico y de las observaciones, se calcularo el <span class="math inline">\(meanRCRV\)</span> y el <span class="math inline">\(sdRCRV\)</span> para el experimento RAD. Como este experimento asimila todos los tipos de observaciones utilizados en este trabajo, es posible analizar la coherencia del ensamble comparándolo con cada tipo de observación. La figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:rcrv-sfc">4.4</a> muestra el <span class="math inline">\(sdRCRV\)</span> para las observaciones de superficie promediadas en una retícula de 2,5°. El <span class="math inline">\(sdRCRV\)</span> para las observaciones del viento (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:rcrv-sfc">4.4</a>a) es cercano a 1, lo que sugiere una buena concordancia entre la dispersión del ensamble, el error de pronóstico y el error de observación. Para la temperatura (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:rcrv-sfc">4.4</a>b), los resultados son similares, salvo que para algunas zonas del oeste del dominio donde el <span class="math inline">\(sdRCRV\)</span> puede llegar a ser de 4,5. Estos valores más altos de <span class="math inline">\(sdRCRV\)</span> pueden estar asociados a errores sistemáticos derivados de las diferencias entre la topografía del modelo y al altura a la que están ubicadas las observaciones. La circulación de pequeña escala asociada al terreno complejo podría no estar bien resuelta por el modelo podría contribuir a aumentar la distancia entre el pronóstico y las observaciones. Estos aspectos no suelen ser captados por la dispersión del ensamble, a menos que se utilice un esquema de inflación dependiente del espacio bien ajustado, lo que conduce a mayores valores de <span class="math inline">\(sdRCRV\)</span>.</p>
+<p>La figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:rcrv-profile">4.5</a> muestra la media y el desvío estándar del RCRV para las observaciones de altura. Las figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:rcrv-profile">4.5</a>a-b muestran las estadísticas de RCRV para los sondeos (ADPUPA) y aviones (AIRCAR y AIRCFT). Tanto ADPUPA como AIRCFT muestran, en general, un buen acuerdo entre la dispersión del ensamble y el error de observación. Como las observaciones de sondeo y sus errores asociados son considerados de buena calidad, este resultado indica que el ensamble tiene una dispersión adecuada. AIRCAR presenta un perfil irregular con valores <span class="math inline">\(sdRCRV\)</span> que sugieren que el error de este tipo de observación está sobreestimado. ADPUPA y AIRCAR presentan un perfil de <span class="math inline">\(meanRCRV\)</span> cercano a cero en los niveles medios y altos. En niveles bajos, el perfil <span class="math inline">\(meanRCRV\)</span> es positivo, mostrando un bias cálido presente en el modelo, característica ya estudiada en <span class="citation">Ruiz et al. (2010)</span> y <span class="citation">Dillon et al. (2021)</span>.</p>
+<p>Las observaciones de vientos estimadas por satélites varían en número dependiendo del satélite y del nivel. En la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:rcrv-profile">4.5</a>c sólo se incluye el <span class="math inline">\(RCRV\)</span> calculado con al menos 100 observaciones disponibles para cada sensor y nivel. En niveles bajos, donde no hay muchas observaciones disponibles, los perfiles de <span class="math inline">\(meanRCRV\)</span> y <span class="math inline">\(sdRCRV\)</span> muestran una mayor desviación del comportamiento esperado con un bias negativo, y una posible sobreestimación del error de observación. Las estimaciones del viento derivadas de los canales de vapor de agua son abundantes por encima de 500 hPa, donde su bias es cercano a cero. La única excepción son las observaciones de EUMETSAT que contribuyen muy poco en la región.</p>
+<p>Los perfiles de <span class="math inline">\(meanRCRV\)</span> calculados a partir de las observaciones de radiancias (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:rcrv-profile">4.5</a>d) no muestran casi ningún bias y lo mismo ocurre si se calcula el <span class="math inline">\(mean RCRV\)</span> sobre cada canal de cada sensor (no incluido en el trabajo). Esto indica que el algoritmo de corrección del bias funciona como se esperaba. Los valores de <span class="math inline">\(sd RCRV\)</span> son inferiores a 1 para todos los sensores, posiblemente debido a una sobreestimación de los errores de observación para reducir la influencia de las observaciones potencialmente erróneas.</p>
+<p>En general, estos resultados indican que la dispersión del ensamble es coherente con el error de pronóstico a corto plazo y que los errores sistemáticos son relativamente pequeños para la mayoría de los tipos de observación utilizados en este trabajo. Además, estos resultados sugieren que el parámetro de inflación <span class="math inline">\(\alpha = 0,9\)</span> es adecuado para el sistema.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rcrv-sfc"></span>
+<img src="thesis_files/figure-html/rcrv-sfc-1.png" alt="\(sd RCRV\) calculado para observaciones de superficie (de PREPBUFR y EMA) de a) viento, y b) temperatura promediados en cajas de 2.5º para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario paa todo el periodo del experimento." width="900" />
+<p class="caption">
+Figure 4.4: <span class="math inline">\(sd RCRV\)</span> calculado para observaciones de superficie (de PREPBUFR y EMA) de a) viento, y b) temperatura promediados en cajas de 2.5º para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario paa todo el periodo del experimento.
+</p>
+</div>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:rcrv-profile"></span>
+<img src="thesis_files/figure-html/rcrv-profile-1.png" alt="Perfiles verticales de \(mean RCRV\) (línea punteada) y \(sd RCRV\) (línea sólida) para observaciones de a) temperatura y b) viento de sondeos y aviones, c) viento estimado por satélites, y d) temperatura de brillo para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario para todo el periodo del experimento." width="1050" />
+<p class="caption">
+Figure 4.5: Perfiles verticales de <span class="math inline">\(mean RCRV\)</span> (línea punteada) y <span class="math inline">\(sd RCRV\)</span> (línea sólida) para observaciones de a) temperatura y b) viento de sondeos y aviones, c) viento estimado por satélites, y d) temperatura de brillo para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario para todo el periodo del experimento.
+</p>
+</div>
+</div>
+<div id="impacto-analisis" class="section level3 hasAnchor">
+<h3><span class="header-section-number">4.2.2</span> Impacto de la asimilación de las distintas observaciones<a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#impacto-analisis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Esta sección presenta el impacto de la asimilación de diferentes tipos de observación sobre algunas variables que son particularmente relevantes para el desarrollo de convección húmeda profunda. El análisis se realiza sobre un dominio más pequeño (recuadro rojo en la Figura <a href="3-metodología.html#fig:dominio">3.3</a>a) que corresponde a la región directamente afectada por el SCM. Las figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a>a-c muestran la diferencia entre el perfil vertical de temperatura promediado espacialmente para el análisis de los experimentos. Al promediar las diferencias entre dos experimentos se puede aislar el impacto sistemático producido por los diferentes sistemas de observación sobre la situación analizada. Durante el primer día, la asimilación de las observaciones de EMA da como resultado el desarrollo de una PBL más fría. Este efecto de enfriamiento tiene un claro ciclo diurno, siendo más fuerte durante la noche (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a>a). Durante el segundo día del experimento, el impacto de las observaciones de EMA se extiende a la troposfera media y alta, coincidiendo con la fase madura del SCM. La diferencia positiva que se observa en AWS-CONV entre 500 y 200 hPa se produce por el desarrollo de convección más intensa en AWS en comparación con CONV. Este es un buen ejemplo de cómo la información en niveles bajos de la atmósfera proporcionada por las estaciones meteorológicas de superficie puede extenderse rápidamente a la troposfera en presencia de convección húmeda profunda. Aunque la circulación media y alta puede tener un impacto importante en la organización y evolución del SCM sobre la región, los vientos estimados por satélite no tuvieron un impacto apreciable en la temperatura y humedad media (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a>b-e), posiblemente debido a alto valor del error de estas observaciones utilizados para la asimilación.
+Durante el primer día del experimento, la asimilación de las radiancias produce un efecto de calentamiento en la PBL que compensa parcialmente el efecto de enfriamiento de las observaciones de EMA (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a>c). No se encuentra un impacto sistemático claro por encima de la PBL durante este periodo para estas variables. Durante el segundo día, el impacto de las observaciones de radiancia se observa en toda la troposfera con una distribución que es similar al impacto encontrado en el experimento AWS pero con signo opuesto.</p>
+<p>Comparando la representación de la humedad específica en los experimentos (Figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a>d-f), el impacto de la asimilación de EMA, que tienen una resolución espacial y temporal mayor, es muy importante en niveles bajos (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a>d). La PBL en el experimento AWS es sistemáticamente más húmeda que en el experimento CONV, especialmente durante la noche. El aumento de la humedad en niveles bajos gracias a la asimilación de observaciones de una red de superficie más densa corrige el bias seco reportado previamente en el modelo WRF sobre la región <span class="citation">(Ruiz et al., 2010; Matsudo et al., 2021; Casaretto et al., 2022)</span>. El humedecimiento de la PBL es impulsado principalmente por la covarianza entre la temperatura y la humedad específica dentro de la PBL. En el experimento y sobre el centro del dominio, esta covarianza se mantiene negativa, generando un aumento de la humedad en niveles bajos a medida que las observaciones introducen correcciones negativas de temperatura. Como en el caso de la temperatura, el impacto sistemático de los vientos estimados por satélite sobre la humedad es pequeño (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a>e). La figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a>f muestra que las radiancias reducen la humedad en niveles medios y bajos durante el primer día del experimento. El efecto de secamiento se extiende a niveles medios y bajos durante el segundo día del experimento, coincidiendo con el desarrollo del SCM entre las 00 y las 12 UTC del 22 de noviembre.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:TQ-diff"></span>
+<img src="thesis_files/figure-html/TQ-diff-1.png" alt="Diferencia entre la media del ensamble de los análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en \(K\)) y la humedad específica (d, e y f en \(g\ kg^{-1}\)) calculados sobre el dominio interior (recuadro rojo en la Figura 3.3a) para cada ciclo de análisis." width="1050" />
+<p class="caption">
+Figure 4.6: Diferencia entre la media del ensamble de los análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en <span class="math inline">\(K\)</span>) y la humedad específica (d, e y f en <span class="math inline">\(g\ kg^{-1}\)</span>) calculados sobre el dominio interior (recuadro rojo en la Figura <a href="3-metodología.html#fig:dominio">3.3</a>a) para cada ciclo de análisis.
+</p>
+</div>
+<p>El impacto que genera la asimilación de las observaciones de EMA se puede observar con mayor detalle en las Figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:ana-guess">4.7</a> donde se muestran perfiles verticales medios a lo largo del tiempo para la diferencia entre el análisis y el campo preliminar o <em>actualización</em>. Las observaciones convencionales y en particular los sondeos operativos generan un calentamiento de la PBL en CONV, particularmente previo al derarrollo de la convección (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:ana-guess">4.7</a>a). Por otro lado las observaciones de EMA disminuyen la temperatura en niveles bajos durante la noche y la aumentan durante el día, lo que podría indicar que el modelo genera una PBL con menos variabilidad de temperatura. Luego del desarrollo de la convección, el impacto de las observaciones de EMA está asociado a un enfriamiento de la capa límite que podrían estar corrigiendo un frente frío débil generado por el modelo (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:ana-guess">4.7</a>b). En las Figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:ana-guess">4.7</a>c-d se observa nuevamente un aumento de la humedad en niveles bajos gracias a la asimilación de observaciones de EMA particularmente durante la noche disminuyendo el bias seco presente en el modelo.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ana-guess"></span>
+<img src="thesis_files/figure-html/ana-guess-1.png" alt="Perfiles verticales medios de la diferencia entre el análisis y el campo preliminar para a) y d) CONV, b) y b) y d) AWS para los perfiles verticales espacialmente promediados de la temperatura (a y b en \(K\)) y la humedad específica (d y c en \(g\ kg^{-1}\)) calculados sobre el dominio interior (recuadro rojo en la Figura 3.3a) para cada ciclo de análisis." width="900" />
+<p class="caption">
+Figure 4.7: Perfiles verticales medios de la diferencia entre el análisis y el campo preliminar para a) y d) CONV, b) y b) y d) AWS para los perfiles verticales espacialmente promediados de la temperatura (a y b en <span class="math inline">\(K\)</span>) y la humedad específica (d y c en <span class="math inline">\(g\ kg^{-1}\)</span>) calculados sobre el dominio interior (recuadro rojo en la Figura <a href="3-metodología.html#fig:dominio">3.3</a>a) para cada ciclo de análisis.
+</p>
+</div>
+<p>El impacto en las componentes del viento se muestran en la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:UV-diff">4.8</a>, junto con la correspondiente componente del viento promediada en el experimento con el mayor número de observaciones asimiladas (por ejemplo, la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:UV-diff">4.8</a>a muestra la diferencia de viento zonal entre AWS y CONV y el viento zonal para AWS). La asimilación de EMA produce un viento más del este y menos del norte en niveles bajos durante los dos primeros días de análisis (Figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:UV-diff">4.8</a>a,b). Existe un ciclo diurno asociado al impacto de las estaciones meteorológicas automáticas sobre el viento meridional (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:UV-diff">4.8</a>d) con una mayor reducción del viento del norte durante las horas nocturnas. Esto indica que las observaciones en superficie están reduciendo la intensidad del jet de capas bajas presente en el entorno preconvectivo. Después de las 18 UTC del 22 de noviembre, se observa el efecto contrario cuando el SCM se desplaza por el dominio hacia el noreste. Tras el inicio de las celdas convectivas, el impacto sistemático en el campo de viento es mayor en los niveles medios y altos (Figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:UV-diff">4.8</a>d, f). Durante los días 22 y 23 de noviembre el impacto de asimilar EMA produce un aumento del viento del norte en los niveles superiores de la tropósfera. Esto podría ser una consecuencia de un SCM más intenso que produce un aumento del flujo de salida del lado polar de la tormenta. Aunque las observaciones de viento estimada por satélites producen el mayor impacto en niveles medios y altos, donde el número de observaciones es mayor, el impacto sistemático es en general menor que el producido por la asimilación de datos de EMA (Figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:UV-diff">4.8</a>b, e). La razón del pequeño impacto observado en SATWND podría estar asociada al valor del error de observación utilizado para la asimilación de estas observaciones.</p>
+<p>La asimilación de las radiancias produce una reducción del viento del oeste con respecto a SATWND en niveles bajos y altos (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:UV-diff">4.8</a>c). Para el viento meridional, estas observaciones producen un aumento 1 <span class="math inline">\(ms^{-1}\)</span> en el flujo del norte en niveles bajos, opuesto al generado por la asimilación de las observaciones de EMA durante la noche, entre las 03 y las 12 UTC, previas al desarrollo del SCM (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:UV-diff">4.8</a>f). En niveles superiores y durante los días 22 y 23 de noviembre, el impacto medio de la asimilación de radiancias es una disminución de la velocidad del viento. El campo de viento meridional a 200 hPa en diferentes momentos muestra que el flujo de salida del SCM es aún más intenso que en los otros experimentos, mientras que el viento sur por delante del SCM también aumenta produciendo una reducción media del viento del norte (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:UV-diff">4.8</a>f).</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:UV-diff"></span>
+<img src="thesis_files/figure-html/UV-diff-1.png" alt="Diferencia entre la media del ensamble de los análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en \(K\)) y viento meridional (d, e y f en \(g\ kg^{-1}\)) calculados sobre el dominio interior (recuadro rojo en la Figura 3.3a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) AWS, (b,e) SATWND, y (c,f) RAD ya que son los experimentos tienen más observaciones asimiladas en cada panel." width="1050" />
+<p class="caption">
+Figure 4.8: Diferencia entre la media del ensamble de los análisis a) y d) AWS-CONV, b) y e) SATWND-AWS, y c) y f) RAD-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en <span class="math inline">\(K\)</span>) y viento meridional (d, e y f en <span class="math inline">\(g\ kg^{-1}\)</span>) calculados sobre el dominio interior (recuadro rojo en la Figura <a href="3-metodología.html#fig:dominio">3.3</a>a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) AWS, (b,e) SATWND, y (c,f) RAD ya que son los experimentos tienen más observaciones asimiladas en cada panel.
+</p>
+</div>
+<p>La diferencia entre ERA5 <span class="citation">(Hersbach et al., 2018)</span> y la media del ensamble del análisis para cada experimento se compara en la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:era5">4.9</a>, apoyando los resultados observados en las Figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a> y <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:UV-diff">4.8</a>. En concreto, la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:era5">4.9</a>a muestra un bias cálido en los niveles bajos (es decir, CONV es más cálido que ERA5) que disminuye en la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:era5">4.9</a>b cuando se asimilan las observaciones de EMA. En la misma dirección, la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a>a muestra una diferencia negativa entre AWS y CONV, lo que significa que las observaciones de EMA están enfriando los niveles bajos de la atmósfera. Comparando ERA5-RAD (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:era5">4.9</a>d), hay un pequeño aumento del bias cálido, asociado al calentamiento producido por la asimilación de las observaciones de radiancia, como se muestra en la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a>c. Un efecto similar puede observarse en la humedad específica, las observaciones de EMA corrigen parcialmente el bias seco presente en la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:era5">4.9</a>e y la asimilación de las observaciones de radiancia reduce el impacto positivo de EMA. El impacto sobre las componentes del viento es menor, por lo que sólo se incluye el viento meridional en las figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:era5">4.9</a>i-l, que muestran que las observaciones de radiancia son las principales responsables del impacto positivo observado en el análisis al reducir la distancia ERA5-RAD, en particular durante la fase madura del MCS. En general, los ajustes asociados a la asimilación de las observaciones de radiancia y de EMA conducen a un análisis más cercano a los reanálisis ERA5.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:era5"></span>
+<img src="thesis_files/figure-html/era5-1.png" alt="Diferencia entre la media del ensamble del análisis de cada experimento y el ERA5 para los perfiles verticales espacialmente promediados de la temperatura del aire (K, a–d), la humedad específica (\(g\ Kg^{-1}\), e–h) y el viento meridional (\(m\ s^{-1}\), i–l) calculados sobre el dominio interior (recuadro rojo en la Figura 3.3a) para cada ciclo de análisis." width="975" />
+<p class="caption">
+Figure 4.9: Diferencia entre la media del ensamble del análisis de cada experimento y el ERA5 para los perfiles verticales espacialmente promediados de la temperatura del aire (K, a–d), la humedad específica (<span class="math inline">\(g\ Kg^{-1}\)</span>, e–h) y el viento meridional (<span class="math inline">\(m\ s^{-1}\)</span>, i–l) calculados sobre el dominio interior (recuadro rojo en la Figura <a href="3-metodología.html#fig:dominio">3.3</a>a) para cada ciclo de análisis.
+</p>
+</div>
+<p>Para investigar cómo los cambios en la PBL pueden modificar el entorno preconvectivo, se compara la distribución horizontal media de análisis del viento meridional del norte (para los primeros 7 niveles sigma), el agua precipitable, la temperatura en niveles bajos y el CAPE. A las 00 UTC del 22 de noviembre (después de 30 ciclos de asimilación) las primeras células convectivas se estaban desarrollando sobre la región sur del dominio a lo largo del frente frío. La figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:summary-fields">4.10</a>a muestra el agua precipitable (sombreada) y la componente de viento meridional en niveles bajos promediada verticalmente (contornos). La figura muestra que la región húmeda que se extiende en la zona norte del dominio se ve reforzada por la asimilación de las observaciones de superficie de EMA. El aumento de la humedad es particularmente intenso en el extremo sur de esta región, justo por delante del frente frío donde se produce la iniciación de la convección. Los experimentos AWS y SATWND son muy similares, con valores de agua precipitable superiores a 55 <span class="math inline">\(kgm^{-2}\)</span> al norte de 30<span class="math inline">\(^{\circ}\)</span>S y una distribución vertical similar de la humedad específica (no mostrada). RAD tiene un contenido de agua precipitable menor que AWS y SATWND, pero mayor que CONV. La distribución de la humedad en niveles bajos en RAD parece ser el resultado de la combinación del efecto de humedecimiento de la asimilación de EMA -compensado parcialmente por la asimilación de las observaciones de radiancia- y un menor transporte meridional de humedad debido al flujo más débil del norte sobre el centro del dominio en comparación con CONV.</p>
+<p>La distribución de la temperatura y la humedad en la PBL (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:summary-fields">4.10</a>b) se asemeja a las características observadas en los perfiles de temperatura (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:TQ-diff">4.6</a>a-c) donde AWS produce una PBL más fría que CONV mientras que la PBL en RAD es más cálida que en SATWND. En promedio, la PBL en AWS y SATWND es más fría que en CONV, mientras que RAD muestra una PBL más cálida que AWS debido a la asimilación de radiacias. Una PBL más cálida aumenta la inestabilidad potencial y ayuda a generar un entorno adecuado para el desarrollo de la convección profunda. La figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:summary-fields">4.10</a>c muestra la energía potencial convectiva disponible para el nivel (o parcela) más inestable (MCAPE, sombreada) y la cortante del viento entre 0 a 6 <span class="math inline">\(km\)</span>. Los valores de MCAPE en CONV no superan los 2000 <span class="math inline">\(J\ Kg^{-1}\)</span> mientras que en el resto de los experimentos el MCAPE máximo supera los 4000 <span class="math inline">\(J\ Kg^{-1}\)</span>. El MCAPE en el experimento RAD es menor en comparación con AWS o SATWND. Esto es consistente con una menor humedad en la PBL con respecto a estos experimentos pero puede ser parcialmente compensado por una PBL ligeramente más cálida en el experimento RAD. La cortante del viento es más intensa en AWS, SATWND y RAD, alcanzando valores superiores a 15 <span class="math inline">\(m\ s^{-1}\)</span> en el extremo sur de la región con valores positivos de MCAPE. Además, en esta misma región, estos experimentos muestran valores de MCAPE mayores que CONV. Cortantes de viento superior a 15 <span class="math inline">\(m\ s^{-1}\)</span> están asociadas al desarrollo de SCMs más intensos y organizados <span class="citation">(Chen et al., 2015)</span> y también a condiciones favorables para el desarrollo de superceldas <span class="citation">(Markowski and Richardson, 2010)</span>.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:summary-fields"></span>
+<img src="thesis_files/figure-html/summary-fields-1.png" alt="a) Agua precipitable (sombreada, \(kg\ m^{-2}\)) y viento medio del norte sobre los primeros 7 niveles sigma (desde la superficie hasta aproximadamente 800 hPa, contornos, \(m\ s^{-1}\)), b) Temperatura potencial media para la PBL (primeros 10 niveles sigma), y c) CAPE máxima y cortante del viento en ~0-6 km para 15 y 30 \(m\ s^{-1}\) en cada experimento. Todos los campos corresponden a la media del ensamble del análisis para las 00 UTC del 22 de noviembre. Los contornos rellenos de color gris corresponden a la topografía de más de 1500 metros sobre el nivel del mar." width="100%" />
+<p class="caption">
+Figure 4.10: a) Agua precipitable (sombreada, <span class="math inline">\(kg\ m^{-2}\)</span>) y viento medio del norte sobre los primeros 7 niveles sigma (desde la superficie hasta aproximadamente 800 hPa, contornos, <span class="math inline">\(m\ s^{-1}\)</span>), b) Temperatura potencial media para la PBL (primeros 10 niveles sigma), y c) CAPE máxima y cortante del viento en ~0-6 km para 15 y 30 <span class="math inline">\(m\ s^{-1}\)</span> en cada experimento. Todos los campos corresponden a la media del ensamble del análisis para las 00 UTC del 22 de noviembre. Los contornos rellenos de color gris corresponden a la topografía de más de 1500 metros sobre el nivel del mar.
+</p>
+</div>
+</div>
+<div id="validación-con-observaciones-independientes" class="section level3 hasAnchor">
+<h3><span class="header-section-number">4.2.3</span> Validación con observaciones independientes<a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#validación-con-observaciones-independientes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>En primer lugar, se analizó el impacto de la asimilación de diferentes tipos de observación en la representación del SCM y su precipitación asociada. La figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:pp-hov">4.11</a>a muestra la precipitación acumulada horaria estimada por IMERG, y la media ajustada a la probabilidad (PM) <span class="citation">(Clark, 2017)</span> para la precipitación acumulada horaria del first-guess promediada entre 67<span class="math inline">\(^{\circ}\)</span>W y 54,5<span class="math inline">\(^{\circ}\)</span>W en función del tiempo y la latitud en los diferentes experimentos. Las precipitaciones más intensas (más de 12 <span class="math inline">\(mmh^{-1}\)</span>) comienzan durante la tarde del 22 de noviembre y continúan durante el 23 de noviembre posterior al periodo simulado (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:pp-hov">4.11</a>a). En todos los experimentos, la precipitación acumulada en los pronósticos de corto plazo es subestimada. Esto es particularmente evidente en CONV (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:pp-hov">4.11</a>b), donde el inicio de la convección se retrasa y ocurre más al norte con respecto al inicio observado. AWS, SATWND y RAD captan mejor el momento y la ubicación de la iniciación de la convección (Figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:pp-hov">4.11</a>c-e). AWS y RAD muestran una distribución más fragmentada en comparación con SATWND, posiblemente debido al desarrollo de una convección menos organizada durante el 22 de noviembre. Después de las 18 UTC del 22 de noviembre, RAD muestra mejoras en la tasa de precipitación y su distribución en comparación con los otros experimentos como resultado de un desarrollo de la convección más intenso.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:pp-hov"></span>
+<img src="thesis_files/figure-html/pp-hov-1.png" alt="Diagrama de Hövmoller de la media ajustada a la probabilidad de la precipitación acumulada horaria para cada banda de latitud estimada por IMERG (izquierda) y simulada (derecha) por cada experimento, promediada en un rango de longitudes entre 67\(^{\circ}\)W y 54,5\(^{\circ}\)W. Los contornos se dibujan cada 0,5 \(mm^{-1}\), comenzando en 0,5 \(mm^{-1}\)." width="1050" />
+<p class="caption">
+Figure 4.11: Diagrama de Hövmoller de la media ajustada a la probabilidad de la precipitación acumulada horaria para cada banda de latitud estimada por IMERG (izquierda) y simulada (derecha) por cada experimento, promediada en un rango de longitudes entre 67<span class="math inline">\(^{\circ}\)</span>W y 54,5<span class="math inline">\(^{\circ}\)</span>W. Los contornos se dibujan cada 0,5 <span class="math inline">\(mm^{-1}\)</span>, comenzando en 0,5 <span class="math inline">\(mm^{-1}\)</span>.
+</p>
+</div>
+<p>El FSS se calcula para cuantificar la coincidencia espacial entre la precipitación observada y la precipitación acumulada horaria simulada por el first-guess de los diferentes experimentos (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:fss">4.12</a>). Para cada umbral y escala espacial, se aplica la ecuación <a href="3-metodología.html#eq:eq11">(3.10)</a> en ventanas móviles de 6 horas a lo largo del periodo del experimento. Todos los experimentos muestran valores similares de FSS durante el inicio de la convección antes de las 06 UTC del 22 de noviembre, excepto RAD, que obtiene mejores resultados que el resto de los experimentos durante este periodo. Esto indica que las observaciones de radiancia tienen un impacto positivo en el análisis. El FSS de CONV es el más bajo en comparación con el resto de los experimentos y las diferencias son mayores durante la fase madura del SCM. AWS y SATWND muestran FSSs similares, lo que indica que la asimilación del viento estimado por satélites tiene poco impacto en la representación de la precipitación para este caso de estudio. La asimilación de radiancias conduce a una mejora general de la representación de la precipitación pronosticada a una hora, sobre todo para el umbral de 25 mm durante el periodo de mayor precipitación durante 22 de noviembre (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:fss">4.12</a>b,d). La mejora también es importante en la fase de desarrollo del SCM (entre las 00 y las 12 UTC del 22 de noviembre y también para escalas espaciales superiores a 500 km, no mostradas).</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fss"></span>
+<img src="thesis_files/figure-html/fss-1.png" alt="FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja)." width="750" />
+<p class="caption">
+Figure 4.12: FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja).
+</p>
+</div>
+<p>Para complementar el análisis, la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:dbz-mean">4.13</a> muestra la reflectividad máxima observada en la columna vertical (COLMAX) y el COLMAX de la media del ensamble para los experimentos CONV y RAD en diferentes momentos entre las 10 y las 19 UTC del 22 de noviembre. Estos experimentos fueron elegidos porque representan el análisis con el mínimo (CONV) y el máximo (RAD) número de observaciones asimiladas. Además, son los experimentos con peor (CONV) y mejor (RAD) desempeño en cuanto a la habilidad para pronosticar la precipitación a una hora (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:fss">4.12</a>). En general, ninguno de los pronósticos de corto alcance capta los detalles finos de la distribución de la reflectividad. Esto es esperable si se tiene en cuenta la resolución horizontal del modelo (10 km), que no es suficiente para representar adecuadamente la intensidad de la banda convectiva asociada al SCM. RAD representa mejor las características observadas del sistema mostrando un SCM más fuerte y organizado que CONV, sobre el centro del dominio a las 10 y 13 UTC (primera y segunda columnas en la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:dbz-mean">4.13</a>). Las celdas convectivas que se inician después de las 16 UTC a lo largo del frente cálido en la parte noreste del dominio son bien captadas por ambos experimentos, pero están mejor representadas en términos de intensidad en RAD. Además, CONV capta la ubicación del SCM, pero la convección parece estar menos organizada y ser mucho más débil que en RAD. Antes y después de los tiempos mostrados en la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:dbz-mean">4.13</a>, la concordancia entre la localización de las celdas convectivas observadas y las simuladas en los experimentos es bastante buena en las regiones donde se dispone de datos de radar, especialmente para RAD.</p>
+<p>Finalmente, la Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:soundings">4.14</a> muestra el RMSE y el bias calculados comparando los experimentos con los datos de radiosondeos durante las misiones de observación intensiva durante RELAMPAGO, IOP 7 del 15 al 21 UTC de noviembre (incluyendo 30 radiosondeos), e IOP 8 del 14 al 20 UTC de noviembre (incluyendo 22 radiosondeos).</p>
+<p>El IOP 7 (Figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:soundings">4.14</a>a-d) proporciona una buena caracterización del entorno preconvectivo durante el primer día de nuestros experimentos. La zona donde se realizaron las observaciones se caracterizó por cielos mayoritariamente despejados y un flujo de norte en niveles bajos asociado a una advección cálida y húmeda. En general, los experimentos muestran un RMSE y un bias similares para todas las variables. Las observaciones de EMA lograron reducir el RMSE para la temperatura y la temperatura del punto de rocío y un bias seco en la PBL. Sin embargo, en esta región (Figura <a href="3-metodología.html#fig:dominio">3.3</a>b) y para este periodo, los incrementos generados por EMAs en el análisis (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:UV-diff">4.8</a>d) degradan el viento zonal entre 7 y 12 km aumentando el bias y el RMSE (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:soundings">4.14</a>c).</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:dbz-mean"></span>
+<img src="thesis_files/figure-html/dbz-mean-1.png" alt="Reflectividad máxima en la columna (COLMAX en \(dBZ\)), observada (fila superior) y pronósticada a 1 hora por los experimentos CONV (segunda fila) y RAD (tercera fila) a las 10 UTC (primera columna), 13 UTC (segunda columna), 16 UTC (tercera columna) y 19 UTC (cuarta columna) del 22 de noviembre de 2018. Los círculos negros en la primera fila muestran el rango de observación de cada radar." width="100%" />
+<p class="caption">
+Figure 4.13: Reflectividad máxima en la columna (COLMAX en <span class="math inline">\(dBZ\)</span>), observada (fila superior) y pronósticada a 1 hora por los experimentos CONV (segunda fila) y RAD (tercera fila) a las 10 UTC (primera columna), 13 UTC (segunda columna), 16 UTC (tercera columna) y 19 UTC (cuarta columna) del 22 de noviembre de 2018. Los círculos negros en la primera fila muestran el rango de observación de cada radar.
+</p>
+</div>
+<p>Durante el IOP 8 (Figuras <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:soundings">4.14</a>e-h), la zona densamente observada se encontraba detrás del SCM, lo suficientemente alejada del sistema como para no estar directamente afectada por su circulación de mesoescala. Esta zona también estaba detrás del frente frío y se veía afectada por advección fría en niveles bajos. La asimilación de observaciones en AWS, SATWND y RAD reduce el bias frío y el RMSE para la temperatura entre 5 y 12 km y el RMSE en la PBL en comparación con CONV (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:soundings">4.14</a>e). La reducción del bias y del RMSE también es importante para la temperatura del punto de rocío (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:soundings">4.14</a>f), siendo SATWND el que muestra el mayor impacto, seguido de AWS y RAD. El viento zonal está sobreestimado en los análisis y sólo RAD muestra una mejora con respecto a CONV en la troposfera alta (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:soundings">4.14</a>g). En niveles bajos el viento meridional (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:soundings">4.14</a>g) presenta un bias negativo, indicando una subestimación del viento del sur detrás del frente frío principalmente en AWS, SATWND, y RAD. De hecho, los bias en niveles bajos en estos experimentos son mayores que en el experimento CONV, lo que indica un efecto negativo de las observaciones asimiladas (posiblemente asociado al efecto de EMA).</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:soundings"></span>
+<img src="thesis_files/figure-html/soundings-1.png" alt="RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura (\(K\)), b) la temperatura del punto de rocío (\(K\)), c) el viento u (\(m\ s^{-1}\)) y d) el viento v (\(m\ s^{-1}\)) calculados comparando el análisis de cada experimento con los sondeos de RELAMPAGO durante el IOP 7 y el IOP 8. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja." width="900" />
+<p class="caption">
+Figure 4.14: RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura (<span class="math inline">\(K\)</span>), b) la temperatura del punto de rocío (<span class="math inline">\(K\)</span>), c) el viento u (<span class="math inline">\(m\ s^{-1}\)</span>) y d) el viento v (<span class="math inline">\(m\ s^{-1}\)</span>) calculados comparando el análisis de cada experimento con los sondeos de RELAMPAGO durante el IOP 7 y el IOP 8. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
+</p>
+</div>
+</div>
+</div>
+<div id="conclusiones" class="section level2 hasAnchor">
+<h2><span class="header-section-number">4.3</span> Conclusiones<a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#conclusiones" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>En este capítulo se investiga el impacto de los diferentes sistemas de observación en el desempeño de un sistema de asimilación de datos regional de mesoescala basado en ensambles. Este caso de estudio corresponde a un SCM masivo que se desarrolló sobre el sur de Sudamérica el 22 de noviembre de 2018 durante la campaña de campo de RELAMPAGO. En particular, se explora el impacto en la calidad del análisis de la asimilación de las observaciones superficiales frecuentes y espacialmente densas provenientes de estaciones automáticas, los vientos estimados por satélite y las radiancias de cielo claro sensores a bordo de satélites polares.</p>
+<p>En primer lugar, se evaluó la consistencia del ensamble para analizar la concordancia concordancia entre la dispersión del ensamble y los errores de observación con respecto a la distancia entre la media del ensamble y las observaciones. Mientras que las desviaciones de las observaciones convencionales son coherentes con la dispersión del ensamble y los errores de observación asumidos, las desviaciones de las observaciones de viento estimado por satélitee y radiancias son menores de lo esperado. Esto último podría ser el resultado de una sobreestimación de los errores de observación que se suele introducir para evitar el impacto perjudicial en el análisis de las observaciones de baja calidad.</p>
+<p>En general todos los tipos de observación considerados (es decir, las estaciones meteorológicas automáticas, los vientos estimados por satélites y las radiancias de cielo claro procedentes de los satélites de órbita polar) mejoran la calidad del análisis y del pronóstico a corto plazo de precipitación cuando se comparan los resultados obtenidos al asimilar solo las observaciones de la red de observación convencional. En cuanto al análisis, las observaciones de las estaciones meteorológicas automáticas, que tienen una alta resolución espacial y temporal, produjeron impactos principalmente dentro de la PBL, pero que ocasionalmente se extienden por toda la troposfera durante los períodos en los que la convección húmeda es más intensa dentro del dominio. Estas observaciones también ayudaron a reducir el bias cálido y seco presente en el modelo, produciendo un análisis más cercano a ERA5. Durante el periodo preconvectivo, la asimilación de la temperatura de superficie, la temperatura del punto de rocío y el viento meridional mejoró el análisis en niveles bajos en comparación con los sondeos de la campaña RELAMPAGO. En particular, cuando se asimilan estas observaciones, el contenido de agua precipitable y la circulación meridional en niveles bajos condujeron a un aumento de la convección profunda y de la precipitacón intensa acercando el análisis a lo observado.</p>
+<p>También se encontraron resultados positivos al asimilar las observaciones de radiancia, que produjeron un mejor desarrollo de la convección y de su circulación de salida asociada, principalmente durante la fase madura del SCM, lo que condujo a un aumento de la precipitación acumulada en comparación con el caso en el que no se asimilan estas observaciones. Sin embargo, estas observaciones debilitaron el impacto de las observaciones de las estaciones meteorológicas automáticas dentro de la PBL, aumentando ligeramente el bias cálido y seco del modelo. Aunque esto debe estudiarse más a fondo, podría estar relacionado con la asimilación de canales afectados por la superficie o con una corrección de bias de las observaciones subóptima. Comparando el experimento con sondeos independientes, la asimilación de radiancias mejoró el viento en niveles medios y altos.</p>
+<p>La asimilación del viento estimado por satélite no produjo un impacto notable en el análisis. Esto se debe posiblemente al número relativamente pequeño de observaciones en niveles bajos disponibles para este caso de estudio y gran error de observación asignado durante la asimilación. Sin embargo, se observan mejoras en la distribución de la precipitación acumulada en el pronóstico a 1 hora. Es necesario realizar un análisis más exhaustivo para comprender los mecanismos que subyacen al impacto de estas observaciones en los pronósticos de mayor alcance, que será tema de análisis en el capítulo 2.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="3-metodología.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": [["thesis.pdf", "PDF"], ["thesis.epub", "EPUB"], ["thesis.docx", "Word"]],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

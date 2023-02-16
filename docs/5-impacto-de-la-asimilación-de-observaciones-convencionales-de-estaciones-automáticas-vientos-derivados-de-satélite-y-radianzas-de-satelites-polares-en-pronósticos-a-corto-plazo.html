@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo</title>
+  <meta name="description" content="Chapter 5 Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  <meta name="generator" content="bookdown 0.24.9 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  
+  
+  
+
+<meta name="author" content="Lic. Paola Corrales" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"/>
+<link rel="next" href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"></a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introducción<span></span></a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#pronostico-de-eventos-severos"><i class="fa fa-check"></i><b>1.1</b> Pronostico de eventos severos<span></span></a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#asimilación-de-datos-para-estimar-condiciones-iniciales"><i class="fa fa-check"></i><b>1.2</b> Asimilación de datos para estimar condiciones iniciales<span></span></a><ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#asimilación-de-datos-en-sudamérica"><i class="fa fa-check"></i><b>1.2.1</b> Asimilación de datos en Sudamérica<span></span></a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#asimilación-de-radianzas-de-satélites"><i class="fa fa-check"></i><b>1.2.2</b> Asimilación de radianzas de satélites<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#motivación-y-objetivos"><i class="fa fa-check"></i><b>1.3</b> Motivación y objetivos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-resumen.html"><a href="2-resumen.html"><i class="fa fa-check"></i><b>2</b> Resumen<span></span></a><ul>
+<li><a href="2-resumen.html#utilización-de-datos-satelitales-para-la-evaluación-y-mejora-de-los-pronósticos-numéricos-en-alta-resolución-a-muy-corto-plazo">Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo<span></span></a></li>
+</ul></li>
+<li><a href="abstract.html#abstract">Abstract<span></span></a><ul>
+<li><a href="abstract.html#use-of-satellite-data-for-the-evaluation-and-improvement-of-short-term-high-resolution-numerical-forecasts">Use of satellite data for the evaluation and improvement of short-term high-resolution numerical forecasts<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-metodología.html"><a href="3-metodología.html"><i class="fa fa-check"></i><b>3</b> Metodología<span></span></a><ul>
+<li class="chapter" data-level="3.1" data-path="3-metodología.html"><a href="3-metodología.html#caso-de-estudio"><i class="fa fa-check"></i><b>3.1</b> Caso de estudio<span></span></a></li>
+<li class="chapter" data-level="3.2" data-path="3-metodología.html"><a href="3-metodología.html#observaciones"><i class="fa fa-check"></i><b>3.2</b> Observaciones<span></span></a><ul>
+<li class="chapter" data-level="3.2.1" data-path="3-metodología.html"><a href="3-metodología.html#conjuntos-de-observaciones-asimiladas"><i class="fa fa-check"></i><b>3.2.1</b> Conjuntos de observaciones asimiladas<span></span></a></li>
+<li class="chapter" data-level="3.2.2" data-path="3-metodología.html"><a href="3-metodología.html#conjuntos-de-observaciones-para-verificación"><i class="fa fa-check"></i><b>3.2.2</b> Conjuntos de observaciones para verificación<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="3-metodología.html"><a href="3-metodología.html#la-asimilación-de-datos"><i class="fa fa-check"></i><b>3.3</b> La asimilación de datos<span></span></a><ul>
+<li class="chapter" data-level="3.3.1" data-path="3-metodología.html"><a href="3-metodología.html#el-sistema-de-asimilación-gsi"><i class="fa fa-check"></i><b>3.3.1</b> El sistema de asimilación GSI<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="3-metodología.html"><a href="3-metodología.html#configmodelo"><i class="fa fa-check"></i><b>3.4</b> Configuración del sistema de asimilación<span></span></a></li>
+<li class="chapter" data-level="3.5" data-path="3-metodología.html"><a href="3-metodología.html#métodos-de-verificación"><i class="fa fa-check"></i><b>3.5</b> Métodos de verificación<span></span></a></li>
+<li class="chapter" data-level="3.6" data-path="3-metodología.html"><a href="3-metodología.html#recursos-computacionales"><i class="fa fa-check"></i><b>3.6</b> Recursos computacionales<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><i class="fa fa-check"></i><b>4</b> Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares<span></span></a><ul>
+<li class="chapter" data-level="4.1" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#metodología-1"><i class="fa fa-check"></i><b>4.1</b> Metodología<span></span></a><ul>
+<li class="chapter" data-level="4.1.1" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#config"><i class="fa fa-check"></i><b>4.1.1</b> Configuracion de los experimentos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#resultados"><i class="fa fa-check"></i><b>4.2</b> Resultados<span></span></a><ul>
+<li class="chapter" data-level="4.2.1" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#consistencia-del-ensamble"><i class="fa fa-check"></i><b>4.2.1</b> Consistencia del ensamble<span></span></a></li>
+<li class="chapter" data-level="4.2.2" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#impacto-analisis"><i class="fa fa-check"></i><b>4.2.2</b> Impacto de la asimilación de las distintas observaciones<span></span></a></li>
+<li class="chapter" data-level="4.2.3" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#validación-con-observaciones-independientes"><i class="fa fa-check"></i><b>4.2.3</b> Validación con observaciones independientes<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#conclusiones"><i class="fa fa-check"></i><b>4.3</b> Conclusiones<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><i class="fa fa-check"></i><b>5</b> Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo<span></span></a><ul>
+<li class="chapter" data-level="5.1" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#metodología-2"><i class="fa fa-check"></i><b>5.1</b> Metodología<span></span></a><ul>
+<li class="chapter" data-level="5.1.1" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#configuracion-de-los-experimentos"><i class="fa fa-check"></i><b>5.1.1</b> Configuracion de los experimentos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#resultados-1"><i class="fa fa-check"></i><b>5.2</b> Resultados<span></span></a><ul>
+<li class="chapter" data-level="5.2.1" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#prono-impacto"><i class="fa fa-check"></i><b>5.2.1</b> Impacto de las observaciones en el pronostico<span></span></a></li>
+<li class="chapter" data-level="5.2.2" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#verificacion-de-los-pronósticos-de-precipitación"><i class="fa fa-check"></i><b>5.2.2</b> Verificacion de los pronósticos de precipitación<span></span></a></li>
+<li class="chapter" data-level="5.2.3" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#análisis-y-verificación-por-parametrizaciones"><i class="fa fa-check"></i><b>5.2.3</b> Análisis y verificación por parametrizaciones<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#conclusiones-1"><i class="fa fa-check"></i><b>5.3</b> Conclusiones<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><i class="fa fa-check"></i><b>6</b> Asimilacion de observaciones del satélite geoestacionario GOES-16<span></span></a><ul>
+<li class="chapter" data-level="6.1" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#metodología-3"><i class="fa fa-check"></i><b>6.1</b> Metodología<span></span></a><ul>
+<li class="chapter" data-level="6.1.1" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#asimilación-de-observaciones-de-goes"><i class="fa fa-check"></i><b>6.1.1</b> Asimilación de observaciones de goes<span></span></a></li>
+<li class="chapter" data-level="6.1.2" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#configuracion-de-los-experimentos-1"><i class="fa fa-check"></i><b>6.1.2</b> Configuracion de los experimentos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#resultados-2"><i class="fa fa-check"></i><b>6.2</b> Resultados<span></span></a><ul>
+<li class="chapter" data-level="6.2.1" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#sensibilidad-a-la-combinación-de-canales"><i class="fa fa-check"></i><b>6.2.1</b> Sensibilidad a la combinación de canales<span></span></a></li>
+<li class="chapter" data-level="6.2.2" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#sensibilidad-al-thinning"><i class="fa fa-check"></i><b>6.2.2</b> Sensibilidad al thinning<span></span></a></li>
+<li class="chapter" data-level="6.2.3" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#comparación-del-impacto-de-goes-16-versus-satélites-polares"><i class="fa fa-check"></i><b>6.2.3</b> Comparación del impacto de GOES-16 versus satélites polares<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#conclusiones-2"><i class="fa fa-check"></i><b>6.3</b> Conclusiones<span></span></a></li>
+</ul></li>
+<li><a href="conclusiones-generales.html#conclusiones-generales">Conclusiones Generales<span></span></a></li>
+<li class="appendix"><span><b>Appendix<span></span></b></span></li>
+<li class="chapter" data-level="A" data-path="A-corrección-del-bias-de-observaciones-de-satélite.html"><a href="A-corrección-del-bias-de-observaciones-de-satélite.html"><i class="fa fa-check"></i><b>A</b> Corrección del bias de observaciones de satélite<span></span></a></li>
+<li><a href="referencias.html#referencias">Referencias<span></span></a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo" class="section level1 hasAnchor">
+<h1><span class="header-section-number">Chapter 5</span> Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo<a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>En este capítulo se evaluará en impacto de la asimilación de distintas fuentes de observación en pronósticos por ensable a corto plazo inicializados a partir del análisis de los distintos experimentos descriptos en la sección <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#config">4.1.1</a>. Estos pronósticos abarcan el periodo de iniciación, maduración y dearrollo del SCM observado durantel el 22 de noviembre de 2022. Por lo tanto se analizará el impacto de la asimilación de observaciones a lo largo de los pronósticos en un contexto de convección húmeda profunda y se evaluará si las mejoras observadas en los análisis al respresentar este caso de estudio se trasladan a los pronósticos independientes.</p>
+<div id="metodología-2" class="section level2 hasAnchor">
+<h2><span class="header-section-number">5.1</span> Metodología<a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#metodología-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="configuracion-de-los-experimentos" class="section level3 hasAnchor">
+<h3><span class="header-section-number">5.1.1</span> Configuracion de los experimentos<a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#configuracion-de-los-experimentos" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para estudiar el impacto de la asimilación de observaciones en pronósticos independientes, se generaron pronósticos por ensambles inicializados a partir de los análisis de los experimentos previamente descriptos. Estos pronósticos toman el nombre del análisis que utilizan como condición inicial, por ejemplo el pronóstico CONV será aquel que fue incializado a partir del análisis del experimento CONV. Todos los pronósticos utilizan la misma configuración de dominio y de ensamble multifísica que los análisis. Las condiciones de borde de los miembros del ensamble se generaron añadiendo perturbaciones aleatorias al pronóstico determinístico del GFS (0.25<span class="math inline">\(^{\circ}\)</span> de resolución horizontal y resolución temporal de 6 horas; <span class="citation">National Centers for Environmental Prediction, National Weather Service, NOAA, U.S. Department of Commerce (2015)</span>) como se muestra en la Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:cycle-fcst">5.1</a>.</p>
+<p>Los pronósticos se inicializaron a las 00 y 06 UTC del 22 de noviembre para capturar la inicialización y desarrollo del SCM y además evaluar las posibles diferencias entre los experimentos debido a la asimilación de nuevas observaciones entre las 00 y las 06 UTC. Todos los pronósticos finalizan a las 12 UTC del 23 de noviembre cuando el SCM se encuentra en el borde noroeste del dominio y ya no puede ser representado correctamente (Figura <a href="3-metodología.html#fig:caso">3.1</a>f).</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:cycle-fcst"></span>
+<img src="figure/forecast_diag.png" alt="Diagrama de los pronósticos por ensambles inicializados a las 00 y 06 UTC del 22 de noviembre y que corren hasta las 12 UTC del 23 de noviembre. Las condiciones de borde corresponden al pronóstico de GFS y se incorporan cada 6 horas." width="100%" />
+<p class="caption">
+Figure 5.1: Diagrama de los pronósticos por ensambles inicializados a las 00 y 06 UTC del 22 de noviembre y que corren hasta las 12 UTC del 23 de noviembre. Las condiciones de borde corresponden al pronóstico de GFS y se incorporan cada 6 horas.
+</p>
+</div>
+</div>
+</div>
+<div id="resultados-1" class="section level2 hasAnchor">
+<h2><span class="header-section-number">5.2</span> Resultados<a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#resultados-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="prono-impacto" class="section level3 hasAnchor">
+<h3><span class="header-section-number">5.2.1</span> Impacto de las observaciones en el pronostico<a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#prono-impacto" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Al igual que en la sección <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#impacto-analisis">4.2.2</a>, se compararon los pronósticos con ERA5. Los perfiles de temperatura de la media del ensamble promediados espacialmente menos ERA5 a lo largo del tiempo se muestran en las Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:era5-fcst-1">5.2</a>. En lineas generales la temperatura por encima de 750 hPa es subestimada por los pronósticos pero esto parece ser independiente de las condiciones iniciales ya que no se ven diferencias entre los experimentos y tampoco entre la hora de inicialización de los pronósticos. En niveles bajos se observa la misma tendencia que en los análisis, los pronósticos inicializados a partir de AWS y SATWND muestran un bias cálido mucho menor que CONV gracias a las condiciones iniciales que incluyen la asimilación de observaciones de EMA. En RAD el bias cálido vuelve a aumentar ligeramente manteniendo la tendencia observada en los análisis de RAD (Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:era5-fcst-1">5.2</a>d y h). En niveles bajos si se ven diferencias entre las dos inicializaciones, en particular se observan mejoras para la inicialización de las 06 UTC en los casos de AWS y SATWND, indicando que las observaciones asimiladas entre las 00 y las 06 UTC tienen un impacto positivo en la representación de la temperatura cerca de superficie que se traslada a los pronósticos.</p>
+<p>Las diferencias entre los pronósticos y ERA5 para los perfiles promediados de humedad específica (Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:era5-fcst-2">5.3</a>) muestran nuevamente el bias seco presente en el modelo y que es más importante en horas nocturnas. Sin embargo es notaria la mejora en los pronósticos inicializados a partir de AWS y SATWND y RAD, en comparación con CONV. Las condiciones iniciales de los pronósticos CONV tienen un bias seco muy marcado que se mantiene a lo largo de todo el periodo de pronóstico (Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:era5-fcst-2">5.3</a>a y e). Las dos inicialización, en este caso, no muestran diferencias apreciables.</p>
+
+
+
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:era5-fcst-1"></span>
+<img src="thesis_files/figure-html/era5-fcst-1.png" alt="Diferencia entre la media del ensamble del pronóstico inicializado a partir de cada experimento y ERA5 de los perfiles verticales promediados espacialmente de la temperatura del aire (\(K\)) calculado sobre el dominio de validación (cuadro rojo en la Figura 3.3a) para cada tiempo de pronóstico." width="1050" />
+<p class="caption">
+Figure 5.2: Diferencia entre la media del ensamble del pronóstico inicializado a partir de cada experimento y ERA5 de los perfiles verticales promediados espacialmente de la temperatura del aire (<span class="math inline">\(K\)</span>) calculado sobre el dominio de validación (cuadro rojo en la Figura <a href="3-metodología.html#fig:dominio">3.3</a>a) para cada tiempo de pronóstico.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:era5-fcst-2"></span>
+<img src="thesis_files/figure-html/era5-fcst-2.png" alt="Cómo en la Figura 5.2 pero para la humedad específica (\(g\ Kg^{-1}\))." width="1050" />
+<p class="caption">
+Figure 5.3: Cómo en la Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:era5-fcst-1">5.2</a> pero para la humedad específica (<span class="math inline">\(g\ Kg^{-1}\)</span>).
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:era5-fcst-3"></span>
+<img src="thesis_files/figure-html/era5-fcst-3.png" alt="Cómo en la Figura 5.2 pero para el viento meridional (\(m\ s^{-1}\))." width="1050" />
+<p class="caption">
+Figure 5.4: Cómo en la Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:era5-fcst-1">5.2</a> pero para el viento meridional (<span class="math inline">\(m\ s^{-1}\)</span>).
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:era5-fcst-4"></span>
+<img src="thesis_files/figure-html/era5-fcst-4.png" alt="Cómo en la Figura 5.2 pero para el viento zonal (\(m\ s^{-1}\))." width="1050" />
+<p class="caption">
+Figure 5.5: Cómo en la Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:era5-fcst-1">5.2</a> pero para el viento zonal (<span class="math inline">\(m\ s^{-1}\)</span>).
+</p>
+</div>
+<p>Es interesante notar que la asimilación de radianzas que aportan información en niveles medios y altos, también produce un impacto en niveles bajos de la atmósfera. Es posible que el desarrollo nuboso que se ve influenciado por cambios de temperatura y humedad genera también cambios en la temperatura en superficie. En este caso las mayores temperaturas observadas en los pronósticos de RAD se pueden explicar por un mayor Esto puede explicarse por una disminución en el desarrollo de nubes (no se muestra).</p>
+<p>La mayor diferencia en los perfiles promediados para el viento meridional se observa en niveles altos y está asociado al pediodo de mayor actividad convectiva sobre el norte del dominio (Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:era5-fcst-3">5.4</a>). En particular SATWND es el pronóstico que mejor representa el viento meridional, particularmente en el pronóstico inicializado a las 06 UTC (Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:era5-fcst-3">5.4</a>g). Esto es particularmente intererante ya que el impacto de las observaciones de viento derivadas de satélite asimiladas en el experimento SATWND era marginal comparado al impacto de otra fuentes de observaciones. Sin embargo los pronósticos inicializados con condiciones incialiles que incluye información de viento derivado de satélite representan mejor el viento meridional aún en los periodos de mayor convección. Si se analizan los experimentos individualmente alrededor de las 00 UTC del 23 de noviembre, se observa que SATWND presenta mayor convergencia en niveles bajos y mayor divergencia en niveles altos cuando se lo compara con RAD. Esto podría indica que la convección en SATWND es más intensa.</p>
+<p>Algo similar se observa en la diferencia entre perfiles vericales del viento zonal en las Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:era5-fcst-3">5.4</a>. Los pronósticos inicializados a partir de los experimentos AWS, SATWND y RAD muestran una mejor representación del viento zonal en todos los niveles. Sin embargo las observaciones de satelites polares parecen generar un impacto negativo en las condiciones iniciales de RAD que se traslada al pronóstico aumentando la diferencia respecto de ERA5.</p>
+</div>
+<div id="verificacion-de-los-pronósticos-de-precipitación" class="section level3 hasAnchor">
+<h3><span class="header-section-number">5.2.2</span> Verificacion de los pronósticos de precipitación<a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#verificacion-de-los-pronósticos-de-precipitación" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para cuantificar la habilidad de los pronósticos a 30 y 36 hs para representar la precipitación se calculó el FSS sobre ensambles de los pronósticos en ventanas móviles de 6 horas para los mismos umbrales y escalas espaciales usados para la precipitación acumulada horaria del campo preliminar (Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:fssfcst">5.6</a>). Los pronósticos de CONV generan valores muy bajos de FSS en comparación con los experimentos que incluyen otras fuentes de observaciones lo que indica una subestimación de la precipitación en todas las escalas. AWS, SATWND y RAD muestran mejoras en los valores de FSS, especialmente para el umbral de 25 mm (Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:fssfcst">5.6</a>b, d). Además, la inicialización de las 06 UTC muestra mejores resultados para AWS, SATWND y RAD que el pronóstico inicializado a las 00 UTC, lo que pone de relieve el impacto positivo de las observaciones asimiladas entre las 00 y las 06 UTC en la representación de la temperatura.</p>
+<p>Las observaciones de viento derivadas de satélite muestran un impacto claramente positivo en los pronósticos, a diferencia de lo que se observó al comparar el pronóstico a 1 hora con observaciones independientes en la verificación de los análisis. Esto evidencia el desarrollo de convección más intensa y es coherente con lo analizado en la sección <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#prono-impacto">5.2.1</a> Por el contrario, las radiancias tuvieron un impacto neutro a ligeramente negativo en los pronósticos inicializados a las 00 y 06 UTC. Si bien existen muchos posibles motivos por el que los pronósticos inicializados a partir de RAD se degradan con el tiempo, es posible que la asimilación de observaciones asociadas a canales afectados por la superficie esté contribuyendo a la degradación de la capa límite en el análisis y, posteriormente, en los pronósticos. Por ejemplo, <span class="citation">Lim et al. (2014)</span> observó un impacto limitado al asimilar las observaciones de AIRS y atribuye este resultado al uso de canales superficiales en los que las incertidumbres asociadas a la emisividad de la superficie son grandes.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fssfcst"></span>
+<img src="thesis_files/figure-html/fssfcst-1.png" alt="FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre." width="750" />
+<p class="caption">
+Figure 5.6: FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre.
+</p>
+</div>
+<p>El porcentaje de área cubierta por precipitación superior a determinados umbrales se muestra en la Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:area">5.7</a>. Nuevamente, los pronósticos muestran una importante subestimación de la precipitación media, en particular CONV. El área sombreada que muestra el área máxima estimada sobre todos los miembros del ensamble se acerca más a lo estimado por IMERG, pero para todos los experimentos y sobre todo para el umbral de <span class="math inline">\(1 mmh^{-1}\)</span>, se adelantan en el tiempo. Los pronósticos inicializados a partir de CONV subestiman el área cubierta por precipitación durante el periodo más activio y luego la sobreestiman durante el 23 de noviembre cuando ya no se observa precipitación intensa dentro del dominio de estudio.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:area"></span>
+<img src="thesis_files/figure-html/area-1.png" alt="Porcentaje de área cubierta por precipitación superior a \(1 mmh^{-1}\) (a y c) y \(5 mmh^{-1}\) (b y d) a lo largo del tiempo para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre. En línea continua negra se muetra la estimación de IMERG." width="900" />
+<p class="caption">
+Figure 5.7: Porcentaje de área cubierta por precipitación superior a <span class="math inline">\(1 mmh^{-1}\)</span> (a y c) y <span class="math inline">\(5 mmh^{-1}\)</span> (b y d) a lo largo del tiempo para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre. En línea continua negra se muetra la estimación de IMERG.
+</p>
+</div>
+<p>Se generaron diagramas de confiabilidad usando probabilidades pronósticadas de 0, 20, 40, 60, 80 y 100% calculadas sobre el ensamble para los pronósticos inicializados a las 00 UTC (Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:reliability-1">5.8</a>) y 06 UTC (Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:reliability-2">5.9</a>) utilizando percentiles de precipitación calculados sobre todo el periodo pronosticado (Tabla <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#tab:quantiles">5.1</a>). En un diagrama de confiabilidad, la diagonal representa un pronóstico totalmente confiable. Por el contrario, pronósticos por debajo de la diagonal sobreestiman la ocurrencia del evento observado y pronósticos por encima de la diagonal, subestiman la ocurrencia del evento.</p>
+<p>Los pronósticos inicializados a las 00 UTC muestran curvas de confiabilidad con tendencia positiva, por lo que son considerados confiables. Sin embargo, para probabilidades de precipitación hasta 60%, los pronósticos subestiman la ocurrencia de precipitación. Esta subestimación aumenta a medida que aumenta el percentil (Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:reliability-1">5.8</a>c-d), lo que indica que los pronósticos no logran generar precipitación muy intensa. En probabilidades del ensamble superiores al 60%, los pronósticos sobreestiman la ocurrencia de precipitación cuando se observan los primeros percentiles (umbrales bajos) o son incapaces de producir estos valores de probabilidad cuando se observan umbrales altos de precipitación. Esto se ve muy claramente en los gráficos de frecuencia relativa de eventos que acompañan cada diagrama de confiabilidad, donde la frecuencia de eventos con probabilidades por encima de 60% es baja o nula.</p>
+<p>Los pronósticos inicializados a las 06 UTC muestran tendencias similares, sin embargo es notorio como los umbrales de precipitación asociados a cada percentil, que se muestran en la Tabla <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#tab:quantiles">5.1</a>, aumentan considerablemente respecto de los pronósticos de las 00 UTC. Es posible que las condiciones iniciales que incluyen nuevas observaciones en conjunto con condiciones de borde actualizadas de GFSF favorezcan un aumento en el desarrollo de la precipitación.</p>
+<p>En líneas generales todos los experimentos muestran un comportamiento similar con muy pequeñas diferencias principalmente en el percentil 0.95. Para algunas probabilidades pronósticadas el experimento CONV se observa más cercano a la diagonal, es decir, es más confiable. Sin embargo esto ocurre solo para umbrales pequeños de precipitación ya que subestima umbrales más altos (Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:fssfcst">5.6</a>) como así tambien, el área cubierta por precipitación (Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:area">5.7</a>)</p>
+
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:reliability-1"></span>
+<img src="thesis_files/figure-html/reliability-1.png" alt="Diagrama de confiabilidad calculado sobre el pronóstico inicializado a las 00UTC para probabilidades de 0, 20, 40, 60, 80 y 100% de ocurrencia de precipitación acumulada en 3 horas mayor al percentil a) 0.95, b) 0.97, c) 0.99 y d) 0.9925. Los gráficos secundarios dentro de cada diagrama muestran la frecuencia relativa de eventos (x 100.000) asociada a cada intervalo de probabilidad para cada percentil." width="750" />
+<p class="caption">
+Figure 5.8: Diagrama de confiabilidad calculado sobre el pronóstico inicializado a las 00UTC para probabilidades de 0, 20, 40, 60, 80 y 100% de ocurrencia de precipitación acumulada en 3 horas mayor al percentil a) 0.95, b) 0.97, c) 0.99 y d) 0.9925. Los gráficos secundarios dentro de cada diagrama muestran la frecuencia relativa de eventos (x 100.000) asociada a cada intervalo de probabilidad para cada percentil.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:reliability-2"></span>
+<img src="thesis_files/figure-html/reliability-2.png" alt="Cómo en la Figura 5.8 pero pera el pronóstico inicializado a las 06 UTC" width="750" />
+<p class="caption">
+Figure 5.9: Cómo en la Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:reliability-1">5.8</a> pero pera el pronóstico inicializado a las 06 UTC
+</p>
+</div>
+<table class="table lightable-classic-2" style='font-size: 10px; margin-left: auto; margin-right: auto; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'>
+<caption style="font-size: initial !important;">
+<span id="tab:quantiles">Table 5.1: </span>Valor de la precipitación acumulada en 3 hs asociada a distintos percentiles calculados para cada inicialización de pronóstico y cada experimento.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Experimento
+</th>
+<th style="text-align:left;">
+Pronóstico
+</th>
+<th style="text-align:right;">
+0.95
+</th>
+<th style="text-align:right;">
+0.97
+</th>
+<th style="text-align:right;">
+0.99
+</th>
+<th style="text-align:right;">
+0.9925
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+CONV
+</td>
+<td style="text-align:left;vertical-align: middle !important;" rowspan="4">
+00 UTC
+</td>
+<td style="text-align:right;">
+2.14
+</td>
+<td style="text-align:right;">
+4.59
+</td>
+<td style="text-align:right;">
+14.94
+</td>
+<td style="text-align:right;">
+19.10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AWS
+</td>
+<td style="text-align:right;">
+3.50
+</td>
+<td style="text-align:right;">
+7.30
+</td>
+<td style="text-align:right;">
+21.68
+</td>
+<td style="text-align:right;">
+26.70
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SATWND
+</td>
+<td style="text-align:right;">
+3.66
+</td>
+<td style="text-align:right;">
+7.62
+</td>
+<td style="text-align:right;">
+22.31
+</td>
+<td style="text-align:right;">
+27.42
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+RAD
+</td>
+<td style="text-align:right;">
+3.03
+</td>
+<td style="text-align:right;">
+6.32
+</td>
+<td style="text-align:right;">
+19.41
+</td>
+<td style="text-align:right;">
+24.26
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CONV
+</td>
+<td style="text-align:left;vertical-align: middle !important;" rowspan="4">
+06 UTC
+</td>
+<td style="text-align:right;">
+2.88
+</td>
+<td style="text-align:right;">
+5.86
+</td>
+<td style="text-align:right;">
+18.39
+</td>
+<td style="text-align:right;">
+23.20
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AWS
+</td>
+<td style="text-align:right;">
+4.82
+</td>
+<td style="text-align:right;">
+9.45
+</td>
+<td style="text-align:right;">
+26.52
+</td>
+<td style="text-align:right;">
+32.30
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SATWND
+</td>
+<td style="text-align:right;">
+5.11
+</td>
+<td style="text-align:right;">
+9.99
+</td>
+<td style="text-align:right;">
+27.36
+</td>
+<td style="text-align:right;">
+33.19
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+RAD
+</td>
+<td style="text-align:right;">
+3.88
+</td>
+<td style="text-align:right;">
+8.07
+</td>
+<td style="text-align:right;">
+24.72
+</td>
+<td style="text-align:right;">
+30.56
+</td>
+</tr>
+</tbody>
+</table>
+<p>Finalmente las Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:prob">5.10</a> muestran la probabilidad de ocurrencia de precipitaición acumulada en en 36 hs para los pronósticos inicializados a las 00 UTC y 30 hs para los pronósticos inicializados a las 06 UTC; para distintos umbrales de precipitación.</p>
+<p>Los campos de probabilidad de precipitación mayor a 10 mm (Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:prob">5.10</a>a-h), muestra que la precipitación se genera más hacia el norte y oeste de lo observado (línea negra). Esto podría indicar que los pronósticos tienen un demora al generar precipitación al comienzo del periodo. Esto también se observa en la Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:fssfcst">5.6</a> donde se ve que los valores de FSS van aumentando en las primeras horas de pronóstico, es decir, la precipitación se acerca lo observado tanto en magnitud como en localización. Sin embargo, es notoria la mejora que se produce en los experimentos que se generaron a partir de condiciones iniciales con asimilación de EMA y vientos derivados de satélite respecto de CONV. Los pronósticos RAD si bien son mejores que CONV, subestiman la intensidad de la precipitación en mayor medida que SATWND.</p>
+<p>Las Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:prob">5.10</a>i-p muestran los campos de probabilidad de precipitación superior a 50 mm donde se puede apreciar una vez más como los pronósticos subestiman la precipitación, en particular para los umbrales más altos. Al igual que para el umbral de 10 mm, es interesante notar la mejora que se produce entre las inicializaciones. 06 UTC logra representar mucho mejor la distribución de precipitación en el dominio que los pronósticos de las 00 UTC. Por ejemplo, el pronóstico SATWND de las 06 UTC (Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:prob">5.10</a>o) captura casi la totalidad del área de precipitación observada, aunque solo para un 10% de los miembros del ensamble.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:prob"></span>
+<img src="thesis_files/figure-html/prob-1.png" alt="Probabilidad de ocurrencia de precipitación acumulada en 36 y 30 hs superior a 10 mm (fila 1 y 2) y 50 mm (fila 3 y 4) para los pronósticos inicializados a las 00 y 06 UTC respectivamente." width="900" />
+<p class="caption">
+Figure 5.10: Probabilidad de ocurrencia de precipitación acumulada en 36 y 30 hs superior a 10 mm (fila 1 y 2) y 50 mm (fila 3 y 4) para los pronósticos inicializados a las 00 y 06 UTC respectivamente.
+</p>
+</div>
+</div>
+<div id="análisis-y-verificación-por-parametrizaciones" class="section level3 hasAnchor">
+<h3><span class="header-section-number">5.2.3</span> Análisis y verificación por parametrizaciones<a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#análisis-y-verificación-por-parametrizaciones" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>En esta sección evaluamos los pronósticos de manera cuantitatva comparándolos con observaciones de EMA, que si bien son asimiladas en los experimentos de análisis, son observaciones independietes para los pronósticos y radiosondeos tanto operativos como de la campaña RELAMPAGO.</p>
+<p>En primer lugar se calculó el RMSE y BIAS respecto de las observaciones de EMA a lo largo del tiempo para cada pronóstico e inicialización. El BIAS y RMSE de la humedad específica (Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:rmse-bias-aut">5.11</a>a y e) al comienzo de los pronósticos es coherente con las condiciones iniciales. Por ejemplo el BIAS seco asociado a CONV es mucho más importante que el los pronósticos inicializados a partir de AWS. También se observan mejoras en la inicialización de las 06 UTC, algo que no era evidente en el análisis de los perfiles verticales promediados espacialmente (Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:era5-fcst-2">5.3</a>). Los errores asociados a la temperatura (Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:rmse-bias-aut">5.11</a>b y f) son muy dependientes del momento del día, con un aumento del RMSE y del BIAS cálido durante las horas nocturnas. Los pronósticos CONV y RAD para la inicialización de las 06 UTC tienen un mejor densempeño en las primeras horas de pronóstico pero luego se degradan más rápidamente que AWS o SATWND.</p>
+<p>Mientras que no hay características sobresalientes en los errores del viento zonal, en el viento meridional (Figuras <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:rmse-bias-aut">5.11</a>d y h), es interesante notar que el RMSE de los pronósticos de las 06 UTC es más bajo que para los pronósticos de las 00 UTC y esta mejora se mantiene por al menos 6 horas. Esto también ocurre en el BIAS aunque en menor medida.</p>
+
+<div class="figure" style="text-align: centern"><span style="display:block;" id="fig:rmse-bias-aut"></span>
+<img src="thesis_files/figure-html/rmse-bias-aut-1.png" alt="RMSE (línea sólida) y Bias (línea discontinua) de a) humedad especifica (\(g\ Kg{^-1}\)), b) temperatura (\(K\)), c) el viento u (\(m\ s^{-1}\)) y d) el viento v (\(m\ s^{-1}\)) calculados comparando los pronósticos de cada experimento con las observaciones de EMA. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja." width="900" />
+<p class="caption">
+Figure 5.11: RMSE (línea sólida) y Bias (línea discontinua) de a) humedad especifica (<span class="math inline">\(g\ Kg{^-1}\)</span>), b) temperatura (<span class="math inline">\(K\)</span>), c) el viento u (<span class="math inline">\(m\ s^{-1}\)</span>) y d) el viento v (<span class="math inline">\(m\ s^{-1}\)</span>) calculados comparando los pronósticos de cada experimento con las observaciones de EMA. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
+</p>
+</div>
+<p>La Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:aut-all">5.12</a> muestra el RMSE y BIAS calculado comparando con las observaciones de EMA sobre los miembros del ensamble que utilizan cada una de las parametrizaciones de capa límite. En este caso no se muestran las dos inicializaciones por separado ya que ambos pronósticos presentan tendencias muy similares.</p>
+<p>Si bien sería deseable encontrar una parametrización de capa límite que represente correctamente todas las variables de interes, estudios previos (por ejemplo <span class="citation">Ruiz et al. (2010)</span> y <span class="citation">Dillon et al. (2021)</span>) mostraron que distintas parametrizaciones logran representar correctamente algunas variables pero no todas y que esto puede ser dependiente del caso de estudio. Para esta situación, la parametrización MYJ presenta un menor RMSE y BIAS para las variables termodinámicas (humedad relativa y temperatura) mientras que MYNN2 representa mejor el viento. Sin embargo, a exepción del RMSE del viento, los errores tienen una variabilidad pequeña por lo que la elección de una parametrización u otra podría no tener un impacto importante en la representación de la capa límite. Esto refuerza la necesidad de generar un ensamble multifísica como el utilizado en este trabajo para poder capturar los posibles errores asociados al modelo y la representación de los procesos parametrizados.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:aut-all"></span>
+<img src="thesis_files/figure-html/aut-all-1.png" alt="RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (círculo), MYNN2 (triángulo) e YSU (cuadrado) para todos los pronósticos en conjunto." width="1050" />
+<p class="caption">
+Figure 5.12: RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (círculo), MYNN2 (triángulo) e YSU (cuadrado) para todos los pronósticos en conjunto.
+</p>
+</div>
+<p>Si se analiza los errores asociados a las parametrizaciones de capa límite a lo largo del periodo pronosticado (Figurs <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:aut-rad">5.13</a>), en este caso solo para el experimento RAD, la tendencia observada previamente se mantiene. Más importante aún, los errores de ninguna de las parametrizaciones aumenta por sobre el resto, indicando que tienen un comportamiento consistente a lo largo de las 30 y 36 hs de pronóstico.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:aut-rad"></span>
+<img src="thesis_files/figure-html/aut-rad-1.png" alt="RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (línea llena), MYNN2 (línea a rayas) e YSU (línea punteada) para todos los pronósticos en conjunto a lo largo del tiempo de pronóstico." width="900" />
+<p class="caption">
+Figure 5.13: RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (línea llena), MYNN2 (línea a rayas) e YSU (línea punteada) para todos los pronósticos en conjunto a lo largo del tiempo de pronóstico.
+</p>
+</div>
+<p>La Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:soundings-fcst">5.14</a> muestra el RMSE y BIAS calculado comparando los pronósticos con los radiosondeos disponibles durante el periodo pronósticado. En líneas generales no se observan grandes diferencias entre las dos inicializaciones. Si bien los pronósticos de las 06 UTC utilizan condiciones iniciales que incluyen información actualizada del entorno, la mayoría de los radiosondeos fueron lanzados en un área muy pequeña en el centro del dominio (Figura <a href="3-metodología.html#fig:dominio">3.3</a>b) que podría no haber sido particularmente influenciada por la asimilación de nuevas observaciones.</p>
+<p>Es interesante comparar en este punto los errores asociados a los pronósticos con los errores observados en el análisis (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:fss">4.12</a>e-h). En general, el rango de valores que toma el RMSE y BIAS para cada variable es similar tanto en los pronósticos como en los análisis, lo que indica que los pronósticos logran representar adecuadamente la situacición en esa región del dominio. Sin embargo, también se observa que los errores son muy parecidos entre experimentos cuando se los compara con los errores de los análisis, por lo que es posible que los errores del modelo y las condiciones de borde, iguales para todos los experimentos, tengan una influencia mayor que las condiciones iniciales de cada pronóstico.</p>
+<p>En esta comparación, la característica sobresaliente es la disminución del RMSE y BIAS en niveles bajos en todas las variables pero particularmente el viento meridional. El aumento de los errores en los análisis puede atribuirse a la asimilación de observaciones de EMA, que si bien en general producen impactos muy positivos en la representación de la capa límite (Figura <a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#fig:era5">4.9</a>), en esta región limitada parece generar el efecto contrario. En los pronósticos independiente, sin asimilación continua de estas observacios, los errores en niveles bajos disminuyen a valores cercanos a los observados en los análisis de CONV.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:soundings-fcst"></span>
+<img src="thesis_files/figure-html/soundings-fcst-1.png" alt="RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura (\(K\)), b) la temperatura del punto de rocío (\(K\)), c) el viento u (\(m\ s^{-1}\)) y d) el viento v (\(m\ s^{-1}\)) calculados comparando los pronósticos de cada experimento con los sondeos operativos y de RELAMPAGO. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja." width="900" />
+<p class="caption">
+Figure 5.14: RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura (<span class="math inline">\(K\)</span>), b) la temperatura del punto de rocío (<span class="math inline">\(K\)</span>), c) el viento u (<span class="math inline">\(m\ s^{-1}\)</span>) y d) el viento v (<span class="math inline">\(m\ s^{-1}\)</span>) calculados comparando los pronósticos de cada experimento con los sondeos operativos y de RELAMPAGO. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
+</p>
+</div>
+<p>La Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:soudings-all">5.15</a> muestra el RMSE y BIAS calculado comparando con los radiosondeos de RELAMPAGO sobre los miembros del ensamble que utilizan cada una de las parametrizaciones de convección. Nuevamente, se muestran las dos inicializaciones en conjunto ya ambos pronósticos presentan tendencias muy similares. Si bien el comportamiento de las parametrizaciones de convección no es tan honomegeo como si sucedía con las de capa límite, es posible identificar algunos patrones. La parametrización BMJ tiene un RMSE menor tanto para la temperatura compara la temperatura de punto de rocio mientras que la parametrización con mejor RMSE es KF.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:soudings-all"></span>
+<img src="thesis_files/figure-html/soudings-all-1.png" alt="RMSE y BIAS calculados comparando los pronósticos con sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de convección BMJ (círculo), GF (triángulo) e KF (cuadrado) para todos los pronósticos en conjunto." width="1050" />
+<p class="caption">
+Figure 5.15: RMSE y BIAS calculados comparando los pronósticos con sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de convección BMJ (círculo), GF (triángulo) e KF (cuadrado) para todos los pronósticos en conjunto.
+</p>
+</div>
+<p>Si analizamos los perfiles verticales de RMSE y BIAS para cada parametrización, calculados solo sobre los pronósticos RAD, podemos ver que BMJ es la parametrización que mejor representa la humedad en niveles medios pero KF representa mejor la mayoría de las variables en niveles bajos.</p>
+<p>Si bien no es posible elegir solo una parametrización de convección que mejor represente todas las variables, es interesante observar la buena performance de BMJ ya que <span class="citation">Dillon et al. (2021)</span>, utilizando una configuración del ensamble multifísica similar a este trabajo, encontró que esta parametrización era la que peor representaba la precipitación cuantificada utilizando FSS. Analísis similares para este trabajo mostraron la misma tendencia encontrada por <span class="citation">Dillon et al. (2021)</span> (no se muestra). Teniendo en cuenta este resultado y ante la poca variabilidad en los valores de los errores asociados a temperatura, humedad y viento, es posible que el reemplazo de BMJ por otra parametrización de convección de mejores resultados en términos de la representación de la precipitación sin producir mayor impacto en la temperatura, humedad y viento.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:souding-rad"></span>
+<img src="thesis_files/figure-html/souding-rad-1.png" alt="RMSE y BIAS calculados comparando los pronósticos con observaciones de sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de conveccón BMJ (línea llena), GF (línea a rayas) e KF (línea punteada) para todos los pronósticos en conjunto." width="900" />
+<p class="caption">
+Figure 5.16: RMSE y BIAS calculados comparando los pronósticos con observaciones de sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de conveccón BMJ (línea llena), GF (línea a rayas) e KF (línea punteada) para todos los pronósticos en conjunto.
+</p>
+</div>
+</div>
+</div>
+<div id="conclusiones-1" class="section level2 hasAnchor">
+<h2><span class="header-section-number">5.3</span> Conclusiones<a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#conclusiones-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="4-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="6-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": [["thesis.pdf", "PDF"], ["thesis.epub", "EPUB"], ["thesis.docx", "Word"]],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
