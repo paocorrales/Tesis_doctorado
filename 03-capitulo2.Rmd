@@ -184,7 +184,7 @@ Las observaciones de viento derivadas de satélite muestran un impacto clarament
 
 
 ```{r fssfcst, fig.cap="(ref:fssfcst)", fig.width=5, fig.height=5}
-files <- Sys.glob(here("data/derived_data/FSS/fss_6h_fcst_ens_*_E[2569]_ens*.csv"))
+files <- Sys.glob(here("data/derived_data/FSS/fss_6h_fcst_ens_*_E[2569]_ens.csv"))
 
 fss <- purrr::map(files, function(f) {
   
@@ -787,17 +787,17 @@ cum %>%
 (ref:fss-bmj) FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para el umbral de 25 mm y 100 km de escala sobre el pronóstico RAD inicializado a las 00 UTC. La línea roja (RAD) corresponde al ensamble completo, la línea turquesa (BMJ) se calcula sobre los miembros del ensamble que usan la parametrización de convección BMJ y la línea violeta (noBMJ) se calcula sobre los miembros del ensamble que no utilizan BMJ.
 
 
-```{r fss-bmj, fig.cap="(ref:fss-bmj)"}
+```{r fss-bmj, fig.cap="(ref:fss-bmj)", fig.width=4, fig.height=3}
 
 fss <- fread(here("data/derived_data/FSS/fss_6h_fcst_ens_2018112200_E9_ens.csv")) %>% 
     .[, date := as_datetime(date)] %>% 
     .[, ini_date := ymd_h(2018112200)] 
 
-noBMJ <- fread("~/fss_6h_fcst_ens_2018112200_E9_ens_noBMJ.csv") %>% 
+noBMJ <- fread("data/derived_data/FSS/fss_6h_fcst_ens_2018112200_E9_ens_noBMJ.csv") %>% 
   .[, ":="(exp = "noBMJ",
            ini_date = ymd_h(2018112200))]
 
-BMJ <- fread("~/fss_6h_fcst_ens_2018112200_E9_ens_BMJ.csv") %>% 
+BMJ <- fread("data/derived_data/FSS/fss_6h_fcst_ens_2018112200_E9_ens_BMJ.csv") %>% 
   .[, ":="(exp = "BMJ",
            ini_date = ymd_h(2018112200))]
 
