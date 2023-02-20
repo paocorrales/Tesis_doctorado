@@ -2,7 +2,7 @@
 
 
 
-Este capítulo se busca contribuir a la cuantificación y comparación del impacto de asimilar observaciones de las estaciones meteorológicas automáticas de alta resolución, viento estimando por satélite y radiancias de cielo claro de satélites polares a la hora de aplicar la asimilación de datos para mejorar los pronósticos numéricos de eventos severos sobre Sudamérica, donde la red de observación convencional es bastante escasa y otras fuentes de información podrían potencialmente cubrir las áreas menos observadas y aportar información en las escalas más pequeñas. 
+Este capítulo busca contribuir a la cuantificación y comparación del impacto de asimilar observaciones de las estaciones meteorológicas automáticas de alta resolución, viento estimando por satélite y radiancias de cielo claro de satélites polares a la hora de aplicar la asimilación de datos para mejorar los pronósticos numéricos de eventos severos sobre Sudamérica, donde la red de observación convencional es bastante escasa y otras fuentes de información podrían potencialmente cubrir las áreas menos observadas y aportar información en las escalas más pequeñas. 
 
 ## Metodología
 
