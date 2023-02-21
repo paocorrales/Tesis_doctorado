@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Metodología y datos | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo</title>
+  <meta name="description" content="Chapter 2 Metodología y datos | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  <meta name="generator" content="bookdown 0.24.9 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Metodología y datos | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Metodología y datos | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  
+  
+  
+
+<meta name="author" content="Lic. Paola Corrales" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"/>
+<style type="text/css">
+p.abstract{
+  text-align: center;
+  font-weight: bold;
+}
+div.abstract{
+  margin: auto;
+  width: 90%;
+}
+</style>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./"></a></li>
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introducción<span></span></a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#pronostico-de-eventos-severos"><i class="fa fa-check"></i><b>1.1</b> Pronostico de eventos severos<span></span></a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#asimilación-de-datos-para-estimar-condiciones-iniciales"><i class="fa fa-check"></i><b>1.2</b> Asimilación de datos para estimar condiciones iniciales<span></span></a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#asimilación-de-datos-en-sudamérica"><i class="fa fa-check"></i><b>1.3</b> Asimilación de datos en Sudamérica<span></span></a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#asim-rad"><i class="fa fa-check"></i><b>1.4</b> Asimilación de radianzas de satélites<span></span></a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#motivación-y-objetivos"><i class="fa fa-check"></i><b>1.5</b> Motivación y objetivos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-metodología-y-datos.html"><a href="2-metodología-y-datos.html"><i class="fa fa-check"></i><b>2</b> Metodología y datos<span></span></a><ul>
+<li class="chapter" data-level="2.1" data-path="2-metodología-y-datos.html"><a href="2-metodología-y-datos.html#caso-de-estudio"><i class="fa fa-check"></i><b>2.1</b> Caso de estudio<span></span></a></li>
+<li class="chapter" data-level="2.2" data-path="2-metodología-y-datos.html"><a href="2-metodología-y-datos.html#observaciones"><i class="fa fa-check"></i><b>2.2</b> Observaciones<span></span></a><ul>
+<li class="chapter" data-level="2.2.1" data-path="2-metodología-y-datos.html"><a href="2-metodología-y-datos.html#conjuntos-de-observaciones-asimiladas"><i class="fa fa-check"></i><b>2.2.1</b> Conjuntos de observaciones asimiladas<span></span></a></li>
+<li class="chapter" data-level="2.2.2" data-path="2-metodología-y-datos.html"><a href="2-metodología-y-datos.html#conjuntos-de-observaciones-para-verificación"><i class="fa fa-check"></i><b>2.2.2</b> Conjuntos de observaciones para verificación<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="2-metodología-y-datos.html"><a href="2-metodología-y-datos.html#la-asimilación-de-datos"><i class="fa fa-check"></i><b>2.3</b> La asimilación de datos<span></span></a><ul>
+<li class="chapter" data-level="2.3.1" data-path="2-metodología-y-datos.html"><a href="2-metodología-y-datos.html#el-sistema-de-asimilación-gsi"><i class="fa fa-check"></i><b>2.3.1</b> El sistema de asimilación GSI<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="2-metodología-y-datos.html"><a href="2-metodología-y-datos.html#configmodelo"><i class="fa fa-check"></i><b>2.4</b> Configuración del sistema de asimilación<span></span></a></li>
+<li class="chapter" data-level="2.5" data-path="2-metodología-y-datos.html"><a href="2-metodología-y-datos.html#métodos-de-verificación"><i class="fa fa-check"></i><b>2.5</b> Métodos de verificación<span></span></a></li>
+<li class="chapter" data-level="2.6" data-path="2-metodología-y-datos.html"><a href="2-metodología-y-datos.html#recursos-computacionales"><i class="fa fa-check"></i><b>2.6</b> Recursos computacionales<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><i class="fa fa-check"></i><b>3</b> Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares<span></span></a><ul>
+<li class="chapter" data-level="3.1" data-path="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#metodología"><i class="fa fa-check"></i><b>3.1</b> Metodología<span></span></a><ul>
+<li class="chapter" data-level="3.1.1" data-path="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#config"><i class="fa fa-check"></i><b>3.1.1</b> Configuracion de los experimentos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#resultados"><i class="fa fa-check"></i><b>3.2</b> Resultados<span></span></a><ul>
+<li class="chapter" data-level="3.2.1" data-path="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#consistencia-del-ensamble"><i class="fa fa-check"></i><b>3.2.1</b> Consistencia del ensamble<span></span></a></li>
+<li class="chapter" data-level="3.2.2" data-path="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#impacto-analisis"><i class="fa fa-check"></i><b>3.2.2</b> Impacto de la asimilación de las distintas observaciones<span></span></a></li>
+<li class="chapter" data-level="3.2.3" data-path="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#validación-con-observaciones-independientes"><i class="fa fa-check"></i><b>3.2.3</b> Validación con observaciones independientes<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html"><a href="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#conclusiones"><i class="fa fa-check"></i><b>3.3</b> Conclusiones<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><i class="fa fa-check"></i><b>4</b> Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo<span></span></a><ul>
+<li class="chapter" data-level="4.1" data-path="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#metodología-1"><i class="fa fa-check"></i><b>4.1</b> Metodología<span></span></a><ul>
+<li class="chapter" data-level="4.1.1" data-path="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#configuracion-de-los-experimentos"><i class="fa fa-check"></i><b>4.1.1</b> Configuracion de los experimentos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#resultados-1"><i class="fa fa-check"></i><b>4.2</b> Resultados<span></span></a><ul>
+<li class="chapter" data-level="4.2.1" data-path="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#prono-impacto"><i class="fa fa-check"></i><b>4.2.1</b> Impacto de las observaciones en el pronostico<span></span></a></li>
+<li class="chapter" data-level="4.2.2" data-path="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#verificacion-de-los-pronósticos-de-precipitación"><i class="fa fa-check"></i><b>4.2.2</b> Verificacion de los pronósticos de precipitación<span></span></a></li>
+<li class="chapter" data-level="4.2.3" data-path="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#análisis-y-verificación-por-parametrizaciones"><i class="fa fa-check"></i><b>4.2.3</b> Análisis y verificación por parametrizaciones<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="4-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#conclusiones-1"><i class="fa fa-check"></i><b>4.3</b> Conclusiones<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><i class="fa fa-check"></i><b>5</b> Asimilacion de observaciones del satélite geoestacionario GOES-16<span></span></a><ul>
+<li class="chapter" data-level="5.1" data-path="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#metodología-2"><i class="fa fa-check"></i><b>5.1</b> Metodología<span></span></a><ul>
+<li class="chapter" data-level="5.1.1" data-path="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#asim-goes"><i class="fa fa-check"></i><b>5.1.1</b> Asimilación de observaciones de goes<span></span></a></li>
+<li class="chapter" data-level="5.1.2" data-path="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#configuracion-de-los-experimentos-1"><i class="fa fa-check"></i><b>5.1.2</b> Configuracion de los experimentos<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#resultados-2"><i class="fa fa-check"></i><b>5.2</b> Resultados<span></span></a><ul>
+<li class="chapter" data-level="5.2.1" data-path="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#sensibilidad-a-la-combinación-de-canales"><i class="fa fa-check"></i><b>5.2.1</b> Sensibilidad a la combinación de canales<span></span></a></li>
+<li class="chapter" data-level="5.2.2" data-path="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#thinning"><i class="fa fa-check"></i><b>5.2.2</b> Sensibilidad al thinning<span></span></a></li>
+<li class="chapter" data-level="5.2.3" data-path="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#comparación-del-impacto-de-goes-16-versus-satélites-polares"><i class="fa fa-check"></i><b>5.2.3</b> Comparación del impacto de GOES-16 versus satélites polares<span></span></a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html"><a href="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#conclusiones-2"><i class="fa fa-check"></i><b>5.3</b> Conclusiones<span></span></a></li>
+</ul></li>
+<li><a href="conclusiones-generales.html#conclusiones-generales">Conclusiones Generales<span></span></a></li>
+<li class="appendix"><span><b>Appendix<span></span></b></span></li>
+<li class="chapter" data-level="A" data-path="A-corrección-del-bias-de-observaciones-de-satélite.html"><a href="A-corrección-del-bias-de-observaciones-de-satélite.html"><i class="fa fa-check"></i><b>A</b> Corrección del bias de observaciones de satélite<span></span></a></li>
+<li><a href="referencias.html#referencias">Referencias<span></span></a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown target="blank">Published with bookdown</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="metodología-y-datos" class="section level1 hasAnchor">
+<h1><span class="header-section-number">Chapter 2</span> Metodología y datos<a href="2-metodología-y-datos.html#metodología-y-datos" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="caso-de-estudio" class="section level2 hasAnchor">
+<h2><span class="header-section-number">2.1</span> Caso de estudio<a href="2-metodología-y-datos.html#caso-de-estudio" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>El caso de estudio utilizado en este trabajo corresponde a un SCM que se inicio y alcanzo su madurez durante el 22 de noviembre de 2018 en el centro y norte de Argentina. Previo al desarrollo de este SCM, el centro y norte de Argentina se encontraba inmerso en una masa de aire cálido y húmedo con altos valores de energía potencial disponible convectiva (CAPE), como lo muestra ERA 5 <span class="citation">(Hersbach et al., 2018)</span> en la Figura <a href="2-metodología-y-datos.html#fig:caso">2.1</a>a. El 22 de noviembre de 2018 un frente frío cruzó el centro de Argentina (Figura <a href="2-metodología-y-datos.html#fig:caso">2.1</a>b). Este frente frío desencadenó el desarrollo de células convectivas aisladas que rápidamente crecieron hasta convertirse en un SCM excepcionalmente grande que puede observarse en las imágenes de temperatura de brillo del canal 13 de GOES-16 (Figura <a href="2-metodología-y-datos.html#fig:caso">2.1</a>d,e). Durante ese día, varias estaciones de superficie observaron actividad eléctrica, fuertes ráfagas de viento y lluvias intensas. Al norte de la región, el entorno cálido y húmedo contribuyó al desarrollo de convección aislada que finalmente creció y se fusionó con el SCM (Figura <a href="2-metodología-y-datos.html#fig:caso">2.1</a>f). El SCM recorrió aproximadamente 2500 km de sur a norte, disipándose sobre Paraguay y el sur de Brasil después de 42 horas desde el inicio de su desarrollo. Este caso estudio es de particular interes por desarrollarse durante la campaña RELAMPAGO donde se generaron observaciones extraordinarias que serán utilizadas en la verificación de los experimentos desarrollados.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:caso"></span>
+<img src="thesis_files/figure-html/caso-1.png" alt="Presión a nivel del mar (hPa, contornos negros), espesor 1000-500 hPa (contornos rojos discontinuos) y energía potencial convectiva disponible (sombreada) según ERA5 y temperatura de brillo del canal 13 de GOES-16 para a,d) 00 y b,e) 12 UTC, 22 de Nov y c,f) 00 UTC, 23 de Nov. " width="900" />
+<p class="caption">
+Figure 2.1: Presión a nivel del mar (hPa, contornos negros), espesor 1000-500 hPa (contornos rojos discontinuos) y energía potencial convectiva disponible (sombreada) según ERA5 y temperatura de brillo del canal 13 de GOES-16 para a,d) 00 y b,e) 12 UTC, 22 de Nov y c,f) 00 UTC, 23 de Nov. 
+</p>
+</div>
+</div>
+<div id="observaciones" class="section level2 hasAnchor">
+<h2><span class="header-section-number">2.2</span> Observaciones<a href="2-metodología-y-datos.html#observaciones" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Durante el periodo de estudio se realizaron diferentes experimentos para evaluar el impacto de diferentes fuentes de observaciones, entre los que se incluyen datos convecionales oficiales de superficie y altura, redes privadas de estaciones meteorológicas automáticas de superficie, vientos derivados de satelite, y radianzas en cielo claro. También se utilizaron observaciones para cuantificar la calidad de los análisis y pronósticos.</p>
+<div id="conjuntos-de-observaciones-asimiladas" class="section level3 hasAnchor">
+<h3><span class="header-section-number">2.2.1</span> Conjuntos de observaciones asimiladas<a href="2-metodología-y-datos.html#conjuntos-de-observaciones-asimiladas" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="convencionales" class="section level4 hasAnchor">
+<h4><span class="header-section-number">2.2.1.1</span> Convencionales<a href="2-metodología-y-datos.html#convencionales" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Las observaciones convencionales (EMC) utilizadas forman parte del flujo de datos del Sistema Global de Asimilación de Datos (GDAS). Se asimilarán las observaciones convencionales incluidas en los archivos Binary Universal Form for Representation of Meteorological Data (PREPBUFR) generados por NCEP. Los archivos PREPBUFR incluyen observaciones de superficie procedentes de 117 estaciones meteorológicas de superficie (EMS), barcos, y observaciones de altura procedentes de 13 sitios de lanzamiento de radiosondeos y aviones dentro del área en estudio. Los triángulos naranjas de la Figura <a href="2-metodología-y-datos.html#fig:dominio">2.3</a>a indican la ubicación de las estaciones de superficie incluidas en este experimento. La frecuencia de estas observaciones varia entre 1 hora para las estaciones de superficie y 12/24 horas para las radiosondas. Las observaciones del viento en superficie sobre los océanos (ASCATW) proceden de los dispersómetros y también se incluyen en los archivos PREPBUFR.</p>
+<p>La tabla <a href="2-metodología-y-datos.html#tab:tabla-obs">2.1</a> enumera todos los tipos de observación (presión en superficie, temperatura, humedad específica y viento) disponibles para cada fuente de observación, junto con el error asociado para cada una definidos de acuerdo a la configuración por defecto del sistema de asimilación usado en este trabajo. En algunos casos, el error varía con la altura y depende de la plataforma específica (avión y viento derivado del satélite). En cuanto al control de calidad aplicado a las observaciones convencionales, el sistema de asimilación realiza una primera comparación entre la innovación (la diferencia entre la observación y la observación simulada por el modelo para el campo preliminar) y un umbral predefinido que depende del error de observación (también incluido en la Tabla <a href="2-metodología-y-datos.html#tab:tabla-obs">2.1</a>).</p>
+</div>
+<div id="ema" class="section level4 hasAnchor">
+<h4><span class="header-section-number">2.2.1.2</span> Red de Estaciones Meteorológicas Automáticas<a href="2-metodología-y-datos.html#ema" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>También se asimilaron observaciones de 866 Estaciones Meteorológicas Automáticas (EMA) que forman parte de 17 redes de superficie públicas y privadas en la región. El conjunto de datos utilizado en este estudio fue obtenido del repositorio de datos de RELAMPAGO <span class="citation">(Garcia et al., 2019)</span>. Estas estaciones se indican como cuadrados verdes en la Figura <a href="2-metodología-y-datos.html#fig:dominio">2.3</a>a. Tienen mayor cobertura espacial que las EMC y una frecuencia de muestreo de 10 minutos en la mayoría de los casos. Todas las estaciones miden temperatura, pero sólo 395 estaciones proporcionan humedad, 422 la presión y 605 el viento.
+Los errores de observación utilizados para asimilar estas observaciones son los mismos que para las observaciones de EMC (véase la tabla <a href="2-metodología-y-datos.html#tab:tabla-obs">2.1</a>).</p>
+</div>
+<div id="vientos-estimados-por-satélite" class="section level4 hasAnchor">
+<h4><span class="header-section-number">2.2.1.3</span> Vientos estimados por satélite<a href="2-metodología-y-datos.html#vientos-estimados-por-satélite" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Las observaciones de viento derivadas de los satélites también se incluyen en los archivos PREPBUFR disponibles cada 6 hs, y consisten en estimaciones de GOES-16 (utilizando los canales visible, infrarrojo y de vapor de agua) y METEOSAT 8 y 11 (utilizando los canales visible y de vapor de agua). Estos satélites son geoestacionarios y tienen una frecuencia de escaneo de 15 minutos, por lo que, ante la presencia de nubosidad para estimar el viento, generarán estimaciones que estarán diponibles en cada ciclo de asimilación. Las observaciones de viento derivadas de los satélites METEOSAT tienen una resolución de 3 km mientras que las de GOES-16 tienen una resolución de 10 km. Debido al dominio elegido y la cobertura de estos satélites, GOES-16 es la principal fuente de observaciones de vientos derivados de los satélites (99 % de las observaciones). Los errores de observación utilizados para asimilar estas observaciones siguen la configuración por defecto del GSI y se indican en la Tabla <a href="2-metodología-y-datos.html#tab:tabla-obs">2.1</a>.</p>
+<table class=" lightable-classic-2 table" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto; font-size: 9px; margin-left: auto; margin-right: auto;border-bottom: 0;'>
+<caption style="font-size: initial !important;">
+<span id="tab:tabla-obs">Table 2.1: </span>Características de las observaciones asimiladas: El código de cada tipo de observación y su fuente, las variables disponibles, el error de observación y los umbrales de control de calidad utilizados.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Código
+</th>
+<th style="text-align:left;">
+Plataforma
+</th>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:left;">
+Error
+</th>
+<th style="text-align:left;">
+Umbral de error
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 4.5em; vertical-align: middle !important;" rowspan="4">
+CSWS AWS
+</td>
+<td style="text-align:left;width: 5.5em; vertical-align: middle !important;" rowspan="4">
+Surface weather stations
+</td>
+<td style="text-align:left;width: 6em; ">
+Pressure
+</td>
+<td style="text-align:left;width: 8em; ">
+1-1.6 <span class="math inline">\(hPa^*\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+3.6 <span class="math inline">\(hPa\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; ">
+Temperature
+</td>
+<td style="text-align:left;width: 8em; ">
+1.5 <span class="math inline">\(K\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+7 <span class="math inline">\(K\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; ">
+Specific humidity
+</td>
+<td style="text-align:left;width: 8em; ">
+20 %
+</td>
+<td style="text-align:left;width: 8em; ">
+8 <span class="math inline">\(gKg^{-1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; ">
+Wind
+</td>
+<td style="text-align:left;width: 8em; ">
+2.2 <span class="math inline">\(ms^{-1}\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+6 <span class="math inline">\(ms^{-1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 4.5em; vertical-align: middle !important;" rowspan="4">
+ADPUPA
+</td>
+<td style="text-align:left;width: 5.5em; vertical-align: middle !important;" rowspan="4">
+Radiosondes
+</td>
+<td style="text-align:left;width: 6em; ">
+Pressure
+</td>
+<td style="text-align:left;width: 8em; ">
+1.1-1.2 <span class="math inline">\(hPa^{**}\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+4 <span class="math inline">\(hPa\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; ">
+Temperature
+</td>
+<td style="text-align:left;width: 8em; ">
+0.8-1.5 <span class="math inline">\(K^*\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+8 <span class="math inline">\(K\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; ">
+Specific humidity
+</td>
+<td style="text-align:left;width: 8em; ">
+20 %
+</td>
+<td style="text-align:left;width: 8em; ">
+8 <span class="math inline">\(gKg^{-1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; ">
+Wind
+</td>
+<td style="text-align:left;width: 8em; ">
+1.4-3 <span class="math inline">\(ms^{-1}\)</span>*
+</td>
+<td style="text-align:left;width: 8em; ">
+8 <span class="math inline">\(ms^{-1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 4.5em; vertical-align: middle !important;" rowspan="2">
+AIRCFT
+</td>
+<td style="text-align:left;width: 5.5em; vertical-align: middle !important;" rowspan="2">
+Aircrafts
+</td>
+<td style="text-align:left;width: 6em; ">
+Temperature
+</td>
+<td style="text-align:left;width: 8em; ">
+1.47-2.5 <span class="math inline">\(K^+\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+7 <span class="math inline">\(K\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; ">
+Wind
+</td>
+<td style="text-align:left;width: 8em; ">
+2.4-3.6 <span class="math inline">\(ms^{-1+}\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+6.5-7.5 <span class="math inline">\(ms^{-1+}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 4.5em; ">
+ASCATW
+</td>
+<td style="text-align:left;width: 5.5em; ">
+Advanced Scatterometers
+</td>
+<td style="text-align:left;width: 6em; ">
+Wind
+</td>
+<td style="text-align:left;width: 8em; ">
+1.5 <span class="math inline">\(ms^{-1}\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+5 <span class="math inline">\(ms^{-1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 4.5em; vertical-align: middle !important;" rowspan="4">
+SFCSHP
+</td>
+<td style="text-align:left;width: 5.5em; vertical-align: middle !important;" rowspan="4">
+Ships and Buoys
+</td>
+<td style="text-align:left;width: 6em; ">
+Pressure
+</td>
+<td style="text-align:left;width: 8em; ">
+1.3 <span class="math inline">\(hPa\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+4 <span class="math inline">\(hPa\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; ">
+Temperature
+</td>
+<td style="text-align:left;width: 8em; ">
+2.5 <span class="math inline">\(K\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+7 <span class="math inline">\(K\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; ">
+Specific humidity
+</td>
+<td style="text-align:left;width: 8em; ">
+20 %
+</td>
+<td style="text-align:left;width: 8em; ">
+8 <span class="math inline">\(gKg^{-1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 6em; ">
+Wind
+</td>
+<td style="text-align:left;width: 8em; ">
+2.5 <span class="math inline">\(ms^{-1}\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+5 <span class="math inline">\(ms^{-1}\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 4.5em; ">
+SATWND
+</td>
+<td style="text-align:left;width: 5.5em; ">
+Satellite-derived winds
+</td>
+<td style="text-align:left;width: 6em; ">
+Wind
+</td>
+<td style="text-align:left;width: 8em; ">
+3.8-8 <span class="math inline">\(ms^{-1*+}\)</span>
+</td>
+<td style="text-align:left;width: 8em; ">
+1.3-2.5 <span class="math inline">\(ms^{-1+}\)</span>
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup>*</sup> El error de la observación varía con la altura.
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup>**</sup> Observationes por encima de 600 hPa son rechazadas.
+</td>
+</tr>
+<tr>
+<td style="padding: 0; " colspan="100%">
+<sup>+</sup> El error de la observación depende del tipo de reporte.
+</td>
+</tr>
+</tfoot>
+</table>
+</div>
+<div id="radiancias-de-satélite" class="section level4 hasAnchor">
+<h4><span class="header-section-number">2.2.1.4</span> Radiancias de satélite<a href="2-metodología-y-datos.html#radiancias-de-satélite" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>En este trabajo se utilizaron radiancias de satélites disponibles a través del flujo de datos del GDAS, que incluye observaciones en el espectro infrarrojos y microondas. Los sensores incluidos son el Advanced Microwave Sounding Unit - A (AMSU-A), Microwave Humidity Sounder (MHS), y 2 sensores multiespectrales; el Atmospheric Infrared Sounder (AIRS) y el Infrared Atmospheric Sounding Interferometer (IASI) ubicados en distintas plataformas (ver Tabla <a href="2-metodología-y-datos.html#tab:table-rad">2.2</a>). Dado que el dominio regional que se utilizará en este trabajo se encuentra en latitudes medias y que los satélite de interés están en órbitas polares, cada sensor escanea la zona sólo dos veces al día con una cobertura espacial que depende de la franja de covertura satélite. Por esta razón, el número de observaciones de los satélites varía significativamente en cada ciclo de asimilación. En particular, los sensores multiespectrales proporcionaron entre 100 y 1000 observaciones por cada escaneo cada 12 horas, contribuyendo al 88 % de la cantidad total de radiancias de satélites polares asimiladas en los experimentos descriptos en la sección <a href="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html#config">3.1.1</a>.</p>
+<table class="table lightable-classic-2" style='font-size: 9px; margin-left: auto; margin-right: auto; font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'>
+<caption style="font-size: initial !important;">
+<span id="tab:table-rad">Table 2.2: </span>Lista de los sensores disponibles cada plataforma, el número de canales aceptados para su asimilación y el porcentaje de observaciones asimiladas calculado sobre todas las observaciones de radiancias y todos los ciclos de asimilación correspondientes al experimento RAD.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Sensor
+</th>
+<th style="text-align:left;">
+Plataforma
+</th>
+<th style="text-align:right;">
+Canales asimilados
+</th>
+<th style="text-align:left;">
+Porcentaje sobre el total
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+AIRS
+</td>
+<td style="text-align:left;">
+AQUA
+</td>
+<td style="text-align:right;">
+52
+</td>
+<td style="text-align:left;">
+31.63 %
+</td>
+</tr>
+<tr>
+<td style="text-align:left;vertical-align: top !important;" rowspan="3">
+AMSUA
+</td>
+<td style="text-align:left;">
+NOAA15
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+3.31 %
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NOAA18
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+4.45 %
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+METOP-A
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2.08 %
+</td>
+</tr>
+<tr>
+<td style="text-align:left;vertical-align: top !important;" rowspan="2">
+IASI
+</td>
+<td style="text-align:left;">
+METOP-A
+</td>
+<td style="text-align:right;">
+66
+</td>
+<td style="text-align:left;">
+52.72 %
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+METOP-B
+</td>
+<td style="text-align:right;">
+68
+</td>
+<td style="text-align:left;">
+3.47 %
+</td>
+</tr>
+<tr>
+<td style="text-align:left;vertical-align: top !important;" rowspan="3">
+MHS
+</td>
+<td style="text-align:left;">
+NOAA19
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+0.68 %
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+METOP-A
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+0.8 %
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+METOP-B
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+0.85 %
+</td>
+</tr>
+</tbody>
+</table>
+<p>También se utilizaron observaciones del satélite geoestacionario GOES-16, en particular los 3 canales en el infrarrojo sensibles al vapor de agua del sensor <em>Advanced Baseline Imager</em> (ABI). Estas observaciones tienen una frecuencia temporal de 15 y una resolución espacial de 2 kilómetros. Al ser un satélite goestacionario, cada escaneo del sensor cubre la totalidad del dominio por lo que las observaciones estarán disponibles en cada ciclo de asimilación y el número de observaciones disponible solo dependerá de la cobertura de nubes en cada momento.</p>
+</div>
+</div>
+<div id="conjuntos-de-observaciones-para-verificación" class="section level3 hasAnchor">
+<h3><span class="header-section-number">2.2.2</span> Conjuntos de observaciones para verificación<a href="2-metodología-y-datos.html#conjuntos-de-observaciones-para-verificación" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para evaluar el desempeño del sistema de asimilación de datos presentado en esta tesis, utilizamos los siguientes conjuntos de observaciones:</p>
+<ul>
+<li><p><strong>Datos horarios en niveles de presión de ERA5 <span class="citation">(Hersbach et al., 2018)</span>:</strong> Las variables de interés (temperatura del aire, humedad y viento) fueron interpoladas desde la reticula del reanalisis que tiene una resolución de 0.25<span class="math inline">\(^{\circ}\)</span> a la retícula del modelo para compararlas con el análisis de cada experimento.</p></li>
+<li><p><strong>Multi-Network Composite Highest Resolution Radiosonde Data <span class="citation">(Earth Observing Laboratory, 2020)</span>:</strong> radiosondeos en alta resolución lanzados desde varias ubicaciones durante el periodo de la campaña de campo RELAMPAGO en conjunto con las radiosondeos operativos del SMN. Sólo se utilizaron para la validación los sondeos que no ingresaron en el sistema de asimilación y que corresponden a los sitios de observación de la campaña. El periodo del experimento abarca las misiones <em>Intensive Observation Period</em> (IOP) 7 (21/11/2018) y 8 (22/11/2018), durante las cuales se lanzaron 74 radiosondos en una pequeña zona cercana al centro del dominio experimental (Figura <a href="2-metodología-y-datos.html#fig:dominio">2.3</a>b). Estas observaciones son de particular importancia ya que si bien corresponden a una región acotada del dominio, aportar información de alta resolución vertical y temporal ya que operacionalmente se lanzan sondeos una o dos veces al día.</p></li>
+<li><p><strong>IMERG Final Run <span class="citation">(Huffman et al., 2018)</span>:</strong> estimación de la precipitación a partir de datos de la constelación de satelites GPM (por su nombre en inglés Global Precipitation Measurement) con una resolución espacial de 0,01<span class="math inline">\(^{\circ}\)</span> y una resolución temporal de 30 minutos para validar la habilidad de los pronósticos de 1 hora para representar la precipitación sobre el dominio. La estimación de la precipitación se realiza combinando observaciones de sensores de microondas activos y pasivos que se complementa con estimaciones provenientes de sensores infrarojos a bordo de satélites polares.</p></li>
+<li><p><strong>Datos del Sistema Nacional de Radares Meteorológicos (SINARAME):</strong> Se utilizaron observaciones de radar para realizar una evaluación cualitativa y visual de la ubicacion e intensidad de la actividad convectiva. Los datos provienen de 9 radares ubicados en el dominio y son provistos por la red de radares Doppler de doble polarización en banda C <span class="citation">(de Elía et al., 2017)</span> con una frecuencia temporal de 10 minutos. Para este trabajo se utilizó únicamente la máxima reflectividad de la columna (COLMAX) más cercana al momento de análisis.</p></li>
+<li><p><strong>Observaciones de las redes de estaciones meteorógicas automáticas:</strong> Las observaciones de EMA descriptas en la sección <a href="2-metodología-y-datos.html#ema">2.2.1.2</a> fueron utilizadas en la verificación de pronósticos inicializados a partir de los ánalisis generados. Estos pronósticos no incluyen asimilación de datos y por lo tanto estas observaciones son independientes y permiten evaluar calidad de los pronósticos en niveles bajos. s</p></li>
+</ul>
+</div>
+</div>
+<div id="la-asimilación-de-datos" class="section level2 hasAnchor">
+<h2><span class="header-section-number">2.3</span> La asimilación de datos<a href="2-metodología-y-datos.html#la-asimilación-de-datos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>La asimilación de datos combina de manera optima un pronóstico numérico o campo preliminar en un tiempo <span class="math inline">\(t\)</span> con las observaciones disponibles para ese mismo tiempo, generando un análisis <span class="citation">(Carrassi et al., 2018)</span>. Esta combinación optima toma en cuenta el error asociado al modelo meteorológico (errores de pronóstico) y el error de las observaciones (que resulta de los errores instrumentales y los errores de representatividad) y su error será menor a los errores originales. Por esta razón el análisis es considerado desde un punto de vista estadistico y bajo ciertas hipotesis, como la <em>mejor aproximación</em> disponible del estado real de la atmósfera.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:ciclo-asimilacion-teorico"></span>
+<img src="figure/ciclo_asimilacion_teorico.png" alt="Esquema de un ciclo de asimilación típico. El tiempo de las observaciones y el campo preliminar deberá coincidir." width="100%" />
+<p class="caption">
+Figure 2.2: Esquema de un ciclo de asimilación típico. El tiempo de las observaciones y el campo preliminar deberá coincidir.
+</p>
+</div>
+<p>Un ciclo de asimilación de datos típico se muestra en la Figura <a href="2-metodología-y-datos.html#fig:ciclo-asimilacion-teorico">2.2</a>. En un tiempo dado se comparan las observaciones disponibles con el campo preliminar para ese mismo tiempo, generando así el análisis que se utilizará como condición inicial para un futuro pronóstico o campo preliminar. En el caso de modelos globales, típicamente cada ciclo de asimilación de 6 horas utiliza el campo preliminar previo, es decir el pronóstico a 6 horas inicializado a partir del análisis anterior y las observaciones disponibles para las 6 horas previas o en un periodo similar centrado en la hora del análisis.</p>
+<p>En este sentido tanto el modelo como las observaciones cumplen un rol fundamental en la asimilación. Por un lado las observaciones permiten incorporar información continua para corregir los pronósticos. Por el otro, el modelo permite <em>transportar</em> información de regiones donde existe mucha información disponible (por ejemplo, los continentes) a regiones donde las observaciones son escasas (zonas oceánicas) manteniendo los balances físicos que rigen los procesos atmosféricos.</p>
+<p>Existen distintas técnicas de asimilación de datos, cada una con sus ventajas y desventajas que fueron descriptas por <span class="citation">Dillon (2017)</span> en su tesis doctoral. En este trabajo, al igual que en trabajos previos en Argentina, se utilizará la técnica <em>local ensemble transform Kalman filter</em> (LETKF, <span class="citation">Hunt et al. (2007)</span>) que forma parte de un conjunto de técnicas basadas en Filtros de Kalman por ensambles <span class="citation">(Evensen, 2009)</span>. Los Filtros de Kalman utilizan el ensamble, un conjunto de pronósticos ligeramente diferentes que se resuelven simultaneamente para incluir los posibles estados de la atmósfera y provee información dependiente de la dinámica durante la ventana de asimilación y estimar el error del modelo a lo largo del tiempo.</p>
+<p>En el contexto de los Filtros de Kalman, el análisis o <span class="math inline">\(x_a\)</span> será el estado más probable de la atmósfera teniendo en cuenta las <span class="math inline">\(m\)</span> observaciones <span class="math inline">\(y_o\)</span> disponibles en un tiempo <span class="math inline">\(t\)</span>. Para poder comparar y combinar el campo preliminar con las observaciones, este es interpolado a la ubicación de las observaciones. En determinados casos, por ejemplo cuando se trabaja con observaciones de satélite o radar, será necesario transformar las variables del modelo (ej. temperatura y humedad) para obtener las variables observadas (ej. temperatura de brillo). En la siguiente ecuación <span class="math inline">\(H\)</span> es el operador de las observaciones no lineal que se encarga de las interpolaciones y transformaciones necesarias sobre el campo preliminar <span class="math inline">\(x_f\)</span>, representado como un vector de dimensión <span class="math inline">\(n\)</span>.</p>
+<p><span class="math display" id="eq:eq1">\[\begin{equation}
+  x_a = x_f + K[y_o - H(x_b )]
+  \tag{2.1}
+\end{equation}\]</span></p>
+<p>La diferencia entre las observaciones <span class="math inline">\(y_o\)</span> y el campo preliminar se denomina innovación. El análisis <span class="math inline">\(x_a\)</span> se obtiene aplicando las innovaciones al campo preliminar pesadas por una matriz <span class="math inline">\(K\)</span> o Ganancia de Kalman. Esta matriz de dimensión <span class="math inline">\(n\)</span> x <span class="math inline">\(m\)</span> que incluye información sobre los errores del pronóstico y de las observaciones como se observa en la ecuación <a href="2-metodología-y-datos.html#eq:eq3">(2.2)</a>,</p>
+<p><span class="math display" id="eq:eq3">\[\begin{equation}
+  K = BH^T (HBH^T + R^{-1})^{-1}
+  \tag{2.2}
+\end{equation}\]</span></p>
+<p>donde <span class="math inline">\(B\)</span> es la matriz de covarianza de los errores del pronóstico y <span class="math inline">\(R\)</span> corresponde a la matriz de covarianza de los errores de las observaciones. La implementación de los los métodos de asimilación de datos suelen ser computacionalmente muy costosos, en parte debido a la estimación de la matriz <span class="math inline">\(B\)</span>.</p>
+<p><span class="math display" id="eq:eq5">\[\begin{equation}
+  \mathrm{ B \approx \frac{1}{m-1} \sum_{k=1}^{m}(x_{f}^{k}-\overline{x}_f)(x_{f}^{k}-\overline{x}_f)^T}
+  \tag{2.3}
+\end{equation}\]</span></p>
+<p>donde <span class="math inline">\(k \; \epsilon \; [1,m]\)</span> es el miembro <em>k-ésimo</em> del ensamble. Los métodos de Filtro de Kalman por Ensambles tienen la ventaja de estimar la matriz <span class="math inline">\(B\)</span> a partir de ensamble y actualizarla en cada ciclo de asimilación para incluir los errores dependientes de la dinámica del sistema.
+Esta estimación será buena si el ensamble logra capturar los posibles estados futuros o en otras palabras si la dispersión es sufiente para acompañar los cambios en la incertidumbre de los pronosticos a lo largo de los ciclos de asimilación. El ensamble debe, a su vez, ser capaz de capturar la inestabilidad en el sistema cuyos errores tienen tasas de crecimiento muy rápidas. Si esto ocurre la estimación de <span class="math inline">\(B\)</span> será buena.</p>
+<p>El método LETKF es una técnica eficiente ya que resuelve la ecuación <a href="2-metodología-y-datos.html#eq:eq1">(2.1)</a> en un espacio de dimensión reducida definido por los miembros del ensamble. Por lo tanto la matriz <span class="math inline">\(K\)</span> no se resuelve explicitamente eliminando la necesidad de computar inversa de matrices. Cómo en el resto de los métodos que usan filtro de Kalman, se localiza o restringe el área de influencia de las observaciones a un determinado radio de localización reduciendo el costo computacional necesario. La localización tiene además otra ventajas. Por un lado, y desde el punto de vista dinámico las inestabilidades en la atmósfera son de naturaleza local y por lo tanto el tamaño del ensamble necesario para representar estas inestabilidades será menor que si miramos el problema globalmente <span class="citation">(Patil et al., 2001)</span>. Por otro lado la localización evita la generación de covarianzas espureas entre observaciones que están alejadas entre si y son independientes reduciendo el ruido estádistico en la estimación del análisis. Además, este método calcula el análisis para cada punto de retícula individualmente, incorporando todas las observaciones que puedan tener influencia en ese punto al mismo tiempo permitiendo paralelizar los cálculos. De esta manera este método es hasta un orden de magnitud más rápido comparado con otros métodos desarrollados previamente <span class="citation">(Whitaker et al., 2008)</span>.</p>
+<div id="el-sistema-de-asimilación-gsi" class="section level3 hasAnchor">
+<h3><span class="header-section-number">2.3.1</span> El sistema de asimilación GSI<a href="2-metodología-y-datos.html#el-sistema-de-asimilación-gsi" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>GSI por su nombre en inglés Gridpoint Statistical Interpolation, es un sistema de asimilación de datos de última generación, desarrollado inicialmente por el Environmental Modeling Center (EMC) del NCEP. Se diseñó como un sistema 3DVAR tradicional aplicado en el espacio de puntos de retícula de los modelos para facilitar la implementación de covarianzas anisotrópicas no homogéneas <span class="citation">(Wu et al., 2002; Purser et al., 2003b, 2003a)</span>.
+Está diseñado para funcionar en varias plataformas computacionales, crear análisis para diferentes modelos numéricos de pronóstico, y seguir siendo lo suficientemente flexible como para poder manejar futuros desarrollos científicos, como el uso de nuevos tipos de observación, una mejor selección de datos y nuevas variables de estado <span class="citation">(Kleist et al., 2009)</span>.</p>
+<p>Este sistema 3DVAR sustituyó al sistema de análisis operativo regional de punto de retícula del NCEP por el Sistema de Predicción de Mesoescala de América del Norte (NAM) en 2006 y al sistema de análisis global Spectral Statistical Interpolation (SSI) usado para generar las condiciones iniciales del Global Forecast System (GFS) en 2007 <span class="citation">(Kleist et al., 2009)</span>.
+En los últimos años, GSI ha evolucionado para incluir varias técnicas de asimilación de datos para múltiples aplicaciones operativas, incluyendo 2DVAR (por ejemplo, el sistema Real-Time Mesoscale Analysis (RTMA); <span class="citation">Pondeca et al. (2011)</span>), la técnica híbrida EnVar (por ejemplo los sistemas de asimilación de datos para el GFS, el Rapid Refresh system (RAP), el NAM, el HWRF, etc.), y 4DVAR (por ejemplo, el sistema de asimilación de datos para el Sistema Goddard de Observación de la Tierra, versión 5 (GEOS-5) de la NASA; <span class="citation">Zhu and Gelaro (2008)</span>).
+GSI también incluye un enfoque híbrido 4D-EnVar que actualmente se utiliza para la generación del GFS.</p>
+<p>Además del desarrollo de técnias híbridas, GSI permite el uso métodos de asimilación por ensambles. Para lograr esto, utiliza el mismo operador de las observaciones que los métodos variacionales para comparar el campo preliminar con las observaciones.
+De esta manera los exaustivos controles de calidad desarrollados para los métodos variacionales también son aplicados en la asimilación por ensambles.
+El código EnKF fue desarrollado por el Earth System Research Lab (ESRL) de la National Oceanic and Atmospheric Administration (NOAA) en colaboración con la comunidad científica.
+Contiene dos algoritmos distintos para calcular el incremento del analisis, el serial Ensemble Square Root Filter (EnSRF, <span class="citation">Whitaker and Hamill (2002)</span>) y el Local Ensemble Kalman Filter (LETKF, <span class="citation">Hunt et al. (2007)</span>) aportado por Yoichiro Ota de la Agencia Meteorológica Japonesa (JMA).</p>
+<p>Para reducir el impacto de covarianzas espurias en el incremento que se aplica al análisis, los sistemas por ensamble aplican una localización a la matriz de covarianza de los errores de las observaciones <span class="math inline">\(R\)</span> tanto en la dirección horizontal como vertical.
+GSI usa un polinomio de orden 5 para reducir el impacto de cada observación de manera gradual hasta llegar a una distancia límite a partir de la cual el impacto es cero. La escala de localización vertical se define en términos del logarítmo de la presión y la escala horizontal usualmente se define en kilómetros.
+Estos parámetros son importantes a la hora de obtener un buen análisis y dependen de factores como el tamaño del ensamble y la resolución del modelo. La configuración utilizada para los experimentos de esta tesis se describe en la sección <a href="2-metodología-y-datos.html#configmodelo">2.4</a>.</p>
+<p>A su vez utiliza el Community Radiative Transfer Model (CRTM, <span class="citation">Han et al. (2006)</span>) como operador de las observaciones de radiancias que calcula la temperatura de brillo simulada por el modelo para poder compararlo con las observaciones de sensores satelitales.
+GSI, además implementa un algoritmo de corrección de bias de las observaciones de radiancias de satélites.
+La estimación hecha por el campo preliminar obtenida con el CRMT se compara con las observaciones de radiancia para obtener la innovación.
+Esta innovación a su vez se utiliza para actualizar los coeficientes que permiten estimar el bias de las observaciones que se utilizá para obtener una innovación actualizada. Este proceso puede repetirse varias veces hasta que la innovación y los coeficientes de corrección de bias converjan.
+Este algoritmo se describe en mayor detalle en la Sección <a href="2-metodología-y-datos.html#sat">2.3.1.2</a>.</p>
+<div id="el-modelo-de-transferencia-radiativa-crtm" class="section level4 hasAnchor">
+<h4><span class="header-section-number">2.3.1.1</span> El modelo de transferencia radiativa CRTM<a href="2-metodología-y-datos.html#el-modelo-de-transferencia-radiativa-crtm" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>El Community Radiative Transfer Model (CRTM, <span class="citation">Liu et al. (2008)</span>) es un modelo de transferencia radiativa rápido que fue desarrollado conjuntamente por el NOAA Center for Satellite Applications and Research y el Joint Center for Satellite Data Assimilation (JCSDA). Es un modelo utilizado ampliamente por la comunidad de sensoramiento remoto ya que esdees de código abierto y se encuentra disponible para su uso públicamente. Se utiliza para la calibracion de instrumentos satelitales <span class="citation">(Weng et al., 2013; Iacovazzi et al., 2020; Crews et al., 2021)</span>, y a su vez para generar retrievals a partir de observaciones satelites <span class="citation">(Boukabara et al., 2011; Hu et al., 2019; Hu and Han, 2021)</span>. De especial importancia para este trabajo, es utilizado como operador de observaciones en la asimilacion de radianzas satelitales [<span class="citation">Tong et al. (2020)</span>; barton2021].</p>
+<p>El CRTM es capaz de simular radiancias de microondas, infrarrojas y visibles utilizando perfiles atmosféricos de presión, temperatura, humedad y otras especies como el ozono. Recientemente <span class="citation">Cutraro et al. (2021)</span> evaluaron su despeño en la region con buenos resultados en la simulación de observaciones de GOES-16.</p>
+<p>El CRTM es un modelo de transferencia radiativa <em>“sensor-based”</em>, es decir que contiene parameterizaciones y tablas de coefficientes precalculadas especificamente para los sensores operativos. El CRTM se utiliza ampliamente para la asimilación de datos satelitales tanto microondas e infrarrojos. Incluye módulos que calculan la radiación térmica medida por satélite a partir de la absorción gaseosa, la absorción y dispersión de la radiación por aerosoles y nubes, y la emisión y reflexión de la radiación por la superficie terrestre. La entrada al CRTM incluye variables de estado atmosférico -por ejemplo, temperatura, vapor de agua, presión y concentración de ozono en capas definidas por el usuario, y variables y parámetros de estado de la superficie, incluyendo la emisividad, la temperatura de la superficie y el viento.</p>
+<p>El modelo forward del CRTM permite simular observaciones satelitales de radiancias a partir del estado de la atmósfera. Esto es necesario para la asimilación de radiancias pero también es utilizado para verificar la precisión y los errores de estas observaciones.</p>
+<p>El cálculo de las observaciones simuladas tiene un costo computacional muy alto ya que requiere transporner un matriz de grandes dimensiones y la minimización de una función de costo. Esta matriz K se construye a partir de las derivadas parciales de las radiancias con respecto a parámetros geofísicos. CRTM permite hacer estos cálculos de manera rápida para que pueda usarse en contextos operacionales.</p>
+<p>Para obtener resultados rápidos, CRTM aplica ciertas simplificaciones y aproximaciones a la hora de resolver la ecuación de transferencia radiativa. En primer lugar asume que la atmósfera terrestre está formada por capas plano-paralelas y homogeneas en equilibrio termodinámico y donde los efectos tridimensionales y de polarización pueden ser ignorados.</p>
+<p>En contextos de cielos despejados, además se asume que no existe dispersión y solo se considera la absorción de los gases en la atmósfera. En cielos nubosos y canales en el infrarrojo también se asume que no existe dispersión. Sin embargo, en el caso de canales de microondas la dispersión generada por las nubes es incluida. En este caso la ecuación de transferencia radiativa no se puede resolver anaíticamente y se recurre a modelos numéricos.</p>
+</div>
+<div id="sat" class="section level4 hasAnchor">
+<h4><span class="header-section-number">2.3.1.2</span> Asimilación de radiancias en GSI<a href="2-metodología-y-datos.html#sat" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>El preprocesamiento y control de calidad de los datos es un paso esencial en la asimilación de radiancias y depende de cada sensor y canal. Esto incluye principalemnte un <em>thinning</em> especial, la correcion del bias, y en particular en este estudio la deteccion de observaciones de cielos nubosos. Primero se aplicó un thinning espacial. Durante el proceso de thinning las observaciones que se van a asimilar se eligen en función de su distancia a los puntos de la retícula del modelo, la calidad de la observación (basada en la información disponible sobre la calidad de los datos) y el número de canales disponibles (para el mismo píxel y sensor) que han pasado el control de calidad. Además, el algoritmo de thnning prefiere las observaciones sobre el mar a las de la tierra o nieve <span class="citation">(Hu et al., 2018)</span>. El objetivo al aplicar thinning es evitar incorporar información de procesos de escalas menores a las que puede representar el modelo.</p>
+<p>Luego del thinning, se aplica la corrección de bias. La metodología de corrección de bias implementada en GSI tiene una componente dependiente de características termodinámicas del aire y otro dependiente del ángulo de escaneo <span class="citation">(Zhu et al., 2014)</span> y se calcula como una polinomio lineal de N predictores <span class="math inline">\(p_i(x)\)</span>, con coeficientes asociados <span class="math inline">\(\beta_i\)</span>. Por lo tanto, la temperatura de brillo corregida por bias (<span class="math inline">\(BT_{cb}\)</span>) puede obtenerse como</p>
+<p><span class="math display" id="eq:eq12">\[\begin{equation}
+  \mathrm{\mathit{BT_{cb}} =\mathit{ BT} + \sum_{i = 0}^{N} \beta_i p_i (x)}
+  \tag{2.4}
+\end{equation}\]</span></p>
+<p>GSI tiene un término de corrección de bias constante (<span class="math inline">\(p_0 = 1\)</span>) mientras que los términos restantes y sus predictores son el contenido de agua líquida de las nubes (CLW), la tasa de cambio de temperatura con la presión, el cuadrado de la tasa de y la sensibilidad de la emisividad de la superficie. El bias dependiente del ángulo de escaneo se modela como un polinomio de 4<span class="math inline">\(^\circ\)</span> orden <span class="citation">(Zhu et al., 2014)</span>.</p>
+<p>En el sistema GSI, los coeficientes <span class="math inline">\(\beta_i\)</span> se entrenan utilizando un método de estimación variacional que genera los <span class="math inline">\(\beta_i\)</span> que proporciona el mejor ajuste entre la simulación y las observaciones.</p>
+<p>La metodología detección de pixeles nubosos depende de la longitud de onda de las observaciones. Para las radiancias de microondas, las observaciones potencialmente contaminadas por nubes se detectan utilizando los índices de dispersión y del Liquid Water Path (LWP) calculados a partir de diferencias entre distintos canales de cada sensor <span class="citation">(Zhu et al., 2016; Weston et al., 2019)</span>. Para los canales infrarrojos, las observaciones contaminadas por nubes se detectan utilizando el perfil de transmitancia calculado por el modelo CRTM. Además, GSI comprueba la diferencia entre las observaciones y la temperatura de brillo simulada para detectar los píxeles nublados. Un caso particular son las las observaciones de ABI ya que se utiliza la mascara de nubes que se genera como producto de nivel 2 y que está disponible con la misma resolución que las observaciones. Esta máscara de nubes se genera combinando información de 8 canales del sensor ABI desde el punto de vista espacial y temporal.</p>
+<p>Por otro lado, el control de calidad de GSI filtra aquellas observaciones de canales cercanos al rango visible sobre superficies de agua con un ángulo cenital mayor a 60<span class="math inline">\(^{\circ}\)</span> para rechazar aquellas observaciones que pudieran estar contaminadas por reflexión. Para las observaciones en el infrarrojos y microondas también realiza una chequeo de la emisividad para detectar observaciones contaminadas por efecto de la superficie.</p>
+<p>Finalmente se aplica un <em>gross check</em>, es decir, se compara la diferencia entre la observación y la observación simulada por el modelo y un umbral predefinido que depende del error de observación para rechazar observaciones erroneas. La ubicación vertical de cada observación de radiancia se estimó como el nivel del modelo en el que se maximizaba su función de peso calculada por el CRTM. La función de peso de cada canal corresponde al cambio en la transmitancia con la altura y su máximo describe la capa de la atmósfera desde donde la radiación captada por el canal fue emitida. Los sensores multiespectrales tienen una buena cobertura vertical y son capaces de captar desde la baja troposfera hasta la baja estratosfera. Los canales elegidos para la asimilación y sus errores asociados se definieron teniendo en cuenta la configuración que GSI para generar los análisis y pronósticos de GFS, el tope del modelo elegido en este trabajo (50 hPa) y la posible influencia de la superficie.</p>
+</div>
+</div>
+</div>
+<div id="configmodelo" class="section level2 hasAnchor">
+<h2><span class="header-section-number">2.4</span> Configuración del sistema de asimilación<a href="2-metodología-y-datos.html#configmodelo" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Las simulaciones numéricas que conforman los experimentos que se discuten en este trabajo se realizan utilizando la versión 3.9.1 de modelo WRF <span class="citation">(Skamarock et al., 2008)</span>.
+Se utilizó una resolución horizontal de 10 km y 37 niveles en la vertical con el tope del modelo en 50 hPa.
+Las condiciones iniciales y de contorno surgen del análisis del Global Forecast System (GFS, resolución horizontal de 0,25<span class="math inline">\(^{\circ}\)</span> y resolución temporal de 6 horas; <span class="citation">National Centers for Environmental Prediction, National Weather Service, NOAA, U.S. Department of Commerce (2015)</span>).
+El dominio de 150 x 200 puntos de retícula cubre la zona indicada en la Figura <a href="2-metodología-y-datos.html#fig:dominio">2.3</a> para capturar el desarrollo del SCM durante el periodo simulado.</p>
+<p>Los análisis se generaron utilizando la implementación LETKF (V1.3, <span class="citation">Hunt et al. (2007)</span>) que forma parte del sistema de análisis Gridpoint Statistical Interpolation (GSI V3.8; <span class="citation">Shao et al. (2016)</span>).
+Se utilizó un enfoque de actualización rápida con análisis horario y una ventana de asimilación centrada, lo que significa que se asimilaron todas las observaciones dentro de <span class="math inline">\(\pm\)</span> 30 minutos del tiempo de análisis.
+Además, las observaciones se asimilaron usando un enfoque 4D, es decir, comparándolas con el first guess más cercano disponible con una frecuencia de 10 minutos.
+Para las observaciones de satelite, se utilizó el Community Radiative Transfer Model versión 2.3 (CRTM; <span class="citation">Han et al. (2006)</span>) como operador de observaciones para calcular las temperaturas de brillo simuladas por el modelo.</p>
+<p>Utilizamos un conjunto de 60 miembros, cuya media al principio del ciclo de AD se inicializa utilizando el análisis deterministico del GFS al que se le suman perturbaciones aleatorias para generar el ensamble incial. Las perturbaciones se generaron como diferencias escaladas entre dos estados atmosféricos aleatorios obtenidos a partir de los datos del Reanálisis del Sistema de Predicción del Clima (CFSR) con una resolución horizontal de 0,5<span class="math inline">\(^{\circ}\)</span> que tiene una evolución temporal suave <span class="citation">(Necker et al., 2020; Maldonado et al., 2021)</span>. De este modo, preservamos el equilibrio casi hidrostático y geostrófico de las escalas mayores. Este método ayuda a evitar una subestimación del spread del ensamble <span class="citation">(Ouaraini et al., 2015)</span>. Las perturbaciones también se aplicaron en los bordes laterales para mantener niveles adecuados de spread dentro del dominio del ensamble.</p>
+<p>Además de las perturbaciones aleatorias en los bordes laterales, se utilizó un esquema de multifísicas para representar mejor la incertidumbre en el modelo dentro del sistema de AD. Utilizamos 9 configuraciones diferentes que consisten en la combinación de 3 esquemas de convección húmeda (Kain-Fritsch, <span class="citation">Kain (2004)</span>; Grell-Freitas, <span class="citation">Grell and Freitas (2013)</span>; y Betts-Miller-Janjic, <span class="citation">Janjić (1994)</span>) y 3 esquemas de capa límite planetaria (Esquema de la Universidad de Yonsei, <span class="citation">Hong, Kim, et al. (2006)</span>; Esquema Mellor-Yamada-Janjic, <span class="citation">Janjić (1994)</span>; y Mellor-Yamada Nakanishi Niino, <span class="citation">Nakanishi and Niino (2009)</span>). La distribución de estas parametrizaciones entre los 60 miembros del ensamble se muestra en la Tabla <a href="2-metodología-y-datos.html#tab:miembros-desc">2.3</a>. Todos los miembros del conjunto utilizan las mismas parametrizaciones del modelo de superficie terrestre (Noah-MP, <span class="citation">Chen and Dudhia (2001)</span>), de microfísica (esquema de un solo momento de 6 clases del WRF, <span class="citation">Hong, Noh, et al. (2006)</span>) y de procesos radiativos (esquema de onda corta y onda larga del RRTMG <span class="citation">(Iacono et al., 2008)</span>).</p>
+<table class=" lightable-classic-2 table" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto; font-size: 9px; margin-left: auto; margin-right: auto;'>
+<caption style="font-size: initial !important;">
+<span id="tab:miembros-desc">Table 2.3: </span>Generación de los 60 miembros del ensamble multifísica como combinación de parametrizaciones de Cumulus y PBL
+</caption>
+<thead>
+<tr>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="1">
+</th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+PBL
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:center;">
+Cumulus
+</th>
+<th style="text-align:center;">
+MYJ
+</th>
+<th style="text-align:center;">
+MYNN2
+</th>
+<th style="text-align:center;">
+YSU
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+BMJ
+</td>
+<td style="text-align:center;width: 8em; ">
+5, 14, 23, 32, 41, 50, 59
+</td>
+<td style="text-align:center;width: 8em; ">
+8, 17, 26, 35, 44, 53
+</td>
+<td style="text-align:center;width: 8em; ">
+2, 11, 20, 29, 38, 47, 56
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+GF
+</td>
+<td style="text-align:center;width: 8em; ">
+6, 15, 24, 33, 42, 51, 60
+</td>
+<td style="text-align:center;width: 8em; ">
+9, 18, 27, 36, 45, 54
+</td>
+<td style="text-align:center;width: 8em; ">
+3, 12, 21, 30, 39, 48, 57
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+KF
+</td>
+<td style="text-align:center;width: 8em; ">
+4, 13, 22, 31, 40, 49, 58
+</td>
+<td style="text-align:center;width: 8em; ">
+7, 16, 25, 34, 43, 52
+</td>
+<td style="text-align:center;width: 8em; ">
+1, 10, 19, 28, 37, 46, 55
+</td>
+</tr>
+</tbody>
+</table>
+<p>Para reducir el efecto de las correlaciones espurias en la estimación de las covarianzas de los errores de las observaciones, utilizamos un radio de localización horizontal de 180 km y un radio de localización vertical de 0,4 (en coordenadas del logaritmo de la presion ) como en <span class="citation">Dillon et al. (2021)</span> para todos los tipos de observaciones.
+Se aplicó con un parámetro de inflación <span class="math inline">\(\alpha=0,9\)</span> para mitigar el impacto de los errores de muestreo y para considerar los errores del modelo que no se tienen en cuenta en el enfoque mutifísica del ensamble <span class="citation">(Whitaker and Hamill, 2012)</span>.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:dominio"></span>
+<img src="thesis_files/figure-html/dominio-1.png" alt="a) Dominio utilizado para las simulaciones (recuadro negro), dominio interior utilizado para la comparación entre experimentos (recuadro rojo), la región mostrada en b) (recuadro azul claro), y la ubicación de las Estaciones Meteorológicas Automáticas (EMA, cuadrados verdes) y las Estaciones Meteorológicas Convencionales (EMC, triángulos naranjas). b) Ubicación de los lanzamientos de radiosondeos durante RELAMPAGO. Los puntos verdes corresponden a los radiosondeos lanzados durante el IOP 7, los triángulos naranjas son radiosondeos lanzados durante el IOP 8, y los cuadrados morados son radiosondeos lanzados fuera de los periodos de medición intensiva. También se muestra la topografía en metros (sombreada)." width="80%" />
+<p class="caption">
+Figure 2.3: a) Dominio utilizado para las simulaciones (recuadro negro), dominio interior utilizado para la comparación entre experimentos (recuadro rojo), la región mostrada en b) (recuadro azul claro), y la ubicación de las Estaciones Meteorológicas Automáticas (EMA, cuadrados verdes) y las Estaciones Meteorológicas Convencionales (EMC, triángulos naranjas). b) Ubicación de los lanzamientos de radiosondeos durante RELAMPAGO. Los puntos verdes corresponden a los radiosondeos lanzados durante el IOP 7, los triángulos naranjas son radiosondeos lanzados durante el IOP 8, y los cuadrados morados son radiosondeos lanzados fuera de los periodos de medición intensiva. También se muestra la topografía en metros (sombreada).
+</p>
+</div>
+<p>Los errores de las observaciones utilizados fueron definidos de acuerdo a las tablas de errores disponibles como parte del sistema GSI. Para las observaciones de radiancias polares se aplicó un thinning con una retícula de 60 km siguiendo <span class="citation">Singh et al. (2016)</span>, <span class="citation">Jones et al. (2013)</span> y <span class="citation">Lin et al. (2017)</span> ya utilizan configuraciones de modelo similares a la usada en este trabajo. Para las observaciones de GOES-16 se realizaron pruebas de sensibilidad para determinar la resolución de thinning más apropiada para este tipo de observaciones que se describen en la sección <a href="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#thinning">5.2.2</a>.</p>
+<p>Los coeficientes de corrección de bias para las observaciones de satélites polares se inicializaron a las 18 UTC del 18 de noviembre de 2018 a partir los coeficientes generados para la misma hora por el sistema GFS. El sistema de asimilación se configuró para utilizar una varianza de error de los coeficientes constante de 0,01 para evitar grandes ajustes en los coeficientes estimados en cada momento. Por razones que se describen en la seccion <a href="5-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16.html#asim-goes">5.1.1</a> se decidió no aplicar corrección de bias a las observaciones de GOES-16.</p>
+</div>
+<div id="métodos-de-verificación" class="section level2 hasAnchor">
+<h2><span class="header-section-number">2.5</span> Métodos de verificación<a href="2-metodología-y-datos.html#métodos-de-verificación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Se seleccionaron un conjunto de métricas para evaluar diferentes aspectos del análisis obtenido para cada experimento y los pronósticos inicializados a partir de ellos. Estas métricas incluyen una validación de cómo se cuantifica la incertidumbre en el first guess y en el análisis, y cómo los diferentes experimentos se ajustan a un conjunto independiente de observaciones que no se asimilan.</p>
+<p>Para evaluar la consistencia de la estimación de la incertidumbre en el first guess y en el análisis utilizamos la Reduced Centered Random Variable o RCRV (<span class="citation">Candille et al. (2007)</span>) que se define como:</p>
+<p><span class="math display" id="eq:eq6">\[\begin{equation}
+  \mathrm{RCRV} = \frac{m - x_o}{\sqrt{\sigma_o^2 + \sigma^2}}
+  \tag{2.5}
+\end{equation}\]</span></p>
+<p>donde <span class="math inline">\(x_o\)</span> es la observación asimilada y su error <span class="math inline">\(\sigma_o\)</span>, <span class="math inline">\(m\)</span> la media ensamble del análisis en el espacio de las observaciones, y la desviación estándar <span class="math inline">\(\sigma\)</span> del ensamble
+La media de <span class="math inline">\(RCRV\)</span> calculada sobre todas las realizaciones representa el sesgo de la media del conjunto con respecto a las observaciones normalizadas por la incertidumbre estimada:</p>
+<p><span class="math display" id="eq:eq7">\[\begin{equation}
+  \mathrm{\mathit{mean RCRV} = E[RCRV]}
+  \tag{2.6}
+\end{equation}\]</span></p>
+<p>La desviación estándar de la <span class="math inline">\(RCRV\)</span> o <span class="math inline">\(sd RCRV\)</span> mide la concordancia de la dispersión del ensamble y el error de observación con respecto a la distancia entre la media del ensamble y las observaciones, y por lo tanto, la sobre o subdispersión sistemática del ensamble:</p>
+<p><span class="math display" id="eq:eq8">\[\begin{equation}
+  \mathit{sd RCRV} = \sqrt{\frac{1}{M -1}\sum_{i=1}^{M}(RCRV_i - \mathit{mean RCRV})^2}
+  \tag{2.7}
+\end{equation}\]</span></p>
+<p>donde <span class="math inline">\(M\)</span> es el tamaño del ensamble. Suponiendo que el error de observación fue estimado con precisión, un <span class="math inline">\(sd RCRV &gt; 1\)</span> indica que el ensamble es subdispersivo (es decir, la distancia entre las observaciones y los pronósticos es mayor de lo esperado), y un <span class="math inline">\(sd RCRV &lt; 1\)</span> indica que el conjunto es sobredispersivo (es decir, la distancia entre las observaciones y los pronósticos es menor de lo esperado). Un sistema consistente no tendrá sesgo (<span class="math inline">\(media RCRV = 0\)</span>) y una desviación estándar igual a 1 (<span class="math inline">\(sd RCRV = 1\)</span>).</p>
+<p>Para analizar el ajuste del first guess y el análisis a un conjunto de observaciones independientes se calculó la raiz del error cuadrático medio (RMSE) y el BIAS:</p>
+<p><span class="math display" id="eq:eq9">\[\begin{equation}
+  \mathit{RMSE} = \sqrt{\frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)^{2}}
+  \tag{2.8}
+\end{equation}\]</span></p>
+<p><span class="math display" id="eq:eq10">\[\begin{equation}
+  \mathit{BIAS} = \frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)
+  \tag{2.9}
+\end{equation}\]</span></p>
+<p>donde <span class="math inline">\(X\)</span> representa el modelo interpolado al espacio de la observaciones, <span class="math inline">\(O\)</span> las observaciones independientes, y N es el tamaño de la muestra.</p>
+<p>Para comparar la precipitación pronosticada por el first-guess con las estimaciones de precipitación de IMERG, calculamos el Fractions Skill Score (FSS, <span class="citation">Roberts (2008)</span>) para diferentes radios de influencia y umbrales de precipitación:</p>
+<p><span class="math display" id="eq:eq11">\[\begin{equation}
+  \mathrm{\mathit{FSS} = 1-\frac{\sum_{i=1}^{N} ({P_x}_i-{P_o}_i)^{2}}{\sum_{i=1}^{N} ({P_x}_i)^{2}+\sum_{i=1}^{N} ({P_o}_i)^{2}}}
+    \tag{2.10}
+\end{equation}\]</span></p>
+<p>donde <span class="math inline">\(P_{oi}\)</span> es la proporción de puntos de reticula en el subdominio <span class="math inline">\(i-th\)</span>, definido por el radio de influencia, donde la que la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a <span class="citation">Roberts et al. (2020)</span>, <span class="math inline">\(P_{xi}\)</span> se calcula sobre el ensamble completo y cuantifica de la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de cuadrícula, y luego promediando sobre el subdominio <span class="math inline">\(i-th\)</span>.</p>
+<p>Para los pronósticos por ensambles se calculó la probabilidad de precipitación por encima de determinados umbrales en cada punto de retícula como la proporción de miembros del ensamble que pronósticaron precipitación por encima de cada umbral. Además se generaron gráficos de confiabilidad <span class="citation">(Wilks, 2011)</span> con intervalos de probabilidades pronósticadas de 10% para analizar la calibración de los pronósticos inicializados a partir de los análisis de cada experimento.</p>
+</div>
+<div id="recursos-computacionales" class="section level2 hasAnchor">
+<h2><span class="header-section-number">2.6</span> Recursos computacionales<a href="2-metodología-y-datos.html#recursos-computacionales" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Todos los experimentos corrieron en la supercomputadora Cheyenne del Centro Nacional de Investigación Atmosférica (NCAR) <span class="citation">(Computational and Information Systems Laboratory, 2019)</span>. El posprocesamineto y análisis se realizó en [CIMA]. El análisis de datos se generó utilizando el lenguaje de programación R <span class="citation">(R Core Team, 2020)</span>, utilizando los paquetes data.table <span class="citation">(Dowle and Srinivasan, 2020)</span> y metR <span class="citation">(Campitelli, 2020)</span>, entre otros.
+Todos los gráficos se han realizado con ggplot2 <span class="citation">(Wickham, 2009)</span> y la versión final de la tesis se generó con knitr, rmarkdown <span class="citation">(Xie, 2015; Allaire et al., 2019)</span> y tesisdown <span class="citation">(Ismay and Solomon, 2022)</span>.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="3-asimilacion-de-observaciones-de-estaciones-meteorológicas-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": [["thesis.pdf", "PDF"], ["thesis.epub", "EPUB"], ["thesis.docx", "Word"]],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
