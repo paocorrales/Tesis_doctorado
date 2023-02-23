@@ -498,6 +498,6 @@ Para los pronósticos por ensambles se calculó la probabilidad de precipitació
 ## Recursos computacionales 
 
 Todos los experimentos corrieron en la supercomputadora Cheyenne del Centro Nacional de Investigación Atmosférica (NCAR) [@Cheyenne2019]. El posprocesamineto y análisis se realizó en [CIMA]. El análisis de datos se generó utilizando el lenguaje de programación R [@rcoreteam2020], utilizando los paquetes data.table [@dowle2020] y metR [@campitelli2020], entre otros.
-Todos los gráficos se han realizado con ggplot2 [@wickham2009] y la versión final de la tesis se generó con knitr, rmarkdown [@xie2015; @allaire2019] y tesisdown [esperando respuesta del desarrollador].
+Todos los gráficos se han realizado con ggplot2 [@wickham2009] y la versión final de la tesis se generó con knitr, rmarkdown [@xie2015; @allaire2019] y tesisdown [@ismay2022].
 
 
