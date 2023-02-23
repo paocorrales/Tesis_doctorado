@@ -1,17 +1,267 @@
 # Asimilacion de observaciones del satélite geoestacionario GOES-16
 
+En este capítulo se evaluará el impacto que genera la asimilación de observaciones del sensor ABI a bordo del satélite GOES-16 tanto en el análisis como en pronósticos determinísticos de alta resolución para el caso de estudio del 22 de noviembre de 2018. Estas observaciones son de particular interés en la región de Sudamérica por su alta resolución espacial y frecuencia temporal. Las observaciones de los canales sensibles al vapor de agua, brindan además, información en 3 niveles de la atmósfera, algo que no era posible con los sensores previos a bordo de los satélites GOES. Esperamos que todo esto ayude a mejorar la representación de los procesos convectivos y de mesoescala en pronósticos a corto plazo. 
+
+Por ser un satélite y sensor nuevos, la última versión de GSI (V3.7) que fue publicada en julio de 2018 no incluye la posibilidad de asimilar estas observaciones. Fue necesario, entonces, modificar el código fuente del sistema de asimilación para incluir las rutinas necesarias utilizando como base los trabajos previos de @lee2019 y @liu2019. También por esta razón, el capítulo incluirá el análisis de experimentos para definir la mejor configuración posible y evaluar la técnicamente la asimilación de observaciones de ABI.
 
 ## Metodología
 
+### Asimilación de observaciones de goes {#asim-goes}
+
+La asimilación directa de radianzas de ABI requiere las mismas consideraciones descriptas previamente en la sección \@ref(asim-rad) en cuanto a control de calidad, corrección de bias, thnning e indentificación de pixeles nubosos. En esta sección se describiran las deciciones metodológicas y técnicas que se tomaron a la hora de asimilar las observaciones, en base a las pruebas preliminares realizadas. 
+
+Los canales utilizados fueron elegidos teniendo en cuenta la información que brindan, en este caso sobre el contenido de vapor de agua en distintos niveles de la atmósfera, información que puede ser clave a la hora de pronosticar el desarrollo de convección húmeda profunda:
+
+* Canal 8 (6.2 $\mu m$): vapor de agua en niveles altos
+* Canal 9 (6.9 $\mu m$): vapor de agua en niveles medios
+* Canal 10 (7.3 $\mu m$): vapor de agua en niveles bajos
+
+La Figura \@ref(fig:wf-goes) muestra las funciones de peso teóricas para una atmósfera estandar en latitudes medias para cada canal. Si bien hay un solapamiento en las funciones de peso, el canal 8 es más sensible al vapor de agua alrededor de los 350 hPa, el canal 9 alrededor de 450 hPa y el canal 10 alrededor de los 600 hPa aproximadamente. En la sección \@ref(canales) se analizará que combinación de canales da mejores resultados en el contexto de este caso de estudio.   
+
+```{r wf-goes}
+wf_goes <- fread(here("data/derived_data/weighting_functions/wf_goes16.csv")) %>% 
+  .[, id := 1:.N] %>% 
+  melt(measure.vars = patterns("^ch")) %>% 
+  na.omit() %>% 
+  separate(variable, into = c("channel", "axes")) %>% 
+  dcast(id + channel ~ axes, value.var = "value") 
+
+wf_goes %>% 
+  ggplot(aes(x, y)) +
+  geom_line(aes(color = channel), orientation = "y") +
+  scale_y_level()
+
+```
+
+Si bien las radianzas de satélite pueden tener errores sistemáticos asociados a las condiciones de la atmósfera, la geometría de observación y condiciones específicas de los sensores que deben ser corregidos previo a la asimilación, para este trabajo se generó una primera prueba de asimilación para evaluar la magnitud de estos errores. Esta primera prueba utiliza la misma configuración de modelo y ensamble que los experimentos discutidos previamente e incluye la asimilación de los 3 canales de ABI en conjunto.
+
+La Figura \@ref(fig:oma-dist) muestra la distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y entre las observaciones y el análisis (OmA) para todo el periodo. Si las observaciones no tienen bias la distribución OmF estará centrada en cero. En este caso solo el canal 9 presenta un bias positivo muy pequeño del orden de 0.3 K (Tabla \@ref(tab:oma-tabla)). Por esta razón no se hará corrección del bias de estas observaciones. 
+
+La Figura \@ref(fig:om a-dist) y la Tabla \@ref(tab:oma-tabla) muestran además otro resultado importante. Si la asimilación de las observaciones se realizó correctamente es esperable que la diferencia OmA esté más cerca de cero que OmF y que su distribución tenga menos varianza. Esto se observa para los 3 canales asimilados y confirma que la implementación técnica dentro del sistema funciona correctamente. 
+
+```{r eval=FALSE, include=FALSE}
+files <- Sys.glob("/home/paola.corrales/datosmunin3/EXP/EG3/ANA/*/diagfiles/asim_abi*ensmean")
+
+files <- files[!str_detect(files, "conv")]
+
+abi <- map(files, function(f) {
+  
+  meta <- unglue(f, "/home/paola.corrales/datosmunin3/EXP/{exp}/ANA/{date}/diagfiles/asim_abi_g16_{date}.ensmean")
+  
+  read_diag_rad(f, meta[[1]][["exp"]]) %>% 
+    .[, channel := channel + 6] %>% 
+    satinfo[., on = c("sensor", "channel")] 
+  # %>% 
+  #   .[, ":="(lon.box = cut_round(lon, breaks = seq(284, 309, 2.5)),
+  #            lat.box = cut_round(lat, breaks = seq(-42, -17, 2.5)))]
+  # 
+  
+}) %>% rbindlist()
+
+abi[channel %in% c(8:10), .(mean_ob = mean(tbc),
+                            sd_ob = sd(tbc)), by = .(channel, exp, date)] %>% 
+  melt(id.vars = c("channel", "date", "exp")) %>% 
+  .[, channel := factor(channel)] %>% 
+  ggplot(aes(date, value)) +
+  geom_hline(yintercept = 0, color = "darkgrey") +
+  # geom_point(aes(color = channel, shape = variable)) +
+  geom_line(aes(color = channel, linetype = variable)) +
+  scale_color_manual(values = c("darkorange", "cyan4", "purple")) +
+  facet_wrap(~exp) +
+  labs(x = NULL, y = "mean/sd [K]") +
+  theme_minimal()
+
+
+abi[channel %in% c(8:10), .(mean_ob = mean(tbc),
+                            sd_ob = sd(tbc)), by = .(channel, exp)] %>% 
+  ```
+```{r oma-dist}
+# path_data <- "/home/paola.corrales/datosmunin3/EXP/"
+# 
+# files_gue <- Sys.glob(paste0(path_data, "E10/ANA/*/diagfiles/asim_abi_g16_*.ensmean"))
+# files_ana <- Sys.glob(paste0(path_data, "E10/ANA/*/diagfiles_ana/asim_abi_g16_*.ensmean"))
+# 
+# d <- map2(files_gue, files_ana, function(fg, fa) {
+#   
+#   meta <- unglue::unglue(fg, "/home/paola.corrales/datosmunin3/EXP/E10/ANA/{date}/diagfiles/asim_abi_g16_{date2}.ensmean")
+#   gue <- read_diag_rad(fg, "E10") %>% 
+#     .[, channel := channel + 6] %>% 
+#     .[channel %in% c(8:10) & qc == 0, .(channel, lat, lon, tb_obs, tbc)] %>% 
+#     .[, run := "guess"]
+#   
+#   ana <- read_diag_rad(fa, "E10") %>% 
+#     .[, channel := channel + 6] %>% 
+#     .[channel %in% c(8:10) & qc == 0, .(channel, lat, lon, tb_obs, tbc)] %>% 
+#     .[, run := "ana"]
+#   
+#   rbind(ana, gue) %>% 
+#     .[, fecha := meta[[1]][["date"]]] %>% 
+#     # .[, ":="(lon.box = cut_round(lon, breaks = seq(284, 309, 2.5)),
+#              # lat.box = cut_round(lat, breaks = seq(-42, -17, 2.5)))] %>% 
+#     .[]
+#   
+# }) %>% 
+#   rbindlist()
+# write_csv(d, here("data/derived_data/sample_obs/E10_omb_oma.csv"))
+
+diag_E10 <- fread(here("data/derived_data/sample_obs/E10_omb_oma.csv"))
+
+diag_E10 %>% 
+  ggplot(aes(tbc)) +
+  geom_density(aes(color = run)) +
+  scale_x_continuous(limits = c(-5, 5)) +
+  labs(x = "omb/oma") +
+  facet_wrap(~channel) +
+  theme_minimal()
+```
+
+```{r oma-tabla}
+diag_E10[, .(rms = mean(tbc)), by = .(channel, run)] %>% 
+  dcast(run ~ channel)
+```
+
+La asimilación de radianzas en *all sky*, es decir tanto para cielos claros como nubosos es todavía un importante desafío ya que estos dos tipos de observaciones requieren un control de calidad y estimaciones de errores específicos. En esta primera aproximación a la asimilación de observaciones de ABI solo se utilizaron observaciones en cielo claro. Para detectar y filtrar los pixeles nubosos utilizamos la mascara de nubes ACM (por ABI Cloud Mask) disponible con la misma frecuencia que las observaciones. Esta mascara de nubes da información binaria (cielo claro o cielo nuboso) y tienen una exactitud del 87%. La estimación es realizada utilizando información de 10 canales de ABI e incluye pruebas espectrales, espaciales y temporales. En las Figuras \@ref(fig:cld-msk) se presentan 2 ejemplos de máscara de nubes a las 00 UTC del 20 de noviembre y a las 18 UTC del 22 de noviembre. 
+
+
+```{r cld-msk}
+#dominio de interés
+xlim <- c(2600, 3950)
+ylim <- c(3700, 4750)
+
+files_acm <- c('~/datosmunin3/DATA/GOES16/ABI-L2-ACMF/OR_ABI-L2-ACMF-M3_G16_s20183240000342_e20183240011109_c20183240011270.nc', 
+               '~/datosmunin3/DATA/GOES16/ABI-L2-ACMF/OR_ABI-L2-ACMF-M3_G16_s20183261800364_e20183261811131_c20183261811304.nc')
+
+
+
+cld_msk <- map(files_acm, function(f){
+  
+  nc <- ncdf4::nc_open(f)
+  
+  ReadNetCDF(f, vars = c('BCM', 't'), 
+             subset = list(x = xlim,  y = ylim)) %>% 
+    .[, t := as_datetime(t, origin = "2000-01-01 12:00:00", tz = "UTC")] %>% 
+    .[, c("lon", "lat") := goes_projection(x, y, nc)]
+  
+}) %>% 
+  rbindlist()
+
+
+cld_msk %>% 
+  .[, t := factor(t)] %>% 
+  ggplot(aes(lon, lat)) +
+  geom_point(aes(color = factor(BCM))) +
+  scale_color_manual(values = c("white", "darkgrey"), guide = NULL) +
+  geom_mapa() +
+  facet_wrap(~t) +
+  labs(x = NULL, y = NULL)
+
+```
+Debido a la actividad convectiva en el dominio durante el periodo simulado, la cantidad de observaciones en cielo claro varía considerablemente. Esto puede apreciarse en las Figuras \@ref(fig:cld-msk) a y b. Sin embargo la cantidad de observaciones que aporta ABI es casi siempre superior a las observaciones de satélites polares (Figura \@ref(fig:obs-rad)) . 
+
+(ref:obs-rad) a) Número de observaciones asimiladas por ciclo y b) número medio de observaciones asimiladas por ciclo dividido en capas verticales de 50 hPa de espesor para los experimentos CONV (cuadrados azules), AWS (puntos celestes), SATWND (triángulos naranjas) y RAD (diamantes rojos).
+
+```{r obs-rad, fig.cap="(ref:obs-rad)", fig.height=3.5, fig.width=6}
+
+files <- Sys.glob(here("~/datosmunin3/EXP/E10/ANA/*/diagfiles/asim*ensmean"))
+
+files <- files[!str_detect(files, "conv")]
+
+rad <- map(files, function(f){ 
+  
+  rad <- read_diag_rad(f, "E10") %>% 
+    satinfo[., on = c("sensor", "channel")] 
+  
+  rad <- rad[, .(sensor, press, iuse, error, exp, date)] %>% 
+    setnames(c("press", "iuse", "error"), c("pressure", "usage.flag", "rerr"))
+  
+  rad_date <- rad %>% 
+    rbind(., rad) %>% 
+    .[usage.flag >= 1 & rerr != 1.0e+10] %>% 
+    .[, .(count_obs = .N), by = .(sensor, exp, date)] 
+  
+  rad_lev <- rad %>% 
+    .[usage.flag >= 1 & rerr != 1.0e+10] %>% 
+    .[, ":="(lev.box = cut_round(pressure, breaks = seq(0, 1150, 50)))] %>% 
+    .[, .(count_obs = .N), by = .(sensor, exp, lev.box, date)]
+  list(rad_date = rad_date, rad_lev = rad_lev)
+  
+}) %>% 
+  reduce(function(x, y) list(rad_date = rbind(x$rad_date, y$rad_date),
+                             rad_lev = rbind(x$rad_lev, y$rad_lev)))
+
+
+rad$rad_date %>% 
+  .[, exp := fifelse(str_detect(sensor, "abi"), "ABI", "RAD")] %>% 
+  .[, .(count_obs = sum(count_obs)), by = .(exp, date)] %>%
+  ggplot(aes(date, count_obs)) +
+  geom_line(aes(color = exp), size = 0.2) +
+  geom_point(aes(color = exp, shape = exp), size = 1) +
+  scale_color_manual(values = c("#047994", "#CC3311")) +
+  scale_shape_manual(values = c(15, 16)) +
+  scale_y_log10() +
+  scale_date() +
+  labs(y = "Número de obs por ciclo", x = "Hora (UTC)",
+       color = NULL, shape = NULL) +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "bottom", 
+        panel.background = element_rect(fill = "#fbfbfb", color = NA),
+        plot.margin = unit(c(0, 0, 0, 0), "cm")) +
+  
+  rad$rad_lev %>% 
+  .[, exp := fifelse(str_detect(sensor, "abi"), "ABI", "RAD")] %>% 
+  # .[, ":="(lev.box = cut_round(pressure, breaks = seq(50, 1050, 50)))] %>% 
+  # .[, .(count_obs = .N), by = .(exp, lev.box, date)] %>% 
+  .[, .(obs_cycle = mean(count_obs, na.rm = TRUE)), by = .(exp, lev.box)] %>% 
+  ggplot(aes(lev.box, obs_cycle)) +
+  geom_line(aes(color = exp), size = 0.2) +
+  geom_point(aes(color = exp, shape = exp), size = 1) +
+  scale_color_manual(values = c("#047994", "#CC3311")) +
+  scale_shape_manual(values = c(15, 16)) +
+  scale_y_log10() +
+  scale_x_reverse() +
+  coord_flip() +
+  labs(color = NULL, shape = NULL,
+       x = "Nivel de presión (hPa)", y = "Cantidad media de \nobs por ciclo") +
+  theme_minimal(base_size = 10) +
+  theme(legend.position = "bottom",
+        plot.margin = unit(c(0, 0, 0, 0), "cm")) +
+  
+  plot_layout(ncol = 2, widths = c(4, 1), guides = "collect") + 
+  plot_annotation(tag_levels = 'a', tag_suffix = ")") &
+  theme(plot.tag = element_text(size = 8), 
+        legend.position = "bottom",
+        legend.spacing = unit(c(0, 0, 0, 0), "cm"),
+        panel.background = element_rect(fill = "#fbfbfb", color = NA),
+        plot.margin = unit(c(0, 0, 0, 0), "cm"))
+
+```
+
+
+Mascara de nubes
+
+No corrección del bias
+
+Cantidad de observaciones
+
 ### Configuracion de los experimentos
+
+Tabla con nombres de experimentos y obs
+
+Misma configuración de ensamble que para el resto
+
+Pronosticos deterministico
 
 ## Resultados
 
-### Sensibilidad al thinning
+### Sensibilidad a la combinación de canales {#canales}
 
-### Sensibilidad a la combinación de canales
+### Sensibilidad al thinning {#thinning}
 
 ### Comparación del impacto de GOES-16 versus satélites polares
+
+#### Analisis
+
+#### Pronósticos determinísticos
 
 ## Conclusiones
 
