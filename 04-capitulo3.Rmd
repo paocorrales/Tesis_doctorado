@@ -156,7 +156,7 @@ cld_msk %>%
   labs(x = NULL, y = NULL)
 
 ```
-Debido a la actividad convectiva en el dominio durante el periodo simulado, la cantidad de observaciones en cielo claro varía considerablemente. Esto puede apreciarse en las Figuras \@ref(fig:cld-msk) a y b. Sin embargo la cantidad de observaciones que aporta ABI es casi siempre superior a las observaciones de satélites polares (Figura \@ref(fig:obs-rad)) . 
+Debido al desarrollo de actividad convectiva en el dominio durante el periodo simulado, la cantidad de observaciones en cielo claro varía considerablemente. Esto puede apreciarse en las Figuras \@ref(fig:cld-msk) a y b. Sin embargo la cantidad de observaciones que aporta ABI es casi siempre superior a las observaciones de satélites polares (Figura \@ref(fig:obs-rad)) . 
 
 (ref:obs-rad) a) Número de observaciones asimiladas por ciclo y b) número medio de observaciones asimiladas por ciclo dividido en capas verticales de 50 hPa de espesor para los experimentos CONV (cuadrados azules), AWS (puntos celestes), SATWND (triángulos naranjas) y RAD (diamantes rojos).
 
@@ -236,14 +236,74 @@ rad$rad_date %>%
 
 ```
 
-
-Mascara de nubes
-
-No corrección del bias
-
-Cantidad de observaciones
-
 ### Configuracion de los experimentos
+
+En este capítulo se analizan una serie de experimentos, primero para evaluar la sensibilidad a distintas combinaciones de canales y a la resolución del thinning y finalmente para comparar el impacto de la asimilación de observaciones de ABI en conjunto o no de satélites polares. Los experimentos SATWND y RAD fueron analizados previamente en el capítulo \@ref(ch1). SATWND asimila observaciones de EMC, EMA y vientos deriados de satélite y RAD suma a lo anterior radianzas en aire claro de sensores a bordo de satélites polares. RAD+ABI incluye además observaciones de los 3 canales de vapor de agua de ABI con un thinning de 10 km. Finalmente el conjunto de experimentos ABI incluye radianzas de ABI pero no de satélites polares, y usan distintas combinaciones de canales y resolución de thinning (Tabla \@ref(tab:exp-rad)). 
+
+
+```{r exp-rad}
+tribble(
+  ~exp, ~obs, ~canales, ~thinning,
+  "SATWND", "EMC, EMA, Viento derivado de satélite", "--", "--", 
+  "RAD", "EMC, EMA, Viento derivado de satélite, radianzas de satélites polares", "--", "--",
+  "RAD+ABI", "EMC, EMA, Viento derivado de satélite, radianzas de satélites polares y ABI", "8, 9, 10 ", "10 km ", 
+  "ABI_ch890_th10", "EMC, EMA, Viento derivado de satélite, radianzas de ABI", "8, 9, 10 ", "10 km ", 
+  "ABI_ch890_th30", "EMC, EMA, Viento derivado de satélite, radianzas de ABI", "8, 9, 10 ", "30 km ",
+  "ABI_ch90_th30", "EMC, EMA, Viento derivado de satélite, radianzas de ABI", "9, 10 ", "30 km ",
+  "ABI_ch0_th30", "EMC, EMA, Viento derivado de satélite, radianzas de ABI", "10 ", "30 km ",
+) %>% 
+  kbl(booktabs = TRUE, col.names = c("Experimento", "Observaciones asimiladas", "Canales de ABI", "Thining para ABI"),
+      align = "llcc",
+      caption = "Experimentos realizados.",
+      escape = FALSE) %>% 
+  kable_classic_2(full_width = TRUE)
+# %>% 
+#   column_spec(1, width = "8em") %>% 
+#   column_spec(2:3, width = "2.5em", latex_valign = "m") %>% 
+#   column_spec(4:5, width = "3em", latex_valign = "m")
+
+```
+
+Todos los experimentos previamente descriptos usan la configuración del ensamble multifísica y del sistema de asimilación explicada en la sección \@ref(configmodelo). La misma manera el análisis horario se realiza desde las 18 UTC del 20 de noviembre hasta las 12 UTC del 23 de noviembre para cubrir el desarrollo y maduración del SCM. 
+
+Para estudiar el impacto de la asimilación de radianzas también se generaron pronósticos determinísticos en alta resolución inicializados a las 00 y 06 UTC del 22 de noviembre (Figura \@ref(fig:cycle-fcst). En la Figura \@ref(fig:dominio-det) se muestra el dominio *d01* con 10 km de resolución (línea negra), identico al dominio utilizado para el resto de las simulaciones y el dominio anidado *d02* con 2 km de resolución (línea turquesa). Las condiciones iniciales están dadas por los análisis de los distintos experimentos y las condiciones de borde son generadas a partir del GFSF determinístico. Además las variables atmósfericas para el *d02* fueron inicializadas haciendo un escalado de la información del análisis. Todos los pronósticos utilizan las mismas parametrizaciones: del modelo de superficie terrestre (Noah-MP, @chen2001), de microfísica (esquema de un solo momento de 6 clases del WRF, @hong2006a) de procesos radiativos (esquema de onda corta y onda larga del RRTMG, @iacono2008), YSU [@hong2006] para capa límite y KF [@kain2004] para covección (solo aplicado al *d01*).
+
+Además de los pronósticos inicializados a partir de los análisis, se generaron pronósticos inicializados a partir de GFS, es decir, sin asimilación de datos regional. Estos pronósticos tienen la misma configuración y usan el mismo conjunto de parametrizaciones que los los pronósticos descriptos previamente. 
+
+```{r dominio-det}
+d02 <- ReadNetCDF("/home/paola.corrales/datosmunin3/EXP/E10/FCST/2018112200_det/wrfout_d02_2018-11-22_00:00:00", vars = c("XLAT", "XLONG")) %>% 
+  setnames(c("XLAT", "XLONG"), c("lat", "lon"))
+
+square_d02 <- d02 %>% 
+  copy() %>% 
+  .[, square1 := west_east %in% range(west_east) , by = .(south_north)] %>% 
+  .[, square2 := south_north %in% range(south_north) , by = .(west_east)] %>% 
+  .[square1 | square2] 
+
+
+dominio <- fread(here("data/derived_data/sample_obs/dominio_hgt.csv")) %>% 
+  .[, c("x", "y") := wrf_project(lon, lat)]
+
+dominio %>% 
+  ggplot(aes(x, y)) +
+  geom_contour_fill(aes(z = hgt), proj = norargentina_lambert,
+                    breaks = seq(0, 6000, 500)) +
+  scale_fill_gradient(low = "#f2f2f2", high = "#333333",
+                      name = NULL,
+                      breaks = seq(0, 6000, 1000),
+                      guide = NULL) +
+  geom_mapa() +
+  geom_point(data = square, aes(lon, lat), size = 0.2) +
+  geom_point(data = square_d02, aes(lon, lat), size = 0.2, color = "#047994") +
+  annotate("text", x = -73.5, y = -40.5, color = "black", label = "d01", size = 5) +
+  annotate("text", x = -66, y = -39.5, color = "#047994", label = "d02", size = 5) +
+  theme_minimal(base_size = 10) +
+  theme(legend.box = "horizontal",
+        legend.position = c(0.1, 0.95),
+        legend.background = element_rect(fill = "white", color = "white")) 
+
+```
+
 
 Tabla con nombres de experimentos y obs
 
