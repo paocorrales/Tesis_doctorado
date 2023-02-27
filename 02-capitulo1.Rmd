@@ -1,4 +1,4 @@
-# Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares
+# Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares {ch1}
 
 
 
@@ -16,7 +16,7 @@ tribble(
   ~obs_type, ~conv, ~aut, ~satwnd, ~rad,
   "Convencional (PREPBUFR)", "x", "x", "x", "x",
   "Convencional (EMA)", " ", "x", "x", "x",
-  "Vionto estimado por satélite", " ", " ", "x", "x",
+  "Viento estimado por satélite", " ", " ", "x", "x",
   "Radiancias", " ", " ", " ", "x",
 ) %>% 
   kbl(booktabs = TRUE, col.names = c("Obs type", "CONV", "AWS", "SATWND", "RAD"),
