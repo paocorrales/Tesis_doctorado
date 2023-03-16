@@ -131,7 +131,7 @@ fread(here("data/derived_data/tables/table1.csv")) %>%
 
 #### Radiancias de satélite
 
-En este trabajo se utilizaron radiancias de satélites disponibles a través del flujo de datos del GDAS, que incluye observaciones en el espectro infrarrojos y microondas. Los sensores incluidos son el Advanced Microwave Sounding Unit - A (AMSU-A), Microwave Humidity Sounder (MHS), y 2 sensores multiespectrales; el Atmospheric Infrared Sounder (AIRS) y el Infrared Atmospheric Sounding Interferometer (IASI)  ubicados en distintas plataformas (ver Tabla \@ref(tab:table-rad)). Dado que el dominio regional que se utilizará en este trabajo se encuentra en latitudes medias y que los satélite de interés están en órbitas polares, cada sensor escanea la zona sólo dos veces al día con una cobertura espacial que depende de la franja de covertura satélite. Por esta razón, el número de observaciones de los satélites varía significativamente en cada ciclo de asimilación. En particular, los sensores multiespectrales proporcionaron entre 100 y 1000 observaciones por cada escaneo cada 12 horas, contribuyendo al 88 % de la cantidad total de radiancias de satélites polares asimiladas en los experimentos descriptos en la sección \@ref(config). 
+En este trabajo se utilizaron radiancias de satélites disponibles a través del flujo de datos del GDAS, que incluye observaciones en el espectro infrarrojo y microondas. Dado que el dominio regional que se utilizará en este trabajo se encuentra en latitudes medias y que la mayoría de los satélites de interés están en órbitas polares, cada sensor escanea la zona sólo dos veces al día con una cobertura espacial que depende de la franja de cobertura satélite. Por esta razón, el número de observaciones de los satélites varía significativamente en cada ciclo de asimilación. En particular, los sensores multiespectrales proporcionaron entre 100 y 1000 observaciones por cada escaneo cada 12 horas, contribuyendo al 88 % de la cantidad total de radiancias asimiladas (Tabla \@ref(tab:table-rad)) en los experimentos descriptos en la sección \@ref(config). También se utilizaron observaciones del satélite geoestacionario GOES-16 que tienen una frecuencia temporal de 15 y una resolución espacial de 2 kilómetros. Este satélite aporta más observaciones que el conjunto de satélites polares utilizados. 
 
 
 ```{r table-rad}
@@ -150,6 +150,27 @@ fread(here("data/derived_data/tables/tabla_radianzas.csv")) %>%
   kable_classic_2(full_width = TRUE)
 ```
 
+Los sensores microondas disponibles para ser asimilados en el periodo de interés son el Advanced Microwave Sounding Unit - A (AMSU-A) a bordo de las plataformas NOAA-15, NOAA-18 y METOP-A, y el Microwave Humidity Sounder (MHS) a bordo de las plataformas NOAA-19, METOP-A y METOP-B. 
+
+AMSU-A [@robel2009] es un radiómetro de microondas que cuenta con 15 canales de observación diferentes entre 23.8 - 89 GHz y ha demostrado ser un importante sensor para el sondeo de la temperatura atmosférica [@english2000]. Cada canal detecta la radiación de microondas procedente de capas discretas de la atmósfera terrestre, la cual se describe mediante la función de peso, que corresponde la derivada de la transmitancia con respecto a la altura. El AMSU-A es conocido como un "temperature sounder" ya que sus canales fueron seleccionados para detectar la radiación emitida por capas sucesivas de la atmósfera. La Figura \@ref(fig:wf-amsua) muestra las funciones de peso en cielo claro para aquellos canales del AMSU-A que tienen sensibilidad en la tropósfera. No se incluyen en la asimilación de observaciones los dos primeros canales ubicados en 23.8 y 31.4 GHz ya que estos son sensibles a la fase líquida de las nubes y a la emisividad de la superficie, sin embargo aportan información para el control de calidad de las observaciones de otros canales. 
+
+
+```{r wf-amsua}
+wf_goes <- fread(here("data/derived_data/weighting_functions/wf_amsua.csv")) %>% 
+  .[, id := 1:.N] %>% 
+  melt(measure.vars = patterns("^ch")) %>% 
+  na.omit() %>% 
+  separate(variable, into = c("channel", "axes")) %>% 
+  dcast(id + channel ~ axes, value.var = "value") 
+
+wf_goes %>% 
+  ggplot(aes(x, y)) +
+  geom_line(aes(color = channel), orientation = "y") 
+  scale_y_level()
+
+```
+
+Por ejemplo, la función de peso del canal 7 (54.94 GHz) muestra que la contribución máxima a la radiación de microondas detectada por el instrumento AMSU-A proviene de aproximadamente un altura de 10 km por encima de la superficie. Como indica la Tabla \@ref(tab:table-rad) solo entre 2 y 4 canales del sensor AMSU-A se asimilaron en este trabajo. Esta selección de canales resulta de incluir sólo aquellos canales cuyo máximo en la función de peso se encuentra por debajo del tope del modelo utilizado (50 hPa) y que no son sensibles a la superficie terrestre y las nubes. Entre los canales asimilados se encuentran los canales 5 a 8 (53.596, 54.4, 54.94 y 55.5 GHz respectivamente). 
 
 También se utilizaron observaciones del satélite geoestacionario GOES-16, en particular los 3 canales en el infrarrojo sensibles al vapor de agua del sensor *Advanced Baseline Imager* (ABI). Estas observaciones tienen una frecuencia temporal de 15 y una resolución espacial de 2 kilómetros. Al ser un satélite goestacionario, cada escaneo del sensor cubre la totalidad del dominio por lo que las observaciones estarán disponibles en cada ciclo de asimilación y el número de observaciones disponible solo dependerá de la cobertura de nubes en cada momento.
 
