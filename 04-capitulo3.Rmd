@@ -10,34 +10,11 @@ Por ser un satélite y sensor nuevos, la última versión de GSI (V3.7) que fue 
 
 La asimilación directa de radianzas de ABI requiere las mismas consideraciones descriptas previamente en la sección \@ref(asim-rad) en cuanto a control de calidad, corrección de bias, thnning e indentificación de pixeles nubosos. En esta sección se describiran las deciciones metodológicas y técnicas que se tomaron a la hora de asimilar las observaciones, en base a las pruebas preliminares realizadas. 
 
-Los canales utilizados fueron elegidos teniendo en cuenta la información que brindan, en este caso sobre el contenido de vapor de agua en distintos niveles de la atmósfera, información que puede ser clave a la hora de pronosticar el desarrollo de convección húmeda profunda:
-
-* Canal 8 (6.2 $\mu m$): vapor de agua en niveles altos
-* Canal 9 (6.9 $\mu m$): vapor de agua en niveles medios
-* Canal 10 (7.3 $\mu m$): vapor de agua en niveles bajos
-
-La Figura \@ref(fig:wf-goes) muestra las funciones de peso teóricas para una atmósfera estandar en latitudes medias para cada canal. Si bien hay un solapamiento en las funciones de peso, el canal 8 es más sensible al vapor de agua alrededor de los 350 hPa, el canal 9 alrededor de 450 hPa y el canal 10 alrededor de los 600 hPa aproximadamente. En la sección \@ref(canales) se analizará que combinación de canales da mejores resultados en el contexto de este caso de estudio.   
-
-```{r wf-goes}
-wf_goes <- fread(here("data/derived_data/weighting_functions/wf_goes16.csv")) %>% 
-  .[, id := 1:.N] %>% 
-  melt(measure.vars = patterns("^ch")) %>% 
-  na.omit() %>% 
-  separate(variable, into = c("channel", "axes")) %>% 
-  dcast(id + channel ~ axes, value.var = "value") 
-
-wf_goes %>% 
-  ggplot(aes(x, y)) +
-  geom_line(aes(color = channel), orientation = "y") +
-  scale_y_level()
-
-```
-
 Si bien las radianzas de satélite pueden tener errores sistemáticos asociados a las condiciones de la atmósfera, la geometría de observación y condiciones específicas de los sensores que deben ser corregidos previo a la asimilación, para este trabajo se generó una primera prueba de asimilación para evaluar la magnitud de estos errores. Esta primera prueba utiliza la misma configuración de modelo y ensamble que los experimentos discutidos previamente e incluye la asimilación de los 3 canales de ABI en conjunto.
 
 La Figura \@ref(fig:oma-dist) muestra la distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y entre las observaciones y el análisis (OmA) para todo el periodo. Si las observaciones no tienen bias la distribución OmF estará centrada en cero. En este caso solo el canal 9 presenta un bias positivo muy pequeño del orden de 0.3 K (Tabla \@ref(tab:oma-tabla)). Por esta razón no se hará corrección del bias de estas observaciones. 
 
-La Figura \@ref(fig:om a-dist) y la Tabla \@ref(tab:oma-tabla) muestran además otro resultado importante. Si la asimilación de las observaciones se realizó correctamente es esperable que la diferencia OmA esté más cerca de cero que OmF y que su distribución tenga menos varianza. Esto se observa para los 3 canales asimilados y confirma que la implementación técnica dentro del sistema funciona correctamente. 
+La Figura \@ref(fig:oma-dist) y la Tabla \@ref(tab:oma-tabla) muestran además otro resultado importante. Si la asimilación de las observaciones se realizó correctamente es esperable que la diferencia OmA esté más cerca de cero que OmF y que su distribución tenga menos varianza. Esto se observa para los 3 canales asimilados y confirma que la implementación técnica dentro del sistema funciona correctamente. Notar que los cambios abruptos y simétricos en las curvas de distribución se deben al chequeo preliminar que se realiza como parte de los controles de calidad y que elimina aquellas observaciones que tienen un diferencia mayor a 2.2 K con respecto del campo preliminar. 
 
 ```{r eval=FALSE, include=FALSE}
 files <- Sys.glob("/home/paola.corrales/datosmunin3/EXP/EG3/ANA/*/diagfiles/asim_abi*ensmean")
@@ -74,8 +51,11 @@ abi[channel %in% c(8:10), .(mean_ob = mean(tbc),
 
 abi[channel %in% c(8:10), .(mean_ob = mean(tbc),
                             sd_ob = sd(tbc)), by = .(channel, exp)] %>% 
-  ```
-```{r oma-dist}
+```
+
+(ref:oma-dist) Distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y la observacion y el análisis (OmA) para los 3 canales de ABI y a lo largo de todo el periodo de prueba. 
+
+```{r oma-dist, fig.cap="(ref:oma-dist)", fig.align='center'}
 # path_data <- "/home/paola.corrales/datosmunin3/EXP/"
 # 
 # files_gue <- Sys.glob(paste0(path_data, "E10/ANA/*/diagfiles/asim_abi_g16_*.ensmean"))
@@ -108,22 +88,38 @@ diag_E10 <- fread(here("data/derived_data/sample_obs/E10_omb_oma.csv"))
 
 diag_E10 %>% 
   ggplot(aes(tbc)) +
-  geom_density(aes(color = run)) +
+  geom_density(aes(color = run), key_glyph = draw_key_path) +
   scale_x_continuous(limits = c(-5, 5)) +
-  labs(x = "omb/oma") +
-  facet_wrap(~channel) +
-  theme_minimal()
+  scale_color_manual(values = c("#1f78b4", "#33a02c"), labels = c("OmA", "OmF")) +
+  labs(x = "OmF / OmA (K)",
+       y = "Densidad de probabilidad", 
+       color = NULL) +
+  facet_wrap(~channel, labeller = labeller(channel = c("8" = "Canal 8",
+                                            "9" = "Canal 9",
+                                            "10" = "Canal 10"))) +
+  tagger::tag_facets() +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
 
 ```{r oma-tabla}
 diag_E10[, .(rms = mean(tbc)), by = .(channel, run)] %>% 
-  dcast(run ~ channel)
+  dcast(run ~ channel) %>% 
+  .[, run := c("OmA", "OmF")] %>% 
+  arrange(desc(run)) %>% 
+   kbl(booktabs = TRUE, col.names = c("", "Canal 8", "Canal 9", "Canal 10"),
+       digits = 4, 
+      align = "lrrr",
+      caption = "Observación menos análisis o campo preliminar medio calculado sobre todo el periodo.") %>% 
+  kable_classic_2(full_width = TRUE) 
 ```
 
 La asimilación de radianzas en *all sky*, es decir tanto para cielos claros como nubosos es todavía un importante desafío ya que estos dos tipos de observaciones requieren un control de calidad y estimaciones de errores específicos. En esta primera aproximación a la asimilación de observaciones de ABI solo se utilizaron observaciones en cielo claro. Para detectar y filtrar los pixeles nubosos utilizamos la mascara de nubes ACM (por ABI Cloud Mask) disponible con la misma frecuencia que las observaciones. Esta mascara de nubes da información binaria (cielo claro o cielo nuboso) y tienen una exactitud del 87%. La estimación es realizada utilizando información de 10 canales de ABI e incluye pruebas espectrales, espaciales y temporales. En las Figuras \@ref(fig:cld-msk) se presentan 2 ejemplos de máscara de nubes a las 00 UTC del 20 de noviembre y a las 18 UTC del 22 de noviembre. 
 
+(ref:cld-msk) Ubicación de píxeles nubosos (gris) según la máscara de nubes generada como producto de nivel 2 para GOES-16, durante el a) 06 UTC del 20 de noviembre y b) 18 UTC del 22 de noviembre. 
 
-```{r cld-msk}
+```{r cld-msk, fig.cap="(ref:cld-msk)", fig.width=6, fig.height=3}
 #dominio de interés
 xlim <- c(2600, 3950)
 ylim <- c(3700, 4750)
@@ -152,13 +148,16 @@ cld_msk %>%
   geom_point(aes(color = factor(BCM))) +
   scale_color_manual(values = c("white", "darkgrey"), guide = NULL) +
   geom_mapa() +
-  facet_wrap(~t) +
-  labs(x = NULL, y = NULL)
+  facet_wrap(~t, labeller = labeller(t = c("2018-11-20 00:05:52" = "6 UTC, 20 de Nov",
+                                           "2018-11-22 18:05:54" = "18 UTC, 22 de Nov"))) +
+  tagger::tag_facets() +
+  labs(x = NULL, y = NULL) +
+  theme_minimal(base_size = 9)
 
 ```
 Debido al desarrollo de actividad convectiva en el dominio durante el periodo simulado, la cantidad de observaciones en cielo claro varía considerablemente. Esto puede apreciarse en las Figuras \@ref(fig:cld-msk) a y b. Sin embargo la cantidad de observaciones que aporta ABI es casi siempre superior a las observaciones de satélites polares (Figura \@ref(fig:obs-rad)) . 
 
-(ref:obs-rad) a) Número de observaciones asimiladas por ciclo y b) número medio de observaciones asimiladas por ciclo dividido en capas verticales de 50 hPa de espesor para los experimentos CONV (cuadrados azules), AWS (puntos celestes), SATWND (triángulos naranjas) y RAD (diamantes rojos).
+(ref:obs-rad) a) Número de observaciones asimiladas en cada ciclo y b) número medio de observaciones asimiladas por ciclo en capas verticales de 50 hPa de espesor para los experimentos RAD (circulos rojos) y ABI (cuadrados turquezas).
 
 ```{r obs-rad, fig.cap="(ref:obs-rad)", fig.height=3.5, fig.width=6}
 
@@ -244,23 +243,22 @@ En este capítulo se analizan una serie de experimentos, primero para evaluar la
 ```{r exp-rad}
 tribble(
   ~exp, ~obs, ~canales, ~thinning,
-  "SATWND", "EMC, EMA, Viento derivado de satélite", "--", "--", 
-  "RAD", "EMC, EMA, Viento derivado de satélite, radianzas de satélites polares", "--", "--",
-  "RAD+ABI", "EMC, EMA, Viento derivado de satélite, radianzas de satélites polares y ABI", "8, 9, 10 ", "10 km ", 
-  "ABI_ch890_th10", "EMC, EMA, Viento derivado de satélite, radianzas de ABI", "8, 9, 10 ", "10 km ", 
-  "ABI_ch890_th30", "EMC, EMA, Viento derivado de satélite, radianzas de ABI", "8, 9, 10 ", "30 km ",
-  "ABI_ch90_th30", "EMC, EMA, Viento derivado de satélite, radianzas de ABI", "9, 10 ", "30 km ",
-  "ABI_ch0_th30", "EMC, EMA, Viento derivado de satélite, radianzas de ABI", "10 ", "30 km ",
+  "SATWND", "--", "--", "--", 
+  "RAD", "Radianzas de satélites polares", "--", "--",
+  "RAD+ABI", "Radianzas de satélites polares y ABI", "8, 9, 10 ", "10 km ", 
+  "ABI_ch890_th10", "Radianzas de ABI", "8, 9, 10 ", "10 km ", 
+  "ABI_ch890_th30", "Radianzas de ABI", "8, 9, 10 ", "30 km ",
+  "ABI_ch90_th30", "Radianzas de ABI", "9, 10 ", "30 km ",
+  "ABI_ch0_th30", "Radianzas de ABI", "10 ", "30 km ",
 ) %>% 
-  kbl(booktabs = TRUE, col.names = c("Experimento", "Observaciones asimiladas", "Canales de ABI", "Thining para ABI"),
+  kbl(booktabs = TRUE, col.names = c("Experimento", "Radianzas asimiladas", "Canales ABI", "Thining ABI"),
       align = "llcc",
-      caption = "Experimentos realizados.",
-      escape = FALSE) %>% 
-  kable_classic_2(full_width = TRUE)
-# %>% 
-#   column_spec(1, width = "8em") %>% 
+      caption = "Experimentos realizados. Todos los experimentos incluyen observaciones de EMC, EMA y vientos derivados de satélite. ") %>% 
+  kable_classic_2(full_width = TRUE) %>% 
+  column_spec(1, width = "8em") %>%
+  column_spec(2, width = "20em") %>%
 #   column_spec(2:3, width = "2.5em", latex_valign = "m") %>% 
-#   column_spec(4:5, width = "3em", latex_valign = "m")
+  column_spec(3:4, width = "4em", latex_valign = "m")
 
 ```
 
@@ -270,7 +268,9 @@ Para estudiar el impacto de la asimilación de radianzas también se generaron p
 
 Además de los pronósticos inicializados a partir de los análisis, se generaron pronósticos inicializados a partir de GFS, es decir, sin asimilación de datos regional. Estos pronósticos tienen la misma configuración y usan el mismo conjunto de parametrizaciones que los los pronósticos descriptos previamente. 
 
-```{r dominio-det}
+(ref:dominio-det) Dominio de baja resolución (d01, 10 km) marcado con un recuadro negro y dominio anidado de alta resolución (d02, 2 km) marcado en color turquesa. 
+
+```{r dominio-det, fig.cap="(ref:dominio-det)", fig.width=3, fig.height=3, fig.align="center"}
 d02 <- ReadNetCDF("/home/paola.corrales/datosmunin3/EXP/E10/FCST/2018112200_det/wrfout_d02_2018-11-22_00:00:00", vars = c("XLAT", "XLONG")) %>% 
   setnames(c("XLAT", "XLONG"), c("lat", "lon"))
 
@@ -295,8 +295,8 @@ dominio %>%
   geom_mapa() +
   geom_point(data = square, aes(lon, lat), size = 0.2) +
   geom_point(data = square_d02, aes(lon, lat), size = 0.2, color = "#047994") +
-  annotate("text", x = -73.5, y = -40.5, color = "black", label = "d01", size = 5) +
-  annotate("text", x = -66, y = -39.5, color = "#047994", label = "d02", size = 5) +
+  annotate("text", x = -73.5, y = -40.5, color = "black", label = "d01", size = 3) +
+  annotate("text", x = -66, y = -39.5, color = "#047994", label = "d02", size = 3) +
   theme_minimal(base_size = 10) +
   theme(legend.box = "horizontal",
         legend.position = c(0.1, 0.95),
@@ -304,12 +304,6 @@ dominio %>%
 
 ```
 
-
-Tabla con nombres de experimentos y obs
-
-Misma configuración de ensamble que para el resto
-
-Pronosticos deterministico
 
 ## Resultados
 
