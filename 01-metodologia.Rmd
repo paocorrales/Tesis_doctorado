@@ -22,7 +22,7 @@ campos <- ReadNetCDF(here("data/derived_data/reanalysis/geopotential.nc")) %>%
   .[, ":="(msl = ReadNetCDF(here("data/derived_data/reanalysis/pressure-pw.nc"), vars = "msl", out = "vector")[[1]],
            cape = ReadNetCDF(here("data/derived_data/reanalysis/cape-pw.nc"), vars = "cape", out = "vector")[[1]])] %>% 
   setnames(c("longitude", "latitude"), c("lon", "lat")) %>% 
-    .[time != ymd_h(2018112312)] 
+  .[time != ymd_h(2018112312)] 
 
 xlim <- c(2700, 3950)
 ylim <- c(3800, 4950)
@@ -33,11 +33,11 @@ goes <- map(files, function(f) {
   meta <- unglue::unglue(basename(f), "OR_ABI-L1b-RadF-M3{channel}_G16_s{sdate}_e{edate}_c{cdate}.nc")
   ReadNetCDF(f, vars = c(rad = "Rad", time = "t"), 
              subset = list(x = xlim, y = ylim)) %>% 
-  .[, rad := calculate_rad(rad, nc)] %>% 
-  .[, tb := rad_to_tb(rad, nc)] %>% 
-  .[, time := as_datetime(time, origin = "2000-01-01 12:00:00")] %>%
-  .[, c("lon", "lat") := goes_projection(x, y, nc)] %>% 
-  .[]
+    .[, rad := calculate_rad(rad, nc)] %>% 
+    .[, tb := rad_to_tb(rad, nc)] %>% 
+    .[, time := as_datetime(time, origin = "2000-01-01 12:00:00")] %>%
+    .[, c("lon", "lat") := goes_projection(x, y, nc)] %>% 
+    .[]
 }) %>% 
   rbindlist() %>% 
   .[, time := floor_date(time, "hour")]
@@ -131,7 +131,7 @@ fread(here("data/derived_data/tables/table1.csv")) %>%
 
 #### Radiancias de satélite
 
-En este trabajo se utilizaron radiancias de satélites disponibles a través del flujo de datos del GDAS, que incluye observaciones en el espectro infrarrojo y microondas. Dado que el dominio regional que se utilizará en este trabajo se encuentra en latitudes medias y que la mayoría de los satélites de interés están en órbitas polares, cada sensor escanea la zona sólo dos veces al día con una cobertura espacial que depende de la franja de cobertura satélite. Por esta razón, el número de observaciones de los satélites varía significativamente en cada ciclo de asimilación. En particular, los sensores multiespectrales proporcionaron entre 100 y 1000 observaciones por cada escaneo cada 12 horas, contribuyendo al 88 % de la cantidad total de radiancias asimiladas (Tabla \@ref(tab:table-rad)) en los experimentos descriptos en la sección \@ref(config). También se utilizaron observaciones del satélite geoestacionario GOES-16 que tienen una frecuencia temporal de 15 y una resolución espacial de 2 kilómetros. Este satélite aporta más observaciones que el conjunto de satélites polares utilizados. 
+En este trabajo se utilizaron radiancias de satélites disponibles a través del flujo de datos del GDAS, que incluye observaciones en el espectro infrarrojo y microondas. Dado que el dominio regional que se utilizará en este trabajo se encuentra en latitudes medias y que la mayoría de los satélites de interés están en órbitas polares, cada sensor escanea la zona sólo dos veces al día con una cobertura espacial que depende de la franja de cobertura satélite. Por esta razón, el número de observaciones de los satélites polares varía significativamente en cada ciclo de asimilación. En particular, los sensores multiespectrales proporcionaron entre 100 y 1000 observaciones por cada escaneo cada 12 horas, contribuyendo al 88 % de la cantidad total de radiancias asimiladas (Tabla \@ref(tab:table-rad)) en los experimentos descriptos en la sección \@ref(config). También se utilizó el satélite geoestacionario GOES-16 que tienen una frecuencia temporal de 15 y una resolución espacial de 2 kilómetros. En particular se utilizaron observaciones del sensor *Advanced Baseline Imager* (ABI) que aporta más observaciones que el conjunto de satélites polares utilizados. 
 
 
 ```{r table-rad}
@@ -150,29 +150,104 @@ fread(here("data/derived_data/tables/tabla_radianzas.csv")) %>%
   kable_classic_2(full_width = TRUE)
 ```
 
-Los sensores microondas disponibles para ser asimilados en el periodo de interés son el Advanced Microwave Sounding Unit - A (AMSU-A) a bordo de las plataformas NOAA-15, NOAA-18 y METOP-A, y el Microwave Humidity Sounder (MHS) a bordo de las plataformas NOAA-19, METOP-A y METOP-B. 
 
-AMSU-A [@robel2009] es un radiómetro de microondas que cuenta con 15 canales de observación diferentes entre 23.8 - 89 GHz y ha demostrado ser un importante sensor para el sondeo de la temperatura atmosférica [@english2000]. Cada canal detecta la radiación de microondas procedente de capas discretas de la atmósfera terrestre, la cual se describe mediante la función de peso, que corresponde la derivada de la transmitancia con respecto a la altura. El AMSU-A es conocido como un "temperature sounder" ya que sus canales fueron seleccionados para detectar la radiación emitida por capas sucesivas de la atmósfera. La Figura \@ref(fig:wf-amsua) muestra las funciones de peso en cielo claro para aquellos canales del AMSU-A que tienen sensibilidad en la tropósfera. No se incluyen en la asimilación de observaciones los dos primeros canales ubicados en 23.8 y 31.4 GHz ya que estos son sensibles a la fase líquida de las nubes y a la emisividad de la superficie, sin embargo aportan información para el control de calidad de las observaciones de otros canales. 
+Los sensores microondas disponibles para ser asimilados en el periodo de interés son el *Advanced Microwave Sounding Unit - A* (AMSU-A) a bordo de las plataformas NOAA-15, NOAA-18 y METOP-A, y el *Microwave Humidity Sounder* (MHS) a bordo de las plataformas NOAA-19, METOP-A y METOP-B. 
+
+AMSU-A [@robel2009] es un radiómetro de microondas que cuenta con 15 canales de observación diferentes entre 23.8 - 89 GHz y ha demostrado ser un importante sensor para el sondeo de la temperatura atmosférica [@english2000]. Cada canal detecta la radiación de microondas procedente de capas discretas de la atmósfera terrestre, la cual se describe mediante la función de peso, que corresponde la derivada de la transmitancia con respecto a la altura. El AMSU-A es conocido como un "sensor de temperatura" ya que sus canales fueron seleccionados para detectar la radiación emitida por capas sucesivas de la atmósfera. La Figura \@ref(fig:wf)a muestra las funciones de peso en cielo claro para aquellos canales del AMSU-A que tienen sensibilidad en la tropósfera. No se incluyen en la asimilación de observaciones los dos primeros canales ubicados en 23.8 y 31.4 GHz ya que estos son sensibles a la fase líquida de las nubes y a la emisividad de la superficie, aunque si aportan información para el control de calidad de las observaciones de otros canales. 
+
+(ref:wf) Funciones de peso calculada sobre cielo claro para distintos censores. a) AMSU-A, canal 3 - 50.3 GHz, canal 4 - 52.8 GHz, canal 5 - 53.596 $\pm$ 0.115 GHz, canal 6 - 54.4 GHz, canal 7 - 54.94 GHz; MHS, canal 1 - 89.0 GHz, canal 2 - 157.0 GHz, canal 3 - 183.311 $\pm$ 1.00 GHz, canal 4 - 183.311 $\pm$ 3.00 GHz, canal 5 - 190.311 GHz; ABI, canal 8 - 6.2 $\mu m$, canal 9 - 6.9 $\mu m$, canal 10 - 7.3 $\mu m$.  
 
 
-```{r wf-amsua}
-wf_goes <- fread(here("data/derived_data/weighting_functions/wf_amsua.csv")) %>% 
+```{r wf, fig.cap="(ref:wf)", fig.width=7, fig.height=5.5, fig.align="center"}
+wf_amsua <- fread(here("data/derived_data/weighting_functions/wf_amsua.csv")) %>% 
   .[, id := 1:.N] %>% 
   melt(measure.vars = patterns("^ch")) %>% 
   na.omit() %>% 
   separate(variable, into = c("channel", "axes")) %>% 
   dcast(id + channel ~ axes, value.var = "value") 
 
-wf_goes %>% 
-  ggplot(aes(x, y)) +
-  geom_line(aes(color = channel), orientation = "y") 
-  scale_y_level()
+wf_mhs <- fread(here("data/derived_data/weighting_functions/wf_mhs.csv")) %>% 
+  .[, id := 1:.N] %>% 
+  melt(measure.vars = patterns("^ch")) %>% 
+  na.omit() %>% 
+  separate(variable, into = c("channel", "axes")) %>% 
+  dcast(id + channel ~ axes, value.var = "value") 
 
+wf_goes <- fread(here("data/derived_data/weighting_functions/wf_goes16.csv")) %>% 
+  .[, id := 1:.N] %>% 
+  melt(measure.vars = patterns("^ch")) %>% 
+  na.omit() %>% 
+  separate(variable, into = c("channel", "axes")) %>% 
+  dcast(id + channel ~ axes, value.var = "value") 
+
+wf_amsua %>% 
+  ggplot(aes(x, y)) +
+  geom_line(aes(color = channel), orientation = "y") +
+  scale_color_discrete(labels = c("c3 - 50.3 GHz", 
+                                  "c4 - 52.8 GHz",
+                                  "c5 - 53.596 ± 0.115 GHz",
+                                  "c6 - 54.4 GHz",
+                                  "c7 - 54.94 GHz")) +
+  coord_cartesian( ylim = c(0, 20)) +
+  labs(x = latex2exp::TeX("Función de peso ($km^{-1}$)"),
+       y = "Altura (km)", 
+       color = NULL) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        legend.direction = "vertical",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA)) +
+  
+  wf_mhs %>% 
+  ggplot(aes(x, y)) +
+  geom_line(aes(color = channel), orientation = "y") +
+  scale_color_discrete(labels = c("c1 - 89.0 GHz", 
+                                  "c2 - 157.0 GHz",
+                                  "c3 - 183.311 ± 1.00 GHz",
+                                  "c4 - 183.311 ± 3.00 GHz",
+                                  "c5 - 190.311 GHz")) +
+  coord_cartesian( ylim = c(0, 10)) +
+  labs(x = latex2exp::TeX("Función de peso ($km^{-1}$)"),
+       y = "Altura (km)", 
+       color = NULL) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        legend.direction = "vertical",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA)) +
+  
+  wf_goes %>% 
+  ggplot(aes(x, y)) +
+  geom_line(aes(color = channel), orientation = "y") +
+  scale_color_discrete(labels = unname(latex2exp::TeX(c("c8 - 6.2 $\\mu m$",
+                                                        "c9 - 6.9 $\\mu m$",
+                                                        "c10 - 7.3 $\\mu m$")))) +
+  scale_y_level(name = "Presión (hPa)") +
+  coord_cartesian( ylim = c(1000, 50)) +
+  labs(x = latex2exp::TeX("Función de peso ($km^{-1}$)"),
+       y = "Presión (hPa)", 
+       color = NULL) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        legend.direction = "vertical",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA)) +
+  
+  plot_layout(ncol = 3) +
+  plot_annotation(tag_levels = 'a', tag_suffix = ")")
 ```
 
 Por ejemplo, la función de peso del canal 7 (54.94 GHz) muestra que la contribución máxima a la radiación de microondas detectada por el instrumento AMSU-A proviene de aproximadamente un altura de 10 km por encima de la superficie. Como indica la Tabla \@ref(tab:table-rad) solo entre 2 y 4 canales del sensor AMSU-A se asimilaron en este trabajo. Esta selección de canales resulta de incluir sólo aquellos canales cuyo máximo en la función de peso se encuentra por debajo del tope del modelo utilizado (50 hPa) y que no son sensibles a la superficie terrestre y las nubes. Entre los canales asimilados se encuentran los canales 5 a 8 (53.596, 54.4, 54.94 y 55.5 GHz respectivamente). 
 
-También se utilizaron observaciones del satélite geoestacionario GOES-16, en particular los 3 canales en el infrarrojo sensibles al vapor de agua del sensor *Advanced Baseline Imager* (ABI). Estas observaciones tienen una frecuencia temporal de 15 y una resolución espacial de 2 kilómetros. Al ser un satélite goestacionario, cada escaneo del sensor cubre la totalidad del dominio por lo que las observaciones estarán disponibles en cada ciclo de asimilación y el número de observaciones disponible solo dependerá de la cobertura de nubes en cada momento.
+De manera similar, el sensor microondas MHS es conocido por ser un "sensor de humedad". Este sensor tiene dos canales sensibles a la superficie y la presencia de nubes (canales 1 y 2: 89 y 157 GHz), y tres canales mayoritariamente sensibles al vapor de agua (canales 3, 4 y 5: 183.3 $\pm$ 1.0, $pm$ 3 y 190 GHz). Como indican las funciones de peso (Figura \@ref(fig:wf)b), todos los canales del MHS se encuentran por debajo del tope del modelo, sin embargo, como se puede ver en la Tabla \@ref(tab:table-rad), entre 2 y 3 canales se asimilan en los experimentos llevados a cabo en esta tesis. Esto se debe a que en algunas situaciones el canal 5 se ve afectado por la presencia de nubes.
+
+
+En cuanto a los sensores multiespectrales, se asimilaron dos: el *Atmospheric Infrared Sounder* (AIRS) y el *Infrared Atmospheric Sounding Interferometer* (IASI) ubicados en distintas plataformas (ver Tabla \@ref(tab:table-rad)). IASI mide la radiación emitida por la Tierra en 8461 canales que cubren el intervalo espectral del infrarrojo térmico entre 645 y 2760 $cm^{-1}$ (3.62 - 15.5 $\mu m$). De manera similar, AIRS tiene canales en 3 rangos del espectro electromagnético: 645 y 1136 $cm^{-1}$, 1265 y 1629 $cm^{-1}$, y 2169 y 2674 $cm^{-1}$. Asimilar la totalidad de estos canales no es recomendable ya que tanto las observaciones como sus errores se encuentran muy correlacionados entre si, es por ello que numerosos estudios que se han enfocado en definir un conjunto de canales adecuado en el contexto de los pronósticos numéricos globales para su asimilación (por ejemplo, @collard2007, @rabier2002). Realizar un estudio de sensibilidad de los canales para la región de interés esta fuera del alcance de los objetivos de este trabajo, por lo que se decidió utilizar la configuración regional del sistema GSI en la cual se asimilan entre 52 y 68 canales distintos (ver Tabla \@ref(tab:table-rad)). 
+
+Finalmente, en el caso de ABI, se asimilaron los canales sensibles al vapor de agua en distintos niveles, información que puede ser clave a la hora de pronosticar el desarrollo de convección húmeda profunda:
+
+* Canal 8 (6.2 $\mu m$): vapor de agua en niveles altos
+* Canal 9 (6.9 $\mu m$): vapor de agua en niveles medios
+* Canal 10 (7.3 $\mu m$): vapor de agua en niveles bajos
+
+La Figura \@ref(fig:wf)c muestra las funciones de peso teóricas para una atmósfera estandar en latitudes medias para cada uno de estos canales. Si bien hay un solapamiento en las funciones de peso, el canal 8 es más sensible al vapor de agua alrededor de los 350 hPa, el canal 9 alrededor de 450 hPa y el canal 10 alrededor de los 600 hPa aproximadamente. En la sección \@ref(canales) se analizará que combinación de canales da mejores resultados en el contexto de este caso de estudio.   
 
 
 ### Conjuntos de observaciones para verificación 
@@ -192,7 +267,7 @@ Para evaluar el desempeño del sistema de asimilación de datos presentado en es
 ## La asimilación de datos
 
 La asimilación de datos combina de manera optima un pronóstico numérico o campo preliminar en un tiempo $t$ con las observaciones disponibles para ese mismo tiempo, generando un análisis [@carrassi2018]. Esta combinación optima toma en cuenta el error asociado al modelo meteorológico (errores de pronóstico) y el error de las observaciones (que resulta de los errores instrumentales y los errores de representatividad) y su error será menor a los errores originales. Por esta razón el análisis es considerado desde un punto de vista estadistico y bajo ciertas hipotesis, como la *mejor aproximación* disponible del estado real de la atmósfera.
- 
+
 
 (ref:ciclo-asimilacion-teorico) Esquema de un ciclo de asimilación típico. El tiempo de las observaciones y el campo preliminar deberá coincidir.
 
@@ -210,22 +285,22 @@ Existen distintas técnicas de asimilación de datos, cada una con sus ventajas 
 En el contexto de los Filtros de Kalman, el análisis o $x_a$ será el estado más probable de la atmósfera teniendo en cuenta las $m$ observaciones $y_o$ disponibles en un tiempo $t$. Para poder comparar y combinar el campo preliminar con las observaciones, este es interpolado a la ubicación de las observaciones. En determinados casos, por ejemplo cuando se trabaja con observaciones de satélite o radar, será necesario transformar las variables del modelo (ej. temperatura y humedad) para obtener las variables observadas (ej. temperatura de brillo). En la siguiente ecuación $H$ es el operador de las observaciones no lineal que se encarga de las interpolaciones y transformaciones necesarias sobre el campo preliminar $x_f$, representado como un vector de dimensión $n$. 
 
 \begin{equation}
-  x_a = x_f + K[y_o - H(x_b )]
-  (\#eq:eq1)
+x_a = x_f + K[y_o - H(x_b )]
+(\#eq:eq1)
 \end{equation}
 
 La diferencia entre las observaciones $y_o$ y el campo preliminar se denomina innovación. El análisis $x_a$ se obtiene aplicando las innovaciones al campo preliminar pesadas por una matriz $K$ o Ganancia de Kalman. Esta matriz de dimensión $n$ x $m$ que incluye información sobre los errores del pronóstico y de las observaciones como se observa en la ecuación \@ref(eq:eq3),
 
 \begin{equation}
-  K = BH^T (HBH^T + R^{-1})^{-1}
-  (\#eq:eq3)
+K = BH^T (HBH^T + R^{-1})^{-1}
+(\#eq:eq3)
 \end{equation}
 
 donde $B$ es la matriz de covarianza de los errores del pronóstico y $R$ corresponde a la matriz de covarianza de los errores de las observaciones. La implementación de los los métodos de asimilación de datos suelen ser computacionalmente muy costosos, en parte debido a la estimación de la matriz $B$. 
 
 \begin{equation}
-  \mathrm{ B \approx \frac{1}{m-1} \sum_{k=1}^{m}(x_{f}^{k}-\overline{x}_f)(x_{f}^{k}-\overline{x}_f)^T}
-  (\#eq:eq5)
+\mathrm{ B \approx \frac{1}{m-1} \sum_{k=1}^{m}(x_{f}^{k}-\overline{x}_f)(x_{f}^{k}-\overline{x}_f)^T}
+(\#eq:eq5)
 \end{equation}
 
 donde $k \; \epsilon \; [1,m]$ es el miembro *k-ésimo* del ensamble. Los métodos de Filtro de Kalman por Ensambles tienen la ventaja de estimar la matriz $B$ a partir de ensamble y actualizarla en cada ciclo de asimilación para incluir los errores dependientes de la dinámica del sistema.
@@ -283,8 +358,8 @@ El preprocesamiento y control de calidad de los datos es un paso esencial en la 
 Luego del thinning, se aplica la corrección de bias. La metodología de corrección de bias implementada en GSI tiene una componente dependiente de características termodinámicas del aire y otro dependiente del ángulo de escaneo [@zhu2014] y se calcula como una polinomio lineal de N predictores $p_i(x)$, con coeficientes asociados $\beta_i$. Por lo tanto, la temperatura de brillo corregida por bias ($BT_{cb}$) puede obtenerse como
 
 \begin{equation}
-  \mathrm{\mathit{BT_{cb}} =\mathit{ BT} + \sum_{i = 0}^{N} \beta_i p_i (x)}
-  (\#eq:eq12)
+\mathrm{\mathit{BT_{cb}} =\mathit{ BT} + \sum_{i = 0}^{N} \beta_i p_i (x)}
+(\#eq:eq12)
 \end{equation}
 
 GSI tiene un término de corrección de bias constante ($p_0 = 1$) mientras que los términos restantes y sus predictores son el contenido de agua líquida de las nubes (CLW), la tasa de cambio de temperatura con la presión, el cuadrado de la tasa de y la sensibilidad de la emisividad de la superficie. El bias dependiente del ángulo de escaneo se modela como un polinomio de 4$^\circ$ orden [@zhu2014]. 
@@ -318,15 +393,15 @@ Además de las perturbaciones aleatorias en los bordes laterales, se utilizó un
 
 ```{r miembros-desc}
 data.table(mem = as.character(formatC(1:60, flag = "0", width = 3)),
-                     fisica = rep(c("KF-YSU", 
-                                    "BMJ-YSU",
-                                    "GF-YSU",
-                                    "KF-MYJ",
-                                    "BMJ-MYJ",
-                                    "GF-MYJ",
-                                    "KF-MYNN2",
-                                    "BMJ-MYNN2",
-                                    "GF-MYNN2"), length.out = 60)) %>% 
+           fisica = rep(c("KF-YSU", 
+                          "BMJ-YSU",
+                          "GF-YSU",
+                          "KF-MYJ",
+                          "BMJ-MYJ",
+                          "GF-MYJ",
+                          "KF-MYNN2",
+                          "BMJ-MYNN2",
+                          "GF-MYNN2"), length.out = 60)) %>% 
   setDT() %>% 
   .[, c("Cumulus", "PBL") := tstrsplit(fisica, split = "-")] %>% 
   .[, .(mem = paste(as.numeric(mem), collapse = ", ")), by = .(PBL, Cumulus)] %>% 
@@ -466,23 +541,23 @@ Se seleccionaron un conjunto de métricas para evaluar diferentes aspectos del a
 Para evaluar la consistencia de la estimación de la incertidumbre en el first guess y en el análisis utilizamos la Reduced Centered Random Variable o RCRV (@candille2007) que se define como:
 
 \begin{equation}
-  \mathrm{RCRV} = \frac{m - x_o}{\sqrt{\sigma_o^2 + \sigma^2}}
-  (\#eq:eq6)
+\mathrm{RCRV} = \frac{m - x_o}{\sqrt{\sigma_o^2 + \sigma^2}}
+(\#eq:eq6)
 \end{equation}
 
 donde $x_o$ es la observación asimilada y su error $\sigma_o$, $m$ la media ensamble del análisis en el espacio de las observaciones, y la desviación estándar $\sigma$ del ensamble 
 La media de $RCRV$ calculada sobre todas las realizaciones representa el sesgo de la media del conjunto con respecto a las observaciones normalizadas por la incertidumbre estimada:
 
 \begin{equation}
-  \mathrm{\mathit{mean RCRV} = E[RCRV]}
-  (\#eq:eq7)
+\mathrm{\mathit{mean RCRV} = E[RCRV]}
+(\#eq:eq7)
 \end{equation}
 
 La desviación estándar de la $RCRV$ o $sd RCRV$ mide la concordancia de la dispersión del ensamble y el error de observación con respecto a la distancia entre la media del ensamble y las observaciones, y por lo tanto, la sobre o subdispersión sistemática del ensamble:
 
 \begin{equation}
-  \mathit{sd RCRV} = \sqrt{\frac{1}{M -1}\sum_{i=1}^{M}(RCRV_i - \mathit{mean RCRV})^2}
-  (\#eq:eq8)
+\mathit{sd RCRV} = \sqrt{\frac{1}{M -1}\sum_{i=1}^{M}(RCRV_i - \mathit{mean RCRV})^2}
+(\#eq:eq8)
 \end{equation}
 
 donde $M$ es el tamaño del ensamble. Suponiendo que el error de observación fue estimado con precisión, un $sd RCRV > 1$ indica que el ensamble es subdispersivo (es decir, la distancia entre las observaciones y los pronósticos es mayor de lo esperado), y un $sd RCRV < 1$ indica que el conjunto es sobredispersivo (es decir, la distancia entre las observaciones y los pronósticos es menor de lo esperado). Un sistema consistente no tendrá sesgo ($media RCRV = 0$) y una desviación estándar igual a 1 ($sd RCRV = 1$). 
@@ -490,14 +565,14 @@ donde $M$ es el tamaño del ensamble. Suponiendo que el error de observación fu
 Para analizar el ajuste del first guess y el análisis a un conjunto de observaciones independientes se calculó la raiz del error cuadrático medio (RMSE) y el BIAS:
 
 \begin{equation}
-  \mathit{RMSE} = \sqrt{\frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)^{2}}
-  (\#eq:eq9)
+\mathit{RMSE} = \sqrt{\frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)^{2}}
+(\#eq:eq9)
 \end{equation}  
 
 
 \begin{equation}
-  \mathit{BIAS} = \frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)
-  (\#eq:eq10)
+\mathit{BIAS} = \frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)
+(\#eq:eq10)
 \end{equation}
 
 donde $X$ representa el modelo interpolado al espacio de la observaciones, $O$ las observaciones independientes, y N es el tamaño de la muestra. 
@@ -505,11 +580,11 @@ donde $X$ representa el modelo interpolado al espacio de la observaciones, $O$ l
 Para comparar la precipitación pronosticada por el first-guess con las estimaciones de precipitación de IMERG, calculamos el Fractions Skill Score (FSS, @roberts2008) para diferentes radios de influencia y umbrales de precipitación: 
 
 \begin{equation}
-  \mathrm{\mathit{FSS} = 1-\frac{\sum_{i=1}^{N} ({P_x}_i-{P_o}_i)^{2}}{\sum_{i=1}^{N} ({P_x}_i)^{2}+\sum_{i=1}^{N} ({P_o}_i)^{2}}}
-    (\#eq:eq11)
+\mathrm{\mathit{FSS} = 1-\frac{\sum_{i=1}^{N} ({P_x}_i-{P_o}_i)^{2}}{\sum_{i=1}^{N} ({P_x}_i)^{2}+\sum_{i=1}^{N} ({P_o}_i)^{2}}}
+(\#eq:eq11)
 \end{equation}
-  
-  
+
+
 donde $P_{oi}$ es la proporción de puntos de reticula en el subdominio $i-th$, definido por el radio de influencia, donde la que la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a @roberts2020, $P_{xi}$ se calcula sobre el ensamble completo y cuantifica de la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de cuadrícula, y luego promediando sobre el subdominio $i-th$. 
 
 Para los pronósticos por ensambles se calculó la probabilidad de precipitación por encima de determinados umbrales en cada punto de retícula como la proporción de miembros del ensamble que pronósticaron precipitación por encima de cada umbral. Además se generaron gráficos de confiabilidad [@wilks2011] con intervalos de probabilidades pronósticadas de 10% para analizar la calibración de los pronósticos inicializados a partir de los análisis de cada experimento.  
