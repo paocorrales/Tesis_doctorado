@@ -1,6 +1,6 @@
 # Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo 
 
-En este capítulo se evaluará en impacto de la asimilación de distintas fuentes de observación en pronósticos por ensable a corto plazo inicializados a partir del análisis de los distintos experimentos descriptos en la sección \@ref(config). Estos pronósticos abarcan el periodo de iniciación, madurez y dearrollo del SCM observado durant el 22y 23 de noviembre de 2022. Por lo tanto se analizará el impacto de la asimilación de observaciones a lo largo de los pronósticos en un contexto de convección húmeda profunda y se evaluará si las mejoras observadas en los análisis al respresentar este caso de estudio se trasladan a los pronósticos independientes. 
+En este capítulo se evaluará en impacto de la asimilación de distintas fuentes de observación en pronósticos por ensable a corto plazo inicializados a partir del análisis de los distintos experimentos descriptos en la sección \@ref(config). Estos pronósticos abarcan el periodo de iniciación, madurez y dearrollo del SCM observado durant el 22 y 23 de noviembre de 2022. Por lo tanto se analizará el impacto de la asimilación de observaciones a lo largo de los pronósticos en un contexto de convección húmeda profunda y se evaluará si las mejoras observadas en los análisis al respresentar este caso de estudio se trasladan a los pronósticos independientes. 
 
 
 ## Metodología
@@ -265,8 +265,8 @@ pp_area %>%
               .[, q_label := factor(umbral, labels = c("1~mm~h^{-1}", "5~mm~h^{-1}"))], 
             aes(end_date, area, color = "OBS"),
             linetype = 1) +
-  geom_line(aes(color = exp, linetype = factor(ini_date))) +
   geom_ribbon(aes(ymin = min_area, ymax = max_area, fill = exp, group = interaction(exp, ini_date)), alpha = .1) +
+  geom_line(aes(color = exp, linetype = factor(ini_date))) +
   scale_color_manual(values = c(OBS = "grey20", colores_exp),
                      labels =  c(E2 = "CONV", E5 = "ASWS", E6 = "SATWND",
                                  E9 = "RAD", OBS = "IMERG")) +
