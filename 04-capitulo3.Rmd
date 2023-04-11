@@ -1,8 +1,8 @@
 # Asimilacion de observaciones del satélite geoestacionario GOES-16
 
-En este capítulo se evaluará el impacto que genera la asimilación de observaciones del sensor ABI a bordo del satélite GOES-16 tanto en el análisis como en pronósticos determinísticos de alta resolución para el caso de estudio del 22 de noviembre de 2018. Estas observaciones son de particular interés en la región de Sudamérica por su alta resolución espacial y frecuencia temporal. Las observaciones de los canales sensibles al vapor de agua, brindan además, información en 3 niveles de la atmósfera, algo que no era posible con los sensores previos a bordo de los satélites GOES. Esperamos que todo esto ayude a mejorar la representación de los procesos convectivos y de mesoescala en pronósticos a corto plazo. 
+En este capítulo se evaluará el impacto que genera la asimilación de observaciones del sensor ABI a bordo del satélite GOES-16 tanto en el análisis como en pronósticos determinísticos de alta resolución para el caso de estudio del 22 de noviembre de 2018. Estas observaciones son de particular interés en la región de Sudamérica por su alta resolución espacial y frecuencia temporal. Las observaciones de los canales sensibles al vapor de agua, brindan además, información en 3 niveles de la atmósfera, algo que no era posible con los sensores previos a bordo de los satélites GOES. Esperamos que la asimilaci'on de estas observaciones contribuya a mejorar la representación de los procesos convectivos y de mesoescala en pronósticos a corto plazo. 
 
-Por ser un satélite y sensor nuevos, la última versión de GSI (V3.7) que fue publicada en julio de 2018 no incluye la posibilidad de asimilar estas observaciones. Fue necesario, entonces, modificar el código fuente del sistema de asimilación para incluir las rutinas necesarias utilizando como base los trabajos previos de @lee2019 y @liu2019. También por esta razón, el capítulo incluirá el análisis de experimentos para definir la mejor configuración posible y evaluar la técnicamente la asimilación de observaciones de ABI.
+Por ser un satélite y sensor nuevos, la última versión de GSI (V3.7) que fue publicada en julio de 2018 no incluye la posibilidad de asimilar estas observaciones. Fue necesario, entonces, modificar el código fuente del sistema de asimilación para incluir las rutinas necesarias utilizando como base los trabajos previos de @lee2019 y @liu2019. También por esta razón, el capítulo incluirá el análisis de experimentos para definir la mejor configuración posible y evaluar técnicamente la asimilación de observaciones de ABI.
 
 ## Metodología
 
@@ -12,7 +12,7 @@ La asimilación directa de radianzas de ABI requiere las mismas consideraciones 
 
 Si bien las radianzas de satélite pueden tener errores sistemáticos asociados a las condiciones de la atmósfera, la geometría de observación y condiciones específicas de los sensores que deben ser corregidos previo a la asimilación, para este trabajo se generó una primera prueba de asimilación para evaluar la magnitud de estos errores. Esta primera prueba utiliza la misma configuración de modelo y ensamble que los experimentos discutidos previamente e incluye la asimilación de los 3 canales de ABI en conjunto.
 
-La Figura \@ref(fig:oma-dist) muestra la distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y entre las observaciones y el análisis (OmA) para todo el periodo. Si las observaciones no tienen bias la distribución OmF estará centrada en cero. En este caso solo el canal 9 presenta un bias positivo muy pequeño del orden de 0.3 K (Tabla \@ref(tab:oma-tabla)). Por esta razón no se hará corrección del bias de estas observaciones. 
+La Figura \@ref(fig:oma-dist) muestra la distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y entre las observaciones y el análisis (OmA) para todo el periodo. Si las observaciones no tienen bias la distribución OmF estará centrada en cero. En este caso solo el canal 9 presenta un bias positivo muy pequeño del orden de 0.3 K (Tabla \@ref(tab:oma-tabla)). Por esta razón no se hará corrección del bias a estas observaciones. 
 
 La Figura \@ref(fig:oma-dist) y la Tabla \@ref(tab:oma-tabla) muestran además otro resultado importante. Si la asimilación de las observaciones se realizó correctamente es esperable que la diferencia OmA esté más cerca de cero que OmF y que su distribución tenga menos varianza. Esto se observa para los 3 canales asimilados y confirma que la implementación técnica dentro del sistema funciona correctamente. Notar que los cambios abruptos y simétricos en las curvas de distribución se deben al chequeo preliminar que se realiza como parte de los controles de calidad y que elimina aquellas observaciones que tienen un diferencia mayor a 2.2 K con respecto del campo preliminar. 
 
@@ -153,7 +153,7 @@ cld_msk %>%
   theme_minimal(base_size = 9)
 
 ```
-Debido al desarrollo de actividad convectiva en el dominio durante el periodo simulado, la cantidad de observaciones en cielo claro varía considerablemente. Esto puede apreciarse en las Figuras \@ref(fig:cld-msk) a y b. Sin embargo la cantidad de observaciones que aporta ABI es casi siempre superior a las observaciones de satélites polares (Figura \@ref(fig:obs-rad)) . 
+Debido al desarrollo de actividad convectiva en el dominio durante el periodo simulado, la cantidad de observaciones en cielo claro varía considerablemente. Esto puede apreciarse en las Figuras \@ref(fig:cld-msk) a y b. Sin embargo la cantidad de observaciones que aporta ABI es casi siempre superior a las observaciones de satélites polares (Figura \@ref(fig:obs-rad)a) . 
 
 (ref:obs-rad) a) Número de radianzas asimiladas en cada ciclo y b) número medio de radianzas asimiladas por ciclo en capas verticales de 50 hPa de espesor para los experimentos RAD (radianzas de satélites polares, circulos rojos) y ABI (radianzas de ABI, cuadrados turquezas).
 
@@ -235,7 +235,7 @@ rad$rad_date %>%
 
 ### Configuracion de los experimentos
 
-En este capítulo se analizan una serie de experimentos, primero para evaluar la sensibilidad a distintas combinaciones de canales y a la resolución del thinning y finalmente para comparar el impacto de la asimilación de observaciones de ABI en conjunto o no de satélites polares. Los experimentos SATWND y RAD fueron analizados previamente en el capítulo \@ref(ch1). SATWND asimila observaciones de EMC, EMA y vientos deriados de satélite y RAD suma a lo anterior radianzas en aire claro de sensores a bordo de satélites polares. RAD+ABI incluye además observaciones de los 3 canales de vapor de agua de ABI con un thinning de 10 km. Finalmente el conjunto de experimentos ABI incluye radianzas de ABI pero no de satélites polares, y usan distintas combinaciones de canales y resolución de thinning (Tabla \@ref(tab:exp-rad)). 
+En este capítulo se analizan una serie de experimentos, primero para evaluar la sensibilidad a distintas combinaciones de canales y a la resolución del thinning y finalmente para comparar el impacto de la asimilación de observaciones de ABI en conjunto o no con observaciones de satélites polares. Los experimentos SATWND y RAD fueron analizados previamente en el capítulo \@ref(ch1). SATWND asimila observaciones de EMC, EMA y vientos deriados de satélite y RAD suma a lo anterior radianzas en aire claro de sensores a bordo de satélites polares. RAD+ABI incluye además observaciones de los 3 canales de vapor de agua de ABI con un thinning de 10 km. Finalmente el conjunto de experimentos ABI incluye radianzas de ABI pero no de satélites polares, y usan distintas combinaciones de canales y resolución de thinning (Tabla \@ref(tab:exp-rad)). 
 
 
 ```{r exp-rad}
@@ -260,9 +260,10 @@ tribble(
 
 ```
 
-Todos los experimentos previamente descriptos usan la configuración del ensamble multifísica y del sistema de asimilación explicada en la sección \@ref(configmodelo). La misma manera el análisis horario se realiza desde las 18 UTC del 20 de noviembre hasta las 12 UTC del 23 de noviembre para cubrir el desarrollo y maduración del SCM. 
 
-Para estudiar el impacto de la asimilación de radianzas también se generaron pronósticos determinísticos en alta resolución inicializados a las 00 y 06 UTC del 22 de noviembre (Figura \@ref(fig:cycle-fcst). En la Figura \@ref(fig:dominio-det) se muestra el dominio *d01* con 10 km de resolución (línea negra), identico al dominio utilizado para el resto de las simulaciones y el dominio anidado *d02* con 2 km de resolución (línea turquesa). Las condiciones iniciales están dadas por los análisis de los distintos experimentos y las condiciones de borde son generadas a partir del GFSF determinístico. Además las variables atmósfericas para el *d02* fueron inicializadas haciendo un escalado de la información del análisis. Todos los pronósticos utilizan las mismas parametrizaciones: del modelo de superficie terrestre (Noah-MP, @chen2001), de microfísica (esquema de un solo momento de 6 clases del WRF, @hong2006a) de procesos radiativos (esquema de onda corta y onda larga del RRTMG, @iacono2008), YSU [@hong2006] para capa límite y KF [@kain2004] para covección (solo aplicado al *d01*).
+Todos los experimentos previamente descriptos usan la configuración del ensamble multifísica y del sistema de asimilación explicada en la sección \@ref(configmodelo). De la misma manera los ciclos de análisis horarios se realizan desde las 18 UTC del 20 de noviembre hasta las 12 UTC del 23 de noviembre para cubrir el desarrollo y maduración del SCM. 
+
+Para estudiar el impacto de la asimilación de radianzas también se generaron pronósticos determinísticos en alta resolución inicializados a las 00 y 06 UTC del 22 de noviembre (Figura \@ref(fig:cycle-fcst)). En la Figura \@ref(fig:dominio-det) se muestra el dominio *d01* con 10 km de resolución (línea negra), identico al dominio utilizado para el resto de las simulaciones num'ericas y el dominio anidado *d02* con 2 km de resolución (línea turquesa). Las condiciones iniciales están dadas por los análisis de los distintos experimentos y las condiciones de borde son generadas a partir del GFSF determinístico. Además las variables atmosféricas para el *d02* fueron inicializadas haciendo un escalado de la información del análisis. Todos los pronósticos utilizan las mismas parametrizaciones: del modelo de superficie terrestre (Noah-MP, @chen2001), de microfísica (esquema de un solo momento de 6 clases del WRF, @hong2006a) de procesos radiativos (esquema de onda corta y onda larga del RRTMG, @iacono2008), YSU [@hong2006] para capa límite y KF [@kain2004] para covección (solo aplicado al *d01*).
 
 Además de los pronósticos inicializados a partir de los análisis, se generaron pronósticos inicializados a partir de GFS, es decir, sin asimilación de datos regional. Estos pronósticos tienen la misma configuración y usan el mismo conjunto de parametrizaciones que los los pronósticos descriptos previamente. 
 
@@ -307,6 +308,12 @@ dominio %>%
 
 ### Sensibilidad a la combinación de canales {#canales}
 
+Trabajos previos evaluaron el impacto de asimilar observaciones de los canales asociados al vapor de agua de ABI en escala regional. En líneas general estos trabajos (por ejemplo @lee2019, @jones2020) utilizan las observaciones de los 3 canales en conjunto. Sin embargo @honda2018 encontraron mejores resultado al asimilar los canales 8 (6.2 $\mu m$) y 10 (7.3 $\mu m$) observando que el cnal 9 (6. $\mu m$) está muy correlacionado con los otros dos y por lo tanto no aporta información independiente en la asimilación. Por otro lado @lee2019 observaron que el impacto era mayor al asimilar observaciones de los 3 canales sobre el continente y el mar al mismo tiempo. También observaron que el incremento del análisis disminuye considerablemente al remover el canal 10 y en algunos casos también el canal 9.
+
+En este trabajo se generaron 3 experimentos de prueba que comparten la misma configuración que los experimentos previamente descriptos pero utilizando distintas combinaciones de canales de ABI. El experimento ABI_ch890_th30 asimila observaciones de los 3 canales, ABI_ch90_th30 asimila observaciones de los 9 y 10 (vapor de agua en niveles medios y bajos respectivamente) y ABI_ch0_th30 solo utliza observaciones del canal 10. Estos 3 experimentos utilizan un thinning de 30 km como primera aproximación, un análisis más detallado del thinning se realizará en la siguiente sección.
+
+(ref:area-canales) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), ABI_ch90_th30 (línea violeta) y ABI_ch0_th30 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.
+
 ```{r area-canales, fig.cap="(ref:area-canales)", fig.width=6, fig.height=5}
 colores_canales <- c(E6 = "#EE7733", EG2 = "chartreuse4", EG4 = "#845EC2",
                      EG5 = "#2B809B")
@@ -314,6 +321,8 @@ colores_canales <- c(E6 = "#EE7733", EG2 = "chartreuse4", EG4 = "#845EC2",
 imerg <- read_rds(here("data/derived_data/observations/IMERG_1h.rds"))
 
 q <- c(1, 5, 10, 25, 50)
+# lon_band = c(-67, -54.5)
+# lat_band = c(-38.5, -21)
 lon_band = c(-66.5, -61.5)
 lat_band = c(-35.5, -29)
 imerg <- purrr::map(q, function(f){
@@ -329,6 +338,8 @@ imerg <- purrr::map(q, function(f){
 
 
 files <- Sys.glob(here("data/derived_data/analysis_variables/pp_area/E*_ana*_area_acum_*.rds"))
+
+# files <- Sys.glob("~/datosmunin3/EXP/derived_data/ppacum/E*[0234569]_ana*_area_acum_*.rds")
 
 pp_area <- purrr::map(files, function(f) {
   
@@ -351,12 +362,12 @@ pp_area %>%
   geom_line(aes(color = exp)) +
   scale_color_manual(values = c(OBS = "grey20", colores_canales),
                      labels = c(E6 = "SATWND",
-                                EG2 = "ABI_ch890_th30", EG4 = "ABI_ch91_th30",
+                                EG2 = "ABI_ch890_th30", EG4 = "ABI_ch90_th30",
                                 EG5 = "ABI_ch0_th30", OBS = "OBS")) +
   scale_fill_manual(values = c(OBS = "grey20", colores_canales),
                     guide = NULL,
                     labels = c(E6 = "SATWND",
-                               EG2 = "ABI_ch890_th30", EG4 = "ABI_ch91_th30",
+                               EG2 = "ABI_ch890_th30", EG4 = "ABI_ch90_th30",
                                EG5 = "ABI_ch0_th30", OBS = "OBS")) +
   scale_y_continuous(label = scales::percent_format()) +
   scale_date(20181122000000, 20181123000000, "12 hours", limits = c(ymd_h(2018112200), ymd_h(2018112312))) +
@@ -372,7 +383,15 @@ pp_area %>%
 
 ```
 
-```{r area-fss, fig.cap="(ref:area-fss)", fig.width=5, fig.height=5}
+La Figura \@ref(fig:area-canales) muestra el porcetanje de área cubierta por precipitación superior a distintos umbrales y compara los experimentos para estudiar la sensibilidad al uso de canales con SATWND como experimento control y la estimación de precipitación de IMERG. Al igual que en otros experimentos, los experimentos ABI subestiman la precipitación observada y tienen además un comportamiento similar a SATWND. En algunos casos, logran representar mejor la precipitación que SATWND particularmente para umbrales de precipitación mayores (Figura \@ref(fig:area-canales)b-c) y algunas sub regiones como la provincia de Córdoba (no se muestra). Comparando los experimentos ABI entre si, no se observan grandes diferencias y solo en algunos casos ABI_ch890_th30 es mejor que otros otros dos. Desde este punto de vista la asimilación de las observaciones de los canales 8 y 9 en niveles altos y medios no aporta mucha información al análisis.
+
+Desde el punto de vista del FSS (Figura \@ref(fig:fss-canales)) los experimentos que incluyen observaciones de ABI tienen un rendimiento mucho mejor que SATWND. De manera similar los 3 experimentos de ABI tienen un comportamiento similar aunque en este caso ABI_ch890_th30 representa ligeramente mejor la precipitación por encima de 25 mm (Figuras \@ref(fig:fss-canales)byd). 
+
+Teniendo en cuenta que la asimilación de los 3 canales de ABI en conjunto no degradan el análisis y por el contrario, en algunos casos parecen tener un rendimiento mejor, para los experimentos de de este capítulo se asimilaran los 3 canales al mismo tiempo. 
+
+(ref:fss-canales) FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), ABI_ch90_th30 (línea violeta) y ABI_ch0_th30 (línea celeste).
+
+```{r fss-canales, fig.cap="(ref:fss-canales)", fig.width=5, fig.height=5}
 
 files <- c(Sys.glob(here("data/derived_data/FSS/fss_6h_ana_ens_EG[2345]*")),
            Sys.glob(here("data/derived_data/FSS/fss_6h_ana_ens_E[169]*.csv")))
@@ -409,6 +428,14 @@ fss %>%
 
 
 ### Sensibilidad al thinning {#thinning}
+
+En la asimilación de datos y en particular de radianzas de satélites, muchas observaciones con alta resolución espacial son descatadas porque podrían tener un impacto negativo en el análisis. En los esquemas de asimilación actuales se asume que la matriz de covarianza de los errores de las observaciones $R$ es diagonal, es decir, no hay correlación entre los errores de las distintas observaciones y cada observación es independiente. En este contexto estrategias como el thinning para disminuir la resolución de las observaciones conservando la información que aportan son claves. 
+
+Existen diversos algoritmos para realizar el thinning, GSI en particular utiliza una metodología simple que consiste en definir una retícula de baja resolución y seleccionar las observaciones en alta resolución según la distancia a los puntos de la retícula gruesa y criterios de calidad descriptos en la sección \@ref(sat). 
+
+Es importante definir entonces la resolución apropiada para la reticula de baja resolución y el impacto que esto tiene en el análisis. Para esto se realizaron 2 experimentos ABI_ch890_th30 con un thinning de 30 km, es decir, que lleva las observaciones con una resolución de 2 km a una reticula de 30 km, y ABI_ch890_th10 con un thinning de 10 km, igual a la resolución de las simulaciones. 
+
+(ref:area-thinning) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), y ABI_ch890_th10 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.
 
 ```{r area-thinning, fig.cap="(ref:area-thinning)", fig.width=6, fig.height=5}
 colores_thinning <- c(E6 = "#EE7733", EG2 = "chartreuse4", EG3 = "#047994")
@@ -447,6 +474,8 @@ pp_area %>%
 
 ```
 
+Comparamos los experimentos desde el punto de vista de la precipitación. En particular la Figura \@ref(fig:area-thinning) muestra el porcentaje de área cubierta por precipitación superior a distintos umbrales a lo largo del tiempo para los experimentos de thinning y SATWND como experimento control. En todos los casos el experimento con un thinning de 10 km representa es el que mejor el área cuberta por precipitación, particularmente en las horas de mayor actividad convectiva. Si bien todos los experimentos subestiman la precipitación en comparación con IMERG, ABI_ch890_th10 se acerca a esta estimación sobre todo cuando observamos el área máxima del ensamble. 
+
 ```{r thinning-fss, fig.cap="(ref:thinning-fss)", fig.width=5, fig.height=5}
 
 fss %>% 
@@ -468,6 +497,8 @@ fss %>%
   theme(legend.position = "bottom",
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
+
+Desde el punto de vista del FSS y para $1 mm h^{-1}$ (Figura \@ref(fig:thinning-fss)a y c) ABI_ch890_th10 tiene igual o mejor rendimiento que ABI_ch890_th30 pero ocurre lo contrario para el umbral de $25 mm h^{-1}$ (Figura \@ref(fig:thinning-fss)b y d). Si bien las diferencias de FSS entre los experimentos de thinning son muy pequeñas, en el caso del área cubierta por precipitación y otros análisis no mostrados, resalta la necesidad de utilizar un thinning cercano a la resolución del modelo. Por esta razón la configuración de thinning a utilizar en los experimentos posteriores será de 10 km. 
 
 ### Comparación del impacto de GOES-16 versus satélites polares
 
@@ -883,6 +914,104 @@ fss %>%
 
 
 #### Pronósticos determinísticos
+
+```{r}
+# files <- Sys.glob(here("data/derived_data/FSS/fss_6h_fcst_det_2018112200*d02.csv"))
+
+files <- Sys.glob("~/datosmunin3/EXP/derived_data/fss_1h_fcst_det_2018112200_*_d02.csv")
+
+fss_det <- map(files, function(f){
+  
+  meta <- unglue(basename(f), "fss_1h_fcst_det_{ini_date}_{exp}_d02.csv")
+  
+  fread(f) %>% 
+    .[, ini_date := meta[[1]][["ini_date"]]]
+}) %>% 
+  rbindlist()
+
+fss_det[q %in% c(1, 5, 10) & w %in% c(1, 5) & exp %in% c("E6", "E9", "E10", "EG3", "GFS")] %>% 
+    .[, ":="(q_label = factor(q, labels = c("1~mm~h^{-1}",  "5~mm~h^{-1}", "25~mm~h^{-1}")),
+           w_label = factor(w, labels = c("2~km", "10~km")))] %>% 
+  ggplot(aes(date, fss)) +
+  geom_line(aes(color = exp, linetype = ini_date)) +
+  scale_color_manual(values = c(colores_exp_abi, GFS = "grey20"),  
+                     labels = c(E6 = "SATWND", E9 = "RAD",
+                               E10 = "RAD+ABI", EG3 = "ABI")) +
+  scale_date(20181122000000, 20181123000000, "12 hours") +
+  coord_cartesian(xlim = c(ymd_hms(20181122000000), ymd_hms(20181123100000))) +
+  facet_grid(w_label ~ q_label, labeller = label_parsed) +
+  tagger::tag_facets(position = list(x = 0.05, y = 0.90)) +
+  labs(color = NULL, x = NULL, y = "FSS", linetype = NULL) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
+```
+
+```{r}
+imerg <- read_rds(here("data/derived_data/observations/IMERG_1h.rds"))
+
+q <- c(1, 5, 10, 25, 50)
+
+lon_band = c(-67.7, -53.7)
+lat_band = c(-40.5, -21.3)
+imerg <- purrr::map(q, function(f){
+  
+  imerg %>%
+    .[, c("lon", "lat") := wrf_project(x, y, inverse = TRUE, round = FALSE)] %>% 
+    .[lon %between% lon_band & lat %between% lat_band] %>%
+    .[, .(area = sum(pp_acum > f)/.N), by = .(end_date)] %>%
+    .[, umbral := f] %>%
+    .[]
+}) %>%
+  rbindlist()
+
+
+# files <- Sys.glob("~/datosmunin3/EXP/derived_data/ppacum/E*_fcst_det*area*")
+files <- Sys.glob(here("data/derived_data/analysis_variables/pp_area/*_fcst_det*area*"))
+
+pp_area <- purrr::map(files, function(f) {
+  
+  meta <- unglue(f, "{exp}_fcst_det_{ini}_area_acum_1h.rds")
+  
+  readRDS(f) %>% 
+    .[, ini_date := meta[[1]][["ini"]]]
+  
+}) %>% rbindlist()
+
+pp_area %>% 
+  .[umbral %in% c(1, 5, 10) & exp %in% c("E6", "E9", "E10", "EG3", "GFS")] %>% 
+  .[, .(mean_area = mean(area),
+        max_area = max(area),
+        min_area = min(area)), by = .(umbral, date, exp, ini_date)] %>% 
+  ggplot(aes(date, mean_area)) +
+  geom_line(data = imerg[umbral %in% c(1, 5, 10)], 
+            aes(end_date, area, color = "OBS"),
+            linetype = 2) +
+  # geom_ribbon(aes(ymin = min_area, ymax = max_area, fill = exp), alpha = .1) +
+  geom_line(aes(color = exp, linetype = ini_date)) +
+  scale_color_manual(values = c(OBS = "grey20", colores_exp_abi, GFS = "grey20"),
+                     labels = c(E6 = "SATWND", E9 = "RAD",
+                                E10 = "RAD+ABI", EG3 = "ABI",
+                                GFS = "GFS", OBS = "OBS")) +
+  # scale_fill_manual(values = c(OBS = "grey20", colores_exp_abi, GFS = "grey20"),
+  #                   guide = NULL,
+  #                   labels = c(E6 = "SATWND", E9 = "RAD",
+  #                               E10 = "RAD+ABI", EG3 = "ABI",
+  #                               GFS = "GFS", OBS = "OBS")) +
+  scale_y_continuous(label = scales::percent_format()) +
+  scale_date(20181122000000, 20181123000000, "12 hours", limits = c(ymd_h(2018112200), ymd_h(2018112312))) +
+  facet_wrap(~umbral, scales = "free_y", 
+             labeller = labeller(umbral = c("1" = "1 mm", "5" = "5 mm", 
+                                            "10" = "10 mm", "25" = "25 mm"))) +
+  tagger::tag_facets() +
+  labs(y = "Área cubierta por precipitación (%)", x = NULL, 
+       fill = NULL, color = NULL, linetype = NULL) +
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom",
+        panel.background = element_rect(fill = "#fbfbfb", color = NA))
+
+```
+
 
 ## Conclusiones
 
