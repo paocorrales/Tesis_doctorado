@@ -221,7 +221,7 @@ fss %>%
 
 El porcentaje de área cubierta por precipitación superior a determinados umbrales se muestra en la Figura \@ref(fig:area). Nuevamente, los pronósticos muestran una importante subestimación de la precipitación media, en particular CONV. El área sombreada que muestra el área máxima estimada sobre todos los miembros del ensamble se acerca al área estimada por IMERG, sin embargo todos los experimentos y sobre todo en el umbral de $1 mmh^{-1}$, la precipitación se adelantan en el tiempo. Los pronósticos inicializados a partir de CONV subestiman el área cubierta por precipitación durante el periodo más activio y luego la sobreestiman durante el 23 de noviembre cuando ya no se observa precipitación intensa dentro del dominio de estudio. 
 
-(ref:area) Porcentaje de área cubierta por precipitación superior a $1 mmh^{-1}$ (a y c) y $5 mmh^{-1}$ (b y d) a lo largo del tiempo para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre. En línea continua negra se muetra la estimación de IMERG. 
+(ref:area) Porcentaje de área cubierta por precipitación superior a $1 mmh^{-1}$ (a y c) y $5 mmh^{-1}$ (b y d) a lo largo del tiempo para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre. En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble de pronósticos. En línea continua negra se muetra la estimación de IMERG. 
 
 ```{r area, fig.cap="(ref:area)", fig.width=6, fig.height=5}
 
