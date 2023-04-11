@@ -1020,7 +1020,7 @@ proj_radar <- "+proj=tmerc +lon_0=-61.5 +lat_0=-32 +k_0=1 +ellps=WGS84"
 rad_loc <- fread(here("data/derived_data/sample_obs/radar_loc.csv")) %>% 
   .[, run := "OBSERVACIONES"]
 
-files <- Sys.glob(here("data/derived_data/observations/*.nc"))
+files <- Sys.glob(here("data/derived_data/observations/20181122_*.nc"))
 # Solo un par de horarios 10, 13, 16 y 19 UTC
 
 dbz_obs <- purrr::map(files, function(f) {
