@@ -413,7 +413,7 @@ SATWND & Satellite-derived winds & Wind & 3.8-8 $ms^{-1*+}$ & 1.3-2.5 $ms^{-1+}$
 \hypertarget{radiancias-de-satuxe9lite}{%
 \subsubsection{Radiancias de satélite}\label{radiancias-de-satuxe9lite}}
 
-En este trabajo se utilizaron radiancias de satélites disponibles a través del flujo de datos del GDAS, que incluye observaciones en el espectro infrarrojos y microondas. Los sensores incluidos son el Advanced Microwave Sounding Unit - A (AMSU-A), Microwave Humidity Sounder (MHS), y 2 sensores multiespectrales; el Atmospheric Infrared Sounder (AIRS) y el Infrared Atmospheric Sounding Interferometer (IASI) ubicados en distintas plataformas (ver Tabla \ref{tab:table-rad}). Dado que el dominio regional que se utilizará en este trabajo se encuentra en latitudes medias y que los satélite de interés están en órbitas polares, cada sensor escanea la zona sólo dos veces al día con una cobertura espacial que depende de la franja de covertura satélite. Por esta razón, el número de observaciones de los satélites varía significativamente en cada ciclo de asimilación. En particular, los sensores multiespectrales proporcionaron entre 100 y 1000 observaciones por cada escaneo cada 12 horas, contribuyendo al 88 \% de la cantidad total de radiancias de satélites polares asimiladas en los experimentos descriptos en la sección \ref{config}.
+En este trabajo se utilizaron radiancias de satélites disponibles a través del flujo de datos del GDAS, que incluye observaciones en el espectro infrarrojo y microondas. Dado que el dominio regional que se utilizará en este trabajo se encuentra en latitudes medias y que la mayoría de los satélites de interés están en órbitas polares, cada sensor escanea la zona sólo dos veces al día con una cobertura espacial que depende de la franja de cobertura satélite. Por esta razón, el número de observaciones de los satélites polares varía significativamente en cada ciclo de asimilación. En particular, los sensores multiespectrales proporcionaron entre 100 y 1000 observaciones por cada escaneo cada 12 horas, contribuyendo al 88 \% de la cantidad total de radiancias asimiladas (Tabla \ref{tab:table-rad}) en los experimentos descriptos en la sección \ref{config}. También se utilizó el satélite geoestacionario GOES-16 que tienen una frecuencia temporal de 15 y una resolución espacial de 2 kilómetros. En particular se utilizaron observaciones del sensor \emph{Advanced Baseline Imager} (ABI) que aporta más observaciones que el conjunto de satélites polares utilizados.
 \begin{table}
 
 \caption{\label{tab:table-rad}Lista de los sensores disponibles cada plataforma, el número de canales aceptados para su asimilación y el porcentaje de observaciones asimiladas calculado sobre todas las observaciones de radiancias y todos los ciclos de asimilación correspondientes al experimento RAD.}
@@ -443,7 +443,36 @@ AIRS & AQUA & 52 & 31.63 \%\\
 \bottomrule
 \end{tabu}
 \end{table}
-También se utilizaron observaciones del satélite geoestacionario GOES-16, en particular los 3 canales en el infrarrojo sensibles al vapor de agua del sensor \emph{Advanced Baseline Imager} (ABI). Estas observaciones tienen una frecuencia temporal de 15 y una resolución espacial de 2 kilómetros. Al ser un satélite goestacionario, cada escaneo del sensor cubre la totalidad del dominio por lo que las observaciones estarán disponibles en cada ciclo de asimilación y el número de observaciones disponible solo dependerá de la cobertura de nubes en cada momento.
+Los sensores microondas disponibles para ser asimilados en el periodo de interés son el \emph{Advanced Microwave Sounding Unit - A} (AMSU-A) a bordo de las plataformas NOAA-15, NOAA-18 y METOP-A, y el \emph{Microwave Humidity Sounder} (MHS) a bordo de las plataformas NOAA-19, METOP-A y METOP-B.
+
+AMSU-A ({\textbf{???}}) es un radiómetro de microondas que cuenta con 15 canales de observación diferentes entre 23.8 - 89 GHz y ha demostrado ser un importante sensor para el sondeo de la temperatura atmosférica (English et al., 2000). Cada canal detecta la radiación de microondas procedente de capas discretas de la atmósfera terrestre, la cual se describe mediante la función de peso, que corresponde la derivada de la transmitancia con respecto a la altura. El AMSU-A es conocido como un ``sensor de temperatura'' ya que sus canales fueron seleccionados para detectar la radiación emitida por capas sucesivas de la atmósfera. La Figura \ref{fig:wf}a muestra las funciones de peso en cielo claro para aquellos canales del AMSU-A que tienen sensibilidad en la tropósfera. No se incluyen en la asimilación de observaciones los dos primeros canales ubicados en 23.8 y 31.4 GHz ya que estos son sensibles a la fase líquida de las nubes y a la emisividad de la superficie, aunque si aportan información para el control de calidad de las observaciones de otros canales.
+
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/wf-1} 
+
+}
+
+\caption{Funciones de peso calculada sobre cielo claro para distintos censores. a) AMSU-A, canal 3 - 50.3 GHz, canal 4 - 52.8 GHz, canal 5 - 53.596 \(\pm\) 0.115 GHz, canal 6 - 54.4 GHz, canal 7 - 54.94 GHz; MHS, canal 1 - 89.0 GHz, canal 2 - 157.0 GHz, canal 3 - 183.311 \(\pm\) 1.00 GHz, canal 4 - 183.311 \(\pm\) 3.00 GHz, canal 5 - 190.311 GHz; ABI, canal 8 - 6.2 \(\mu m\), canal 9 - 6.9 \(\mu m\), canal 10 - 7.3 \(\mu m\).}\label{fig:wf}
+\end{figure}
+Por ejemplo, la función de peso del canal 7 (54.94 GHz) muestra que la contribución máxima a la radiación de microondas detectada por el instrumento AMSU-A proviene de aproximadamente un altura de 10 km por encima de la superficie. Como indica la Tabla \ref{tab:table-rad} solo entre 2 y 4 canales del sensor AMSU-A se asimilaron en este trabajo. Esta selección de canales resulta de incluir sólo aquellos canales cuyo máximo en la función de peso se encuentra por debajo del tope del modelo utilizado (50 hPa) y que no son sensibles a la superficie terrestre y las nubes. Entre los canales asimilados se encuentran los canales 5 a 8 (53.596, 54.4, 54.94 y 55.5 GHz respectivamente).
+
+De manera similar, el sensor microondas MHS es conocido por ser un ``sensor de humedad''. Este sensor tiene dos canales sensibles a la superficie y la presencia de nubes (canales 1 y 2: 89 y 157 GHz), y tres canales mayoritariamente sensibles al vapor de agua (canales 3, 4 y 5: 183.3 \(\pm\) 1.0, \(pm\) 3 y 190 GHz). Como indican las funciones de peso (Figura \ref{fig:wf}b), todos los canales del MHS se encuentran por debajo del tope del modelo, sin embargo, como se puede ver en la Tabla \ref{tab:table-rad}, entre 2 y 3 canales se asimilan en los experimentos llevados a cabo en esta tesis. Esto se debe a que en algunas situaciones el canal 5 se ve afectado por la presencia de nubes.
+
+En cuanto a los sensores multiespectrales, se asimilaron dos: el \emph{Atmospheric Infrared Sounder} (AIRS) y el \emph{Infrared Atmospheric Sounding Interferometer} (IASI) ubicados en distintas plataformas (ver Tabla \ref{tab:table-rad}). IASI mide la radiación emitida por la Tierra en 8461 canales que cubren el intervalo espectral del infrarrojo térmico entre 645 y 2760 \(cm^{-1}\) (3.62 - 15.5 \(\mu m\)). De manera similar, AIRS tiene canales en 3 rangos del espectro electromagnético: 645 y 1136 \(cm^{-1}\), 1265 y 1629 \(cm^{-1}\), y 2169 y 2674 \(cm^{-1}\). Asimilar la totalidad de estos canales no es recomendable ya que tanto las observaciones como sus errores se encuentran muy correlacionados entre si, es por ello que numerosos estudios que se han enfocado en definir un conjunto de canales adecuado en el contexto de los pronósticos numéricos globales para su asimilación (por ejemplo, Collard (2007), Rabier et al. (2002)). Realizar un estudio de sensibilidad de los canales para la región de interés esta fuera del alcance de los objetivos de este trabajo, por lo que se decidió utilizar la configuración regional del sistema GSI en la cual se asimilan entre 52 y 68 canales distintos (ver Tabla \ref{tab:table-rad}).
+
+Finalmente, en el caso de ABI, se asimilaron los canales sensibles al vapor de agua en distintos niveles, información que puede ser clave a la hora de pronosticar el desarrollo de convección húmeda profunda:
+\begin{itemize}
+\tightlist
+\item
+  Canal 8 (6.2 \(\mu m\)): vapor de agua en niveles altos
+\item
+  Canal 9 (6.9 \(\mu m\)): vapor de agua en niveles medios
+\item
+  Canal 10 (7.3 \(\mu m\)): vapor de agua en niveles bajos
+\end{itemize}
+La Figura \ref{fig:wf}c muestra las funciones de peso teóricas para una atmósfera estandar en latitudes medias para cada uno de estos canales. Si bien hay un solapamiento en las funciones de peso, el canal 8 es más sensible al vapor de agua alrededor de los 350 hPa, el canal 9 alrededor de 450 hPa y el canal 10 alrededor de los 600 hPa aproximadamente. En la sección \ref{canales} se analizará que combinación de canales da mejores resultados en el contexto de este caso de estudio.
 
 \hypertarget{conjuntos-de-observaciones-para-verificaciuxf3n}{%
 \subsection{Conjuntos de observaciones para verificación}\label{conjuntos-de-observaciones-para-verificaciuxf3n}}
@@ -469,7 +498,7 @@ La asimilación de datos combina de manera optima un pronóstico numérico o cam
 
 \begin{figure}
 
-{\centering \includegraphics[width=1\linewidth]{/home/paola.corrales/tesis_doctorado/figure/ciclo_asimilacion_teorico} 
+{\centering \includegraphics[width=1\linewidth,]{/home/paola.corrales/tesis_doctorado/figure/ciclo_asimilacion_teorico} 
 
 }
 
@@ -483,18 +512,18 @@ Existen distintas técnicas de asimilación de datos, cada una con sus ventajas 
 
 En el contexto de los Filtros de Kalman, el análisis o \(x_a\) será el estado más probable de la atmósfera teniendo en cuenta las \(m\) observaciones \(y_o\) disponibles en un tiempo \(t\). Para poder comparar y combinar el campo preliminar con las observaciones, este es interpolado a la ubicación de las observaciones. En determinados casos, por ejemplo cuando se trabaja con observaciones de satélite o radar, será necesario transformar las variables del modelo (ej. temperatura y humedad) para obtener las variables observadas (ej. temperatura de brillo). En la siguiente ecuación \(H\) es el operador de las observaciones no lineal que se encarga de las interpolaciones y transformaciones necesarias sobre el campo preliminar \(x_f\), representado como un vector de dimensión \(n\).
 \begin{equation}
-  x_a = x_f + K[y_o - H(x_b )]
-  \label{eq:eq1}
+x_a = x_f + K[y_o - H(x_b )]
+\label{eq:eq1}
 \end{equation}
 La diferencia entre las observaciones \(y_o\) y el campo preliminar se denomina innovación. El análisis \(x_a\) se obtiene aplicando las innovaciones al campo preliminar pesadas por una matriz \(K\) o Ganancia de Kalman. Esta matriz de dimensión \(n\) x \(m\) que incluye información sobre los errores del pronóstico y de las observaciones como se observa en la ecuación \eqref{eq:eq3},
 \begin{equation}
-  K = BH^T (HBH^T + R^{-1})^{-1}
-  \label{eq:eq3}
+K = BH^T (HBH^T + R^{-1})^{-1}
+\label{eq:eq3}
 \end{equation}
 donde \(B\) es la matriz de covarianza de los errores del pronóstico y \(R\) corresponde a la matriz de covarianza de los errores de las observaciones. La implementación de los los métodos de asimilación de datos suelen ser computacionalmente muy costosos, en parte debido a la estimación de la matriz \(B\).
 \begin{equation}
-  \mathrm{ B \approx \frac{1}{m-1} \sum_{k=1}^{m}(x_{f}^{k}-\overline{x}_f)(x_{f}^{k}-\overline{x}_f)^T}
-  \label{eq:eq5}
+\mathrm{ B \approx \frac{1}{m-1} \sum_{k=1}^{m}(x_{f}^{k}-\overline{x}_f)(x_{f}^{k}-\overline{x}_f)^T}
+\label{eq:eq5}
 \end{equation}
 donde \(k \; \epsilon \; [1,m]\) es el miembro \emph{k-ésimo} del ensamble. Los métodos de Filtro de Kalman por Ensambles tienen la ventaja de estimar la matriz \(B\) a partir de ensamble y actualizarla en cada ciclo de asimilación para incluir los errores dependientes de la dinámica del sistema.
 Esta estimación será buena si el ensamble logra capturar los posibles estados futuros o en otras palabras si la dispersión es sufiente para acompañar los cambios en la incertidumbre de los pronosticos a lo largo de los ciclos de asimilación. El ensamble debe, a su vez, ser capaz de capturar la inestabilidad en el sistema cuyos errores tienen tasas de crecimiento muy rápidas. Si esto ocurre la estimación de \(B\) será buena.
@@ -550,8 +579,8 @@ El preprocesamiento y control de calidad de los datos es un paso esencial en la 
 
 Luego del thinning, se aplica la corrección de bias. La metodología de corrección de bias implementada en GSI tiene una componente dependiente de características termodinámicas del aire y otro dependiente del ángulo de escaneo (Zhu et al., 2014) y se calcula como una polinomio lineal de N predictores \(p_i(x)\), con coeficientes asociados \(\beta_i\). Por lo tanto, la temperatura de brillo corregida por bias (\(BT_{cb}\)) puede obtenerse como
 \begin{equation}
-  \mathrm{\mathit{BT_{cb}} =\mathit{ BT} + \sum_{i = 0}^{N} \beta_i p_i (x)}
-  \label{eq:eq12}
+\mathrm{\mathit{BT_{cb}} =\mathit{ BT} + \sum_{i = 0}^{N} \beta_i p_i (x)}
+\label{eq:eq12}
 \end{equation}
 GSI tiene un término de corrección de bias constante (\(p_0 = 1\)) mientras que los términos restantes y sus predictores son el contenido de agua líquida de las nubes (CLW), la tasa de cambio de temperatura con la presión, el cuadrado de la tasa de y la sensibilidad de la emisividad de la superficie. El bias dependiente del ángulo de escaneo se modela como un polinomio de 4\(^\circ\) orden (Zhu et al., 2014).
 
@@ -578,7 +607,7 @@ Para las observaciones de satelite, se utilizó el Community Radiative Transfer 
 
 Utilizamos un conjunto de 60 miembros, cuya media al principio del ciclo de AD se inicializa utilizando el análisis deterministico del GFS al que se le suman perturbaciones aleatorias para generar el ensamble incial. Las perturbaciones se generaron como diferencias escaladas entre dos estados atmosféricos aleatorios obtenidos a partir de los datos del Reanálisis del Sistema de Predicción del Clima (CFSR) con una resolución horizontal de 0,5\(^{\circ}\) que tiene una evolución temporal suave (Necker et al., 2020; Maldonado et al., 2021). De este modo, preservamos el equilibrio casi hidrostático y geostrófico de las escalas mayores. Este método ayuda a evitar una subestimación del spread del ensamble (Ouaraini et al., 2015). Las perturbaciones también se aplicaron en los bordes laterales para mantener niveles adecuados de spread dentro del dominio del ensamble.
 
-Además de las perturbaciones aleatorias en los bordes laterales, se utilizó un esquema de multifísicas para representar mejor la incertidumbre en el modelo dentro del sistema de AD. Utilizamos 9 configuraciones diferentes que consisten en la combinación de 3 esquemas de convección húmeda (Kain-Fritsch, Kain (2004); Grell-Freitas, Grell and Freitas (2013); y Betts-Miller-Janjic, Janjić (1994)) y 3 esquemas de capa límite planetaria (Esquema de la Universidad de Yonsei, Hong, Kim, et al. (2006); Esquema Mellor-Yamada-Janjic, Janjić (1994); y Mellor-Yamada Nakanishi Niino, Nakanishi and Niino (2009)). La distribución de estas parametrizaciones entre los 60 miembros del ensamble se muestra en la Tabla \ref{tab:miembros-desc}. Todos los miembros del conjunto utilizan las mismas parametrizaciones del modelo de superficie terrestre (Noah-MP, Chen and Dudhia (2001)), de microfísica (esquema de un solo momento de 6 clases del WRF, Hong, Noh, et al. (2006)) y de procesos radiativos (esquema de onda corta y onda larga del RRTMG (Iacono et al., 2008)).
+Además de las perturbaciones aleatorias en los bordes laterales, se utilizó un esquema de multifísicas para representar mejor la incertidumbre en el modelo dentro del sistema de AD. Utilizamos 9 configuraciones diferentes que consisten en la combinación de 3 esquemas de convección húmeda (Kain-Fritsch, Kain (2004); Grell-Freitas, Grell and Freitas (2013); y Betts-Miller-Janjic, Janjić (1994)) y 3 esquemas de capa límite planetaria (Esquema de la Universidad de Yonsei, Hong, Kim, et al. (2006); Esquema Mellor-Yamada-Janjic, Janjić (1994); y Mellor-Yamada Nakanishi Niino, Nakanishi and Niino (2009)). La distribución de estas parametrizaciones entre los 60 miembros del ensamble se muestra en la Tabla \ref{tab:miembros-desc}. Todos los miembros del ensamble utilizan las mismas parametrizaciones del modelo de superficie terrestre (Noah-MP, Chen and Dudhia (2001)), de microfísica (esquema de un solo momento de 6 clases del WRF, Hong, Noh, et al. (2006)) y de procesos radiativos (esquema de onda corta y onda larga del RRTMG, Iacono et al. (2008)).
 \begin{table}
 
 \caption{\label{tab:miembros-desc}Generación de los 60 miembros del ensamble multifísica como combinación de parametrizaciones de Cumulus y PBL}
@@ -602,7 +631,7 @@ Se aplicó con un parámetro de inflación \(\alpha=0,9\) para mitigar el impact
 
 \begin{figure}
 
-{\centering \includegraphics[width=0.8\linewidth]{thesis_files/figure-latex/dominio-1} 
+{\centering \includegraphics[width=0.8\linewidth,]{thesis_files/figure-latex/dominio-1} 
 
 }
 
@@ -619,37 +648,37 @@ Se seleccionaron un conjunto de métricas para evaluar diferentes aspectos del a
 
 Para evaluar la consistencia de la estimación de la incertidumbre en el first guess y en el análisis utilizamos la Reduced Centered Random Variable o RCRV (Candille et al. (2007)) que se define como:
 \begin{equation}
-  \mathrm{RCRV} = \frac{m - x_o}{\sqrt{\sigma_o^2 + \sigma^2}}
-  \label{eq:eq6}
+\mathrm{RCRV} = \frac{m - x_o}{\sqrt{\sigma_o^2 + \sigma^2}}
+\label{eq:eq6}
 \end{equation}
 donde \(x_o\) es la observación asimilada y su error \(\sigma_o\), \(m\) la media ensamble del análisis en el espacio de las observaciones, y la desviación estándar \(\sigma\) del ensamble
 La media de \(RCRV\) calculada sobre todas las realizaciones representa el sesgo de la media del conjunto con respecto a las observaciones normalizadas por la incertidumbre estimada:
 \begin{equation}
-  \mathrm{\mathit{mean RCRV} = E[RCRV]}
-  \label{eq:eq7}
+\mathrm{\mathit{mean RCRV} = E[RCRV]}
+\label{eq:eq7}
 \end{equation}
 La desviación estándar de la \(RCRV\) o \(sd RCRV\) mide la concordancia de la dispersión del ensamble y el error de observación con respecto a la distancia entre la media del ensamble y las observaciones, y por lo tanto, la sobre o subdispersión sistemática del ensamble:
 \begin{equation}
-  \mathit{sd RCRV} = \sqrt{\frac{1}{M -1}\sum_{i=1}^{M}(RCRV_i - \mathit{mean RCRV})^2}
-  \label{eq:eq8}
+\mathit{sd RCRV} = \sqrt{\frac{1}{M -1}\sum_{i=1}^{M}(RCRV_i - \mathit{mean RCRV})^2}
+\label{eq:eq8}
 \end{equation}
 donde \(M\) es el tamaño del ensamble. Suponiendo que el error de observación fue estimado con precisión, un \(sd RCRV > 1\) indica que el ensamble es subdispersivo (es decir, la distancia entre las observaciones y los pronósticos es mayor de lo esperado), y un \(sd RCRV < 1\) indica que el conjunto es sobredispersivo (es decir, la distancia entre las observaciones y los pronósticos es menor de lo esperado). Un sistema consistente no tendrá sesgo (\(media RCRV = 0\)) y una desviación estándar igual a 1 (\(sd RCRV = 1\)).
 
 Para analizar el ajuste del first guess y el análisis a un conjunto de observaciones independientes se calculó la raiz del error cuadrático medio (RMSE) y el BIAS:
 \begin{equation}
-  \mathit{RMSE} = \sqrt{\frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)^{2}}
-  \label{eq:eq9}
+\mathit{RMSE} = \sqrt{\frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)^{2}}
+\label{eq:eq9}
 \end{equation}
 \begin{equation}
-  \mathit{BIAS} = \frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)
-  \label{eq:eq10}
+\mathit{BIAS} = \frac{1}{N}\sum_{i = 1}^{N} (X_i - O_i)
+\label{eq:eq10}
 \end{equation}
 donde \(X\) representa el modelo interpolado al espacio de la observaciones, \(O\) las observaciones independientes, y N es el tamaño de la muestra.
 
 Para comparar la precipitación pronosticada por el first-guess con las estimaciones de precipitación de IMERG, calculamos el Fractions Skill Score (FSS, Roberts (2008)) para diferentes radios de influencia y umbrales de precipitación:
 \begin{equation}
-  \mathrm{\mathit{FSS} = 1-\frac{\sum_{i=1}^{N} ({P_x}_i-{P_o}_i)^{2}}{\sum_{i=1}^{N} ({P_x}_i)^{2}+\sum_{i=1}^{N} ({P_o}_i)^{2}}}
-    \label{eq:eq11}
+\mathrm{\mathit{FSS} = 1-\frac{\sum_{i=1}^{N} ({P_x}_i-{P_o}_i)^{2}}{\sum_{i=1}^{N} ({P_x}_i)^{2}+\sum_{i=1}^{N} ({P_o}_i)^{2}}}
+\label{eq:eq11}
 \end{equation}
 donde \(P_{oi}\) es la proporción de puntos de reticula en el subdominio \(i-th\), definido por el radio de influencia, donde la que la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a Roberts et al. (2020), \(P_{xi}\) se calcula sobre el ensamble completo y cuantifica de la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de cuadrícula, y luego promediando sobre el subdominio \(i-th\).
 
@@ -659,10 +688,10 @@ Para los pronósticos por ensambles se calculó la probabilidad de precipitació
 \section{Recursos computacionales}\label{recursos-computacionales}}
 
 Todos los experimentos corrieron en la supercomputadora Cheyenne del Centro Nacional de Investigación Atmosférica (NCAR) (Computational and Information Systems Laboratory, 2019). El posprocesamineto y análisis se realizó en {[}CIMA{]}. El análisis de datos se generó utilizando el lenguaje de programación R (R Core Team, 2020), utilizando los paquetes data.table (Dowle and Srinivasan, 2020) y metR (Campitelli, 2020), entre otros.
-Todos los gráficos se han realizado con ggplot2 (Wickham, 2009) y la versión final de la tesis se generó con knitr, rmarkdown (Xie, 2015; Allaire et al., 2019) y tesisdown {[}esperando respuesta del desarrollador{]}.
+Todos los gráficos se han realizado con ggplot2 (Wickham, 2009) y la versión final de la tesis se generó con knitr, rmarkdown (Xie, 2015; Allaire et al., 2019) y tesisdown (Ismay and Solomon, 2022).
 
-\hypertarget{asimilacion-de-observaciones-de-estaciones-meteoroluxf3gicas-automuxe1ticas-vientos-derivados-de-satuxe9lite-y-radianzas-de-satelites-polares}{%
-\chapter{Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares}\label{asimilacion-de-observaciones-de-estaciones-meteoroluxf3gicas-automuxe1ticas-vientos-derivados-de-satuxe9lite-y-radianzas-de-satelites-polares}}
+\hypertarget{ch1}{%
+\chapter{Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares}\label{ch1}}
 
 Este capítulo busca contribuir a la cuantificación y comparación del impacto de asimilar observaciones de las estaciones meteorológicas automáticas de alta resolución, viento estimando por satélite y radiancias de cielo claro de satélites polares a la hora de aplicar la asimilación de datos para mejorar los pronósticos numéricos de eventos severos sobre Sudamérica, donde la red de observación convencional es bastante escasa y otras fuentes de información podrían potencialmente cubrir las áreas menos observadas y aportar información en las escalas más pequeñas.
 
@@ -683,22 +712,18 @@ Obs type & CONV & AWS & SATWND & RAD\\
 \midrule
 Convencional (PREPBUFR) & x & x & x & x\\
 Convencional (EMA) &  & x & x & x\\
-Vionto estimado por satélite &  &  & x & x\\
+Viento estimado por satélite &  &  & x & x\\
 Radiancias &  &  &  & x\\
 \bottomrule
 \end{tabu}
 \end{table}
 
 \begin{figure}
-\centering
-\includegraphics{thesis_files/figure-latex/obs-horizontal-1.png}
-\caption{\label{fig:obs-horizontal}Distribución espacial horizontal media de las observaciones disponibles en cada ciclo de asmilación para los experimentos a) CONV, b) AWS, c) SATWND y d) RAD calculados sobre cajas de 2,5\(^{\circ}\).}
+\includegraphics{thesis_files/figure-latex/obs-horizontal-1} \caption{Distribución espacial horizontal media de las observaciones disponibles en cada ciclo de asmilación para los experimentos a) CONV, b) AWS, c) SATWND y d) RAD calculados sobre cajas de 2,5\(^{\circ}\).}\label{fig:obs-horizontal}
 \end{figure}
 
 \begin{figure}
-\centering
-\includegraphics{thesis_files/figure-latex/obs-cycle-1.png}
-\caption{\label{fig:obs-cycle}a) Número de observaciones asimiladas por ciclo y b) número medio de observaciones asimiladas por ciclo dividido en capas verticales de 50 hPa de espesor para los experimentos CONV (cuadrados azules), AWS (puntos celestes), SATWND (triángulos naranjas) y RAD (diamantes rojos).}
+\includegraphics{thesis_files/figure-latex/obs-cycle-1} \caption{a) Número de observaciones asimiladas por ciclo y b) número medio de observaciones asimiladas por ciclo dividido en capas verticales de 50 hPa de espesor para los experimentos CONV (cuadrados azules), AWS (puntos celestes), SATWND (triángulos naranjas) y RAD (diamantes rojos).}\label{fig:obs-cycle}
 \end{figure}
 La distribución horizontal del promedio de observaciones asimiladas en cada ciclo de asimilación de cada experimento se muestra en la Figura \ref{fig:obs-horizontal}. El mayor número de observaciones asimiladas sobre el centro y el este del dominio corresponde a las observaciones de EMA. En la Figura \ref{fig:obs-cycle}a se muestra el número de observaciones asimiladas a lo largo del tiempo. Los máximos locales a las 12 y a las 00 UTC encontrados principalmente en CONV corresponden a las observaciones obtenidas con los sondeos operativos. La fuerte variabilidad en el número de observaciones de radiancias por ciclo es también notable y depende de la cobertura de cada satélite. Los máximos a las 13-14 y 01-02 UTC en RAD corresponden a la contribución de los sensores multiespectrales. La distribución vertical del número medio de observaciones por ciclo (Figura \ref{fig:obs-cycle}b) muestra un máximo en niveles bajos debido a las observaciones de EMA. Los vientos estimados por satélite tienen un máximo en la troposfera alta (entre 500-250 hPa). Por encima de 850 hPa, la mayoría de las observaciones corresponden a radiancias.
 
@@ -706,7 +731,7 @@ Todos los experimentos de asimilación comienzan a las 18 UTC del 20 de noviembr
 
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{/home/paola.corrales/tesis_doctorado/figure/analisis} \caption{Diagrama de los ciclos de asimilación entre las 18 UTC del 20 de noviembre y las 12 UTC del 23 de noviembre más el periodo de spin up de 6 horas. La sección ampliada muestra la asimilación horaria que se realiza dentro de una ventana centrada de una hora y la incorporación de condiciones de borde del GFS cada 6 horas. Se muestran las dos misiones IOP de la campaña RELAMPAGO.}\label{fig:cycle}
+\includegraphics[width=1\linewidth,]{/home/paola.corrales/tesis_doctorado/figure/analisis} \caption{Diagrama de los ciclos de asimilación entre las 18 UTC del 20 de noviembre y las 12 UTC del 23 de noviembre más el periodo de spin up de 6 horas. La sección ampliada muestra la asimilación horaria que se realiza dentro de una ventana centrada de una hora y la incorporación de condiciones de borde del GFS cada 6 horas. Se muestran las dos misiones IOP de la campaña RELAMPAGO.}\label{fig:cycle}
 \end{figure}
 \hypertarget{resultados}{%
 \section{Resultados}\label{resultados}}
@@ -726,15 +751,11 @@ En general, estos resultados indican que la dispersión del ensamble es coherent
 
 
 \begin{figure}
-\centering
-\includegraphics{thesis_files/figure-latex/rcrv-sfc-1.png}
-\caption{\label{fig:rcrv-sfc}\(sd RCRV\) calculado para observaciones de superficie (de PREPBUFR y EMA) de a) viento, y b) temperatura promediados en cajas de 2.5º para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario paa todo el periodo del experimento.}
+\includegraphics{thesis_files/figure-latex/rcrv-sfc-1} \caption{\(sd RCRV\) calculado para observaciones de superficie (de PREPBUFR y EMA) de a) viento, y b) temperatura promediados en cajas de 2.5º para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario paa todo el periodo del experimento.}\label{fig:rcrv-sfc}
 \end{figure}
 
 \begin{figure}
-\centering
-\includegraphics{thesis_files/figure-latex/rcrv-profile-1.png}
-\caption{\label{fig:rcrv-profile}Perfiles verticales de \(mean RCRV\) (línea punteada) y \(sd RCRV\) (línea sólida) para observaciones de a) temperatura y b) viento de sondeos y aviones, c) viento estimado por satélites, y d) temperatura de brillo para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario para todo el periodo del experimento.}
+\includegraphics{thesis_files/figure-latex/rcrv-profile-1} \caption{Perfiles verticales de \(mean RCRV\) (línea punteada) y \(sd RCRV\) (línea sólida) para observaciones de a) temperatura y b) viento de sondeos y aviones, c) viento estimado por satélites, y d) temperatura de brillo para el experimento RAD. Se usaron las observaciones agregadas de cada ciclo de asimilación horario para todo el periodo del experimento.}\label{fig:rcrv-profile}
 \end{figure}
 \hypertarget{impacto-analisis}{%
 \subsection{Impacto de la asimilación de las distintas observaciones}\label{impacto-analisis}}
@@ -794,7 +815,7 @@ La distribución de la temperatura y la humedad en la PBL (Figura \ref{fig:summa
 
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{thesis_files/figure-latex/summary-fields-1} \caption{a) Agua precipitable (sombreada, \(kg\ m^{-2}\)) y viento medio del norte sobre los primeros 7 niveles sigma (desde la superficie hasta aproximadamente 800 hPa, contornos, \(m\ s^{-1}\)), b) Temperatura potencial media para la PBL (primeros 10 niveles sigma), y c) CAPE máxima y cortante del viento en \textasciitilde0-6 km para 15 y 30 \(m\ s^{-1}\) en cada experimento. Todos los campos corresponden a la media del ensamble del análisis para las 00 UTC del 22 de noviembre. Los contornos rellenos de color gris corresponden a la topografía de más de 1500 metros sobre el nivel del mar.}\label{fig:summary-fields}
+\includegraphics[width=1\linewidth,]{thesis_files/figure-latex/summary-fields-1} \caption{a) Agua precipitable (sombreada, \(kg\ m^{-2}\)) y viento medio del norte sobre los primeros 7 niveles sigma (desde la superficie hasta aproximadamente 800 hPa, contornos, \(m\ s^{-1}\)), b) Temperatura potencial media para la PBL (primeros 10 niveles sigma), y c) CAPE máxima y cortante del viento en \textasciitilde0-6 km para 15 y 30 \(m\ s^{-1}\) en cada experimento. Todos los campos corresponden a la media del ensamble del análisis para las 00 UTC del 22 de noviembre. Los contornos rellenos de color gris corresponden a la topografía de más de 1500 metros sobre el nivel del mar.}\label{fig:summary-fields}
 \end{figure}
 \hypertarget{validaciuxf3n-con-observaciones-independientes}{%
 \subsection{Validación con observaciones independientes}\label{validaciuxf3n-con-observaciones-independientes}}
@@ -814,9 +835,7 @@ El FSS se calcula para cuantificar la coincidencia espacial entre la precipitaci
 
 
 \begin{figure}
-\centering
-\includegraphics{thesis_files/figure-latex/fss-1.png}
-\caption{\label{fig:fss}FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja).}
+\includegraphics{thesis_files/figure-latex/fss-1} \caption{FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja).}\label{fig:fss}
 \end{figure}
 Para complementar el análisis, la Figura \ref{fig:dbz-mean} muestra la reflectividad máxima observada en la columna vertical (COLMAX) y el COLMAX de la media del ensamble para los experimentos CONV y RAD en diferentes momentos entre las 10 y las 19 UTC del 22 de noviembre. Estos experimentos fueron elegidos porque representan el análisis con el mínimo (CONV) y el máximo (RAD) número de observaciones asimiladas. Además, son los experimentos con peor (CONV) y mejor (RAD) desempeño en cuanto a la habilidad para pronosticar la precipitación a una hora (Figura \ref{fig:fss}). En general, ninguno de los pronósticos de corto alcance capta los detalles finos de la distribución de la reflectividad. Esto es esperable si se tiene en cuenta la resolución horizontal del modelo (10 km), que no es suficiente para representar adecuadamente la intensidad de la banda convectiva asociada al SCM. RAD representa mejor las características observadas del sistema mostrando un SCM más fuerte y organizado que CONV, sobre el centro del dominio a las 10 y 13 UTC (primera y segunda columnas en la Figura \ref{fig:dbz-mean}). Las celdas convectivas que se inician después de las 16 UTC a lo largo del frente cálido en la parte noreste del dominio son bien captadas por ambos experimentos, pero están mejor representadas en términos de intensidad en RAD. Además, CONV capta la ubicación del SCM, pero la convección parece estar menos organizada y ser mucho más débil que en RAD. Antes y después de los tiempos mostrados en la Figura \ref{fig:dbz-mean}, la concordancia entre la localización de las celdas convectivas observadas y las simuladas en los experimentos es bastante buena en las regiones donde se dispone de datos de radar, especialmente para RAD.
 
@@ -826,7 +845,7 @@ El IOP 7 (Figuras \ref{fig:soundings}a-d) proporciona una buena caracterización
 
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{thesis_files/figure-latex/dbz-mean-1} \caption{Reflectividad máxima en la columna (COLMAX en \(dBZ\)), observada (fila superior) y pronósticada a 1 hora por los experimentos CONV (segunda fila) y RAD (tercera fila) a las 10 UTC (primera columna), 13 UTC (segunda columna), 16 UTC (tercera columna) y 19 UTC (cuarta columna) del 22 de noviembre de 2018. Los círculos negros en la primera fila muestran el rango de observación de cada radar.}\label{fig:dbz-mean}
+\includegraphics[width=1\linewidth,]{thesis_files/figure-latex/dbz-mean-1} \caption{Reflectividad máxima en la columna (COLMAX en \(dBZ\)), observada (fila superior) y pronósticada a 1 hora por los experimentos CONV (segunda fila) y RAD (tercera fila) a las 10 UTC (primera columna), 13 UTC (segunda columna), 16 UTC (tercera columna) y 19 UTC (cuarta columna) del 22 de noviembre de 2018. Los círculos negros en la primera fila muestran el rango de observación de cada radar.}\label{fig:dbz-mean}
 \end{figure}
 Durante el IOP 8 (Figuras \ref{fig:soundings}e-h), la zona densamente observada se encontraba detrás del SCM, lo suficientemente alejada del sistema como para no estar directamente afectada por su circulación de mesoescala. Esta zona también estaba detrás del frente frío y se veía afectada por advección fría en niveles bajos. La asimilación de observaciones en AWS, SATWND y RAD reduce el bias frío y el RMSE para la temperatura entre 5 y 12 km y el RMSE en la PBL en comparación con CONV (Figura \ref{fig:soundings}e). La reducción del bias y del RMSE también es importante para la temperatura del punto de rocío (Figura \ref{fig:soundings}f), siendo SATWND el que muestra el mayor impacto, seguido de AWS y RAD. El viento zonal está sobreestimado en los análisis y sólo RAD muestra una mejora con respecto a CONV en la troposfera alta (Figura \ref{fig:soundings}g). En niveles bajos el viento meridional (Figura \ref{fig:soundings}g) presenta un bias negativo, indicando una subestimación del viento del sur detrás del frente frío principalmente en AWS, SATWND, y RAD. De hecho, los bias en niveles bajos en estos experimentos son mayores que en el experimento CONV, lo que indica un efecto negativo de las observaciones asimiladas (posiblemente asociado al efecto de EMA).
 
@@ -855,7 +874,7 @@ La asimilación del viento estimado por satélite no produjo un impacto notable 
 \hypertarget{impacto-de-la-asimilaciuxf3n-de-observaciones-convencionales-de-estaciones-automuxe1ticas-vientos-derivados-de-satuxe9lite-y-radianzas-de-satelites-polares-en-pronuxf3sticos-a-corto-plazo}{%
 \chapter{Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo}\label{impacto-de-la-asimilaciuxf3n-de-observaciones-convencionales-de-estaciones-automuxe1ticas-vientos-derivados-de-satuxe9lite-y-radianzas-de-satelites-polares-en-pronuxf3sticos-a-corto-plazo}}
 
-En este capítulo se evaluará en impacto de la asimilación de distintas fuentes de observación en pronósticos por ensable a corto plazo inicializados a partir del análisis de los distintos experimentos descriptos en la sección \ref{config}. Estos pronósticos abarcan el periodo de iniciación, madurez y dearrollo del SCM observado durant el 22y 23 de noviembre de 2022. Por lo tanto se analizará el impacto de la asimilación de observaciones a lo largo de los pronósticos en un contexto de convección húmeda profunda y se evaluará si las mejoras observadas en los análisis al respresentar este caso de estudio se trasladan a los pronósticos independientes.
+En este capítulo se evaluará en impacto de la asimilación de distintas fuentes de observación en pronósticos por ensable a corto plazo inicializados a partir del análisis de los distintos experimentos descriptos en la sección \ref{config}. Estos pronósticos abarcan el periodo de iniciación, madurez y dearrollo del SCM observado durant el 22 y 23 de noviembre de 2022. Por lo tanto se analizará el impacto de la asimilación de observaciones a lo largo de los pronósticos en un contexto de convección húmeda profunda y se evaluará si las mejoras observadas en los análisis al respresentar este caso de estudio se trasladan a los pronósticos independientes.
 
 \hypertarget{metodologuxeda-1}{%
 \section{Metodología}\label{metodologuxeda-1}}
@@ -869,7 +888,7 @@ Los pronósticos se inicializaron a las 00 y 06 UTC del 22 de noviembre para cap
 
 
 \begin{figure}
-\includegraphics[width=1\linewidth]{/home/paola.corrales/tesis_doctorado/figure/forecast_diag} \caption{Diagrama de los pronósticos por ensambles inicializados a las 00 y 06 UTC del 22 de noviembre y que corren hasta las 12 UTC del 23 de noviembre. Las condiciones de borde corresponden al pronóstico de GFS y se incorporan cada 6 horas.}\label{fig:cycle-fcst}
+\includegraphics[width=1\linewidth,]{/home/paola.corrales/tesis_doctorado/figure/forecast_diag} \caption{Diagrama de los pronósticos por ensambles inicializados a las 00 y 06 UTC del 22 de noviembre y que corren hasta las 12 UTC del 23 de noviembre. Las condiciones de borde corresponden al pronóstico de GFS y se incorporan cada 6 horas.}\label{fig:cycle-fcst}
 \end{figure}
 \hypertarget{resultados-1}{%
 \section{Resultados}\label{resultados-1}}
@@ -935,17 +954,13 @@ Las observaciones de viento derivadas de satélite muestran un impacto clarament
 
 
 \begin{figure}
-\centering
-\includegraphics{thesis_files/figure-latex/fssfcst-1.png}
-\caption{\label{fig:fssfcst}FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre.}
+\includegraphics{thesis_files/figure-latex/fssfcst-1} \caption{FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre.}\label{fig:fssfcst}
 \end{figure}
 El porcentaje de área cubierta por precipitación superior a determinados umbrales se muestra en la Figura \ref{fig:area}. Nuevamente, los pronósticos muestran una importante subestimación de la precipitación media, en particular CONV. El área sombreada que muestra el área máxima estimada sobre todos los miembros del ensamble se acerca al área estimada por IMERG, sin embargo todos los experimentos y sobre todo en el umbral de \(1 mmh^{-1}\), la precipitación se adelantan en el tiempo. Los pronósticos inicializados a partir de CONV subestiman el área cubierta por precipitación durante el periodo más activio y luego la sobreestiman durante el 23 de noviembre cuando ya no se observa precipitación intensa dentro del dominio de estudio.
 
 
 \begin{figure}
-\centering
-\includegraphics{thesis_files/figure-latex/area-1.png}
-\caption{\label{fig:area}Porcentaje de área cubierta por precipitación superior a \(1 mmh^{-1}\) (a y c) y \(5 mmh^{-1}\) (b y d) a lo largo del tiempo para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre. En línea continua negra se muetra la estimación de IMERG.}
+\includegraphics{thesis_files/figure-latex/area-1} \caption{Porcentaje de área cubierta por precipitación superior a \(1 mmh^{-1}\) (a y c) y \(5 mmh^{-1}\) (b y d) a lo largo del tiempo para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre. En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble de pronósticos. En línea continua negra se muetra la estimación de IMERG.}\label{fig:area}
 \end{figure}
 Por otro lado, se generaron diagramas de confiabilidad usando probabilidades pronósticadas de 0, 20, 40, 60, 80 y 100\% calculadas sobre el ensamble para los pronósticos inicializados a las 00 UTC (Figuras \ref{fig:reliability-1}) y 06 UTC (Figuras \ref{fig:reliability-2}) utilizando percentiles de precipitación calculados sobre todo el periodo pronosticado (Tabla \ref{tab:quantiles}). En un diagrama de confiabilidad, la línea diagonal representa un pronóstico totalmente confiable. Por el contrario, pronósticos por debajo de la diagonal sobreestiman la ocurrencia del evento observado y pronósticos por encima de la diagonal, subestiman la ocurrencia del evento.
 
@@ -1100,9 +1115,7 @@ Si bien no es posible elegir solo una parametrización de convección que mejor 
 \end{figure}
 
 \begin{figure}
-\centering
-\includegraphics{thesis_files/figure-latex/fss-bmj-1.png}
-\caption{\label{fig:fss-bmj}FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para el umbral de 25 mm y 100 km de escala sobre el pronóstico RAD inicializado a las 00 UTC. La línea roja (RAD) corresponde al ensamble completo, la línea turquesa (BMJ) se calcula sobre los miembros del ensamble que usan la parametrización de convección BMJ y la línea violeta (noBMJ) se calcula sobre los miembros del ensamble que no utilizan BMJ.}
+\includegraphics{thesis_files/figure-latex/fss-bmj-1} \caption{FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para el umbral de 25 mm y 100 km de escala sobre el pronóstico RAD inicializado a las 00 UTC. La línea roja (RAD) corresponde al ensamble completo, la línea turquesa (BMJ) se calcula sobre los miembros del ensamble que usan la parametrización de convección BMJ y la línea violeta (noBMJ) se calcula sobre los miembros del ensamble que no utilizan BMJ.}\label{fig:fss-bmj}
 \end{figure}
 \hypertarget{conclusiones-1}{%
 \section{Conclusiones}\label{conclusiones-1}}
@@ -1110,11 +1123,9 @@ Si bien no es posible elegir solo una parametrización de convección que mejor 
 \hypertarget{asimilacion-de-observaciones-del-satuxe9lite-geoestacionario-goes-16}{%
 \chapter{Asimilacion de observaciones del satélite geoestacionario GOES-16}\label{asimilacion-de-observaciones-del-satuxe9lite-geoestacionario-goes-16}}
 
-De que va el capitulo
+En este capítulo se evaluará el impacto que genera la asimilación de observaciones del sensor ABI a bordo del satélite GOES-16 tanto en el análisis como en pronósticos determinísticos de alta resolución para el caso de estudio del 22 de noviembre de 2018. Estas observaciones son de particular interés en la región de Sudamérica por su alta resolución espacial y frecuencia temporal. Las observaciones de los canales sensibles al vapor de agua, brindan además, información en 3 niveles de la atmósfera, algo que no era posible con los sensores previos a bordo de los satélites GOES. Esperamos que la asimilaci'on de estas observaciones contribuya a mejorar la representación de los procesos convectivos y de mesoescala en pronósticos a corto plazo.
 
-Porqué es importante goes
-
-Que requirió técnicamente
+Por ser un satélite y sensor nuevos, la última versión de GSI (V3.7) que fue publicada en julio de 2018 no incluye la posibilidad de asimilar estas observaciones. Fue necesario, entonces, modificar el código fuente del sistema de asimilación para incluir las rutinas necesarias utilizando como base los trabajos previos de Lee et al. (2019) y Liu et al. (2019). También por esta razón, el capítulo incluirá el análisis de experimentos para definir la mejor configuración posible y evaluar técnicamente la asimilación de observaciones de ABI.
 
 \hypertarget{metodologuxeda-2}{%
 \section{Metodología}\label{metodologuxeda-2}}
@@ -1122,29 +1133,128 @@ Que requirió técnicamente
 \hypertarget{asim-goes}{%
 \subsection{Asimilación de observaciones de goes}\label{asim-goes}}
 
-Mascara de nubes
+La asimilación directa de radianzas de ABI requiere las mismas consideraciones descriptas previamente en la sección \ref{asim-rad} en cuanto a control de calidad, corrección de bias, thnning e indentificación de pixeles nubosos. En esta sección se describiran las deciciones metodológicas y técnicas que se tomaron a la hora de asimilar las observaciones, en base a las pruebas preliminares realizadas.
 
-No corrección del bias
+Si bien las radianzas de satélite pueden tener errores sistemáticos asociados a las condiciones de la atmósfera, la geometría de observación y condiciones específicas de los sensores que deben ser corregidos previo a la asimilación, para este trabajo se generó una primera prueba de asimilación para evaluar la magnitud de estos errores. Esta primera prueba utiliza la misma configuración de modelo y ensamble que los experimentos discutidos previamente e incluye la asimilación de los 3 canales de ABI en conjunto.
 
-Cantidad de observaciones
+La Figura \ref{fig:oma-dist} muestra la distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y entre las observaciones y el análisis (OmA) para todo el periodo. Si las observaciones no tienen bias la distribución OmF estará centrada en cero. En este caso solo el canal 9 presenta un bias positivo muy pequeño del orden de 0.3 K (Tabla \ref{tab:oma-tabla}). Por esta razón no se hará corrección del bias a estas observaciones.
 
+La Figura \ref{fig:oma-dist} y la Tabla \ref{tab:oma-tabla} muestran además otro resultado importante. Si la asimilación de las observaciones se realizó correctamente es esperable que la diferencia OmA esté más cerca de cero que OmF y que su distribución tenga menos varianza. Esto se observa para los 3 canales asimilados y confirma que la implementación técnica dentro del sistema funciona correctamente. Notar que los cambios abruptos y simétricos en las curvas de distribución se deben al chequeo preliminar que se realiza como parte de los controles de calidad y que elimina aquellas observaciones que tienen un diferencia mayor a 2.2 K con respecto del campo preliminar.
+
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/oma-dist-1} 
+
+}
+
+\caption{Distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y la observacion y el análisis (OmA) para los 3 canales de ABI y a lo largo de todo el periodo de prueba.}\label{fig:oma-dist}
+\end{figure}
+\begin{table}
+
+\caption{\label{tab:oma-tabla}Observación menos análisis o campo preliminar medio calculado sobre todo el periodo.}
+\centering
+\begin{tabu} to \linewidth {>{\raggedright}X>{\raggedleft}X>{\raggedleft}X>{\raggedleft}X}
+\toprule
+ & Canal 8 & Canal 9 & Canal 10\\
+\midrule
+OmF & 0.0355 & 0.3212 & -0.0158\\
+OmA & 0.0032 & 0.3140 & -0.0498\\
+\bottomrule
+\end{tabu}
+\end{table}
+La asimilación de radianzas en \emph{all sky}, es decir tanto para cielos claros como nubosos es todavía un importante desafío ya que estos dos tipos de observaciones requieren un control de calidad y estimaciones de errores específicos. En esta primera aproximación a la asimilación de observaciones de ABI solo se utilizaron observaciones en cielo claro. Para detectar y filtrar los pixeles nubosos utilizamos la mascara de nubes ACM (por ABI Cloud Mask) disponible con la misma frecuencia que las observaciones. Esta mascara de nubes da información binaria (cielo claro o cielo nuboso) y tienen una exactitud del 87\%. La estimación es realizada utilizando información de 10 canales de ABI e incluye pruebas espectrales, espaciales y temporales. En las Figuras \ref{fig:cld-msk} se presentan 2 ejemplos de máscara de nubes a las 00 UTC del 20 de noviembre y a las 18 UTC del 22 de noviembre.
+
+
+\begin{figure}
+\includegraphics{thesis_files/figure-latex/cld-msk-1} \caption{Ubicación de píxeles nubosos (gris) según la máscara de nubes generada como producto de nivel 2 para GOES-16, durante el a) 06 UTC del 20 de noviembre y b) 18 UTC del 22 de noviembre.}\label{fig:cld-msk}
+\end{figure}
+Debido al desarrollo de actividad convectiva en el dominio durante el periodo simulado, la cantidad de observaciones en cielo claro varía considerablemente. Esto puede apreciarse en las Figuras \ref{fig:cld-msk} a y b. Sin embargo la cantidad de observaciones que aporta ABI es casi siempre superior a las observaciones de satélites polares (Figura \ref{fig:obs-rad}a) .
+
+
+\begin{figure}
+\includegraphics{thesis_files/figure-latex/obs-rad-1} \caption{a) Número de radianzas asimiladas en cada ciclo y b) número medio de radianzas asimiladas por ciclo en capas verticales de 50 hPa de espesor para los experimentos RAD (radianzas de satélites polares, circulos rojos) y ABI (radianzas de ABI, cuadrados turquezas).}\label{fig:obs-rad}
+\end{figure}
 \hypertarget{configuracion-de-los-experimentos-1}{%
 \subsection{Configuracion de los experimentos}\label{configuracion-de-los-experimentos-1}}
 
-Tabla con nombres de experimentos y obs
+En este capítulo se analizan una serie de experimentos, primero para evaluar la sensibilidad a distintas combinaciones de canales y a la resolución del thinning y finalmente para comparar el impacto de la asimilación de observaciones de ABI en conjunto o no con observaciones de satélites polares. Los experimentos SATWND y RAD fueron analizados previamente en el capítulo \ref{ch1}. SATWND asimila observaciones de EMC, EMA y vientos deriados de satélite y RAD suma a lo anterior radianzas en aire claro de sensores a bordo de satélites polares. RAD+ABI incluye además observaciones de los 3 canales de vapor de agua de ABI con un thinning de 10 km. Finalmente el conjunto de experimentos ABI incluye radianzas de ABI pero no de satélites polares, y usan distintas combinaciones de canales y resolución de thinning (Tabla \ref{tab:exp-rad}).
+\begin{table}
 
-Misma configuración de ensamble que para el resto
+\caption{\label{tab:exp-rad}Experimentos realizados. Todos los experimentos incluyen observaciones de EMC, EMA y vientos derivados de satélite. }
+\centering
+\begin{tabu} to \linewidth {>{\raggedright\arraybackslash}p{8em}>{\raggedright\arraybackslash}p{20em}>{\centering\arraybackslash}m{4em}>{\centering\arraybackslash}m{4em}}
+\toprule
+Experimento & Radianzas asimiladas & Canales ABI & Thining ABI\\
+\midrule
+SATWND & -- & -- & --\\
+RAD & Radianzas de satélites polares & -- & --\\
+RAD+ABI & Radianzas de satélites polares y ABI & 8, 9, 10 & 10 km\\
+ABI\_ch890\_th10 (ABI) & Radianzas de ABI & 8, 9, 10 & 10 km\\
+ABI\_ch890\_th30 & Radianzas de ABI & 8, 9, 10 & 30 km\\
+\addlinespace
+ABI\_ch90\_th30 & Radianzas de ABI & 9, 10 & 30 km\\
+ABI\_ch0\_th30 & Radianzas de ABI & 10 & 30 km\\
+\bottomrule
+\end{tabu}
+\end{table}
+Todos los experimentos previamente descriptos usan la configuración del ensamble multifísica y del sistema de asimilación explicada en la sección \ref{configmodelo}. De la misma manera los ciclos de análisis horarios se realizan desde las 18 UTC del 20 de noviembre hasta las 12 UTC del 23 de noviembre para cubrir el desarrollo y maduración del SCM.
 
-Pronosticos deterministico
+Para estudiar el impacto de la asimilación de radianzas también se generaron pronósticos determinísticos en alta resolución inicializados a las 00 y 06 UTC del 22 de noviembre (Figura \ref{fig:cycle-fcst}). En la Figura \ref{fig:dominio-det} se muestra el dominio \emph{d01} con 10 km de resolución (línea negra), identico al dominio utilizado para el resto de las simulaciones num'ericas y el dominio anidado \emph{d02} con 2 km de resolución (línea turquesa). Las condiciones iniciales están dadas por los análisis de los distintos experimentos y las condiciones de borde son generadas a partir del GFSF determinístico. Además las variables atmosféricas para el \emph{d02} fueron inicializadas haciendo un escalado de la información del análisis. Todos los pronósticos utilizan las mismas parametrizaciones: del modelo de superficie terrestre (Noah-MP, Chen and Dudhia (2001)), de microfísica (esquema de un solo momento de 6 clases del WRF, Hong, Noh, et al. (2006)) de procesos radiativos (esquema de onda corta y onda larga del RRTMG, Iacono et al. (2008)), YSU (Hong, Kim, et al., 2006) para capa límite y KF (Kain, 2004) para covección (solo aplicado al \emph{d01}).
 
+Además de los pronósticos inicializados a partir de los análisis, se generaron pronósticos inicializados a partir de GFS, es decir, sin asimilación de datos regional. Estos pronósticos tienen la misma configuración y usan el mismo conjunto de parametrizaciones que los los pronósticos descriptos previamente.
+
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/dominio-det-1} 
+
+}
+
+\caption{Dominio de baja resolución (d01, 10 km) marcado con un recuadro negro y dominio anidado de alta resolución (d02, 2 km) marcado en color turquesa.}\label{fig:dominio-det}
+\end{figure}
 \hypertarget{resultados-2}{%
 \section{Resultados}\label{resultados-2}}
 
-\hypertarget{sensibilidad-a-la-combinaciuxf3n-de-canales}{%
-\subsection{Sensibilidad a la combinación de canales}\label{sensibilidad-a-la-combinaciuxf3n-de-canales}}
+\hypertarget{canales}{%
+\subsection{Sensibilidad a la combinación de canales}\label{canales}}
 
+Trabajos previos evaluaron el impacto de asimilar observaciones de los canales asociados al vapor de agua de ABI en escala regional. En líneas general estos trabajos (por ejemplo Lee et al. (2019), Jones et al. (2020)) utilizan las observaciones de los 3 canales en conjunto. Sin embargo ({\textbf{???}}) encontraron mejores resultado al asimilar los canales 8 (6.2 \(\mu m\)) y 10 (7.3 \(\mu m\)) observando que el cnal 9 (6. \(\mu m\)) está muy correlacionado con los otros dos y por lo tanto no aporta información independiente en la asimilación. Por otro lado Lee et al. (2019) observaron que el impacto era mayor al asimilar observaciones de los 3 canales sobre el continente y el mar al mismo tiempo. También observaron que el incremento del análisis disminuye considerablemente al remover el canal 10 y en algunos casos también el canal 9.
+
+En este trabajo se generaron 3 experimentos de prueba que comparten la misma configuración que los experimentos previamente descriptos pero utilizando distintas combinaciones de canales de ABI. El experimento ABI\_ch890\_th30 asimila observaciones de los 3 canales, ABI\_ch90\_th30 asimila observaciones de los 9 y 10 (vapor de agua en niveles medios y bajos respectivamente) y ABI\_ch0\_th30 solo utliza observaciones del canal 10. Estos 3 experimentos utilizan un thinning de 30 km como primera aproximación, un análisis más detallado del thinning se realizará en la siguiente sección.
+
+
+\begin{figure}
+\includegraphics{thesis_files/figure-latex/area-canales-1} \caption{Porcentaje de área cubierta por precipitación a 1 hora superior a a) \(1 mmh^{-1}\), b) \(5 mmh^{-1}\) y c) \(10 mmh^{-1}\) a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI\_ch890\_th30 (línea verde), ABI\_ch90\_th30 (línea violeta) y ABI\_ch0\_th30 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \ref{fig:dominio}a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.}\label{fig:area-canales}
+\end{figure}
+La Figura \ref{fig:area-canales} muestra el porcetanje de área cubierta por precipitación superior a distintos umbrales y compara los experimentos para estudiar la sensibilidad al uso de canales con SATWND como experimento control y la estimación de precipitación de IMERG. Al igual que en otros experimentos, los experimentos ABI subestiman la precipitación observada y tienen además un comportamiento similar a SATWND. En algunos casos, logran representar mejor la precipitación que SATWND particularmente para umbrales de precipitación mayores (Figura \ref{fig:area-canales}b-c) y algunas sub regiones como la provincia de Córdoba (no se muestra). Comparando los experimentos ABI entre si, no se observan grandes diferencias y solo en algunos casos ABI\_ch890\_th30 es mejor que otros otros dos. Desde este punto de vista la asimilación de las observaciones de los canales 8 y 9 en niveles altos y medios no aporta mucha información al análisis.
+
+Desde el punto de vista del FSS (Figura \ref{fig:fss-canales}) los experimentos que incluyen observaciones de ABI tienen un rendimiento mucho mejor que SATWND. De manera similar los 3 experimentos de ABI tienen un comportamiento similar aunque en este caso ABI\_ch890\_th30 representa ligeramente mejor la precipitación por encima de 25 mm (Figuras \ref{fig:fss-canales}byd).
+
+Teniendo en cuenta que la asimilación de los 3 canales de ABI en conjunto no degradan el análisis y por el contrario, en algunos casos parecen tener un rendimiento mejor, para los experimentos de de este capítulo se asimilaran los 3 canales al mismo tiempo.
+
+
+\begin{figure}
+\includegraphics{thesis_files/figure-latex/fss-canales-1} \caption{FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos SATWND (línea naranja), ABI\_ch890\_th30 (línea verde), ABI\_ch90\_th30 (línea violeta) y ABI\_ch0\_th30 (línea celeste).}\label{fig:fss-canales}
+\end{figure}
 \hypertarget{thinning}{%
 \subsection{Sensibilidad al thinning}\label{thinning}}
+
+En la asimilación de datos y en particular de radianzas de satélites, muchas observaciones con alta resolución espacial son descatadas porque podrían tener un impacto negativo en el análisis. En los esquemas de asimilación actuales se asume que la matriz de covarianza de los errores de las observaciones \(R\) es diagonal, es decir, no hay correlación entre los errores de las distintas observaciones y cada observación es independiente. En este contexto estrategias como el thinning para disminuir la resolución de las observaciones conservando la información que aportan son claves.
+
+Existen diversos algoritmos para realizar el thinning, GSI en particular utiliza una metodología simple que consiste en definir una retícula de baja resolución y seleccionar las observaciones en alta resolución según la distancia a los puntos de la retícula gruesa y criterios de calidad descriptos en la sección \ref{sat}.
+
+Es importante definir entonces la resolución apropiada para la reticula de baja resolución y el impacto que esto tiene en el análisis. Para esto se realizaron 2 experimentos ABI\_ch890\_th30 con un thinning de 30 km, es decir, que lleva las observaciones con una resolución de 2 km a una reticula de 30 km, y ABI\_ch890\_th10 con un thinning de 10 km, igual a la resolución de las simulaciones.
+
+
+\begin{figure}
+\includegraphics{thesis_files/figure-latex/area-thinning-1} \caption{Porcentaje de área cubierta por precipitación a 1 hora superior a a) \(1 mmh^{-1}\), b) \(5 mmh^{-1}\) y c) \(10 mmh^{-1}\) a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI\_ch890\_th30 (línea verde), y ABI\_ch890\_th10 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \ref{fig:dominio}a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.}\label{fig:area-thinning}
+\end{figure}
+Comparamos los experimentos desde el punto de vista de la precipitación. En particular la Figura \ref{fig:area-thinning} muestra el porcentaje de área cubierta por precipitación superior a distintos umbrales a lo largo del tiempo para los experimentos de thinning y SATWND como experimento control. En todos los casos el experimento con un thinning de 10 km representa es el que mejor el área cuberta por precipitación, particularmente en las horas de mayor actividad convectiva. Si bien todos los experimentos subestiman la precipitación en comparación con IMERG, ABI\_ch890\_th10 se acerca a esta estimación sobre todo cuando observamos el área máxima del ensamble.
+\begin{figure}
+\includegraphics{thesis_files/figure-latex/thinning-fss-1} \caption{(ref:thinning-fss)}\label{fig:thinning-fss}
+\end{figure}
+Desde el punto de vista del FSS y para \(1 mm h^{-1}\) (Figura \ref{fig:thinning-fss}a y c) ABI\_ch890\_th10 tiene igual o mejor rendimiento que ABI\_ch890\_th30 pero ocurre lo contrario para el umbral de \(25 mm h^{-1}\) (Figura \ref{fig:thinning-fss}b y d). Si bien las diferencias de FSS entre los experimentos de thinning son muy pequeñas, en el caso del área cubierta por precipitación y otros análisis no mostrados, resalta la necesidad de utilizar un thinning cercano a la resolución del modelo. Por esta razón la configuración de thinning a utilizar en los experimentos posteriores será de 10 km.
 
 \hypertarget{comparaciuxf3n-del-impacto-de-goes-16-versus-satuxe9lites-polares}{%
 \subsection{Comparación del impacto de GOES-16 versus satélites polares}\label{comparaciuxf3n-del-impacto-de-goes-16-versus-satuxe9lites-polares}}
@@ -1152,8 +1262,54 @@ Pronosticos deterministico
 \hypertarget{analisis}{%
 \subsubsection{Analisis}\label{analisis}}
 
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/TQ-diff-abi-1} 
+
+}
+
+\caption{Diferencia entre la media del ensamble de los análisis a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en \(K\)) y la humedad específica (d, e y f en \(g\ kg^{-1}\)) calculados sobre el dominio interior (recuadro rojo en la Figura \ref{fig:dominio}a) para cada ciclo de análisis.}\label{fig:TQ-diff-abi}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/UV-diff-abi-1} 
+
+}
+
+\caption{Diferencia entre la media del ensamble de los análisis a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en \(K\)) y viento meridional (d, e y f en \(g\ kg^{-1}\)) calculados sobre el dominio interior (recuadro rojo en la Figura \ref{fig:dominio}a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) RAD, (b,e) RAD+ABI, y (c,f) ABI ya que son los experimentos tienen más observaciones asimiladas en cada panel.}\label{fig:UV-diff-abi}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/era5-abi-1} 
+
+}
+
+\caption{Diferencia entre la media del ensamble del análisis de cada experimento y el ERA5 para los perfiles verticales espacialmente promediados de la temperatura del aire (K, a--d), la humedad específica (\(g\ Kg^{-1}\), e--h) y el viento meridional (\(m\ s^{-1}\), i--l) calculados sobre el dominio interior (recuadro rojo en la Figura \ref{fig:dominio}a) para cada ciclo de análisis.}\label{fig:era5-abi}
+\end{figure}
+
+\begin{figure}
+
+{\centering \includegraphics{thesis_files/figure-latex/sondeos-abi-1} 
+
+}
+
+\caption{RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura (\(K\)), b) la temperatura del punto de rocío (\(K\)), c) el viento u (\(m\ s^{-1}\)) y d) el viento v (\(m\ s^{-1}\)) calculados comparando el análisis de cada experimento con los sondeos de RELAMPAGO durante el IOP 7 y el IOP 8. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde y ABI con una línea turueza.}\label{fig:sondeos-abi}
+\end{figure}
+\begin{figure}
+\includegraphics{thesis_files/figure-latex/area-abi-1} \caption{Porcentaje de área cubierta por precipitación a 1 hora superior a a) \(1 mmh^{-1}\), b) \(5 mmh^{-1}\) y c) \(10 mmh^{-1}\) a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI\_ch890\_th30 (línea verde), ABI\_ch90\_th30 (línea violeta) y ABI\_ch0\_th30 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \ref{fig:dominio}a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.}\label{fig:area-abi}
+\end{figure}
+\begin{figure}
+\includegraphics{thesis_files/figure-latex/fss-abi-1} \caption{(ref:fss-abi)}\label{fig:fss-abi}
+\end{figure}
 \hypertarget{pronuxf3sticos-determinuxedsticos}{%
 \subsubsection{Pronósticos determinísticos}\label{pronuxf3sticos-determinuxedsticos}}
+
+\includegraphics{thesis_files/figure-latex/unnamed-chunk-2-1}
+
+\includegraphics{thesis_files/figure-latex/unnamed-chunk-3-1}
 
 \hypertarget{conclusiones-2}{%
 \section{Conclusiones}\label{conclusiones-2}}
@@ -1200,7 +1356,7 @@ Bae, J.-H., and Min, K.-H., 2022. Forecast Characteristics of Radar Data Assimil
 Bao, Y., Xu, J., Powell Jr., A.M., Shao, M., Min, J., and Pan, Y., 2015. Impacts of AMSU-A, MHS and IASI data assimilation on temperature and humidity forecasts with GSI--WRF over the western United States. Atmospheric Measurement Techniques, 8, 10, 4231--4242.
 
 \leavevmode\hypertarget{ref-baucemachado2017}{}%
-Bauce Machado, V., gustavo de goncalves, luis, Vendrasco, E., Sinhori, N., Herdies, D., Sapucci, L., Levien, C., Quadro, M., Rodrigues, T., and Cardoso, C. and others, 2017. Investigating the impacts of convective scale hazardous weather events in Santa Catarina State through the CPTEC/INPE local data assimilation system. In. Presented at the Seventh International WMO Symposium on Data Assimilation.
+Bauce Machado, V., gustavo goncalves, luis, Vendrasco, E., Sinhori, N., Herdies, D., Sapucci, L., Levien, C., Quadro, M., Rodrigues, T., and Cardoso, C. and others, 2017. Investigating the impacts of convective scale hazardous weather events in Santa Catarina State through the CPTEC/INPE local data assimilation system. In. Presented at the Seventh International WMO Symposium on Data Assimilation.
 
 \leavevmode\hypertarget{ref-bauer2010}{}%
 Bauer, P., Geer, A.J., Lopez, P., and Salmond, D., 2010. Direct 4D-Var assimilation of all-sky radiances. Part I: Implementation. Quarterly Journal of the Royal Meteorological Society, 136, 652, 1868--1885.
@@ -1241,6 +1397,9 @@ Clark, A.J., 2017. Generation of Ensemble Mean Precipitation Forecasts from Conv
 \leavevmode\hypertarget{ref-clark2009}{}%
 Clark, A.J., Gallus, W.A., Xue, M., and Kong, F., 2009. A Comparison of Precipitation Forecast Skill between Small Convection-Allowing and Large Convection-Parameterizing Ensembles. Weather and Forecasting, 24, 4, 1121--1140.
 
+\leavevmode\hypertarget{ref-collard2007}{}%
+Collard, A.D., 2007. Selection of IASI channels for use in numerical weather prediction: SELECTION OF IASI CHANNELS FOR NWP. Quarterly Journal of the Royal Meteorological Society, 133, 629, 1977--1991.
+
 \leavevmode\hypertarget{ref-Cheyenne2019}{}%
 Computational and Information Systems Laboratory, 2019. Cheyenne: HPE/SGI ICE XA System (University Community Computing). National Center for Atmospheric Research Boulder, CO.
 
@@ -1264,6 +1423,9 @@ Dowle, M., and Srinivasan, A., 2020, July. Data.Table: Extension of 'data.frame'
 
 \leavevmode\hypertarget{ref-sondeos}{}%
 Earth Observing Laboratory, U. -, 2020. Multi-network composite highest resolution radiosonde data. Version 1.3. UCAR/NCAR - earth observing laboratory.
+
+\leavevmode\hypertarget{ref-english2000}{}%
+English, S.J., Renshaw, R.J., Dibben, P.C., Smith, A.J., Rayer, P.J., Poulsen, C., Saunders, F.W., and Eyre, J.R., 2000. A comparison of the impact of TOVS arid ATOVS satellite sounding data on the accuracy of numerical weather forecasts. Quarterly Journal of the Royal Meteorological Society, 126, 569, 2911--2931.
 
 \leavevmode\hypertarget{ref-evensen2009}{}%
 Evensen, G., 2009. Data Assimilation, Springer,
@@ -1293,7 +1455,7 @@ García Skabar, Y., 1997. Análisis objetivo regional para inicializar un modelo
 Gasperoni, N.A., Wang, X., Brewster, K.A., and Carr, F.H., 2018. Assessing Impacts of the High-Frequency Assimilation of Surface Observations for the Forecast of Convection Initiation on 3 April 2014 within the Dallas--Fort Worth Test Bed. Monthly Weather Review, 146, 11, 3845--3872.
 
 \leavevmode\hypertarget{ref-goncalvesdegoncalves2015}{}%
-Goncalves de Goncalves, L.G., Sapucci, L., Vendrasco, E., de Mattos, J.G., Ferreira, C., Khamis, E., and Cruz, N., 2015. A rapid update data assimilation cycle over South America using 3DVar and EnKF. In The 20th International TOVS Study Conference (ITSC-20).
+Goncalves de Goncalves, L.G., Sapucci, L., Vendrasco, E., de Mattos, J., Ferreira, C., Khamis, E., and Cruz, N., 2015. A rapid update data assimilation cycle over South America using 3DVar and EnKF. In The 20th International TOVS Study Conference (ITSC-20).
 
 \leavevmode\hypertarget{ref-grell2013}{}%
 Grell, G.A., and Freitas, S.R., 2013. A scale and aerosol aware stochastic convective parameterization for weather and air quality modeling. Atmospheric Chemistry and Physics Discussions, 13, 9, 23845--23893.
@@ -1340,6 +1502,9 @@ Iacono, M.J., Delamere, J.S., Mlawer, E.J., Shephard, M.W., Clough, S.A., and Co
 \leavevmode\hypertarget{ref-iacovazzi2020}{}%
 Iacovazzi, R., Lin, L., Sun, N., and Liu, Q., 2020. NOAA Operational Microwave Sounding Radiometer Data Quality Monitoring and Anomaly Assessment Using COSMIC GNSS Radio-Occultation Soundings. Remote Sensing, 12, 5, 5, 828.
 
+\leavevmode\hypertarget{ref-ismay2022}{}%
+Ismay, C., and Solomon, N., 2022. Thesisdown: An updated r markdown thesis template using the bookdown package.
+
 \leavevmode\hypertarget{ref-janjic1994}{}%
 Janjić, Z.I., 1994. The Step-Mountain Eta Coordinate Model: Further Developments of the Convection, Viscous Sublayer, and Turbulence Closure Schemes. Monthly Weather Review, 122, 5, 927--945.
 
@@ -1348,6 +1513,9 @@ Jones, T.A., Otkin, J.A., Stensrud, D.J., and Knopfmeier, K., 2013. Assimilation
 
 \leavevmode\hypertarget{ref-jones2014}{}%
 ---------, 2014. Forecast Evaluation of an Observing System Simulation Experiment Assimilating Both Radar and Satellite Data. Monthly Weather Review, 142, 1, 107--124.
+
+\leavevmode\hypertarget{ref-jones2020}{}%
+Jones, T.A., Skinner, P., Yussouf, N., Knopfmeier, K., Reinhart, A., Wang, X., Bedka, K., Smith, W., and Palikonda, R., 2020. Assimilation of GOES-16 Radiances and Retrievals into the Warn-on-Forecast System. Monthly Weather Review, 148, 5, 1829--1859.
 
 \leavevmode\hypertarget{ref-kain2004}{}%
 Kain, J.S., 2004. The Kain--Fritsch Convective Parameterization: An Update. JOURNAL OF APPLIED METEOROLOGY, 43, 12.
@@ -1369,6 +1537,9 @@ Lim, A.H., Jung, J.A., Huang, H.-L.A., Ackerman, S.A., and Otkin, J.A., 2014. As
 
 \leavevmode\hypertarget{ref-lin2017a}{}%
 Lin, H., Weygandt, S.S., Lim, A.H.N., Hu, M., Brown, J.M., and Benjamin, S.G., 2017. Radiance Preprocessing for Assimilation in the Hourly Updating Rapid Refresh Mesoscale Model: A Study Using AIRS Data. Weather and Forecasting, 32, 5, 1781--1800.
+
+\leavevmode\hypertarget{ref-liu2019}{}%
+Liu, H., Collard, A., Derber, J., Nebuda, S., and Jung, J.A., 2019. Evaluation of GOES-16 Clear-sky Radiance Data and Preliminary Assimilation Results at NCEP, 2 pags.
 
 \leavevmode\hypertarget{ref-liu2008}{}%
 Liu, Q., Weng, F., Han, Y., and van Delst, P., 2008. Community Radiative Transfer Model for Scattering Transfer and Applications. In IGARSS 2008 - 2008 IEEE International Geoscience and Remote Sensing Symposium Vol. 4, pp. IV--1193--IV--1196. Presented at the IGARSS 2008 - 2008 IEEE International Geoscience and Remote Sensing Symposium.
@@ -1418,6 +1589,9 @@ Purser, R.J., Wu, W.-S., Parrish, D.F., and Roberts, N.M., 2003a. Numerical Aspe
 \leavevmode\hypertarget{ref-purser2003}{}%
 ---------, 2003b. Numerical Aspects of the Application of Recursive Filters to Variational Statistical Analysis. Part I: Spatially Homogeneous and Isotropic Gaussian Covariances. Monthly Weather Review, 131, 8, 1524--1535.
 
+\leavevmode\hypertarget{ref-rabier2002}{}%
+Rabier, F., Fourrié, N., Chafäi, D., and Prunet, P., 2002. Channel selection methods for Infrared Atmospheric Sounding Interferometer radiances. Quarterly Journal of the Royal Meteorological Society, 128, 581, 1011--1027.
+
 \leavevmode\hypertarget{ref-rcoreteam2020}{}%
 R Core Team, 2020. R: A language and environment for statistical computing, R Foundation for Statistical Computing,
 
@@ -1458,7 +1632,7 @@ Sun, J., Xue, M., Wilson, J.W., Zawadzki, I., Ballard, S.P., Onvlee-Hooimeyer, J
 Tong, M., Zhu, Y., Zhou, L., Liu, E., Chen, M., Liu, Q., and Lin, S.-J., 2020. Multiple Hydrometeors All-Sky Microwave Radiance Assimilation in FV3GFS. Monthly Weather Review, 148, 7, 2971--2995.
 
 \leavevmode\hypertarget{ref-toshioinouye2017}{}%
-Toshio Inouye, R., Calvetti, L., Gonçalves, J., Maske, B., Neundorf, R., Beneti, C., Diniz, F., Vendrasco, E., Herdies, D., and gustavo de goncalves, luis, 2017. Impact of radar data assimilation on a severe storm study in brazil. In. Presented at the 97th American Meteorological Meeting Annual Meeting.
+Toshio Inouye, R., Calvetti, L., Gonçalves, J., Maske, B., Neundorf, R., Beneti, C., Diniz, F., Vendrasco, E., Herdies, D., and gustavo goncalves, luis, 2017. Impact of radar data assimilation on a severe storm study in brazil. In. Presented at the 97th American Meteorological Meeting Annual Meeting.
 
 \leavevmode\hypertarget{ref-vera1992}{}%
 Vera, C.S., 1992. Un sistema de asimilación de datos para la región extratropical de Sudamérica.
