@@ -2,6 +2,7 @@ fig:caso
 tab:tabla-obs
 tab:table-rad
 fig:wf
+fig:wf-goes
 fig:ciclo-asimilacion-teorico
 eq:eq1
 eq:eq3
@@ -69,7 +70,7 @@ pronostico-de-eventos-severos
 asimilación-de-datos-para-estimar-condiciones-iniciales
 asimilación-de-datos-en-sudamérica
 asim-rad
-motivación-y-objetivos
+hipótesis-y-objetivos
 metodología-y-datos
 caso-de-estudio
 observaciones
@@ -78,6 +79,8 @@ convencionales
 ema
 vientos-estimados-por-satélite
 radiancias-de-satélite
+satélites-polares
+goes-16
 conjuntos-de-observaciones-para-verificación
 la-asimilación-de-datos
 el-sistema-de-asimilación-gsi
@@ -109,8 +112,8 @@ configuracion-de-los-experimentos-1
 resultados-2
 canales
 thinning
-comparación-del-impacto-de-goes-16-versus-satélites-polares
-analisis
+comparación-del-impacto-de-observaciones-de-goes-16-con-otras-fuentes-de-información
+impacto-de-las-observaciones-de-abi-en-el-análisis
 pronósticos-determinísticos
 conclusiones-2
 corrección-del-bias-de-observaciones-de-satélite
