@@ -508,6 +508,8 @@ Al igual que en la sección \@ref(#impacto-analisis), es importante primero ente
 
 En primer lugar calculamos la diferencia entre la media del ensamble de los análisis de los distintos experimentos para los perfiles verticales de temperatura y humedad específica promediados espacialmente (Figura \@ref(fig:TQ-diff-abi)). Previamente habíamos observado que la asimilación de radianzas de satélites polares produce un calentamiento en niveles bajos (Figura \@ref(fig:TQ-diff-abi)a), la asimilación de observaciones de ABI en este caso produce además, un enfriamento en niveles medios y un calentamiento previo al paso del frente frío y desarrollo de la convección (21 de noviembre). Al comparar los perfiles verticales de cada experimento con ERA5 (Figura \@ref(fig:era5-abi)a-d), vemos que este enfriamiento en niveles medios produce una mayor diferencias entre los análisis que incluyen ABI y ERA5. 
 
+Al observar la diferencia en la humedad relativa para los distintos experimentos (Figura \@ref(fig:TQ-diff-abi)d-f), vemos que la asimilación de observaciones de ABI produce un humedecimiento por encima de 750 hPa y este efecto es mayor cuando no se asimilan radianzas de satélites polares (Figura \@ref(fig:TQ-diff-abi)f). 
+
 (ref:TQ-diff-abi) Diferencia entre la media del ensamble de los análisis a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en $K$) y la humedad específica (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis.
 
 ```{r TQ-diff-abi, fig.cap="(ref:TQ-diff-abi)", fig.height=5.5, fig.width=7, fig.align="center"}
