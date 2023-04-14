@@ -88,7 +88,7 @@ campos %>%
 
 ## Observaciones 
 
-Durante el periodo de estudio se realizaron diferentes experimentos para evaluar el impacto de diferentes fuentes de observaciones, entre los que se incluyen datos convecionales oficiales de superficie y altura, redes no oficiales de estaciones meteorológicas automáticas de superficie, vientos derivados de satelite, y radianzas en cielo claro. También se utilizaron observaciones para cuantificar la calidad de los análisis y pronósticos. 
+Durante el periodo de estudio se realizaron diferentes experimentos para evaluar el impacto al asimilar diferentes fuentes de observaciones, entre los que se incluyen datos convecionales oficiales de superficie y altura, redes no oficiales de estaciones meteorológicas automáticas de superficie, vientos derivados de satelite, y radianzas en cielo claro. También se utilizaron otras observaciones como radiosondeos para cuantificar la calidad de los análisis y pronósticos. 
 
 ### Conjuntos de observaciones asimiladas 
 
@@ -127,6 +127,7 @@ fread(here("data/derived_data/tables/table1.csv")) %>%
                       "Observationes por encima de 600 hPa son rechazadas.",
                       "El error de la observación depende del tipo de reporte."),
            symbol_manual = c("*", "**", "+"))
+
 ```
 
 #### Radiancias de satélite
@@ -150,6 +151,7 @@ fread(here("data/derived_data/tables/tabla_radianzas.csv")) %>%
   kable_styling(font_size = 9) %>%
   collapse_rows(1, valign = "top") %>%
   kable_classic_2(full_width = TRUE)
+
 ```
 
 
@@ -160,7 +162,7 @@ AMSU-A [@robel2009] es un radiómetro de microondas que cuenta con 15 canales de
 (ref:wf) Funciones de peso calculada sobre cielo claro para distintos censores. a) AMSU-A, canal 3 - 50.3 GHz, canal 4 - 52.8 GHz, canal 5 - 53.596 $\pm$ 0.115 GHz, canal 6 - 54.4 GHz, canal 7 - 54.94 GHz; MHS, canal 1 - 89.0 GHz, canal 2 - 157.0 GHz, canal 3 - 183.311 $\pm$ 1.00 GHz, canal 4 - 183.311 $\pm$ 3.00 GHz, canal 5 - 190.311 GHz; ABI, canal 8 - 6.2 $\mu m$, canal 9 - 6.9 $\mu m$, canal 10 - 7.3 $\mu m$.  
 
 
-```{r wf, fig.cap="(ref:wf)", fig.width=4, fig.height=5.5, fig.align="center"}
+```{r wf, fig.cap="(ref:wf)", fig.width=4, fig.height=4.5, fig.align="center"}
 wf_amsua <- fread(here("data/derived_data/weighting_functions/wf_amsua.csv")) %>% 
   .[, id := 1:.N] %>% 
   melt(measure.vars = patterns("^ch")) %>% 
@@ -169,13 +171,6 @@ wf_amsua <- fread(here("data/derived_data/weighting_functions/wf_amsua.csv")) %>
   dcast(id + channel ~ axes, value.var = "value") 
 
 wf_mhs <- fread(here("data/derived_data/weighting_functions/wf_mhs.csv")) %>% 
-  .[, id := 1:.N] %>% 
-  melt(measure.vars = patterns("^ch")) %>% 
-  na.omit() %>% 
-  separate(variable, into = c("channel", "axes")) %>% 
-  dcast(id + channel ~ axes, value.var = "value") 
-
-wf_goes <- fread(here("data/derived_data/weighting_functions/wf_goes16.csv")) %>% 
   .[, id := 1:.N] %>% 
   melt(measure.vars = patterns("^ch")) %>% 
   na.omit() %>% 
@@ -216,23 +211,7 @@ wf_amsua %>%
         legend.direction = "vertical",
         panel.background = element_rect(fill = "#fbfbfb", color = NA)) +
   
-  wf_goes %>% 
-  ggplot(aes(x, y)) +
-  geom_line(aes(color = channel), orientation = "y") +
-  scale_color_discrete(labels = unname(latex2exp::TeX(c("c8 - 6.2 $\\mu m$",
-                                                        "c9 - 6.9 $\\mu m$",
-                                                        "c10 - 7.3 $\\mu m$")))) +
-  scale_y_level(name = "Presión (hPa)") +
-  coord_cartesian( ylim = c(1000, 50)) +
-  labs(x = latex2exp::TeX("Función de peso ($km^{-1}$)"),
-       y = "Presión (hPa)", 
-       color = NULL) +
-  theme_minimal(base_size = 9) +
-  theme(legend.position = "bottom",
-        legend.direction = "vertical",
-        panel.background = element_rect(fill = "#fbfbfb", color = NA)) +
-  
-  plot_layout(ncol = 3) +
+  plot_layout(ncol = 2) +
   plot_annotation(tag_levels = 'a', tag_suffix = ")")
 ```
 
@@ -255,7 +234,7 @@ Teniendo en cuenta los objetivos propuestos, se asimilaron los canales sensibles
 
 La Figura \@ref(fig:wf-goes) muestra las funciones de peso teóricas para una atmósfera estandar en latitudes medias para cada uno de estos canales. Si bien hay un solapamiento en las funciones de peso, el canal 8 es más sensible al vapor de agua alrededor de los 350 hPa, el canal 9 alrededor de 450 hPa y el canal 10 alrededor de los 600 hPa aproximadamente. En la Sección \@ref(canales) se analizará que combinación de canales da mejores resultados en el contexto de este caso de estudio.   
 
-```{r wf-goes, fig.cap="(ref:wf)", fig.width=3, fig.height=5.5, fig.align="center"}
+```{r wf-goes, fig.cap="(ref:wf)", fig.width=2.5, fig.height=4, fig.align="center"}
 
 
 wf_goes <- fread(here("data/derived_data/weighting_functions/wf_goes16.csv")) %>% 
@@ -312,7 +291,7 @@ Un ciclo de asimilación de datos típico se muestra en la Figura \@ref(fig:cicl
 En este sentido tanto el modelo como las observaciones cumplen un rol fundamental en la asimilación. Por un lado las observaciones permiten incorporar información continua para corregir los pronósticos. Por el otro, el modelo permite *transportar* información de regiones donde existe mucha información disponible (por ejemplo, los continentes) a regiones donde las observaciones son escasas (zonas oceánicas) manteniendo los balances físicos que rigen los procesos atmosféricos. 
 
 
-Existen distintas técnicas de asimilación de datos, cada una con sus ventajas y desventajas que fueron descriptas por @dillon2017 en su tesis doctoral. En este trabajo, al igual que en trabajos previos en Argentina, se utilizará la técnica *local ensemble transform Kalman filter* (LETKF, @hunt2007) que forma parte de un conjunto de técnicas basadas en Filtros de Kalman por ensambles [@evensen2009]. Los Filtros de Kalman utilizan el ensamble, un conjunto de pronósticos ligeramente diferentes que se resuelven simultaneamente, para incluir los posibles estados de la atmósfera. El ensamble además provee información dependiente de la dinámica durante la ventana de asimilación y permite estimar el error del modelo a lo largo del tiempo. 
+Existen distintas técnicas de asimilación de datos, cada una con sus ventajas y desventajas que fueron descriptas por @dillon2017 en su tesis doctoral. En este trabajo, al igual que en trabajos previos en Argentina, se utilizará la técnica *Local Ensemble Transform Kalman filter* (LETKF, @hunt2007) que forma parte de un conjunto de técnicas basadas en Filtros de Kalman por ensambles [@evensen2009]. Los Filtros de Kalman utilizan el ensamble, un conjunto de pronósticos ligeramente diferentes que se resuelven simultaneamente, para incluir los posibles estados de la atmósfera. El ensamble además provee información dependiente de la dinámica durante la ventana de asimilación y permite estimar el error del modelo a lo largo del tiempo. 
 
 En el contexto de los Filtros de Kalman, el análisis o $x_a$ estará representado por un vector columna de dimensión $n_x$ x $1$ dado por las dimensios del modelo. A su vez, $x_a$ será estado más probable de la atmósfera teniendo en cuenta las $n_o$ observaciones $y_o$ disponibles en un tiempo $t$. Para poder comparar y combinar el campo preliminar con las observaciones, este es interpolado a la ubicación de las observaciones. En determinados casos, por ejemplo cuando se trabaja con observaciones de satélite o radar, será necesario transformar las variables del modelo (ej. temperatura y humedad) para obtener las variables observadas (ej. temperatura de brillo). En la siguiente ecuación $H$ es el operador de las observaciones no lineal que se encarga de las interpolaciones y transformaciones necesarias sobre el campo preliminar $x_f$, representado como un vector de dimensión $n$. 
 
@@ -366,11 +345,11 @@ Este algoritmo se describe en mayor detalle en la Sección \@ref(sat).
 
 #### El modelo de transferencia radiativa CRTM 
 
-El Community Radiative Transfer Model (CRTM, @liu2008) es un modelo de transferencia radiativa rápido que fue desarrollado conjuntamente por el NOAA Center for Satellite Applications and Research y el Joint Center for Satellite Data Assimilation (JCSDA). Es un modelo utilizado ampliamente por la comunidad de sensoramiento remoto ya que es de código abierto y se encuentra disponible para su uso públicamente. Se utiliza para la calibracion de instrumentos satelitales [@weng2013; @iacovazzi2020; @crews2021], y a su vez para generar retrievals a partir de observaciones satelites [@boukabara2011; @hu2019; @hu2021]. De especial importancia para este trabajo, es utilizado como operador de observaciones en la asimilacion de radianzas satelitales [@tong2020; barton2021]. 
+El Community Radiative Transfer Model (CRTM, @liu2008) es un modelo de transferencia radiativa rápido que fue desarrollado conjuntamente por el NOAA Center for Satellite Applications and Research y el Joint Center for Satellite Data Assimilation (JCSDA). Es un modelo utilizado ampliamente por la comunidad de sensoramiento remoto ya que es de código abierto y se encuentra disponible para su uso públicamente. Se utiliza para la calibracion de instrumentos satelitales [@weng2013; @iacovazzi2020; @crews2021], y a su vez para generar retrievals a partir de observaciones satelites [@boukabara2011; @hu2019; @hu2021]. De especial importancia para este trabajo, es utilizado como operador de observaciones en la asimilacion de radianzas satelitales (@tong2020; barton2021). 
 
 El CRTM es capaz de simular radiancias de microondas, infrarrojas y visibles utilizando perfiles atmosféricos de presión, temperatura, humedad y otras especies como el ozono. Recientemente @cutraro2021 evaluaron su despeño en la region con buenos resultados en la simulación de observaciones de GOES-16. 
 
-El CRTM es un modelo de transferencia radiativa *"sensor-based"*, es decir que contiene parameterizaciones y tablas de coefficientes precalculadas especificamente para los sensores operativos. El CRTM se utiliza ampliamente para la asimilación de datos satelitales tanto microondas e infrarrojos. Incluye módulos que calculan la radiación térmica medida por satélite a partir de la absorción gaseosa, la absorción y dispersión de la radiación por aerosoles y nubes, y la emisión y reflexión de la radiación por la superficie terrestre. La entrada al CRTM incluye variables de estado atmosférico -por ejemplo, temperatura, vapor de agua, presión y concentración de ozono en capas definidas por el usuario, y variables y parámetros de estado de la superficie, incluyendo la emisividad, la temperatura de la superficie y el viento.
+El CRTM es un modelo de transferencia radiativa *"sensor-based"*, es decir que contiene parameterizaciones y tablas de coefficientes precalculadas especificamente para los sensores operativos. El CRTM se utiliza ampliamente para la asimilación de datos satelitales tanto microondas e infrarrojos. Incluye módulos que calculan la radiación térmica medida por satélite a partir de la absorción gaseosa, la absorción y dispersión de la radiación por aerosoles y nubes, y la emisión y reflexión de la radiación por la superficie terrestre. La entrada al CRTM incluye variables de estado atmosférico, por ejemplo, temperatura, vapor de agua, presión y concentración de ozono en capas definidas por el usuario, y variables y parámetros de estado de la superficie, incluyendo la emisividad, la temperatura de la superficie y el viento.
 
 El modelo forward del CRTM permite simular observaciones satelitales de radiancias a partir del estado de la atmósfera. Esto es necesario para la asimilación de radiancias pero también es utilizado para verificar la precisión y los errores de estas observaciones.  
 
@@ -378,12 +357,12 @@ El cálculo de las observaciones simuladas tiene un costo computacional muy alto
 
 Para obtener resultados rápidos, CRTM aplica ciertas simplificaciones y aproximaciones a la hora de resolver la ecuación de transferencia radiativa. En primer lugar asume que la atmósfera terrestre está formada por capas plano-paralelas y homogeneas en equilibrio termodinámico y donde los efectos tridimensionales y de polarización pueden ser ignorados.
 
-En contextos de cielos despejados y canales en el infrarrojo, además se asume que no existe dispersión y solo se considera la absorción de los gases en la atmósfera. En cielos nubosos y canales en el infrarrojo también se asume que no existe dispersión. Sin embargo, en el caso de canales de microondas la dispersión generada por las nubes es incluida. En este caso la ecuación de transferencia radiativa no se puede resolver analíticamente y se recurre a modelos numéricos. 
+En contextos de cielos despejados y canales en el infrarrojo, además se asume que no existe dispersión y solo se considera la absorción de los gases en la atmósfera. En cielos nubosos y canales en el infrarrojo también se asume que no existe dispersión. Sin embargo, en el caso de canales de microondas la dispersión generada por las nubes es incluida. En este último caso, la ecuación de transferencia radiativa no se puede resolver analíticamente y se recurre a modelos numéricos. 
 
 
 #### Asimilación de radiancias en GSI {#sat}
 
-El preprocesamiento y control de calidad de los datos es un paso esencial en la asimilación de radiancias y depende de cada sensor y canal. Esto incluye principalemnte un *thinning* especial, la correcion del bias, y en particular en este estudio la deteccion de observaciones de cielos nubosos. Primero se aplicó un thinning espacial. Durante el proceso de thinning las observaciones que se van a asimilar se eligen en función de su distancia a los puntos de la retícula del modelo, la calidad de la observación (basada en la información disponible sobre la calidad de los datos) y el número de canales disponibles (para el mismo píxel y sensor). El algoritmo de thnning determina la calidad de los datos en este punto según la información disponible sobre los canales que son conocidos por tener errores, la superficie por debajo de cada pixel (perfiere observaciones sobre el mar a las de la tierra o nieve) y predictores sobre la calidad de las observaciones [@hu2018]. El objetivo al aplicar thinning es evitar incorporar información de procesos de escalas menores a las que puede representar el modelo y reducir la correlacion en los errores de las observaciones que vienen de un mismo sensor.
+El preprocesamiento y control de calidad de los datos es un paso esencial en la asimilación de radiancias y depende de cada sensor y canal. Esto incluye principalemnte un *thinning* especial, la correcion del bias, y en particular en este estudio la deteccion de observaciones de cielos nubosos. Primero se aplicó un thinning espacial. Durante el proceso de thinning las observaciones que se van a asimilar se eligen en función de su distancia a los puntos de la retícula del modelo, la calidad de la observación (basada en la información disponible sobre la calidad de los datos) y el número de canales disponibles (para el mismo píxel y sensor). El algoritmo de thinning determina la calidad de los datos en este punto según la información disponible sobre los canales que son conocidos por tener errores, la superficie por debajo de cada pixel (perfiere observaciones sobre el mar a las de la tierra o nieve) y predictores sobre la calidad de las observaciones [@hu2018]. El objetivo al aplicar thinning es evitar incorporar información de procesos de escalas menores a las que puede representar el modelo y reducir la correlacion en los errores de las observaciones que vienen de un mismo sensor.
 
 
 Luego del thinning, se aplica la corrección de bias. La metodología de corrección de bias implementada en GSI tiene una componente dependiente de características termodinámicas del aire y otro dependiente del ángulo de escaneo [@zhu2014] y se calcula como una polinomio lineal de N predictores $p_i(x)$, con coeficientes asociados $\beta_i$. Por lo tanto, la temperatura de brillo corregida por bias ($BT_{cb}$) puede obtenerse como
@@ -402,7 +381,7 @@ La metodología de detección de pixeles nubosos depende de la longitud de onda 
 
 Por otro lado, el control de calidad de GSI filtra aquellas observaciones de canales cercanos al rango visible sobre superficies de agua con un ángulo cenital mayor a 60$^{\circ}$ para rechazar aquellas observaciones que pudieran estar contaminadas por reflexión. Para las observaciones en el infrarrojos y microondas también realiza una chequeo de la emisividad para detectar observaciones contaminadas por efecto de la superficie. Finalmente se aplica un *gross check*, es decir, se compara la diferencia entre la observación y la observación simulada por el modelo y un umbral predefinido que depende del error de observación para rechazar observaciones erroneas. 
 
-La ubicación vertical de cada observación de radiancia se estimó como el nivel del modelo en el que se maximizaba su función de peso calculada por el CRTM. La función de peso de cada canal corresponde al cambio en la transmitancia con la altura y su máximo describe la capa de la atmósfera desde donde la radiación captada por el canal fue emitida. Los sensores multiespectrales tienen una buena cobertura vertical y son capaces de captar desde la baja troposfera hasta la baja estratosfera. Los canales elegidos para la asimilación y sus errores asociados se definieron teniendo en cuenta la configuración que GSI utiliza para generar los análisis y pronósticos de GFS, el tope del modelo elegido en este trabajo (50 hPa) y la posible influencia de la superficie.
+La ubicación vertical de cada observación de radiancia se estimó como el nivel del modelo en el que se maximizaba su función de peso calculada por el CRTM. La función de peso de cada canal corresponde al cambio en la transmitancia con la altura y su máximo describe la capa de la atmósfera desde donde la radiación captada por el canal fue emitida. Los sensores multiespectrales tienen una buena cobertura vertical y son capaces de captar desde la baja troposfera hasta la baja estratosfera. Los canales elegidos para la asimilación y sus errores asociados se definieron teniendo en cuenta la configuración que GSI utiliza para generar los análisis y pronósticos de GFS, el tope del modelo elegido en este trabajo (50 hPa) y la posible influencia de la superficie (Tabla \@ref(tab:table-rad)).
 
 
 
@@ -448,7 +427,7 @@ data.table(mem = as.character(formatC(1:60, flag = "0", width = 3)),
 ```
 
 
-Para reducir el efecto de las correlaciones espurias en la estimación de las covarianzas de los errores de las observaciones, utilizamos un radio de localización horizontal de 180 km y un radio de localización vertical de 0,4 (en coordenadas del logaritmo de la presion ) como en @dillon2021 para todos los tipos de observaciones. 
+Para reducir el efecto de las correlaciones espurias en la estimación de las covarianzas de los errores de las observaciones, utilizamos un radio de localización horizontal de 180 km y un radio de localización vertical de 0,4 (en coordenadas del logaritmo de la presión) como en @dillon2021 para todos los tipos de observaciones. 
 Se aplicó con un parámetro de inflación $\alpha=0,9$ para mitigar el impacto de los errores de muestreo y para considerar los errores del modelo que no se tienen en cuenta en el enfoque multifísica del ensamble [@whitaker2012].
 
 (ref:dominio) a) Dominio utilizado para las simulaciones (recuadro negro), dominio interior utilizado para la comparación entre experimentos (recuadro rojo), la región mostrada en b) (recuadro azul claro), y la ubicación de las Estaciones Meteorológicas Automáticas (EMA, cuadrados verdes) y las Estaciones Meteorológicas Convencionales (EMC, triángulos naranjas). b) Ubicación de los lanzamientos de radiosondeos durante RELAMPAGO. Los puntos verdes corresponden a los radiosondeos lanzados durante el IOP 7, los triángulos naranjas son radiosondeos lanzados durante el IOP 8, y los cuadrados morados son radiosondeos lanzados fuera de los periodos de medición intensiva. También se muestra la topografía en metros (sombreada).
