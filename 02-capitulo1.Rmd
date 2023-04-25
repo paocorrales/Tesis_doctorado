@@ -890,7 +890,7 @@ ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)),
 
 
 
-### Validación con observaciones independientes
+### Validación con observaciones independientes {#val-analisis}
 
 En primer lugar, se analizó el impacto de la asimilación de diferentes tipos de observación en la representación del SCM y su precipitación asociada. La figura \@ref(fig:pp-hov)a muestra la precipitación acumulada horaria estimada por IMERG, y la media ajustada a la probabilidad (PM) [@clark2017] para la precipitación acumulada horaria del first-guess promediada entre 67$^{\circ}$W y 54,5$^{\circ}$W en función del tiempo y la latitud en los diferentes experimentos. Las precipitaciones más intensas (más de 12 $mmh^{-1}$) comienzan durante la tarde del 22 de noviembre y continúan durante el 23 de noviembre posterior al periodo simulado (Figura \@ref(fig:pp-hov)a). En todos los experimentos, la precipitación acumulada en los pronósticos de corto plazo es subestimada. Esto es particularmente evidente en CONV (Figura \@ref(fig:pp-hov)b), donde el inicio de la convección se retrasa y ocurre más al norte con respecto al inicio observado. AWS, SATWND y RAD captan mejor el momento y la ubicación de la iniciación de la convección (Figuras \@ref(fig:pp-hov)c-e). AWS y RAD muestran una distribución más fragmentada en comparación con SATWND, posiblemente debido al desarrollo de una convección menos organizada durante el 22 de noviembre. Después de las 18 UTC del 22 de noviembre, RAD muestra mejoras en la tasa de precipitación y su distribución en comparación con los otros experimentos como resultado de un desarrollo de la convección más intenso.
 
