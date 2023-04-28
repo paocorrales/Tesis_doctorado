@@ -599,7 +599,14 @@ donde $P_{oi}$ es la proporción de puntos de reticula en el subdominio $i-ésim
 
 Para los pronósticos por ensambles se calculó la probabilidad de precipitación por encima de determinados umbrales en cada punto de retícula como la proporción de miembros del ensamble que pronósticaron precipitación por encima de cada umbral. Además se generaron gráficos de confiabilidad [@wilks2011] con intervalos de probabilidades pronósticadas de 10% para analizar la calibración de los pronósticos inicializados a partir de los análisis de cada experimento.  
 
+Finalmente se calculó el índice de Brier [@brier1950] para evaluar el error cuadrático medio de las probabilidades de precipitación calculadas de acuerdo a la siguiente ecuación:
 
+\begin{equation}
+\mathit{BS} = \frac{1}{N}\sum_{i=1}^{N} ({P_i}-{O_i})^
+(\#eq:eq12)
+\end{equation}
+
+donde $P_i$ es la probabilidad pronósticada de la ocurrencia de un evento en el punto $i-ésimo$ y $O_i$ será 1 si se observó efectivamente la ocurrencia del evento y 0 si no. 
 
 ## Recursos computacionales 
 
