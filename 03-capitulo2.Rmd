@@ -174,9 +174,84 @@ Es interesante notar que la asimilación de radianzas que aportan información e
 
 La mayor diferencia en los perfiles promediados para el viento meridional se observa en niveles altos y está asociado al periodo de mayor actividad convectiva sobre el norte del dominio (Figuras \@ref(fig:era5-fcst-3)). En particular SATWND es el pronóstico que mejor representa el viento meridional, particularmente en el pronóstico inicializado a las 06 UTC (Figura \@ref(fig:era5-fcst-3)g). Esto es particularmente intererante ya que el impacto de las observaciones de viento derivadas de satélite asimiladas en el experimento SATWND era marginal comparado al impacto de otra fuentes de observaciones. Sin embargo los pronósticos inicializados con condiciones inciales que incluye información de viento derivado de satélite representan mejor el viento meridional aún en los periodos de mayor convección. Si se analizan los experimentos individualmente alrededor de las 00 UTC del 23 de noviembre, se observa que SATWND presenta mayor convergencia en niveles bajos y mayor divergencia en niveles altos cuando se lo compara con RAD (no se muestra). Esto podría indica que la convección en SATWND es más intensa.
 
-Algo similar se observa en la diferencia entre perfiles vericales del viento zonal en las Figuras \@ref(fig:era5-fcst-3). Los pronósticos inicializados a partir de los experimentos AWS, SATWND y RAD muestran una mejor representación del viento zonal en todos los niveles. Sin embargo las observaciones de satelites polares parecen generar un impacto negativo en las condiciones iniciales de RAD que se traslada al pronóstico aumentando la diferencia respecto de ERA5. 
 
-XXXXX agregar propagación de condiciones de borde e iniciales XXXXXXXXXXx
+(ref:frente) Viento meridional igual a 0 $ms^{-1}$ en 800 (a-c), 900 (d-f) y 1000 hPa (g-i) en los pronósticos que verifican a las 12 (a,d,g) del 22 de noviembre y las 00 (b,e,h) y 12 UTC (c,f,i) del 23 de noviembre. Se muestra ERA5 (línea negra) y la media del ensamble de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja).
+
+```{r frente, fig.cap="(ref:frente)", fig.height=5}
+front <- fread(here("data/derived_data/forecast_variables/front_location_v.csv"))
+
+front %>% 
+  # .[variable == "V" & lev %in% c(1000, 900, 800)] %>% 
+  .[, date := factor(date)] %>% 
+  ggplot(aes(x, y)) +
+  geom_mapa() +
+  geom_contour2(data = ~.x[exp == "E2"], aes(z = fcst, color = "E2"),
+                breaks = c(0), proj = norargentina_lambert) +
+  geom_contour2(data = ~.x[exp == "E5"], aes(z = fcst, color = "E5"),
+                breaks = c(0), proj = norargentina_lambert) +
+  geom_contour2(data = ~.x[exp == "E6"], aes(z = fcst, color = "E6"),
+                breaks = c(0), proj = norargentina_lambert) +
+  geom_contour2(data = ~.x[exp == "E9"], aes(z = fcst, color = "E9"),
+                breaks = c(0), proj = norargentina_lambert) +
+  geom_contour2(aes(z = era),
+                breaks = c(0), proj = norargentina_lambert, 
+                color = "black") +
+  # scale_fill_divergent_discretised() +
+  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AUT",
+                                                      E6 = "SATWND", E9 = "RAD")) +
+  coord_sf(ylim = c(-38, -20), xlim = c(-68, -54)) +
+  labs(color = NULL) +
+  facet_grid(lev ~ date, labeller = labeller(lev = c("1000" = "1000 hPa",
+                                                     "900" = "900 hPa",
+                                                     "800" = "800 hPa"),
+                                             date = c("2018-11-22 12:00:00" = "12 UTC, 22 de Nov",
+                                                      "2018-11-23 00:00:00" = "00 UTC, 23 de Nov",
+                                                      "2018-11-23 12:00:00" = "12 UTC, 23 de Nov"))) +
+  tagger::tag_facets(position = "tr") +
+  theme_minimal(base_size = 9) +
+  theme()
+```
+
+
+Algo similar se observa en la diferencia entre perfiles vericales del viento zonal en las Figuras \@ref(fig:era5-fcst-3). Los pronósticos inicializados a partir de los experimentos AWS, SATWND y RAD muestran una mejor representación del viento zonal en todos los niveles. Sin embargo las observaciones de satelites polares parecen generar un impacto negativo en las condiciones iniciales de RAD que se traslada al pronóstico aumentando la diferencia respecto de ERA5. En todos los casos los pronósticos subestiman el viento zonal cerca de superficie luego del paso del frente frío, esto podría deberse a un retraso en el avance del frente o una disminución en la intensidad del viento postfrontal. Al comparar la ubicación del frente en los pronósticos y en ERA5, aproximado por la isolínea de viento meridional igual a 0 $ms^{-1}$ en las Figuras \@ref(fig:frente), se observa que la ubicación del frente es similar en todos los casos y solo se retrasa en los pronósticos hacia el final del periodo y por encima de 900 hPa (Figuras \@ref(fig:frente)c y f). Por lo anterior, las diferencias entre los pronósticos y ERA5 para el viento zonal se deben principalmente a una disminución en el flujo posrfrontal.
+
+Finalmente, la Figura \@ref(fig:ci) muestra campos de la raíz de la diferencia cuadrática media (RDCM) calculada sobre entre RAD y CONV a lo largo del periodo pronosticado para temperatura y humedad específica. Para ambas variables los campos de RDCM iniciales muestran valores muy altos y las diferencias se encuentran distribuidas en todo el dominio (Figura \@ref(fig:ci)a y e). Esto muestra que las condiciones iniciales de RAD y CONV tienen características muy distintas, y particularmente difieren en el contenido de humedad debido a la asimilación previa de observaciones de EMA. Aún más interesante es que estas diferencias iniciales perduran a lo largo del todo el pronóstico hasta las 12 UTC del 23 de noviembre. Si bien la magnitud de las diferencias disminuye en magnitud y por su ubicación, en parte están asociadas a los procesos convectivos, también muestran que el impacto positivo de la asimilación de observaciones de EMA, vientos derivados de satélite y radianzas se traslada a los pronósticos y se mantienen en el tiempo.  
+
+
+(ref:ci) Raíz de la diferencia cuadrática media (RDCM) para la humedad específica ($gKg^{-1}$, a-d) y temperatura (K, e-h) calculada sobre la diferencia entre RAD y CONV sobre todos los niveles del modelo para distintos tiempos a lo largo del pronóstico inicializado a las 00 UTC del 22 de noviembre.  
+
+```{r ci, fig.cap="(ref:ci)", fig.width=8, fig.height=4}
+rmse <- fread(here("data/derived_data/forecast_variables/rmse_E9-E2_t_q.csv"))
+
+rmse %>% 
+  coord[., on = c(south_north = "lat", west_east = "lon")] %>% 
+  .[, c("x", "y") := wrf_project(lon, lat)] %>% 
+  .[, date := factor(date)] %>% 
+  .[, ":="(variable_label = factor(variable, labels = c("atop('Humedad', 'específica (g Kg'^-1*')')",
+                                                        "Temperatura~(K)")),
+           date_label = factor(date, labels = c("atop('00 UTC, 22 de Nov')", "atop('12 UTC, 22 de Nov')", 
+                                                "atop('00 UTC, 23 de Nov')", "atop('12 UTC, 23 de Nov')")))] %>% 
+           # date_label = fcase(date == "2018-11-22 00:00:00", "00~UTC\,~22~de~Nov",
+           #                    date == "2018-11-22 12:00:00", "12~UTCº,~22~de~Nov",
+           #                    date == "2018-11-23 00:00:00", "00~UTC,~23~de~Nov",
+           #                    date == "2018-11-23 12:00:00", "12~UTC,~23~de~Nov"))] %>% 
+  ggplot(aes(x, y)) +
+  geom_contour_fill(aes(z = rmse, fill = stat(level_d)), 
+                    proj = norargentina_lambert) +
+  geom_mapa() +
+  scale_fill_viridis_b(super = ScaleDiscretised,
+                       direction = -1,
+                       limits = c(0.5, 5.5),
+                       na.value = "white",
+                       guide = guide_colorsteps(barwidth = 0.5, #mid = 25,
+                                                barheight = 8,
+                                                frame.colour = "black")) +
+  facet_grid(variable_label ~ date_label, labeller = label_parsed) + 
+  tagger::tag_facets() +
+  labs(fill = "RDCM") +
+  theme_minimal(base_size = 9)
+
+```
 
 ### Verificacion de los pronósticos de precipitación
 
@@ -440,7 +515,7 @@ pp_imerg <- read_rds("~/datosmunin3/EXP/derived_data/IMERG_3h.rds")
 
 pp_imerg <- pp_imerg[x %between% c(-900000, 900000) & y %between% c(-1100000, 1100000)]
 
-bs2 <- map_df(Sys.glob("~/bs_3*"), function(f) {
+bs2 <- map_df(Sys.glob("data/derived_data/forecast_variables/BS/bs_3*"), function(f) {
   
   meta <- unglue(basename(f), "bs_3h_fcst_ens_{ini_date}_{exp}.csv")
   
@@ -547,7 +622,7 @@ En primer lugar se calculó el RMSE y BIAS respecto de las observaciones de EMA 
 
 Mientras que no hay características sobresalientes en los errores del viento zonal, en el viento meridional (Figuras \@ref(fig:rmse-bias-aut)d y h), es interesante notar que el RMSE de los pronósticos de las 06 UTC es más bajo que para los pronósticos de las 00 UTC y esta mejora se mantiene por al menos 6 horas. Esto también ocurre en el BIAS aunque en menor medida. 
 
-(ref:aut-bias-aut) Evolución del RMSE y Bias de a) humedad especifica ($g\ Kg{^-1}$), b) temperatura ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos de cada experimento con las observaciones de EMA. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja. El pronóstico inicializado a las 00 UTC se muestra en línea sólida y el pronóstico de las 06 UTC en línea discontinua.
+(ref:aut-bias-aut) Evolución del RMSE y Bias de a) humedad específica ($g\ Kg{^-1}$), b) temperatura ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos de cada experimento con las observaciones de EMA. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja. El pronóstico inicializado a las 00 UTC se muestra en línea sólida y el pronóstico de las 06 UTC en línea discontinua.
 
 ```{r rmse-bias-aut, fig.cap="(ref:aut-bias-aut)", fig.align="centern", fig.width=6, fig.height=3}
 fisica <- data.table(mem = as.character(formatC(1:60, flag = "0", width = 3)),
