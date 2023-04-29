@@ -507,7 +507,7 @@ prop %>%
 ```
 
 
-(ref:brier) Índice de Brier calculado sobre el ensamble de pronósticos inicializados a las 00 UTC y 06 UTC y cada experimento utilizando los mismo umbrales seleccionados en las Figuras \@ref(fig:reliability00) y \@ref(fig:reliability06). 
+(ref:brier) Índice de Brier calculado sobre el ensamble de pronósticos inicializados a las 00 UTC y 06 UTC y cada experimento utilizando los mismo umbrales seleccionados en las Figuras \@ref(fig:reliability-1) y \@ref(fig:reliability-2). 
 
 ```{r brier, fig.cap="(ref:brier)", fig.align="center", fig.width=7, fig.height=5}
 
@@ -900,7 +900,7 @@ pbl %>%
 
 
 
-Si analizamos el RMSE y BIAS para cada parametrización de capa límite calculados solo sobre los radiosondeos (Figura \@ref(fig:souding-pbl)), vemos que en general todas las parametrizaciones tienen valores de RMSE similares en todas las variables con una menor variabilidad que entre las parametrizaciones de convección. Algo similar ocurre con el BIAS y a diferencia con lo que se observaba al analizar las variables de superficie, en este caso ninguna parametrización parece ser la mejor al representar todas las variables en altura o en todos los experimentos la mismo tiempo.
+Si analizamos el RMSE y BIAS para cada parametrización de capa límite calculados solo sobre los radiosondeos (Figura \@ref(fig:soudings-pbl)), vemos que en general todas las parametrizaciones tienen valores de RMSE similares en todas las variables con una menor variabilidad que entre las parametrizaciones de convección. Algo similar ocurre con el BIAS y a diferencia con lo que se observaba al analizar las variables de superficie, en este caso ninguna parametrización parece ser la mejor al representar todas las variables en altura o en todos los experimentos la mismo tiempo.
 
 Si bien no es posible elegir solo una parametrización de convección que mejor represente todas las variables, es interesante observar la buena performance de BMJ al representar estas variables. Sin embargo, @dillon2021, utilizando una configuración del ensamble multifísica similar a este trabajo, encontraron que esta parametrización era la que peor representaba la precipitación cuantificada utilizando el FSS. Un análisis similar sobre los experimentos discutidos en este capítulo mostraron la misma tendencia encontrada por @dillon2021, por ejemplo la Figura \@ref(fig:fss-param) muestra el FSS calculado sobre el ensamble completo de RAD y los miebros que usan cada parametrización de campa límite o convección.  En esta Figura se observa que BMJ es la parametrización de convección que peor representa la precipitación desde el punto de vista del FSS mientras que los miembros que utilizan KF y GF muestran los mejores resultados comparando el conjunto de parametrizaciones. Teniendo en cuenta este resultado y ante la poca variabilidad en los valores de los errores asociados a temperatura, humedad y viento, es posible que el reemplazo de BMJ por otra parametrización de convección de mejores resultados en términos de la representación de la precipitación sin producir mayor impacto en la temperatura, humedad y viento. También es interesante notar que MYNN2 es la paramerización de capa límite que junto con BMJ tiene un FSS sistemáticamente menor que el resto de las parametrizaciones y el enmsable completo. Teniendo en cuenta los buenos resultados de MYNN2 al representar el viento meridional, sería importante realizar nuevos experimentos de sensibilidad a esta parametrización para evaluar si debería seguir usándose dentro del ensamble multifísica.
 
