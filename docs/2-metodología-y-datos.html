@@ -841,9 +841,9 @@ La media de <span class="math inline">\(RCRV\)</span> calculada sobre todas las 
 <p>donde <span class="math inline">\(P_{oi}\)</span> es la proporción de puntos de reticula en el subdominio <span class="math inline">\(i-ésimo\)</span>, definido por el radio de influencia, donde la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a <span class="citation">Roberts et al. (2020)</span>, <span class="math inline">\(P_{xi}\)</span> se calcula sobre el ensamble completo y cuantifica la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de cuadrícula, que luego es promediando sobre el subdominio <span class="math inline">\(i-ésimo\)</span>.</p>
 <p>Para los pronósticos por ensambles se calculó la probabilidad de precipitación por encima de determinados umbrales en cada punto de retícula como la proporción de miembros del ensamble que pronósticaron precipitación por encima de cada umbral. Además se generaron gráficos de confiabilidad <span class="citation">(Wilks, 2011)</span> con intervalos de probabilidades pronósticadas de 10% para analizar la calibración de los pronósticos inicializados a partir de los análisis de cada experimento.</p>
 <p>Finalmente se calculó el índice de Brier <span class="citation">(Brier, 1950)</span> para evaluar el error cuadrático medio de las probabilidades de precipitación calculadas de acuerdo a la siguiente ecuación:</p>
-<p><span class="math display" id="eq:eq12">\[\begin{equation}
-\mathit{BS} = \frac{1}{N}\sum_{i=1}^{N} ({P_i}-{O_i})^
-\tag{2.4}
+<p><span class="math display" id="eq:eq13">\[\begin{equation}
+\mathit{BS} = \frac{1}{N}\sum_{i=1}^{N} ({P_i}-{O_i})^{2}
+\tag{2.11}
 \end{equation}\]</span></p>
 <p>donde <span class="math inline">\(P_i\)</span> es la probabilidad pronósticada de la ocurrencia de un evento en el punto <span class="math inline">\(i-ésimo\)</span> y <span class="math inline">\(O_i\)</span> será 1 si se observó efectivamente la ocurrencia del evento y 0 si no.</p>
 </div>

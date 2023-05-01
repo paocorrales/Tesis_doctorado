@@ -16,6 +16,7 @@ eq:eq8
 eq:eq9
 eq:eq10
 eq:eq11
+eq:eq13
 tab:table-exp
 fig:obs-horizontal
 fig:obs-cycle
@@ -116,6 +117,7 @@ canales
 thinning
 comparación-del-impacto-de-observaciones-de-goes-16-con-otras-fuentes-de-información
 impacto-de-las-observaciones-de-abi-en-el-análisis
+impacto-en-la-precipitación
 pronósticos-determinísticos
 conclusiones-2
 corrección-del-bias-de-observaciones-de-satélite
