@@ -602,8 +602,8 @@ Para los pronósticos por ensambles se calculó la probabilidad de precipitació
 Finalmente se calculó el índice de Brier [@brier1950] para evaluar el error cuadrático medio de las probabilidades de precipitación calculadas de acuerdo a la siguiente ecuación:
 
 \begin{equation}
-\mathit{BS} = \frac{1}{N}\sum_{i=1}^{N} ({P_i}-{O_i})^
-(\#eq:eq12)
+\mathit{BS} = \frac{1}{N}\sum_{i=1}^{N} ({P_i}-{O_i})^{2}
+(\#eq:eq13)
 \end{equation}
 
 donde $P_i$ es la probabilidad pronósticada de la ocurrencia de un evento en el punto $i-ésimo$ y $O_i$ será 1 si se observó efectivamente la ocurrencia del evento y 0 si no. 
