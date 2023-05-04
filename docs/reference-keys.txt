@@ -110,12 +110,12 @@ análisis-y-verificación-por-parametrizaciones
 conclusiones-1
 asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16
 metodología-2
-asim-goes
+asim-ABI
 configuracion-de-los-experimentos-1
 resultados-2
 canales
 thinning
-comparación-del-impacto-de-observaciones-de-goes-16-con-otras-fuentes-de-información
+comparación-del-impacto-de-observaciones-de-abi-con-otras-fuentes-de-información
 impacto-de-las-observaciones-de-abi-en-el-análisis
 impacto-en-la-precipitación
 pronósticos-determinísticos
