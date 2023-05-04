@@ -102,8 +102,8 @@ rad_conv[, bufr_code := fcase(type %in% c(181, 187, 281, 287), "ADPSFC",
 
 
 
-rad <- rad[, .(press, iuse, error, exp, date, lon.box, lat.box)] %>% 
-  setnames(c("press", "iuse", "error"), c("pressure", "usage.flag", "rerr"))
+rad <- rad[, .(peakwt, iuse, error, exp, date, lon.box, lat.box)] %>% 
+  setnames(c("peakwt", "iuse", "error"), c("pressure", "usage.flag", "rerr"))
 
 
 rbind(conv, aut, satwnd, rad_conv) %>%
