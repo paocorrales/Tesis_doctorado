@@ -542,7 +542,7 @@ ggdraw(plot_grid(plot_grid(g1, g2, ncol = 2, rel_widths = c(1, 0.5),
 
 Los errores de las observaciones utilizados fueron definidos de acuerdo a las tablas de errores disponibles como parte del sistema GSI. Para las observaciones de radiancias polares se aplicó un thinning con una retícula de 60 km siguiendo  @singh2016, @jones2013 y @lin2017a ya utilizan configuraciones de modelo similares a la usada en este trabajo. Para las observaciones de GOES-16 se realizaron pruebas de sensibilidad para determinar la resolución de thinning más apropiada para este tipo de observaciones que se describen en la sección  \@ref(thinning). 
 
-Los coeficientes de corrección de bias para las observaciones de satélites polares se inicializaron a las 18 UTC del 18 de noviembre de 2018 a partir los coeficientes generados para la misma hora por el sistema GFS. El sistema de asimilación se configuró para utilizar una varianza de error de los coeficientes constante de 0,01 para evitar grandes ajustes en los coeficientes estimados en cada momento. Por razones que se describen en la seccion \@ref(asim-goes) se decidió no aplicar corrección de bias a las observaciones de GOES-16.
+Los coeficientes de corrección de bias para las observaciones de satélites polares se inicializaron a las 18 UTC del 18 de noviembre de 2018 a partir los coeficientes generados para la misma hora por el sistema GFS. El sistema de asimilación se configuró para utilizar una varianza de error de los coeficientes constante de 0,01 para evitar grandes ajustes en los coeficientes estimados en cada momento. Por razones que se describen en la seccion \@ref(asim-abi) se decidió no aplicar corrección de bias a las observaciones de GOES-16.
 
 ## Métodos de verificación 
 
