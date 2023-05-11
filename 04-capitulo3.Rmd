@@ -263,9 +263,9 @@ tribble(
 
 Todos los experimentos previamente descriptos usan la configuración del ensamble multifísica y del sistema de asimilación explicada en la Sección \@ref(configmodelo). De la misma manera los ciclos de análisis horarios se realizan desde las 18 UTC del 20 de noviembre hasta las 12 UTC del 23 de noviembre para cubrir el desarrollo y maduración del SCM. 
 
-Para estudiar el impacto de la asimilación de radianzas también se generaron pronósticos determinísticos en alta resolución inicializados a las 00 y 06 UTC del 22 de noviembre (Figura \@ref(fig:cycle-fcst)). En la Figura \@ref(fig:dominio-det) se muestra el dominio *d01* con 10 km de resolución (línea negra), identico al dominio utilizado para el resto de las simulaciones numéricas y el dominio anidado *d02* con 2 km de resolución (línea turquesa). Las condiciones iniciales están dadas por los análisis de los distintos experimentos y las condiciones de borde son generadas a partir del GFSF determinístico. Además las variables atmosféricas para el *d02* fueron inicializadas haciendo un escalado de la información del análisis. Todos los pronósticos utilizan las mismas parametrizaciones: del modelo de superficie terrestre (Noah-MP, @chen2001), de microfísica (esquema de un solo momento de 6 clases del WRF, @hong2006a) de procesos radiativos (esquema de onda corta y onda larga del RRTMG, @iacono2008), YSU [@hong2006] para capa límite y KF [@kain2004] para covección (solo aplicado al *d01*).
+Para estudiar el impacto de la asimilación de radianzas también se generaron pronósticos determinísticos en alta resolución inicializados a las 00 del 22 de noviembre (Figura \@ref(fig:cycle-fcst)). En la Figura \@ref(fig:dominio-det) se muestra el dominio *d01* con 10 km de resolución (línea negra), identico al dominio utilizado para el resto de las simulaciones numéricas y el dominio anidado *d02* con 2 km de resolución (línea turquesa). Las condiciones iniciales están dadas por los análisis de los distintos experimentos y las condiciones de borde son generadas a partir del GFSF determinístico. Además las variables atmosféricas para el *d02* fueron inicializadas haciendo un escalado de la información del análisis. Todos los pronósticos utilizan las mismas parametrizaciones: del modelo de superficie terrestre (Noah-MP, @chen2001), de microfísica (esquema de un solo momento de 6 clases del WRF, @hong2006a) de procesos radiativos (esquema de onda corta y onda larga del RRTMG, @iacono2008), YSU [@hong2006] para capa límite y KF [@kain2004] para covección (solo aplicado al *d01*).
 
-Además de los pronósticos inicializados a partir de los análisis, se generaron pronósticos inicializados a partir de GFS, es decir, sin asimilación de datos regional. Estos pronósticos tienen la misma configuración y usan el mismo conjunto de parametrizaciones que los los pronósticos descriptos previamente. 
+Además de los pronósticos inicializados a partir de los análisis, se generó un pronóstico inicializado a partir del análisis global de GFS, es decir, sin asimilación de datos regional. Este pronóstico tiene la misma configuración y usa el mismo conjunto de parametrizaciones que los los pronósticos descriptos previamente. 
 
 (ref:dominio-det) Dominio de baja resolución (d01, 10 km) marcado con un recuadro negro y dominio anidado de alta resolución (d02, 2 km) marcado en color turquesa. 
 
@@ -690,7 +690,7 @@ perfiles %>%
 
 ```
 
-Las Figuras \@ref(fig:UV-diff-abi) muestran la comparación entre los experimentos que incluyen radianzas de satélite y SATWND para las componentes del viento. En este caso las diferencias entre experimentos son más sutiles sin embargo, se aprecia una disminución en el viento zonal por encima de la 700 hPa en los experimentos RAD+ABI y ABI. Este aumento es más marcado cuando se asimilan radianzas de satélites polares y ABI en conjunto. En ese caso la comparación con ERA5 (Figuras \@ref(fig:era5-abi)i-l) muestra el viento zonal en los experimentos RAD y ABI se acerca más a ERA5 que SATWND que no incluye radianzas o RAD+ABI que asimila todas las radianzas en conjunto. Esto indicaría que los experimentos  En niveles bajos las diferencias son pequeñas y solo se observa un ligero aumento del viento zonal en ABI respecto de SATWND (Figura \@ref(fig:UV-diff-abi)c) asociado al flujo postfrontal. 
+Las Figuras \@ref(fig:UV-diff-abi) muestran la comparación entre los experimentos que incluyen radianzas de satélite y SATWND para las componentes del viento. En este caso las diferencias entre experimentos son más sutiles sin embargo, se aprecia una disminución en el viento zonal por encima de la 700 hPa en los experimentos RAD+ABI y ABI. Este aumento es más marcado cuando se asimilan radianzas de satélites polares y ABI en conjunto. En ese caso la comparación con ERA5 (Figuras \@ref(fig:era5-abi)i-l) muestra el viento zonal en los experimentos RAD y ABI se acerca más a ERA5 que SATWND que no incluye radianzas o RAD+ABI que asimila todas las radianzas en conjunto. Esto indicaría que los experimentos que incluyen observaciones de ABI representan mejor el flujo zonal para este caso de estudio. En niveles bajos las diferencias son pequeñas y solo se observa un ligero aumento del viento zonal en ABI respecto de SATWND (Figura \@ref(fig:UV-diff-abi)c) asociado al flujo postfrontal. 
 
 Las Figuras \@ref(fig:UV-diff-abi)d-f muestran que los experimentos que asimilan ABI tienen una mayor diferencia respecto de SATWND en el viento meridional en altura a partir del 22 de noviembre a las 12 UTC cuando hay mayor convección en el dominio. Este efecto ya era notorio al analizar el impacto de las radianzas de satelites polares (Figura \@ref(fig:UV-diff)f) que ahora se intensifica cuando se incluyen radianzas de ABI. Al igual que para el viento meridional, la comparación entre los experimentos y ERA5 (Figuras \@ref(fig:era5-abi)m-o)) muestra que, por encima de 500 hPa, los experimentos que incluyen radianzas tienen un viento meridional más parecido a ERA5 que SATWND. Esta mejora es más notoria en ABI donde no se incluyen observaciones de satélites polares. 
 
@@ -939,7 +939,14 @@ fss %>%
 
 #### Impacto de las observaciones de ABI en pronósticos determinísticos de alta resolución
 
+A continuación se analizará el impacto de la asimilación de observaciones de ABI en los pronósticos de alta resolución generados a partir de los análisis. También se incluye un pronóstico inicializado a partir den análisis global de GFS, que se utiliza normalmente como condición inicial y de borde para la generación de pronósticos operativos en Argentina. 
+
 ##### Representación de la temperatura, humedad y viento en los pronósticos
+
+En primer lugar se analiza la representación de la temperatura, humedad y viento en los pronósticos. En este caso se compararan los experimentos RAD, RAD+ABI y ABI con SATWND como control para evaluar el impacto de la asimilación de radianzas en los pronósticos por sobre la asmilación de otras fuentes de observación. Posteriormente se compararán los experimentos con observaciones independientes de EMA y radiosondeos de RELAMPAGO.
+
+Nuevamente calculamos perfiles verticales de temperatura y humedad específica promediados espacialmente a partir los pronósticos determinísticos a 36 hs y posteriormente calculamos la diferencia entre los perfiles verticales de los experimentos con estas observaciones y SATWND. La diferencia en los perfiles promediados de temperatura (Figura \@ref(fig:TQ-diff-fcst)a-c) muestra que las radianzas de satélites polares producen un calentamiento en niveles bajos en comparación con SATWND y esto se repite, aunque en menor medida con la asimilación de observaciones de ABI. De hecho luego de las 16 UTC del 22 de noviembre, los pronósticos inicializados a partir de RAD+ABI y ABI muestran una capa límite más fría que SATWND lo que podría indicar que desarrollaron un fren frío más intenso o una pileta de aire frío asociada a la convección más intensos. En niveles medios y altos las características de las diferencias, si bien un poco mayores, reflejan lo observado para los análisis (Figura \@ref(fig:TQ-diff-abi)a-c) por lo que nuevamente, las condiciones inciales parecen mantenerse a lo largo del pronóstico. Respecto de la humedad (Figura \@ref(fig:TQ-diff-fcst)d-f)), la comparación con SATWND muestra que la asimilación de observaciones de ABI genera una disminución de la humedad en niveles bajos paricularmente luego de las 12 UTC del 22 de noviembre cuando el sistema convecctivo aumenta su intensidad.  
+
 
 (ref:TQ-diff-fcst) Diferencia entre los pronósticos determinísticos de a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en $K$) y la humedad específica (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis.
 
@@ -1016,6 +1023,11 @@ perfiles %>%
         panel.grid = element_line(linetype = 3)) +
   plot_layout(ncol = 1, heights = c(1, 1))
 ```
+
+Las diferencias para el viento zonal (Figuras \@ref(fig:UV-diff-fcst)a-c) muestran que la asimilación de observaciones de satélites polares y ABI en conjunto produce el mayor impacto respecto de SATWND en todos los niveles pero en particular por encima de la capa límite. En cuanto al viento meridional (Figuras \@ref(fig:UV-diff-fcst)d-f), se observa que los pronósticos con condiciones iniciales que incluyen observaciones de ABI son más cercanos a SATWND. Por otro lado, la evolución del viento meridional a lo largo del tiempo para cada pronóstico (contornos en la Figuras \@ref(fig:UV-diff-fcst)d-f) muestra que los experimentos ABI y RAD+ABI tiene un flujo del norte más débil que RAD (Figura \@ref(fig:UV-diff-fcst)d) previo al paso del frente frío pero que el flujo en altura por detrá del sistema convectivo es mucho más intenso (Figuras \@ref(fig:UV-diff-fcst)e-f) lo que podría indicar que la convección generado por el modelo es más intensa también. Esto ultimo puede ser el resultado tanto del uso de condiciones iniciales con mayor información del entorno convectivo como de la resolución del modelo que permite resolver la convección de manera explicita.
+
+Si bien todo lo anterior corresponde es una comparación relativa al pronóstico SATWND, en líneas generales el signo del impacto observado en los pronósticos inicializados a partir de los análisis que asimilan radianzas (Figuras \@ref(fig:TQ-diff-fcst) y \@ref(fig:UV-diff-fcst)) coincide con lo observado en la evaluación del impacto de los análisis (Figuras \@ref(fig:TQ-diff-abi) y \@ref(fig:UV-diff-abi)). Por lo tanto es razonable pensar que la comparación con ERA5 mostraría resultados similares. 
+
 (ref:UV-diff-fcst) Diferencia entre los pronósticos determinósticos de a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en $K$) y viento meridional (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) RAD, (b,e) RAD+ABI, y (c,f) ABI ya que son los experimentos tienen más observaciones asimiladas en cada panel.
 
 ```{r UV-diff-fcst, fig.cap="(ref:UV-diff-fcst)", fig.height=5.5, fig.width=7, fig.align="center"}
@@ -1080,10 +1092,10 @@ perfiles %>%
   geom_contour2(data = ~.x[, .(lev, date, E9_E6 = E9, E10_E6 = E10, EG3_E6 = EG3)] %>%
                   melt(id.vars = c("lev", "date")) %>% unique(),
                 aes(z = value, linetype = factor(-sign(..level..))),
-                breaks = seq(-10, 4, 2), size = 0.1, color = "grey30") +
+                breaks = seq(-24, 10, 2), size = 0.1, color = "grey30") +
   geom_text_contour(data = ~.x[, .(lev, date, E9_E6 = E9, E10_E6 = E10, EG3_E6 = EG3)] %>%
                       melt(id.vars = c("lev", "date")) %>% unique(), aes(z = value),
-                    breaks = seq(-10, 4, 2), color = "grey30", skip = 1,
+                    breaks = seq(-24, 10, 4), color = "grey30", skip = 1,
                     size = 2, stroke = 0.1) +
   labs(fill = latex2exp::TeX("V ($m$ $s^{-1}$)"),
        x = NULL,
@@ -1106,6 +1118,8 @@ perfiles %>%
 
 
 ```
+En la comparación de los pronósticos con observaciones independientes se incluye también el pronóstico determinístico inicializado a partir del análisis de GFS. En la Figura \@ref(fig:sondeos-abi-fcst) se muestran los perfiles de RMSE y Bias calculados comparandos los pronósticos con los radiosondeos de RELAMPAGO. Los errores asociados a la temperatura en niveles bajos son mayores en los experimentos que incluyen radianzas de satélites polares en comparación con GFS o ABI. En niveles medios y altos GFS presenta el mayor RMSE y BIAS en la temperatura, lo que pone en evidencia el impacto positivo de la asimilación de observaciones a escala regional. Esto mismo ocurre para la temperatura de punto de rocío (Figura \@ref(fig:sondeos-abi-fcst)b) que muestra que el RMSE y Bias de GFS es hasta 5$^\circ$K mayor que para el resto de los pronósticos en niveles medios. El RMSE del viento zonal también muestra que GFS es el pronóstico con mayor error alrededor de 5 km mientras que por encima de los 10 km el error en RAD aumenta por sobre los otros (Figura \@ref(fig:sondeos-abi-fcst)c). Para el viento meridional, el RMSE de todos los pronósticos tiene un comportamiento similar aunque en algunos niveles (alrededor de 5 y 11 km) SATWND muestra un error mayor. En lineas generales ninguno de los pronósticos inicializados a partir de análisis con asimilación regional es consistentenmente mejor para todas las variables analizadas. 
+
 (ref:sondeos-abi-fcst) RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos determinísticos de cada experimento con los sondeos de RELAMPAGO. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra la comparación con el pronóstico inicializado con GFS.
 
 ```{r sondeos-abi-fcst, fig.cap="(ref:sondeos-abi-fcst)", fig.width=6, fig.height=4, fig.align="center"}
@@ -1154,6 +1168,8 @@ sondeos %>%
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
 
+El RMSE y BIAS calculado comparando los pronósticos con las observaciones de EMA se muestra en la Figura \@ref(fig:aut-rmse-fcst) para todo el periodo pronosticado. Si bien en general todos los pronósticos tienen errores similares se observa que los pronósticos inicializados a partir de análisis con asimilación regional tienen un RMSE mayor que GFS. Por otro lado el BIAS de SATWND es consistentemente meno rn las primeras 10 horas de pronóstico posiblemente gracias a la asimilación de observaciones de EMA que mejoran sus condiciones iniciales. Para la temperatura, GFS mantiene un error menor al resto de los experimentos durante las últimas 12 horas de pronóstico. En lineas generales ninguno de los pronósticos inicializados a partir de análisis con asimilación regional es consistentenmente mejor para todas las variables analizadas hasta ahora. 
+
 (ref:aut-rmse-fcst) Evolución del RMSE y Bias de a) humedad específica ($g\ Kg{^-1}$), b) temperatura ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos determinísticos de cada experimento con las observaciones de EMA. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra la comparación con el pronóstico inicializado con GFS.
 
 ```{r aut-rmse-fcst, fig.cap="(ref:aut-rmse-fcst)", fig.align="center", fig.width=6, fig.height=3}
@@ -1200,6 +1216,10 @@ ema %>%
 
 ##### Representación de la convección y precipitación
 
+Para analizar la representación de la precipitación se compararon los pronósticos determinísticos con las estimaciones de IMERG para calcular el FSS y el porcentaje de área cubierta por precipitación. En cuanto a la convección, se utilizó el modelo de transferencia radiativa CRTM para calcular la temperatura de brillo asociada al canal 13 (infrarrojo) de ABI a partir de los pronósticos y así compararlos cualitativa. Además se calculó el FSS para distintos umbrales de temperatura de brillo para hacer una comparación cuantitativa del desarrollo de la convección observada por el satélite GOES-16.
+
+El porcentaje de área cubierta por precipitación (Figura \@ref(fig:area-abi-fcst)) muestra que los pronósticos subestima la ocurrencia de precipitación aún cuando la resolución del modelo es alta y representa la convección de manera explicita. Si bien los pronósticos inicializados a partir de GFS y SATWND tienen un mayor porcentaje de área cubierta por precipitación mayor a 1 mm y en algunos tiempos también para precipitación mayor a 5 mm, los pronósticos que incluyen información de las observaciones de ABI representan muy bien el máximo observado para todos los umbrales. Hacia el final del periodo pronosticado GFS es el que muestra un porcentaje de área cubierta menor en comparación con el resto de los pronósticos.
+
 (ref:area-abi-fcst) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), ABI (línea turqueza) y GFS (línea negra continua) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea discontinua negra se muetra la estimación de IMERG.
 
 ```{r area-abi-fcst, fig.cap="(ref:area-abi-fcst)", fig.width=6, fig.height=5}
@@ -1234,24 +1254,20 @@ pp_area <- purrr::map(files, function(f) {
 
 pp_area %>% 
   .[umbral %in% c(1, 5, 10) & exp %in% c("E6", "E9", "E10", "EG3", "GFS")] %>% 
+  .[ini_date == "2018112200"] %>% 
   .[, .(mean_area = mean(area),
         max_area = max(area),
-        min_area = min(area)), by = .(umbral, date, exp, ini_date)] %>% 
+        min_area = min(area)), by = .(umbral, date, exp)] %>% 
   ggplot(aes(date, mean_area)) +
   geom_line(data = imerg[umbral %in% c(1, 5, 10)], 
             aes(end_date, area, color = "OBS"),
             linetype = 2) +
   # geom_ribbon(aes(ymin = min_area, ymax = max_area, fill = exp), alpha = .1) +
-  geom_line(aes(color = exp, linetype = ini_date)) +
+  geom_line(aes(color = exp)) +
   scale_color_manual(values = c(OBS = "grey20", colores_exp_abi, GFS = "grey20"),
                      labels = c(E6 = "SATWND", E9 = "RAD",
                                 E10 = "RAD+ABI", EG3 = "ABI",
                                 GFS = "GFS", OBS = "OBS")) +
-  # scale_fill_manual(values = c(OBS = "grey20", colores_exp_abi, GFS = "grey20"),
-  #                   guide = NULL,
-  #                   labels = c(E6 = "SATWND", E9 = "RAD",
-  #                               E10 = "RAD+ABI", EG3 = "ABI",
-  #                               GFS = "GFS", OBS = "OBS")) +
   scale_y_continuous(label = scales::percent_format()) +
   scale_date(20181122000000, 20181123000000, "12 hours", limits = c(ymd_h(2018112200), ymd_h(2018112312))) +
   facet_wrap(~umbral, scales = "free_y", 
@@ -1266,16 +1282,18 @@ pp_area %>%
 
 ```
 
+El FSS calculado comparando los pronósticos de precipitación con la estimación de IMERG (Figura \@ref(fig:fss-abi-fcst)) muestra nuevamente que GFS representa de manera más presisa la precipitación al comienzo del pronóstico, seguido por SATWND. Sin embargo con el paso de las horas de pronóstico, los experimentos con asimilación de radianzas pasan a tener valores de FSS mayores que GFS y esto se mantiene hacia el final del periodo. Esto indica, para este caso de estudio, que si bien los pronósticos inicializados a partir de análisis con asimilación regional demoran en producir precipitaición, luego mantienen la generación de precipitación por más tiempo. En este caso no se ven diferencias apreciables entre los distintos umbrales o escalas espaciales. 
+
 (ref:fss-abi-fcst) FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y d), 5 mm (b y e) y 25 mm (c y f), en escalas de 10 km (a-c) y 100 km (d-f), para los pronósticos determinísticos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), ABI (línea turqueza) y GFS (línea negra) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre.
 
 ```{r fss-abi-fcst, fig.cap="(ref:fss-abi-fcst)", fig.width=5, fig.height=4}
-# files <- Sys.glob(here("data/derived_data/FSS/fss_6h_fcst_det_2018112200*d02.csv"))
+files <- Sys.glob(here("data/derived_data/FSS/fss_6h_fcst_det_2018112200*d02.csv"))
 
-files <- Sys.glob("~/datosmunin3/EXP/derived_data/fss_1h_fcst_det_2018112200_*_d02.csv")
+# files <- Sys.glob("~/datosmunin3/EXP/derived_data/fss_1h_fcst_det_2018112200_*_d02.csv")
 
 fss_det <- map(files, function(f){
   
-  meta <- unglue(basename(f), "fss_1h_fcst_det_{ini_date}_{exp}_d02.csv")
+  meta <- unglue(basename(f), "fss_6h_fcst_det_{ini_date}_{exp}_d02.csv")
   
   fread(f) %>% 
     .[, ini_date := meta[[1]][["ini_date"]]]
@@ -1300,9 +1318,15 @@ fss_det[q %in% c(1, 5, 10) & w %in% c(1, 5) & exp %in% c("E6", "E9", "E10", "EG3
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
 
-(ref:tb) Temperatura de brillo...
+Por otro lado, la Figura \@ref(fig:tb) muestra la temperatura de brillo simulada para el canal 13 de GOES-16 en el tiempo inicial del pronósticos a las 00 UTC del 22 de noviembre y luego a las 12 UTC del mismo día cuando el sistema convectivo comienza a desarrollarse y a las 00 UTC del 23 de noviembre cuando el sistema convectivo ya se encuentra en el norte de Argentina y presenta mayor intensidad. A las 00 UTC del 22 de noviembre los pronósticos desarrollan nubosidad débil en gran parte del dominio pero que no está presente en las observaciones (Figura \@ref(fig:tb)f). Sin embargo los pronósticos inicializados a partir de RAD+ABI y ABI representan mejor la nubosidad presente y el desarrollo de cumulos con desarrollo vertical al norte de la provincia de Salta. Además al incluir información sobre las regiones con cielo claro, gracias a la asimilación de radianzas de ABI, también representa mejor las zonas despejadas al este del dominio. A diferencia de los pronósticos inicializados a partir de los análisis con asimilación regional, GFS no se inicializa con información sobre el contenido de agua de nube y condensados y por lo tanto no muestra nubosidad para el primer tiempo de pronóstico (Figura \@ref(fig:tb)e).
 
-```{r tb, fig.cap="(ref:tb)"}
+A las 12 UTC, cuando la convección se encuentra cruzando el dominio, todos los pronósticos ubican la nubosidad en la región correcta aunque menos organizada y con menor intensidad. De todos los pronósticos SATWND es el que muestra valores de temperatura de brillo más bajos (Figura \@ref(fig:tb)h). Por otro lado, la nubosidad que se observa Chaco también está presente en los pronósticos inicializados a partir de análisis con asimilación observaciones de ABI (Figuras \@ref(fig:tb)g y j). Sin embargo no logran generar la nubosidad sobre Uruguay que si se muestra (Figuras \@ref(fig:tb)k). 
+
+Finalmente a las 00 UTC del 23 de noviembre la convección se extiende sobre todo el noreste del dominio con temperaturas de brillo por debajo de los -85$^\circ$K asociada a los topes nubosos más altos (Figura \@ref(fig:tb)r). Si bien todos los pronósticos logran representar las características principales del sistema convectivo la temperatura de brillo es ligeramente mayor y solo en algunas regiones llega a valores por debajo de -85$^\circ$K. Por otro lado GFS es el único pronóstico que represeta con mayor detalle la región con menores temperaturas de brillo dividida en 2 subregiones como se observa en la imagen de brillo de GOES-16.
+
+(ref:tb) Temperatura de brillo simulada por CRTM a partir de los pronósticos determinósticos a las 00 y 12 UTC del 22 de noviembre y las 00 UTC del 23 de noviembre. Las observaciones de temperatura de brillo del canal 13 de GOES-16 se muestran en la ultima columna (f, l, r). 
+
+```{r tb, fig.cap="(ref:tb)", fig.width=7, fig.height=6, fig.align="center"}
 exps <- c("E6", "E9", "E10", "EG3", "GFS")
 dates <- c(rep("20181122000000", 5), rep("20181122120000", 5), rep("20181123000000", 5))
 
@@ -1354,8 +1378,8 @@ goes_exp %>%
   ggplot(aes(lon, lat)) +
   scattermore::geom_scattermore(aes(color = CH13 - 273.15)) +
   scattermore::geom_scattermore(data = goes, aes(color = tb_goes)) +
-  scale_color_topes(guide = guide_colorbar(barwidth = 0.5,
-                                           barheight = 15,
+  scale_color_topes(guide = guide_colorbar(barwidth = 15,
+                                           barheight = 0.5,
                                            order = 99,
                                            frame.colour = "black")) +
   geom_mapa() +
@@ -1366,14 +1390,16 @@ goes_exp %>%
                                              date = c("2018-11-22 00:00:00" = "00 UTC, 22 de Nov",
                                                       "2018-11-22 12:00:00" = "12 UTC, 22 de Nov",
                                                       "2018-11-23 00:00:00" = "00 UTC, 23 de Nov"))) +
+  tagger::tag_facets() +
   labs(color = "TB (K)") +
-  theme_minimal(base_size = 9)
+  theme_minimal(base_size = 9) +
+  theme(legend.position = "bottom")
 ```
+Para analizar la temperatura de brillo desde un punto de vista cuantitativo, la Figura \@ref(fig:fss-tb) muestra el FSS calculado para umbrales de temperatura de brillo de -30 K, sociado al borde externo de la nubosidad, -70 K que corresponde a la región de colores rojizos y -85 K asociado a los topes nubosos. Al igual que con la precipitación, GFS tiene una mejor representación de la temperatura de primer desde el comienzo del periodo pronosticado pero luego es igual o peor que los pronósticos inicilizados a partir de los análisis. Para el umbral de -30 K no se ven diferencias apreciables entre los experimentos y tampoco en las distintas escalas. Pero al observar el umbral de -70 K, vemos que solo en escalas de 200 km los pronósticos simulan temperaturas de brillo suficientemente bajas. Finalmente, la temperatura de brillo por debajo de -85 K, es la más dificil de pronosticar porque solo se observa en regiones muy pequeñas dentro de la nube convectiva donde se encuentran las corrientes ascendentes más intensas. En este caso los pronósticos simulan temperaturas de brillo de esta magnitud pero en regiones muy limitadas y que no coinciden exactamente con las observaciones. Solo al mirar la escala de 200 km se ve que tanto ABI como GFS logran representar topes nubosos intensos. 
 
 (ref:fss-tb) FSS calculado sobre la temperatura de brillo simulada para umbrales de 1 mm (a y d), 5 mm (b y e) y 25 mm (c y f), en escalas de 10 km (a-c) y 100 km (d-f), para los pronósticos determinísticos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), ABI (línea turqueza) y GFS (línea negra) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre.
 
 ```{r fss-tb, fig.cap="(ref:fss-tb)", fig.width=5, fig.height=4}
-
 
 files <- Sys.glob("~/datosmunin3/EXP/derived_data/interp_goes/fss_fcst_det_tb_*")
 
@@ -1392,6 +1418,7 @@ fss <- map(files, fread) %>% rbindlist()
 #   .[, ":="(q_label = factor(q, labels = c("1~mm~h^{-1}",  "5~mm~h^{-1}", "25~mm~h^{-1}")),
 #            w_label = factor(w, labels = c("2~km", "10~km")))] %>% 
 fss %>% 
+  .[q %in% c(30, 70, 85) & w %in% c(1, 11, 101)] %>% 
   ggplot(aes(date, fss)) +
   geom_line(aes(color = exp)) +
   scale_color_manual(values = c(colores_exp_abi, GFS = "grey20"),  
@@ -1400,7 +1427,12 @@ fss %>%
   scale_date(20181122000000, 20181123000000, "12 hours") +
   coord_cartesian(xlim = c(ymd_hms(20181122000000), ymd_hms(20181123100000))) +
   # facet_grid(w_label ~ q_label, labeller = label_parsed) +
-  facet_grid(w ~ q) +
+  facet_grid(w ~ q, labeller = labeller(w = c("1" = "2 km",
+                                              "11" = "20 km",
+                                              "101" = "200 km"),
+                                        q = c("30" = "-30 K",
+                                              "70" = "-70 K",
+                                              "85" = "-85 K"))) +
   tagger::tag_facets(position = list(x = 0.05, y = 0.90)) +
   labs(color = NULL, x = NULL, y = "FSS", linetype = NULL) +
   theme_minimal(base_size = 9) +
