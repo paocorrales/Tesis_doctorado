@@ -36,14 +36,14 @@ params:
 # Remove the hashtag to specify which version of output you would like.
 # Can only choose one at a time.
 output:
-  # thesisdown::thesis_pdf:
-  #       pandoc_args:
-  #           - "--lua-filter=resumen-to-meta.lua"
-  #           - "--lua-filter=abstract-to-meta.lua"
-  thesisdown::thesis_gitbook:
+  thesisdown::thesis_pdf:
         pandoc_args:
             - "--lua-filter=resumen-to-meta.lua"
             - "--lua-filter=abstract-to-meta.lua"
+  # thesisdown::thesis_gitbook:
+  #       pandoc_args:
+  #           - "--lua-filter=resumen-to-meta.lua"
+  #           - "--lua-filter=abstract-to-meta.lua"
 #  thesisdown::thesis_word: default
 #  thesisdown::thesis_epub: default
 
@@ -73,6 +73,7 @@ csl: csl/meteorologica.csl
 link-citation: yes
 lot: true
 lof: true
+toc-depth: 5
 ---
 
 
