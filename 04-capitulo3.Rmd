@@ -219,7 +219,7 @@ rad$rad_date %>%
   coord_flip() +
   labs(color = NULL, shape = NULL,
        x = "Nivel de presión (hPa)", y = "Cantidad media de \nobs por ciclo") +
-  theme_minimal(base_size = 10) +
+  theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
         plot.margin = unit(c(0, 0, 0, 0), "cm")) +
   
@@ -314,7 +314,7 @@ En este trabajo se generaron 3 experimentos de prueba que comparten la misma con
 
 (ref:area-canales) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), ABI_ch90_th30 (línea violeta) y ABI_ch0_th30 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.
 
-```{r area-canales, fig.cap="(ref:area-canales)", fig.width=6, fig.height=5}
+```{r area-canales, fig.cap="(ref:area-canales)", fig.width=6, fig.height=4}
 colores_canales <- c(E6 = "#EE7733", EG2 = "chartreuse4", EG4 = "#845EC2",
                      EG5 = "#2B809B")
 
@@ -391,7 +391,7 @@ Teniendo en cuenta que la asimilación de los 3 canales de ABI en conjunto no de
 
 (ref:fss-canales) FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), ABI_ch90_th30 (línea violeta) y ABI_ch0_th30 (línea celeste).
 
-```{r fss-canales, fig.cap="(ref:fss-canales)", fig.width=5, fig.height=5}
+```{r fss-canales, fig.cap="(ref:fss-canales)", fig.width=6, fig.height=5}
 
 files <- c(Sys.glob(here("data/derived_data/FSS/fss_6h_ana_ens_EG[2345]*")),
            Sys.glob(here("data/derived_data/FSS/fss_6h_ana_ens_E[169]*.csv")))
@@ -437,7 +437,7 @@ Es importante definir entonces la resolución apropiada para la reticula de baja
 
 (ref:area-thinning) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), y ABI_ch890_th10 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.
 
-```{r area-thinning, fig.cap="(ref:area-thinning)", fig.width=6, fig.height=5}
+```{r area-thinning, fig.cap="(ref:area-thinning)", fig.width=6, fig.height=4}
 colores_thinning <- c(E6 = "#EE7733", EG2 = "chartreuse4", EG3 = "#047994")
 
 pp_area %>% 
@@ -476,7 +476,7 @@ pp_area %>%
 
 Nuevamente compararemos los experimentos desde el punto de vista de la precipitación. En particular la Figura \@ref(fig:area-thinning) muestra el porcentaje de área cubierta por precipitación superior a distintos umbrales a lo largo del tiempo para los experimentos de thinning y SATWND como experimento control. En todos los casos el experimento con un thinning de 10 km es el que representa mejor el área cuberta por precipitación, particularmente en las horas de mayor actividad convectiva. Si bien todos los experimentos subestiman la precipitación en comparación con IMERG, ABI_ch890_th10 se acerca a esta estimación sobre todo cuando observamos el valor máximo del ensamble. 
 
-```{r thinning-fss, fig.cap="(ref:thinning-fss)", fig.width=5, fig.height=5}
+```{r thinning-fss, fig.cap="(ref:thinning-fss)", fig.width=6, fig.height=5}
 
 fss %>% 
   .[q %in% c(1, 25) & w %in% c(1, 11) & exp %in% c("E6", "EG2", "EG3")] %>% 
@@ -554,7 +554,7 @@ perfiles %>%
              labeller = labeller(variable = c("E9_E6" = "RAD - SATWND",
                                               "E10_E6" = "RAD+ABI - SATWND",
                                               "EG3_E6" = "ABI - SATWND"))) +
-  tag_facets(position = list(x = 0.1, y = 0.96)) +
+  tag_facets(position = list(x = 0.05, y = 0.96)) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -589,7 +589,7 @@ perfiles %>%
              labeller = labeller(variable = c("E9_E6" = "RAD - SATWND",
                                               "E10_E6" = "RAD+ABI - SATWND",
                                               "EG3_E6" = "ABI - SATWND"))) +
-  tag_facets(tag_pool = c("d", "e", "f"), position = list(x = 0.1, y = 0.96)) +
+  tag_facets(tag_pool = c("d", "e", "f"), position = list(x = 0.05, y = 0.96)) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -634,7 +634,7 @@ perfiles %>%
              labeller = labeller(variable = c("E9_E6"  = "**RAD** - SATWND",
                                               "E10_E6" = "**RAD+ABI** - SATWND",
                                               "EG3_E6" = "**ABI** - SATWND"))) +
-  tag_facets(position = list(x = 0.1, y = 0.96)) +
+  tag_facets(position = list(x = 0.05, y = 0.96)) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -678,7 +678,7 @@ perfiles %>%
              labeller = labeller(variable = c("E9_E6"  = "**RAD** - SATWND",
                                               "E10_E6" = "**RAD+ABI** - SATWND",
                                               "EG3_E6" = "**ABI** - SATWND"))) +
-  tag_facets(tag_pool = c("d", "e", "f"), position = list(x = 0.1, y = 0.96)) +
+  tag_facets(tag_pool = c("d", "e", "f"), position = list(x = 0.05, y = 0.96)) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -713,13 +713,13 @@ era[perfiles, on = c("lev", "date")] %>%
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
   scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
-  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  scale_date(ini = 20181121000000, end = 20181123110000, break_bin = "12 hours") +
   facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E6 = "SATWND", E9 = "RAD", 
                                                               E10 = "RAD+ABI", EG3 = "ABI"))) +
   labs(fill = "Temperatura (K)",
        x = NULL,
        y = "Presión (hPa)") +
-  tag_facets(position = list(x = 0.1, y = 0.95)) +
+  tag_facets(position = list(x = 0.05, y = 0.95)) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -741,13 +741,13 @@ era[perfiles, on = c("lev", "date")] %>%
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
   scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
-  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  scale_date(ini = 20181121000000, end = 20181123110000, break_bin = "12 hours") +
   facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E6 = "SATWND", E9 = "RAD", 
                                                               E10 = "RAD+ABI", EG3 = "ABI"))) +
   labs(fill = latex2exp::TeX("Humedad \nespecífica ($g$ $Kg^{-1}$)"),
        x = NULL,
        y = "Presión (hPa)") +
-  tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("e", "f", "g", "h")) +
+  tag_facets(position = list(x = 0.05, y = 0.95), tag_pool = c("e", "f", "g", "h")) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -769,13 +769,13 @@ era[perfiles, on = c("lev", "date")] %>%
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
   scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
-  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  scale_date(ini = 20181121000000, end = 20181123110000, break_bin = "12 hours") +
   facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E6 = "SATWND", E9 = "RAD", 
                                                               E10 = "RAD+ABI", EG3 = "ABI"))) +
   labs(fill = latex2exp::TeX("U ($m$ $s^{-1}$)"),
        x = NULL,
        y = "Presión (hPa)") +
-  tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("i", "j", "k", "l")) +
+  tag_facets(position = list(x = 0.05, y = 0.95), tag_pool = c("i", "j", "k", "l")) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -797,13 +797,13 @@ era[perfiles, on = c("lev", "date")] %>%
                                                             title.vjust = 1,
                                                             frame.colour = "black")) +
   scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
-  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  scale_date(ini = 20181121000000, end = 20181123110000, break_bin = "12 hours") +
   facet_wrap(vars(exp), ncol = 4, labeller = labeller(exp = c(E6 = "SATWND", E9 = "RAD", 
                                                               E10 = "RAD+ABI", EG3 = "ABI"))) +
   labs(fill = latex2exp::TeX("V ($m$ $s^{-1}$)"),
        x = NULL,
        y = "Presión (hPa)") +
-  tag_facets(position = list(x = 0.1, y = 0.95), tag_pool = c("m", "n", "ñ", "o")) +
+  tag_facets(position = list(x = 0.05, y = 0.95), tag_pool = c("m", "n", "ñ", "o")) +
   theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         tagger.panel.tag.text = element_text(size = 8),
@@ -816,7 +816,7 @@ era[perfiles, on = c("lev", "date")] %>%
 Habiendo analizado el impacto de la asimilación de radianzas en términos generales, la Figura \@ref(fig:sondeos-abi) muestra el RMSE y BIAS calculado al comparar los experimentos con los radiosondeos de RELAMPAGO en la región que se observa la Figura \@ref(fig:dominio)b. Por debajo de 5 km las observaciones de ABI generan una degradación de la temperatura de rocío durante el IOP 7 y de la temperatura en el IOP 8 con aumento tanto del RMSE como del BIAS. Pero se observa una mejora en la representación del viento zonal y meridional en niveles bajos durante el IOP 8. Sin embargo, las mayores diferencias entre SATWND o RAD y los experimentos que incluyen observaciones de ABI se observan por encima de 5 km donde se ubican los máximos de las funciones de peso de los canales de vapor de agua (Figura \@ref(fig:wf-goes)). La asimilación de observaciones de ABI, en este caso, ayuda a disminuir el RMSE y el BIAS en todas las variables durante el IOP 7. Este IOP estuvo caracterizado por ser un periodo relativament estable con cielos mayoritariamente despejados y un flujo de norte en niveles bajos asociado a una advección cálida y húmeda por lo que se asimilaron una mayor cantidad de observaciones de radianzas en comparación con el día siguiente. Esta es una de las razones que podrían explicar el impacto que se observa en todas las variables. Durante el IOP 8 las mejoras se observan principalmente en la temperatura y temperatura de punto de rocío y en menor medida en el viento meridional en niveles altos. Finalmente, la característica sobresaliente de este análisis es la mejora sustancial en la representación de la humedad en niveles medios cuando se asimilan observaciones de ABI. Si bien esto es opuesto a lo observado al analizar las diferencias entre ABI y RAD+ABI con ERA5, es importante notar en este punto que esta última comparación tiene límitaciones tanto por la resolución del reanálisis como por las observaciones disponibles para su generación.     
 
 
-(ref:sondeos-abi) RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando el análisis de cada experimento con los sondeos de RELAMPAGO durante el IOP 7 y el IOP 8. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde y ABI con una línea turqueza.
+(ref:sondeos-abi) RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando el análisis de cada experimento con los sondeos de RELAMPAGO durante el IOP 7 y el IOP 8. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde y ABI con una línea turqueza.
 
 ```{r sondeos-abi, fig.cap="(ref:sondeos-abi)", fig.width=6, fig.height=4, fig.align="center"}
 colores_exp_abi <- c(E6 = "#EE7733", E9 = "#CC3311", E10 = "#93B75C", EG3 = "#047994")
@@ -853,7 +853,7 @@ sondeos %>%
   .[, ":="(iop_labels = factor(iop, labels = c("IOP~7", "IOP~8")),
            variable_labels = factor(variable, labels = c("Temperatura~(K)", "atop('Temperatura de', 'punto de rocío (K)')", "Viento~U~(m~s^{-1})", "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(lev/1000, value.est)) +
-  geom_hline(yintercept = 0, color = "grey30") +
+  geom_hline(yintercept = 0, color = "darkgrey") +
   geom_line(aes(color = exp, linetype = estadistico)) +
   scale_color_manual(values = c(colores_exp_abi), labels = c(E6 = "SATWND", E9 = "RAD",
                                                              E10 = "RAD+ABI", EG3 = "ABI")) +
@@ -861,7 +861,7 @@ sondeos %>%
   facet_grid(iop_labels ~ variable_labels, scales = "free_x", 
              labeller = label_parsed) +
   tagger::tag_facets(position = list(x = 0.05, y = 0.95)) +
-  labs(y = "Bias/RMSE", x = "Altura (Km)", color = NULL, linetype = NULL) +
+  labs(y = "BIAS/RMSE", x = "Altura (Km)", color = NULL, linetype = NULL) +
   theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
@@ -875,7 +875,7 @@ En este punto es interesante observar las posibles diferencias entre RAD+ABI y A
 
 (ref:area-abi) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), y ABI (línea turqueza) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea discontinua negra se muetra la estimación de IMERG.
 
-```{r area-abi, fig.cap="(ref:area-abi)", fig.width=6, fig.height=5}
+```{r area-abi, fig.cap="(ref:area-abi)", fig.width=6, fig.height=4}
 
 pp_area %>% 
   .[umbral %in% c(1, 5, 10) & exp %in% c("E6", "E9", "E10", "EG3")] %>% 
@@ -913,7 +913,7 @@ Finalmente, la Figura \@ref(fig:fss-abi) muestra el FSS calculado comparando la 
 
 (ref:fss-abi) FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), y ABI (línea turqueza) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre.
 
-```{r fss-abi, fig.cap="(ref:fss-abi)", fig.width=5, fig.height=5}
+```{r fss-abi, fig.cap="(ref:fss-abi)", fig.width=6, fig.height=5}
 
 
 fss %>% 
@@ -976,7 +976,7 @@ perfiles %>%
        x = NULL,
        y = "Presión (hPa)") +
   scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
-  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  scale_date(ini = 20181121000000, end = 20181123110000, break_bin = "12 hours") +
   facet_wrap(~variable, ncol = 3,
              labeller = labeller(variable = c("E9_E6" = "RAD - SATWND",
                                               "E10_E6" = "RAD+ABI - SATWND",
@@ -1007,7 +1007,7 @@ perfiles %>%
                                    labels = scales::number_format()) +
   
   scale_y_level(name = "Presión (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
-  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  scale_date(ini = 20181121000000, end = 20181123110000, break_bin = "12 hours") +
   labs(fill = latex2exp::TeX("Humedad \nespecífica ($g$ $Kg^{-1}$)"),
        y = "Presión (hPa)",
        x = NULL) +
@@ -1058,7 +1058,7 @@ perfiles %>%
        x = NULL,
        y = NULL) +
   scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
-  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  scale_date(ini = 20181121000000, end = 20181123110000, break_bin = "12 hours") +
   facet_wrap(~variable, ncol = 3,
              labeller = labeller(variable = c("E9_E6"  = "**RAD** - SATWND",
                                               "E10_E6" = "**RAD+ABI** - SATWND",
@@ -1102,7 +1102,7 @@ perfiles %>%
        y = NULL) +
   scale_linetype(guide = NULL) +
   scale_y_level(name = "Pressure (hPa)", breaks = c(1000, 850, 750, 500, 300, 200, 100)) +
-  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  scale_date(ini = 20181121000000, end = 20181123110000, break_bin = "12 hours") +
   facet_wrap(~variable, ncol = 3,
              labeller = labeller(variable = c("E9_E6"  = "**RAD** - SATWND",
                                               "E10_E6" = "**RAD+ABI** - SATWND",
@@ -1118,9 +1118,9 @@ perfiles %>%
 
 
 ```
-En la comparación de los pronósticos con observaciones independientes se incluye también el pronóstico determinístico inicializado a partir del análisis de GFS. En la Figura \@ref(fig:sondeos-abi-fcst) se muestran los perfiles de RMSE y BIAS calculados comparando los pronósticos con los radiosondeos de RELAMPAGO. La Figura \@ref(fig:sondeos-abi-fcst)a muestra que los errores asociados a la temperatura en niveles bajos son mayores en los experimentos que incluyen radianzas de satélites polares en comparación con GFS o ABI. En niveles medios y altos GFS presenta el mayor RMSE y BIAS en la temperatura, lo que pone en evidencia el impacto positivo de la asimilación de observaciones a escala regional. Esto mismo ocurre para la temperatura de punto de rocío (Figura \@ref(fig:sondeos-abi-fcst)b) que muestra que el RMSE y Bias de GFS es hasta 5$^\circ$K mayor que para el resto de los pronósticos en niveles medios. El RMSE del viento zonal también muestra que GFS es el pronóstico con mayor error alrededor de 5 km mientras que por encima de los 10 km el error en RAD aumenta por sobre los otros (Figura \@ref(fig:sondeos-abi-fcst)c). Para el viento meridional, el RMSE de todos los pronósticos tiene un comportamiento similar aunque en algunos niveles (alrededor de 5 y 11 km) SATWND muestra un aumento en el error. En lineas generales ninguno de los pronósticos inicializados a partir de análisis con asimilación regional es consistentenmente mejor para todas las variables analizadas. 
+En la comparación de los pronósticos con observaciones independientes se incluye también el pronóstico determinístico inicializado a partir del análisis de GFS. En la Figura \@ref(fig:sondeos-abi-fcst) se muestran los perfiles de RMSE y BIAS calculados comparando los pronósticos con los radiosondeos de RELAMPAGO. La Figura \@ref(fig:sondeos-abi-fcst)a muestra que los errores asociados a la temperatura en niveles bajos son mayores en los experimentos que incluyen radianzas de satélites polares en comparación con GFS o ABI. En niveles medios y altos GFS presenta el mayor RMSE y BIAS en la temperatura, lo que pone en evidencia el impacto positivo de la asimilación de observaciones a escala regional. Esto mismo ocurre para la temperatura de punto de rocío (Figura \@ref(fig:sondeos-abi-fcst)b) que muestra que el RMSE y BIAS de GFS es hasta 5$^\circ$K mayor que para el resto de los pronósticos en niveles medios. El RMSE del viento zonal también muestra que GFS es el pronóstico con mayor error alrededor de 5 km mientras que por encima de los 10 km el error en RAD aumenta por sobre los otros (Figura \@ref(fig:sondeos-abi-fcst)c). Para el viento meridional, el RMSE de todos los pronósticos tiene un comportamiento similar aunque en algunos niveles (alrededor de 5 y 11 km) SATWND muestra un aumento en el error. En lineas generales ninguno de los pronósticos inicializados a partir de análisis con asimilación regional es consistentenmente mejor para todas las variables analizadas. 
 
-(ref:sondeos-abi-fcst) RMSE (línea sólida) y Bias (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos determinísticos de cada experimento con los sondeos de RELAMPAGO. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra la comparación con el pronóstico inicializado con GFS.
+(ref:sondeos-abi-fcst) RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos determinísticos de cada experimento con los sondeos de RELAMPAGO. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra la comparación con el pronóstico inicializado con GFS.
 
 ```{r sondeos-abi-fcst, fig.cap="(ref:sondeos-abi-fcst)", fig.width=6, fig.height=4, fig.align="center"}
 files <- Sys.glob("~/datosmunin3/EXP/derived_data/sondeos/20181122000000_det/sondeo_*")
@@ -1153,7 +1153,7 @@ sondeos %>%
   .[lev <= 15000] %>% 
   .[, ":="(variable_labels = factor(variable, labels = c("Temperatura~(K)", "atop('Temperatura de', 'punto de rocío (K)')", "Viento~U~(m~s^{-1})", "Viento~V~(m~s^{-1})")))] %>% 
   ggplot(aes(lev/1000, value.est)) +
-  geom_hline(yintercept = 0, color = "grey30") +
+  geom_hline(yintercept = 0, color = "darkgrey") +
   geom_line(aes(color = exp, linetype = estadistico)) +
   scale_color_manual(values = c(colores_exp_abi, GFS = "grey20"),  
                      labels = c(E6 = "SATWND", E9 = "RAD",
@@ -1162,7 +1162,7 @@ sondeos %>%
   facet_grid(. ~ variable_labels, scales = "free_x", 
              labeller = label_parsed) +
   tagger::tag_facets(position = list(x = 0.05, y = 0.95)) +
-  labs(y = "Bias/RMSE", x = "Altura (Km)", color = NULL, linetype = NULL) +
+  labs(y = "BIAS/RMSE", x = "Altura (Km)", color = NULL, linetype = NULL) +
   theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
@@ -1170,7 +1170,7 @@ sondeos %>%
 
 El RMSE y BIAS calculado comparando los pronósticos con las observaciones de EMA se muestra en la Figura \@ref(fig:aut-rmse-fcst) para todo el periodo pronosticado. Si bien en general todos los pronósticos tienen errores similares, se observa que los pronósticos inicializados a partir de análisis con asimilación regional tienen un RMSE en la humedad específica mayor que GFS. Por otro lado el BIAS de SATWND es consistentemente menor en las primeras 10 horas de pronóstico posiblemente gracias a la asimilación de observaciones de EMA que mejoran la representación de la humedad en las condiciones iniciales. Para la temperatura, GFS mantiene un error menor al resto de los experimentos durante las últimas 12 horas de pronóstico aunque el comportamiento general de los errores no difiere del resto.. En lineas generales ninguno de los pronósticos inicializados a partir de análisis con asimilación regional es consistentenmente mejor para todas las variables analizadas hasta ahora. 
 
-(ref:aut-rmse-fcst) Evolución del RMSE y Bias de a) humedad específica ($g\ Kg{^-1}$), b) temperatura ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos determinísticos de cada experimento con las observaciones de EMA. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra la comparación con el pronóstico inicializado con GFS.
+(ref:aut-rmse-fcst) Evolución del RMSE y BIAS de a) humedad específica ($g\ Kg{^-1}$), b) temperatura ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos determinísticos de cada experimento con las observaciones de EMA. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra la comparación con el pronóstico inicializado con GFS.
 
 ```{r aut-rmse-fcst, fig.cap="(ref:aut-rmse-fcst)", fig.align="center", fig.width=6, fig.height=3}
 obs_path <- "/home/paola.corrales/datosmunin3/EXP/derived_data/interp_obs/"
@@ -1222,7 +1222,7 @@ El porcentaje de área cubierta por precipitación (Figura \@ref(fig:area-abi-fc
 
 (ref:area-abi-fcst) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), ABI (línea turqueza) y GFS (línea negra continua) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea discontinua negra se muetra la estimación de IMERG.
 
-```{r area-abi-fcst, fig.cap="(ref:area-abi-fcst)", fig.width=6, fig.height=5}
+```{r area-abi-fcst, fig.cap="(ref:area-abi-fcst)", fig.width=6, fig.height=4}
 imerg <- read_rds(here("data/derived_data/observations/IMERG_1h.rds"))
 
 q <- c(1, 5, 10, 25, 50)
@@ -1385,13 +1385,13 @@ goes_exp %>%
   geom_mapa() +
   coord_sf(ylim = c(-41, -21), xlim = c(-68.5, -53)) +
   facet_grid(date ~ exp_factor, labeller = labeller(exp_factor = c("E6" = "SATWND", "E9" = "RAD", 
-                                                     "E10" = "RAD+ABI", "EG3" = "ABI", 
-                                                     "GFS" = "GFS", "OBS" = "OBS"),
-                                             date = c("2018-11-22 00:00:00" = "00 UTC, 22 de Nov",
-                                                      "2018-11-22 12:00:00" = "12 UTC, 22 de Nov",
-                                                      "2018-11-23 00:00:00" = "00 UTC, 23 de Nov"))) +
+                                                                   "E10" = "RAD+ABI", "EG3" = "ABI", 
+                                                                   "GFS" = "GFS", "OBS" = "OBS"),
+                                                    date = c("2018-11-22 00:00:00" = "00 UTC, 22 de Nov",
+                                                             "2018-11-22 12:00:00" = "12 UTC, 22 de Nov",
+                                                             "2018-11-23 00:00:00" = "00 UTC, 23 de Nov"))) +
   tagger::tag_facets(position = list(x = 0.04, y = 0.95)) +
-  labs(color = "TB (K)") +
+  labs(color = latex2exp::TeX("TB ($^{o}C$)")) +
   theme_minimal(base_size = 9) +
   theme(legend.position = "bottom")
 ```
@@ -1430,9 +1430,9 @@ fss %>%
   facet_grid(w ~ q, labeller = labeller(w = c("1" = "2 km",
                                               "11" = "20 km",
                                               "101" = "200 km"),
-                                        q = c("30" = "-30 K",
-                                              "70" = "-70 K",
-                                              "85" = "-85 K"))) +
+                                        q = c("30" = "-30 ºC",
+                                              "70" = "-70 ºC",
+                                              "85" = "-85 ºC"))) +
   tagger::tag_facets(position = list(x = 0.05, y = 0.90)) +
   labs(color = NULL, x = NULL, y = "FSS", linetype = NULL) +
   theme_minimal(base_size = 9) +

@@ -162,7 +162,7 @@ AMSU-A [@robel2009] es un radiómetro de microondas que cuenta con 15 canales de
 (ref:wf) Funciones de peso calculada sobre cielo claro para distintos censores. a) AMSU-A, canal 3 - 50.3 GHz, canal 4 - 52.8 GHz, canal 5 - 53.596 $\pm$ 0.115 GHz, canal 6 - 54.4 GHz, canal 7 - 54.94 GHz; MHS, canal 1 - 89.0 GHz, canal 2 - 157.0 GHz, canal 3 - 183.311 $\pm$ 1.00 GHz, canal 4 - 183.311 $\pm$ 3.00 GHz, canal 5 - 190.311 GHz; ABI, canal 8 - 6.2 $\mu m$, canal 9 - 6.9 $\mu m$, canal 10 - 7.3 $\mu m$.  
 
 
-```{r wf, fig.cap="(ref:wf)", fig.width=4, fig.height=4.5, fig.align="center"}
+```{r wf, fig.cap="(ref:wf)", fig.width=5, fig.height=4.5, fig.align="center"}
 wf_amsua <- fread(here("data/derived_data/weighting_functions/wf_amsua.csv")) %>% 
   .[, id := 1:.N] %>% 
   melt(measure.vars = patterns("^ch")) %>% 
@@ -234,7 +234,7 @@ Teniendo en cuenta los objetivos propuestos, se asimilaron los canales sensibles
 
 La Figura \@ref(fig:wf-goes) muestra las funciones de peso teóricas para una atmósfera estandar en latitudes medias para cada uno de estos canales. Si bien hay un solapamiento en las funciones de peso, el canal 8 es más sensible al vapor de agua alrededor de los 350 hPa, el canal 9 alrededor de 450 hPa y el canal 10 alrededor de los 600 hPa aproximadamente. En la Sección \@ref(canales) se analizará que combinación de canales da mejores resultados en el contexto de este caso de estudio.   
 
-```{r wf-goes, fig.cap="(ref:wf)", fig.width=2.5, fig.height=4, fig.align="center"}
+```{r wf-goes, fig.cap="(ref:wf)", fig.width=2.5, fig.height=4.5, fig.align="center"}
 
 
 wf_goes <- fread(here("data/derived_data/weighting_functions/wf_goes16.csv")) %>% 
@@ -492,7 +492,7 @@ g1 <- dominio %>%
   geom_point(data = square2, aes(lon, lat), size = 0.2, color = "#CC3311") +
   theme_minimal(base_size = 10) +
   theme(legend.box = "horizontal",
-        legend.position = c(0.1, 0.95),
+        legend.position = c(0.12, 0.95),
         legend.background = element_rect(fill = "white", color = "white")) 
 
 
@@ -501,7 +501,7 @@ temp <- dominio %>%
   geom_contour_fill(aes(z = hgt), proj = norargentina_lambert,
                     breaks = seq(0, 6000, 500)) +
   scale_fill_gradient(low = "#f2f2f2", high = "#333333",
-                      name = "Altura (m)",
+                      name = "Altura (m)  ",
                       breaks = seq(0, 6000, 1000),
                       guide = guide_colorstrip(barwidth = 20,
                                                barheight = 0.5)) +
@@ -532,7 +532,7 @@ g2 <- dominio %>%
   labs(color = NULL, shape = NULL) +
   theme_minimal(base_size = 11) +
   theme(legend.box = "horizontal",
-        legend.position = c(0.16, 0.92),
+        legend.position = c(0.2, 0.92),
         legend.background = element_rect(fill = "white", color = "white")) 
 
 ggdraw(plot_grid(plot_grid(g1, g2, ncol = 2, rel_widths = c(1, 0.5), 
