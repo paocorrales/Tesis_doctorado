@@ -52,9 +52,9 @@ fig:soundings-fcst
 fig:soudings-all
 fig:soudings-pbl
 fig:fss-param
+fig:cld-msk
 fig:oma-dist
 tab:oma-tabla
-fig:cld-msk
 fig:obs-rad
 tab:exp-rad
 fig:dominio-det
@@ -63,8 +63,8 @@ fig:fss-canales
 fig:area-thinning
 fig:thinning-fss
 fig:TQ-diff-abi
-fig:UV-diff-abi
 fig:era5-abi
+fig:UV-diff-abi
 fig:sondeos-abi
 fig:area-abi
 fig:fss-abi
@@ -116,7 +116,7 @@ prono-impacto
 verificacion-de-los-pronósticos-de-precipitación
 análisis-y-verificación-por-parametrizaciones
 conclusiones-1
-asimilacion-de-observaciones-del-satélite-geoestacionario-goes-16
+asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados
 metodología-2
 asim-abi
 configuracion-de-los-experimentos-1
