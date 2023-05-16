@@ -625,7 +625,7 @@ En primer lugar se calculó el RMSE y BIAS respecto de las observaciones de EMA 
 
 Mientras que no hay características sobresalientes en los errores del viento zonal, en el viento meridional (Figuras \@ref(fig:rmse-bias-aut)d y h), es interesante notar que el RMSE de los pronósticos de las 06 UTC es más bajo que para los pronósticos de las 00 UTC y esta mejora se mantiene por al menos 6 horas. Esto también ocurre en el BIAS aunque en menor medida. 
 
-(ref:aut-bias-aut) Evolución del RMSE y BIAS de a) humedad específica ($g\ Kg{^-1}$), b) temperatura ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos de cada experimento con las observaciones de EMA. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja. El pronóstico inicializado a las 00 UTC se muestra en línea sólida y el pronóstico de las 06 UTC en línea discontinua.
+(ref:aut-bias-aut) Evolución del RMSE y BIAS de a) humedad específica ($g\ Kg{^-1}$), b) temperatura ($K$), c) el viento zonal ($m\ s^{-1}$) y d) el viento meridional ($m\ s^{-1}$) calculados comparando los pronósticos de cada experimento con las observaciones de EMA. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja. El pronóstico inicializado a las 00 UTC se muestra en línea sólida y el pronóstico de las 06 UTC en línea discontinua.
 
 ```{r rmse-bias-aut, fig.cap="(ref:aut-bias-aut)", fig.align="centern", fig.width=6, fig.height=3}
 fisica <- data.table(mem = as.character(formatC(1:60, flag = "0", width = 3)),
@@ -777,7 +777,7 @@ Es interesante comparar en este punto los errores asociados a los pronósticos c
 
 En esta comparación, la característica sobresaliente es la disminución del RMSE y BIAS en niveles bajos en casi todas las variables pero particularmente el viento meridional. El aumento de los errores en los análisis puede atribuirse a la asimilación de observaciones de EMA, que si bien en general producen impactos muy positivos en la representación de la capa límite (comparando la Figura \@ref(fig:soundings-fcst) con la Figura \@ref(fig:era5)), en esta región limitada parece generar el efecto contrario. En los pronósticos independientes, sin asimilación continua de estas observaciones, los errores en niveles bajos disminuyen a valores cercanos a los observados en los análisis de CONV. 
 
-(ref:soundings-fcst) RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento u ($m\ s^{-1}$) y d) el viento v ($m\ s^{-1}$) calculados comparando los pronósticos de cada experimento con los sondeos operativos y de RELAMPAGO. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
+(ref:soundings-fcst) RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento zonal ($m\ s^{-1}$) y d) el viento meridional ($m\ s^{-1}$) calculados comparando los pronósticos de cada experimento con los sondeos operativos y de RELAMPAGO. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
 
 ```{r soundings-fcst, fig.cap="(ref:soundings-fcst)", fig.width=6, fig.height=4, fig.align="center"}
 media <- read_rds(here("data/derived_data/soundings/sondeos_media_fcst.rds")) %>% 
