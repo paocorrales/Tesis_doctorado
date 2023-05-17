@@ -165,7 +165,7 @@ div.abstract{
 <p>En este capítulo se evaluará el impacto que genera la asimilación de observaciones en cielos despejados del sensor ABI a bordo del satélite GOES-16 tanto en el análisis como en pronósticos determinísticos de alta resolución para el caso de estudio del 22 de noviembre de 2018. Estas observaciones son de particular interés en la región de Sudamérica por su alta resolución espacial y frecuencia temporal. Usaremos las observaciones de los canales sensibles al vapor de agua que brindan información en 3 niveles de la atmósfera, algo que no era posible con los sensores previos a bordo de los satélites GOES. Esperamos que la asimilación de estas observaciones contribuya a mejorar la representación de los procesos convectivos y de mesoescala en pronósticos a corto plazo.</p>
 <p>Por ser un satélite y sensor nuevos, la última versión de GSI (V3.7) que fue publicada en julio de 2018 no incluye la posibilidad de asimilar estas observaciones. Fue necesario, entonces, modificar el código fuente del sistema de asimilación para incluir las rutinas necesarias utilizando como base los trabajos previos de <span class="citation">Lee et al. (2019)</span> y <span class="citation">Liu et al. (2019)</span>. También por esta razón, el capítulo incluirá el análisis de experimentos para definir la mejor configuración posible y evaluar técnicamente la asimilación de observaciones de ABI.</p>
 <p>Trabajos previos evaluaron el impacto de asimilar observaciones de los canales asociados al vapor de agua de ABI en escala regional. En líneas general estos trabajos (<span class="citation">Lee et al. (2019)</span>, <span class="citation">Jones et al. (2020)</span>, entre otros) utilizan las observaciones de los 3 canales en conjunto. Sin embargo <span class="citation">Honda et al. (2018)</span>, utilzaron observaciones del sensor Advanced Himawari Imager (AHI), de iguales características que ABI, y encontraron mejores resultado al asimilar los canales 8 (6.2 <span class="math inline">\(\mu m\)</span>) y 10 (7.3 <span class="math inline">\(\mu m\)</span>) observando que el canal 9 (6.9 <span class="math inline">\(\mu m\)</span>) está muy correlacionado con los dos primeros y por lo tanto no aporta información independiente en la asimilación. Por otro lado <span class="citation">Lee et al. (2019)</span> observaron que el impacto era mayor al asimilar observaciones de los 3 canales sobre el continente y el mar al mismo tiempo. También observaron que el incremento del análisis disminuye considerablemente al remover el canal 10 y en algunos casos también el canal 9.</p>
-<p>En la asimilación de datos y en particular de radianzas de satélites, muchas observaciones con alta resolución espacial debe ser descartadas porque podrían tener un impacto negativo en el análisis al no ser independientes entre si <span class="citation">(<span class="citeproc-not-found" data-reference-id="lazarus2010"><strong>???</strong></span>)</span>. En los esquemas de asimilación actuales se asume que la matriz de covarianza de los errores de las observaciones <span class="math inline">\(R\)</span> es diagonal, es decir, no hay correlación entre los errores de las distintas observaciones y cada observación es independiente. Sin embargo, las observaciones de satélites pueden estar muy correlacionadas debido a su su resolución espectral y espacial. En este contexto se utilizan estrategias como el thinning para disminuir la resolución de las observaciones asumiendo que la correlación decae con la distancia y conservando la información que aportan. Por ejemplo <span class="citation">Jones et al. (2020)</span> aplican la técnica de thinning para llevar las observaciones con resolución de 2 km a una resolución de 15 km y así evitar el impacto de la correlación espacial entre los canales 8 y 10 de ABI.</p>
+<p>En la asimilación de datos y en particular de radianzas de satélites, muchas observaciones con alta resolución espacial debe ser descartadas porque podrían tener un impacto negativo en el análisis al no ser independientes entre si <span class="citation">(Lazarus et al., 2010, p. @janjic2018)</span>. En los esquemas de asimilación actuales se asume que la matriz de covarianza de los errores de las observaciones <span class="math inline">\(R\)</span> es diagonal, es decir, no hay correlación entre los errores de las distintas observaciones y cada observación es independiente. Sin embargo, las observaciones de satélites pueden estar muy correlacionadas debido a su su resolución espectral y espacial. En este contexto se utilizan estrategias como el thinning para disminuir la resolución de las observaciones asumiendo que la correlación decae con la distancia y conservando la información que aportan. Por ejemplo <span class="citation">Jones et al. (2020)</span> aplican la técnica de thinning para llevar las observaciones con resolución de 2 km a una resolución de 15 km y así evitar el impacto de la correlación espacial entre los canales 8 y 10 de ABI.</p>
 <div id="metodología-2" class="section level2 hasAnchor">
 <h2><span class="header-section-number">5.1</span> Metodología<a href="5-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#metodología-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="asim-abi" class="section level3 hasAnchor">
@@ -273,10 +273,10 @@ Thining ABI
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;width: 8em; ">
+<td style="text-align:left;width: 10em; ">
 SATWND
 </td>
-<td style="text-align:left;width: 20em; ">
+<td style="text-align:left;width: 16em; ">
 –
 </td>
 <td style="text-align:center;width: 4em; ">
@@ -287,10 +287,10 @@ SATWND
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 8em; ">
+<td style="text-align:left;width: 10em; ">
 RAD
 </td>
-<td style="text-align:left;width: 20em; ">
+<td style="text-align:left;width: 16em; ">
 Radianzas de satélites polares
 </td>
 <td style="text-align:center;width: 4em; ">
@@ -301,10 +301,10 @@ Radianzas de satélites polares
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 8em; ">
+<td style="text-align:left;width: 10em; ">
 RAD+ABI
 </td>
-<td style="text-align:left;width: 20em; ">
+<td style="text-align:left;width: 16em; ">
 Radianzas de satélites polares y ABI
 </td>
 <td style="text-align:center;width: 4em; ">
@@ -315,10 +315,10 @@ Radianzas de satélites polares y ABI
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 8em; ">
+<td style="text-align:left;width: 10em; ">
 ABI_ch890_th10 (ABI)
 </td>
-<td style="text-align:left;width: 20em; ">
+<td style="text-align:left;width: 16em; ">
 Radianzas de ABI
 </td>
 <td style="text-align:center;width: 4em; ">
@@ -329,10 +329,10 @@ Radianzas de ABI
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 8em; ">
+<td style="text-align:left;width: 10em; ">
 ABI_ch890_th30
 </td>
-<td style="text-align:left;width: 20em; ">
+<td style="text-align:left;width: 16em; ">
 Radianzas de ABI
 </td>
 <td style="text-align:center;width: 4em; ">
@@ -343,10 +343,10 @@ Radianzas de ABI
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 8em; ">
+<td style="text-align:left;width: 10em; ">
 ABI_ch90_th30
 </td>
-<td style="text-align:left;width: 20em; ">
+<td style="text-align:left;width: 16em; ">
 Radianzas de ABI
 </td>
 <td style="text-align:center;width: 4em; ">
@@ -357,10 +357,10 @@ Radianzas de ABI
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 8em; ">
+<td style="text-align:left;width: 10em; ">
 ABI_ch0_th30
 </td>
-<td style="text-align:left;width: 20em; ">
+<td style="text-align:left;width: 16em; ">
 Radianzas de ABI
 </td>
 <td style="text-align:center;width: 4em; ">
