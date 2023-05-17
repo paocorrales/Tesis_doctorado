@@ -306,7 +306,7 @@ El porcentaje de área cubierta por precipitación superior a determinados umbra
 
 (ref:area) Porcentaje de área cubierta por precipitación superior a 1 $mmh^{-1}$ (a y c) y 5 $mmh^{-1}$ (b y d) a lo largo del tiempo para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre. En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble de pronósticos. En línea continua negra se muetra la estimación de IMERG. 
 
-```{r area, fig.cap="(ref:area)", fig.width=6, fig.height=5}
+```{r area, fig.cap="(ref:area)", fig.width=6, fig.height=3.5}
 
 imerg <- read_rds(here("data/derived_data/observations/IMERG_1h.rds"))
 
