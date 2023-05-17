@@ -141,7 +141,7 @@ rad <- map(files, function(f){
     setnames(c("peakwt", "iuse", "error"), c("pressure", "usage.flag", "rerr"))
   
   rad_date <- rad %>% 
-    rbind(., rad) %>% 
+    # rbind(., rad) %>% 
     .[usage.flag >= 1 & rerr != 1.0e+10] %>% 
     .[, .(count_obs = .N), by = .(sensor, exp, date)] 
   
@@ -222,8 +222,8 @@ tribble(
       align = "llcc",
       caption = "Experimentos realizados. Todos los experimentos incluyen observaciones de EMC, EMA y vientos derivados de satélite. ") %>% 
   kable_classic_2(full_width = TRUE) %>% 
-  column_spec(1, width = "8em") %>%
-  column_spec(2, width = "20em") %>%
+  column_spec(1, width = "10em") %>%
+  column_spec(2, width = "16em") %>%
   #   column_spec(2:3, width = "2.5em", latex_valign = "m") %>% 
   column_spec(3:4, width = "4em", latex_valign = "m")
 
@@ -281,7 +281,7 @@ En este trabajo se generaron 3 experimentos de prueba que comparten la misma con
 
 (ref:area-canales) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), ABI_ch90_th30 (línea violeta) y ABI_ch0_th30 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.
 
-```{r area-canales, fig.cap="(ref:area-canales)", fig.width=6, fig.height=4}
+```{r area-canales, fig.cap="(ref:area-canales)", fig.width=6, fig.height=3.5}
 colores_canales <- c(E6 = "#EE7733", EG2 = "chartreuse4", EG4 = "#845EC2",
                      EG5 = "#2B809B")
 
@@ -402,7 +402,7 @@ Es importante definir entonces la resolución apropiada para la reticula de baja
 
 (ref:area-thinning) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), y ABI_ch890_th10 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.
 
-```{r area-thinning, fig.cap="(ref:area-thinning)", fig.width=6, fig.height=4}
+```{r area-thinning, fig.cap="(ref:area-thinning)", fig.width=6, fig.height=3.5}
 colores_thinning <- c(E6 = "#EE7733", EG2 = "chartreuse4", EG3 = "#047994")
 
 pp_area %>% 
@@ -847,7 +847,7 @@ En este punto es interesante observar las posibles diferencias entre RAD+ABI y A
 
 (ref:area-abi) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), y ABI (línea turqueza) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble. En línea discontinua negra se muetra la estimación de IMERG.
 
-```{r area-abi, fig.cap="(ref:area-abi)", fig.width=6, fig.height=4}
+```{r area-abi, fig.cap="(ref:area-abi)", fig.width=6, fig.height=3.5}
 
 pp_area %>% 
   .[umbral %in% c(1, 5, 10) & exp %in% c("E6", "E9", "E10", "EG3")] %>% 
@@ -1194,7 +1194,7 @@ El porcentaje de área cubierta por precipitación (Figura \@ref(fig:area-abi-fc
 
 (ref:area-abi-fcst) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), ABI (línea turqueza) y GFS (línea negra continua) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea discontinua negra se muetra la estimación de IMERG.
 
-```{r area-abi-fcst, fig.cap="(ref:area-abi-fcst)", fig.width=6, fig.height=4}
+```{r area-abi-fcst, fig.cap="(ref:area-abi-fcst)", fig.width=6, fig.height=3.5}
 imerg <- read_rds(here("data/derived_data/observations/IMERG_1h.rds"))
 
 q <- c(1, 5, 10, 25, 50)
