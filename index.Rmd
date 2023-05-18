@@ -199,6 +199,10 @@ satinfo <- fread(here("data/derived_data/sample_obs/satinfo.txt")) %>%
   setnames(c("!sensor/instr/sat", "chan"), c("sensor", "channel"))
 
 colores_exp <- c(E2 = "#0077BB", E5 = "#88CCEE", E6 = "#EE7733", E9 = "#CC3311")
+colores_canales <- c(E6 = "#EE7733", EG2 = "chartreuse4", EG4 = "#845EC2",
+                     EG5 = "#2B809B")
+colores_thinning <- c(E6 = "#EE7733", EG2 = "chartreuse4", EG3 = "#047994")
+colores_exp_abi <- c(E6 = "#EE7733", E9 = "#CC3311", E10 = "#93B75C", EG3 = "#047994")
 
 ```
 
