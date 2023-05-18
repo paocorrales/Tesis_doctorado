@@ -6,7 +6,7 @@ Por ser un satélite y sensor nuevos, la última versión de GSI (V3.7) que fue 
 
 Trabajos previos evaluaron el impacto de asimilar observaciones de los canales asociados al vapor de agua de ABI en escala regional. En líneas general estos trabajos (@lee2019, @jones2020, entre otros) utilizan las observaciones de los 3 canales en conjunto. Sin embargo @honda2018, utilzaron observaciones del sensor Advanced Himawari Imager (AHI), de iguales características que ABI, y encontraron mejores resultado al asimilar los canales 8 (6.2 $\mu m$) y 10 (7.3 $\mu m$) observando que el canal 9 (6.9 $\mu m$) está muy correlacionado con los dos primeros y por lo tanto no aporta información independiente en la asimilación. Por otro lado @lee2019 observaron que el impacto era mayor al asimilar observaciones de los 3 canales sobre el continente y el mar al mismo tiempo. También observaron que el incremento del análisis disminuye considerablemente al remover el canal 10 y en algunos casos también el canal 9.
 
-En la asimilación de datos y en particular de radianzas de satélites, muchas observaciones con alta resolución espacial debe ser descartadas porque podrían tener un impacto negativo en el análisis al no ser independientes entre si [@lazarus2010, @janjic2018]. En los esquemas de asimilación actuales se asume que la matriz de covarianza de los errores de las observaciones $R$ es diagonal, es decir, no hay correlación entre los errores de las distintas observaciones y cada observación es independiente. Sin embargo, las observaciones de satélites pueden estar muy correlacionadas debido a su su resolución espectral y espacial. En este contexto se utilizan estrategias como el thinning para disminuir la resolución de las observaciones asumiendo que la correlación decae con la distancia y conservando la información que aportan. Por ejemplo @jones2020 aplican la técnica de thinning para llevar las observaciones con resolución de 2 km a una resolución de 15 km y así evitar el impacto de la correlación espacial entre los canales 8 y 10 de ABI.  
+En la asimilación de datos y en particular de radianzas de satélites, muchas observaciones con alta resolución espacial deben ser descartadas porque podrían tener un impacto negativo en el análisis al no ser independientes entre si [@lazarus2010, @janjic2018]. En los esquemas de asimilación actuales se asume que la matriz de covarianza de los errores de las observaciones $R$ es diagonal, es decir, no hay correlación entre los errores de las distintas observaciones y cada observación es independiente. Sin embargo, las observaciones de satélites pueden estar muy correlacionadas debido a su su resolución espectral y espacial. En este contexto se utilizan estrategias como el thinning para disminuir la resolución de las observaciones asumiendo que la correlación decae con la distancia y conservando la información que aportan. Por ejemplo @jones2020 aplican la técnica de thinning para llevar las observaciones con resolución de 2 km a una resolución de 15 km y así evitar el impacto de la correlación espacial entre los canales 8 y 10 de ABI.  
 
 ## Metodología
 
@@ -14,7 +14,7 @@ En la asimilación de datos y en particular de radianzas de satélites, muchas o
 
 La asimilación directa de radianzas de ABI requiere las mismas consideraciones descriptas previamente en la Sección \@ref(asim-rad) en cuanto a control de calidad, corrección de bias, thnning e indentificación de pixeles nubosos. En esta Sección se describiran las deciciones metodológicas y técnicas que se tomaron a la hora de asimilar las observaciones, en base a las pruebas preliminares realizadas. 
 
-La asimilación de radianzas en *all sky*, es decir tanto para cielos claros como nubosos es todavía un importante desafío ya que estos dos tipos de observaciones requieren un control de calidad y estimaciones de errores específicos. En esta primera aproximación a la asimilación de observaciones de ABI solo se utilizaron observaciones en cielo claro. Para detectar y filtrar los pixeles nubosos utilizamos la mascara de nubes ACM (por ABI Cloud Mask) disponible con la misma frecuencia que las observaciones. Esta mascara de nubes da información binaria (cielo claro o cielo nuboso) y tienen una exactitud del 87%. La clasificación es realizada utilizando información de 10 canales de ABI e incluye criterios espectrales, espaciales y temporales. En las Figuras \@ref(fig:cld-msk) se presentan 2 ejemplos de máscara de nubes a las 00 UTC del 20 de noviembre y a las 18 UTC del 22 de noviembre. 
+La asimilación de radianzas en *all sky*, es decir tanto para cielos claros como nubosos es todavía un importante desafío ya que estos dos tipos de observaciones requieren un control de calidad y estimaciones de errores específicos. En esta primera aproximación a la asimilación de observaciones de ABI solo se utilizaron observaciones en cielos despejados. Para detectar y filtrar los pixeles nubosos utilizamos la mascara de nubes ACM (por ABI Cloud Mask) disponible con la misma frecuencia que las observaciones. Esta mascara de nubes da información binaria (cielo despejado o cielo nuboso) y tienen una exactitud del 87%. La clasificación es realizada utilizando información de 10 canales de ABI e incluye criterios espectrales, espaciales y temporales. En las Figuras \@ref(fig:cld-msk) se presentan 2 ejemplos de máscara de nubes a las 00 UTC del 20 de noviembre y a las 18 UTC del 22 de noviembre. 
 
 (ref:cld-msk) Ubicación de píxeles nubosos (gris) según la máscara de nubes generada para GOES-16, durante el a) 06 UTC del 20 de noviembre y b) 18 UTC del 22 de noviembre. 
 
@@ -122,9 +122,9 @@ diag_E10[, .(rms = mean(tbc)), by = .(channel, run)] %>%
 ```
 
 
-Debido al desarrollo de actividad convectiva en el dominio durante el periodo simulado, la cantidad de observaciones en cielos despejados varía considerablemente (Figuras \@ref(fig:cld-msk)a y b). La Figura \@ref(fig:obs-rad)a muestra el número de radianzas asimiladas en cada ciclo donde se aprecia una disminución del número de observaciones en las últimas 24 hs del periodo debido a la presencia de nubes. Sin embargo la cantidad de observaciones que aporta ABI es casi siempre entre 1 y 2 órdenes de magnitud mayor que el número de observaciones de satélites polares. En este caso ABI utiliza un thinning de 10 km (ver Sección \@ref(thinning)) pero aún cuando se utiliza un thinning de 30 km, el número de observaciones de ABI asimiladas es siempre mayor a lo que pueden aportar los satélites polares. 
+Debido al desarrollo de actividad convectiva en el dominio durante el periodo simulado, la cantidad de observaciones en cielos despejados varía considerablemente (Figuras \@ref(fig:cld-msk)a y b). La Figura \@ref(fig:obs-rad)a muestra el número de radianzas asimiladas en cada ciclo donde se aprecia una disminución del número de observaciones en las últimas 24 hs del periodo debido a la presencia de nubes. Sin embargo la cantidad de observaciones que aporta ABI es casi siempre entre 1 y 2 órdenes de magnitud mayor que el número de observaciones de satélites polares. En este caso ABI utiliza un thinning de 10 km (ver Sección \@ref(thinning)) pero aún cuando se utiliza un thinning de 30 km, el número de observaciones de ABI asimiladas es siempre mayor a lo que pueden aportar los satélites polares. Las observaciones de ABI, además, se distribuyen de manera homogenea en el dominio y cubren gran parte de los niveles verticales de la atmósfera. La Figura \@ref(fig:obs-rad)c muestra la distribución promedio de observaciones de cada canal con la altura. Si bien el nivel donde se observa máximo de observaciones para cada canal es similar a lo esperado según sus funciones de peso (Figura \@ref(fig:wf-goes)), la distribución de observaciones con la altura es distinta ya que depende de las condiciones particulares de la atmósfera en cada punto que difiere de la atmósfera estandar utilizada para el cálculo de las funciones de peso teóricas.
 
-(ref:obs-rad) a) Número de radianzas asimiladas en cada ciclo y b) número medio de radianzas asimiladas por ciclo en capas verticales de 50 hPa de espesor para los experimentos RAD (radianzas de satélites polares, circulos rojos) y ABI (radianzas de ABI, cuadrados turquezas).
+(ref:obs-rad) a) Número de radianzas asimiladas en cada ciclo, b) número medio de radianzas asimiladas por ciclo en capas verticales de 50 hPa de espesor para los experimentos RAD (radianzas de satélites polares, circulos rojos) y ABI (radianzas de ABI, cuadrados turquezas) y c) número medio de radianzas asimiladas por ciclo en capaz verticales de 50 hPa de espesor para los 3 canales de ABI.
 
 ```{r obs-rad, fig.cap="(ref:obs-rad)", fig.height=3.5, fig.width=6}
 
@@ -135,20 +135,21 @@ files <- files[!str_detect(files, "conv")]
 rad <- map(files, function(f){ 
   
   rad <- read_diag_rad(f, "E10") %>% 
+    .[, channel := fifelse(sensor == "abi_g16", channel + 6, channel)] %>% 
     satinfo[., on = c("sensor", "channel")] 
   
-  rad <- rad[, .(sensor, peakwt, iuse, error, exp, date)] %>% 
+  rad <- rad[, .(sensor, peakwt, iuse, error, exp, date, qc, channel)] %>% 
     setnames(c("peakwt", "iuse", "error"), c("pressure", "usage.flag", "rerr"))
   
   rad_date <- rad %>% 
     # rbind(., rad) %>% 
-    .[usage.flag >= 1 & rerr != 1.0e+10] %>% 
+    .[usage.flag >= 1 & rerr != 1.0e+10 & qc == 0] %>% 
     .[, .(count_obs = .N), by = .(sensor, exp, date)] 
   
   rad_lev <- rad %>% 
-    .[usage.flag >= 1 & rerr != 1.0e+10] %>% 
-    .[, ":="(lev.box = cut_round(pressure, breaks = seq(0, 1150, 50)))] %>% 
-    .[, .(count_obs = .N), by = .(sensor, exp, lev.box, date)]
+    .[usage.flag >= 1 & rerr != 1.0e+10 & qc == 0] %>% 
+    .[, ":="(lev.box = cut_round(pressure, breaks = seq(0, 1050, 50)))] %>% 
+    .[, .(count_obs = .N), by = .(sensor, channel, exp, lev.box, date)]
   list(rad_date = rad_date, rad_lev = rad_lev)
   
 }) %>% 
@@ -168,15 +169,13 @@ rad$rad_date %>%
   scale_date() +
   labs(y = "Número de obs por ciclo", x = "Hora (UTC)",
        color = NULL, shape = NULL) +
-  theme_minimal(base_size = 10) +
+  theme_minimal(base_size = 8) +
   theme(legend.position = "bottom", 
         panel.background = element_rect(fill = "#fbfbfb", color = NA),
         plot.margin = unit(c(0, 0, 0, 0), "cm")) +
   
   rad$rad_lev %>% 
-  .[, exp := fifelse(str_detect(sensor, "abi"), "ABI", "RAD")] %>% 
-  # .[, ":="(lev.box = cut_round(pressure, breaks = seq(50, 1050, 50)))] %>% 
-  # .[, .(count_obs = .N), by = .(exp, lev.box, date)] %>% 
+  .[, exp := fifelse(str_detect(sensor, "abi_g16"), "ABI", "RAD")] %>% 
   .[, .(obs_cycle = mean(count_obs, na.rm = TRUE)), by = .(exp, lev.box)] %>% 
   ggplot(aes(lev.box, obs_cycle)) +
   geom_line(aes(color = exp), size = 0.2) +
@@ -184,27 +183,48 @@ rad$rad_date %>%
   scale_color_manual(values = c("#047994", "#CC3311")) +
   scale_shape_manual(values = c(15, 16)) +
   scale_y_log10() +
-  scale_x_reverse() +
+  scale_x_reverse(limits = c(1050, 50)) +
   coord_flip() +
   labs(color = NULL, shape = NULL,
-       x = "Nivel de presión (hPa)", y = "Cantidad media de \nobs por ciclo") +
-  theme_minimal(base_size = 9) +
+       x = "Nivel de presión (hPa)", y = "Promedio de \nobs por ciclo") +
+  theme_minimal(base_size = 8) +
+  theme(legend.position = "bottom", 
+        panel.background = element_rect(fill = "#fbfbfb", color = NA),
+        plot.margin = unit(c(0, 0, 0, 0), "cm")) +
+  
+   rad$rad_lev %>% 
+  .[, exp := fifelse(str_detect(sensor, "abi_g16"), "ABI", "RAD")] %>% 
+  .[ exp == "ABI"] %>% 
+  .[, .(obs_cycle = mean(count_obs, na.rm = TRUE)), by = .(exp, channel, lev.box)] %>% 
+  ggplot(aes(lev.box, obs_cycle)) +
+  ggnewscale::new_scale_color() +
+  geom_line(aes(color = factor(channel)), size = 0.2) +
+  geom_point(aes(color = factor(channel), shape = factor(channel)), size = 1) +
+  # scale_color_manual(values = c("#047994", "#CC3311")) +
+  scale_color_viridis_d() +
+  scale_shape_manual(values = c(15, 16, 17)) +
+  scale_y_log10() +
+  scale_x_reverse(limits = c(1050, 50)) +
+  coord_flip() +
+  labs(color = "Channel", shape = "Channel",
+       x = NULL, y = "Promedio de \nobs por ciclo") +
+  theme_minimal(base_size = 8) +
   theme(legend.position = "bottom",
         plot.margin = unit(c(0, 0, 0, 0), "cm")) +
   
-  plot_layout(ncol = 2, widths = c(4, 1), guides = "collect") + 
+  plot_layout(ncol = 3, widths = c(4, 1.2, 1.2), guides = "collect") & 
   plot_annotation(tag_levels = 'a', tag_suffix = ")") &
   theme(plot.tag = element_text(size = 8), 
         legend.position = "bottom",
         legend.spacing = unit(c(0, 0, 0, 0), "cm"),
         panel.background = element_rect(fill = "#fbfbfb", color = NA),
-        plot.margin = unit(c(0, 0, 0, 0), "cm"))
+        plot.margin = unit(c(0, 0, 0.5, 0), "cm"))
 
 ```
 
 ### Configuracion de los experimentos
 
-En este capítulo se analizan una serie de experimentos, primero para evaluar la sensibilidad a distintas combinaciones de canales y a la resolución del thinning y finalmente para comparar el impacto de la asimilación de observaciones de ABI en conjunto o no con observaciones de satélites polares. Los experimentos SATWND y RAD fueron analizados previamente en el capítulo \@ref(ch1). SATWND asimila observaciones de EMC, EMA y vientos deriados de satélite y RAD suma a lo anterior radianzas en aire claro de sensores a bordo de satélites polares. RAD+ABI incluye además observaciones de los 3 canales de vapor de agua de ABI con un thinning de 10 km. Finalmente el conjunto de experimentos ABI, descriptos en la Tabla \@ref(tab:exp-rad), incluyen radianzas de ABI pero no de satélites polares, y usan distintas combinaciones de canales y resolución de thinning para evaluar la sensibilidad de la asimilación de distintos canales y la resolución del thinning. 
+En este capítulo se analizan una serie de experimentos, primero para evaluar la sensibilidad a distintas combinaciones de canales y a la resolución del thinning y finalmente para comparar el impacto de la asimilación de observaciones de ABI en conjunto o no con observaciones de satélites polares. Los experimentos SATWND y RAD fueron analizados previamente en el Capítulo \@ref(ch1). SATWND asimila observaciones de EMC, EMA y vientos deriados de satélite y RAD suma a lo anterior radianzas en aire claro de sensores a bordo de satélites polares. RAD+ABI incluye además observaciones de los 3 canales de vapor de agua de ABI con un thinning de 10 km. Finalmente el conjunto de experimentos ABI, descriptos en la Tabla \@ref(tab:exp-rad), incluyen radianzas de ABI pero no de satélites polares, y usan distintas combinaciones de canales y resolución de thinning para evaluar la sensibilidad de la asimilación de distintos canales y la resolución del thinning. 
 
 
 ```{r exp-rad}
@@ -282,9 +302,6 @@ En este trabajo se generaron 3 experimentos de prueba que comparten la misma con
 (ref:area-canales) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), ABI_ch90_th30 (línea violeta) y ABI_ch0_th30 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.
 
 ```{r area-canales, fig.cap="(ref:area-canales)", fig.width=6, fig.height=3.5}
-colores_canales <- c(E6 = "#EE7733", EG2 = "chartreuse4", EG4 = "#845EC2",
-                     EG5 = "#2B809B")
-
 imerg <- read_rds(here("data/derived_data/observations/IMERG_1h.rds"))
 
 q <- c(1, 5, 10, 25, 50)
@@ -350,7 +367,7 @@ pp_area %>%
 
 ```
 
-La Figura \@ref(fig:area-canales) muestra el porcetanje de área cubierta por precipitación superior a distintos umbrales calculado sobre el pronóstico a 1 hora (first-guess) y compara los experimentos para estudiar la sensibilidad al uso de canales con SATWND como experimento control y la estimación de precipitación de IMERG. Al igual que en otros experimentos, los experimentos ABI subestiman la precipitación observada aunque en menor medida que SATWND para el umbral de 1 mm (Figura \@ref(fig:area-canales)a). En algunos casos, logran representar mejor la precipitación que SATWND particularmente para umbrales de precipitación mayores (Figura \@ref(fig:area-canales)b-c) y algunas subregiones como la provincia de Córdoba (no se muestra). Comparando los experimentos ABI entre si, no se observan grandes diferencias y solo en algunos tiempos y/o umbrales ABI_ch890_th30 es mejor que los otros dos. Desde este punto de vista, la asimilación de las observaciones de los canales 8 y 9 en niveles altos y medios no aporta mucha información al análisis. Esto podría deberse a que los canales 8 y 9, o sus errores, están muy correlacionados y sería necesario realizar nuevos experimentos que aislen el impacto de los canales 8 y 9 por separado para determinar su asimilación independiente no produce mejores resultados que la asmilación del canal 10.
+La Figura \@ref(fig:area-canales) muestra el porcetanje de área cubierta por precipitación superior a distintos umbrales calculado sobre el pronóstico a 1 hora (first-guess) y compara los experimentos para estudiar la sensibilidad al uso de canales con SATWND como experimento control y la estimación de precipitación de IMERG. Al igual que en otros experimentos, los experimentos ABI subestiman la precipitación observada aunque en menor medida que SATWND para el umbral de 1 mm (Figura \@ref(fig:area-canales)a). En algunos casos, logran representar mejor la precipitación que SATWND particularmente para umbrales de precipitación mayores (Figura \@ref(fig:area-canales)b-c) y algunas subregiones como la provincia de Córdoba (no se muestra). Comparando los experimentos ABI entre si, no se observan grandes diferencias y solo en algunos tiempos y/o umbrales ABI_ch890_th30 es mejor que los otros dos. Desde este punto de vista, la asimilación de las observaciones de los canales 8 y 9 en niveles altos y medios no aporta mucha información al análisis. Esto podría deberse a que los canales 8 y 9, o sus errores, están muy correlacionados y sería necesario realizar nuevos experimentos que aislen el impacto de los canales 8 y 9 por separado para determinar si su asimilación independiente no produce mejores resultados que la asmilación del canal 10.
 
 Desde el punto de vista del FSS (Figura \@ref(fig:fss-canales)) los experimentos que incluyen observaciones de ABI tienen un impacto positivo mucho mayor que SATWND. Además, los 3 experimentos de ABI tienen un comportamiento similar entre si aunque en este caso ABI_ch890_th30 representa ligeramente mejor la precipitación por encima de 25 mm (Figuras \@ref(fig:fss-canales)b y d). 
 
@@ -398,13 +415,11 @@ fss %>%
 
 Existen diversos algoritmos para realizar el thinning, GSI en particular utiliza una metodología simple que consiste en definir una retícula de baja resolución y seleccionar las observaciones en alta resolución de acuerdo la distancia de estás a los puntos de la retícula gruesa y según criterios de calidad descriptos en la Sección \@ref(sat). 
 
-Es importante definir entonces la resolución apropiada para la reticula de baja resolución y estudiar el impacto que esto tiene en el análisis. Para esto se realizaron 2 experimentos ABI_ch890_th30 con un thinning de 30 km, es decir, que lleva las observaciones con una resolución de 2 km a una reticula de 30 km, siguiendo trabajos previos (por ejemplo @lee2019 y @singh2016) y ABI_ch890_th10 con un thinning de 10 km, igual a la resolución de las simulaciones numéricas. Las 2 resoluciones elegidas tienen en cuenta por un lado el efecto de la correlación entre los errores de las observaciones y la resolución del modelo y por el otro, no perder información importante que podría incluirse en el análisis. En particular, si bien la resolución del modelo en los experimentos es de 10 km, los procesos que puede representar explicitamente son de escala mayor y por lo tanto es posible que asimilar observaciones con una resolución muy cercana al modelo, que representa procesos en escalas no resueltas, no genere el impacto esperado. 
+Es importante definir entonces la resolución apropiada para la reticula de baja resolución y estudiar el impacto que esto tiene en el análisis. Para esto se realizaron 2 experimentos ABI_ch890_th30 con un thinning de 30 km, es decir, que lleva las observaciones con una resolución de 2 km a una reticula de 30 km siguiendo trabajos previos (por ejemplo @lee2019 y @singh2016) y ABI_ch890_th10 con un thinning de 10 km, igual a la resolución de las simulaciones numéricas. Las 2 resoluciones elegidas tienen en cuenta por un lado el efecto de la correlación entre los errores de las observaciones y la resolución del modelo y por el otro, no perder información importante que podría incluirse en el análisis. En particular, si bien la resolución del modelo en los experimentos es de 10 km, los procesos que puede representar explicitamente son de escala mayor y por lo tanto es posible que asimilar observaciones con una resolución muy cercana al modelo, que representa procesos en escalas no resueltas, no genere el impacto esperado. 
 
 (ref:area-thinning) Porcentaje de área cubierta por precipitación a 1 hora superior a a) $1 mmh^{-1}$, b) $5 mmh^{-1}$ y c) $10 mmh^{-1}$ a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), y ABI_ch890_th10 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura \@ref(fig:dominio)a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.
 
 ```{r area-thinning, fig.cap="(ref:area-thinning)", fig.width=6, fig.height=3.5}
-colores_thinning <- c(E6 = "#EE7733", EG2 = "chartreuse4", EG3 = "#047994")
-
 pp_area %>% 
   .[umbral %in% c(1, 5, 10) & exp %in% c("E6", "EG2", "EG3")] %>% 
   .[, .(mean_area = mean(area),
@@ -465,7 +480,7 @@ fss %>%
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 ```
 
-Desde el punto de vista del FSS y para $1 mm h^{-1}$ (Figura \@ref(fig:thinning-fss)a y c) ABI_ch890_th10 tiene igual o mejor rendimiento que ABI_ch890_th30 pero ocurre lo contrario para el umbral de $25 mm h^{-1}$ (Figura \@ref(fig:thinning-fss)b y d). Si bien las diferencias de FSS entre los experimentos de thinning son muy pequeñas, el área cubierta por precipitación y otros análisis no mostrados en esta Sección, resalta la necesidad de utilizar un thinning cercano a la resolución del modelo. Por esta razón la configuración de thinning a utilizar en los experimentos posteriores será de 10 km. 
+Desde el punto de vista del FSS y para $1 mm h^{-1}$ (Figura \@ref(fig:thinning-fss)a y c) ABI_ch890_th10 tiene igual o mejor rendimiento que ABI_ch890_th30 pero ocurre lo contrario para el umbral de $25 mm h^{-1}$ (Figura \@ref(fig:thinning-fss)b y d). Si bien las diferencias de FSS entre los experimentos de thinning son muy pequeñas, el área cubierta por precipitación y otros análisis como la comparación cualitativa con estimaciones de IMERG y cuantitativa con sondeos de RELAMPAGO (no mostrados), resalta la necesidad de utilizar un thinning cercano a la resolución del modelo. Por esta razón la configuración de thinning a utilizar en los experimentos posteriores será de 10 km. 
 
 ### Comparación del impacto de observaciones de ABI con otras fuentes de información
 
@@ -476,7 +491,7 @@ Al igual que en la Sección \@ref(impacto-analisis), es importante primero enten
 En primer lugar calculamos perfiles verticales de temperatura y humedad específica promediando espacialmente la media del ensamble de cada experimento a lo largo de todo el periodo. Posteriormente para evaluar el impacto de la asimilación de las radianzas, calculamos la diferencia entre los perfiles verticales de los experimentos con estas observaciones y SATWND que no las incluye (Figura \@ref(fig:TQ-diff-abi)). Previamente habíamos observado que la asimilación de radianzas de satélites polares producía un calentamiento en niveles bajos (Figura \@ref(fig:TQ-diff-abi)a), la asimilación de observaciones de ABI en este caso produce, además, un enfriamento en niveles medios y un calentamiento previo al paso del frente frío y desarrollo de la convección durante el 21 de noviembre lo que puede contribuir a incrementar el CAPE y por lo tanto las condiciones para el desarrollo de convección intensa. A las 12 UTC del 22 de noviembre se observa un dipolo en niveles medios y altos que se intensifica con la asimilación de ABI. Esto puede estar relacionado a un menor desarrollo de la conveccion en ABI a esa hora respecto de SATWND. Pero a partir de las 00 UTC del 23 de novimebre el dipolo se invierte indicando que la convección se intensifica en ABI. Esto también podría explicar el enfriamiento que se observa en superficie debido a una pileta de aire frio mas intensa asociada al sistema convectivo.
 Al comparar la diferencia entre los perfiles verticales de cada experimento y ERA5 (Figuras \@ref(fig:era5-abi)a-d), vemos que este enfriamiento en niveles medios (Figura \@ref(fig:era5-abi)c-d) produce una mayor diferencia entre los análisis que incluyen ABI y ERA5. 
 
-La diferencia en la humedad específica para los distintos experimentos se muestra en las Figuras \@ref(fig:TQ-diff-abi)d-f, donde vemos que la asimilación de observaciones de ABI produce un humedecimiento por encima de 850 hPa y este efecto es mayor cuando no se asimilan radianzas de satélites polares en el experimento ABI(Figura \@ref(fig:TQ-diff-abi)f). Este humedecimiento junto con los cambios en la temperatura generan un aumento en el CAPE previo al desarrollo de la convección. Nuevamente, la diferencia entre los experimentos y ERA5 para esta variable (Figuras \@ref(fig:era5-abi)e-h) muestra que la asimilación de obsevaciones de ABI aleja los análisis del estado de la atmósfera que representa ERA5.
+La diferencia en la humedad específica para los distintos experimentos se muestra en las Figuras \@ref(fig:TQ-diff-abi)d-f, donde vemos que la asimilación de observaciones de ABI produce un humedecimiento por encima de 850 hPa y este efecto es mayor cuando no se asimilan radianzas de satélites polares en el experimento ABI(Figura \@ref(fig:TQ-diff-abi)f). Este humedecimiento junto con los cambios en la temperatura generan un aumento en el CAPE previo al desarrollo de la convección. El secamiento que se observa en los experimentos con radianzas y que ya se observaba previamente en RAD, no es consistente con el desarrollo de la precipitación, que ocurre primero en SATWND consumiendo la humedad presente en la capa límite, por lo que futuros experimentos son necesarios para entender este efecto. Nuevamente, la diferencia entre los experimentos y ERA5 para esta variable (Figuras \@ref(fig:era5-abi)e-h) muestra que la asimilación de obsevaciones de ABI aleja los análisis del estado de la atmósfera que representa ERA5.
 
 (ref:TQ-diff-abi) Diferencia entre la media del ensamble de los análisis a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en $^\circ$C) y la humedad específica (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis. 
 
@@ -688,7 +703,7 @@ era[perfiles, on = c("lev", "date")] %>%
   plot_layout(ncol = 1, heights = c(1, 1, 1, 1)) 
 ```
 
-Las Figuras \@ref(fig:UV-diff-abi) muestran la comparación entre los experimentos que incluyen radianzas de satélite y SATWND para las componentes del viento. En este caso las diferencias entre experimentos son más sutiles sin embargo, se aprecia una disminución en el viento zonal, y por lo tanto de la cortante de vertical de viento, por encima de la 700 hPa en los experimentos RAD+ABI y ABI. Este aumento es más marcado cuando se asimilan radianzas de satélites polares y ABI en conjunto. En ese caso la comparación con ERA5 (Figuras \@ref(fig:era5-abi)i-l) muestra el viento zonal en los experimentos RAD y ABI se acerca más a ERA5 que SATWND que no incluye radianzas o RAD+ABI que asimila todas las radianzas en conjunto. Esto indicaría que los experimentos que incluyen observaciones de ABI representan mejor el flujo zonal para este caso de estudio. En niveles bajos las diferencias son pequeñas y solo se observa un ligero aumento del viento zonal en ABI respecto de SATWND (Figura \@ref(fig:UV-diff-abi)c) asociado al flujo postfrontal. 
+Las Figuras \@ref(fig:UV-diff-abi) muestran la comparación entre los experimentos que incluyen radianzas y SATWND para las componentes del viento. En este caso las diferencias entre experimentos son más sutiles sin embargo, se aprecia una disminución en el viento zonal, y por lo tanto de la cortante de vertical de viento, por encima de la 700 hPa en los experimentos RAD+ABI y ABI. Esta disminución es más marcada cuando se asimilan radianzas de satélites polares y ABI en conjunto. En ese caso la comparación con ERA5 (Figuras \@ref(fig:era5-abi)i-l) muestra el viento zonal en los experimentos RAD y ABI se acerca más a ERA5 que SATWND que no incluye radianzas o RAD+ABI que asimila todas las radianzas en conjunto. Esto indicaría que los experimentos que incluyen observaciones de ABI representan mejor el flujo zonal para este caso de estudio. En niveles bajos las diferencias son pequeñas y solo se observa un ligero aumento del viento zonal en ABI respecto de SATWND (Figura \@ref(fig:UV-diff-abi)c) asociado al flujo postfrontal. 
 
 Las Figuras \@ref(fig:UV-diff-abi)d-f muestran que los experimentos que asimilan ABI tienen una mayor diferencia respecto de SATWND en el viento meridional en altura a partir del 22 de noviembre a las 12 UTC cuando hay mayor convección en el dominio. Este efecto ya era notorio al analizar el impacto de las radianzas de satelites polares (Figura \@ref(fig:UV-diff)f) que ahora se intensifica cuando se incluyen radianzas de ABI. Estas diferencias están asociadas a un retrazo en el desarrollo de la convección en los experimentos que incluyen radianzas respecto de SATWND. Al igual que para el viento meridional, la comparación entre los experimentos y ERA5 (Figuras \@ref(fig:era5-abi)m-o)) muestra que, por encima de 500 hPa, los experimentos que incluyen radianzas tienen un viento meridional más parecido a ERA5 que SATWND. Esta mejora es más notoria en ABI donde no se incluyen observaciones de satélites polares.
 
@@ -791,8 +806,6 @@ Habiendo analizado el impacto de la asimilación de radianzas en términos gener
 (ref:sondeos-abi) RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento zonal ($m\ s^{-1}$) y d) el viento meridional ($m\ s^{-1}$) calculados comparando el análisis de cada experimento con los sondeos de RELAMPAGO durante el IOP 7 y el IOP 8. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde y ABI con una línea turqueza.
 
 ```{r sondeos-abi, fig.cap="(ref:sondeos-abi)", fig.width=6, fig.height=4, fig.align="center"}
-colores_exp_abi <- c(E6 = "#EE7733", E9 = "#CC3311", E10 = "#93B75C", EG3 = "#047994")
-
 files <- c(Sys.glob(here("data/derived_data/soundings/sondeo_E[169]*_ana*")),
            Sys.glob(here("data/derived_data/soundings/sondeo_EG3_ana*")))
 
