@@ -159,7 +159,7 @@ Los sensores microondas disponibles para ser asimilados en el periodo de interé
 
 AMSU-A [@robel2014] es un radiómetro de microondas que cuenta con 15 canales de observación diferentes entre 23.8 - 89 GHz y ha demostrado ser un importante sensor para el sondeo de la temperatura atmosférica [@english2000]. Cada canal detecta la radiación de microondas procedente de capas discretas de la atmósfera terrestre, la cual se describe mediante la función de peso, que corresponde la derivada de la transmitancia con respecto a la altura. Estas funciones de peso son necesarias para definir la ubicación de las observaciones y por lo tanto en que espesor de la atmósfera generaran un impacto al momento de la asimilación. El AMSU-A es conocido como un "sensor de temperatura" ya que sus canales fueron seleccionados para detectar la radiación emitida por capas sucesivas de la atmósfera. La Figura \@ref(fig:wf)a muestra las funciones de peso en cielo claro para aquellos canales del AMSU-A que tienen sensibilidad en la tropósfera. No se incluyen en la asimilación de observaciones los dos primeros canales ubicados en 23.8 y 31.4 GHz ya que estos son sensibles a la fase líquida de las nubes y a la emisividad de la superficie, aunque si aportan información para el control de calidad de las observaciones de otros canales. 
 
-(ref:wf) Funciones de peso calculada sobre cielo claro para distintos censores. a) AMSU-A, canal 3 - 50.3 GHz, canal 4 - 52.8 GHz, canal 5 - 53.596 $\pm$ 0.115 GHz, canal 6 - 54.4 GHz, canal 7 - 54.94 GHz; MHS, canal 1 - 89.0 GHz, canal 2 - 157.0 GHz, canal 3 - 183.311 $\pm$ 1.00 GHz, canal 4 - 183.311 $\pm$ 3.00 GHz, canal 5 - 190.311 GHz; ABI, canal 8 - 6.2 $\mu m$, canal 9 - 6.9 $\mu m$, canal 10 - 7.3 $\mu m$.  
+(ref:wf) Funciones de peso calculada sobre cielo claro para distintos censores. a) AMSU-A, canal 3 - 50.3 GHz, canal 4 - 52.8 GHz, canal 5 - 53.596 $\pm$ 0.115 GHz, canal 6 - 54.4 GHz, canal 7 - 54.94 GHz; y b) MHS, canal 1 - 89.0 GHz, canal 2 - 157.0 GHz, canal 3 - 183.311 $\pm$ 1.00 GHz, canal 4 - 183.311 $\pm$ 3.00 GHz, canal 5 - 190.311 GHz.
 
 
 ```{r wf, fig.cap="(ref:wf)", fig.width=5, fig.height=4.5, fig.align="center"}
@@ -234,7 +234,9 @@ Teniendo en cuenta los objetivos propuestos, se asimilaron los canales sensibles
 
 La Figura \@ref(fig:wf-goes) muestra las funciones de peso teóricas para una atmósfera estandar en latitudes medias para cada uno de estos canales. Si bien hay un solapamiento en las funciones de peso, el canal 8 es más sensible al vapor de agua alrededor de los 350 hPa, el canal 9 alrededor de 450 hPa y el canal 10 alrededor de los 600 hPa aproximadamente. En la Sección \@ref(canales) se analizará que combinación de canales da mejores resultados en el contexto de este caso de estudio.   
 
-```{r wf-goes, fig.cap="(ref:wf)", fig.width=2.5, fig.height=4.5, fig.align="center"}
+(ref:wf-goes) Funciones de peso calculada sobre cielo claro para ABI, canal 8 - 6.2 $\mu m$, canal 9 - 6.9 $\mu m$, canal 10 - 7.3 $\mu m$.  
+
+```{r wf-goes, fig.cap="(ref:wf-goes)", fig.width=2.5, fig.height=4.5, fig.align="center"}
 
 
 wf_goes <- fread(here("data/derived_data/weighting_functions/wf_goes16.csv")) %>% 
