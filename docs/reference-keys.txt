@@ -130,4 +130,3 @@ impacto-de-las-observaciones-de-abi-en-pronósticos-determinísticos-de-alta-res
 representación-de-la-temperatura-humedad-y-viento-en-los-pronósticos
 representación-de-la-convección-y-precipitación
 conclusiones-2
-corrección-del-bias-de-observaciones-de-satélite
