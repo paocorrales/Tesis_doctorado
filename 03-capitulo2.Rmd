@@ -514,7 +514,7 @@ Para complementar el análisis probabilistico las Figuras \@ref(fig:brier) muest
 
 ```{r brier, fig.cap="(ref:brier)", fig.align="center", fig.width=7, fig.height=5}
 
-pp_imerg <- read_rds("~/datosmunin3/EXP/derived_data/IMERG_3h.rds")
+pp_imerg <- read_rds(here("data/derived_data/observations/IMERG_3h.rds"))
 
 pp_imerg <- pp_imerg[x %between% c(-900000, 900000) & y %between% c(-1100000, 1100000)]
 

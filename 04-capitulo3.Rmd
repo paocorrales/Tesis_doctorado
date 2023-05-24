@@ -323,15 +323,7 @@ imerg <- purrr::map(q, function(f){
 
 files <- Sys.glob(here("data/derived_data/analysis_variables/pp_area/E*_ana*_area_acum_*.rds"))
 
-# files <- Sys.glob("~/datosmunin3/EXP/derived_data/ppacum/E*[0234569]_ana*_area_acum_*.rds")
-
-pp_area <- purrr::map(files, function(f) {
-  
-  readRDS(f)
-  # %>% 
-  #   .[, c("lon", "lat") := wrf_project(x, y, inverse = TRUE, round = FALSE)]
-  
-}) %>% rbindlist()
+pp_area <- purrr::map(files, readRDS) %>% rbindlist()
 
 pp_area %>% 
   .[umbral %in% c(1, 5, 10) & exp %in% c("E6", "EG2", "EG4", "EG5")] %>% 
@@ -936,7 +928,7 @@ En primer lugar calculamos perfiles verticales de temperatura y humedad específ
 (ref:TQ-diff-fcst) Diferencia entre los pronósticos determinísticos de a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en $K$) y la humedad específica (d, e y f en $g\ kg^{-1}$) calculados sobre el dominio interior (recuadro rojo en la Figura \@ref(fig:dominio)a) para cada ciclo de análisis.
 
 ```{r TQ-diff-fcst, fig.cap="(ref:TQ-diff-fcst)", fig.height=5.5, fig.width=7, fig.align="center"}
-perfiles <- Sys.glob("~/datosmunin3/EXP/derived_data/perfiles_fcst_det*") %>% 
+perfiles <- Sys.glob(here("data/derived_data/forecast_variables/perfiles_fcst_det*")) %>% 
   map(fread) %>% 
   rbindlist()
 
@@ -1109,7 +1101,7 @@ En la comparación de los pronósticos con observaciones independientes se inclu
 (ref:sondeos-abi-fcst) RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura ($K$), b) la temperatura del punto de rocío ($K$), c) el viento zonal ($m\ s^{-1}$) y d) el viento meridional ($m\ s^{-1}$) calculados comparando los pronósticos determinísticos de cada experimento con los sondeos de RELAMPAGO. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra la comparación con el pronóstico inicializado con GFS.
 
 ```{r sondeos-abi-fcst, fig.cap="(ref:sondeos-abi-fcst)", fig.width=6, fig.height=4, fig.align="center"}
-files <- Sys.glob("~/datosmunin3/EXP/derived_data/sondeos/20181122000000_det/sondeo_*")
+files <- Sys.glob(here("data/derived_data/soundings/20181122000000_det/sondeo_*"))
 
 sondeos <- purrr::map(files, function(f){
   
@@ -1128,8 +1120,6 @@ IOP <- tribble(
 
 
 sondeos %>% 
-  # .[, iop := fcase(launch_time %between% c(ymd_hms("20181121150000"), ymd_hms("20181121210000")), "IOP07",
-  #                  launch_time %between% c(ymd_hms("20181122140000"), ymd_hms("20181122200000")), "IOP08")] %>% 
   .[variable %in% c("t", "td", "u", "v") & !str_detect(site, "/") & !is.na(fcst_value)] %>% 
   .[site != "Sao Borja, Brazil"] %>% 
   .[, lev := cut_round(alt, c(seq(0, 3000, 500), seq(4000, 21000, 1000)))] %>% 
@@ -1159,9 +1149,8 @@ El RMSE y BIAS calculado comparando los pronósticos con las observaciones de EM
 (ref:aut-rmse-fcst) Evolución del RMSE y BIAS de a) humedad específica ($g\ kg{^-1}$), b) temperatura ($K$), c) el viento zonal ($m\ s^{-1}$) y d) el viento meridional ($m\ s^{-1}$) calculados comparando los pronósticos determinísticos de cada experimento con las observaciones de EMA. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra el pronóstico inicializado con GFS.
 
 ```{r aut-rmse-fcst, fig.cap="(ref:aut-rmse-fcst)", fig.align="center", fig.width=6, fig.height=3}
-obs_path <- "/home/paola.corrales/datosmunin3/EXP/derived_data/interp_obs/"
-files_obs <- Sys.glob(paste0(obs_path, "2018112200",
-                             "/interp_conv_*_fcst_det.rds"))
+
+files_obs <- Sys.glob(here("data/derived_data/forecast_variables/interp_conv/interp_conv_*"))
 
 ema <- map(files_obs, read_rds) %>% 
   rbindlist()
@@ -1275,7 +1264,6 @@ El FSS calculado comparando los pronósticos de precipitación con la estimació
 ```{r fss-abi-fcst, fig.cap="(ref:fss-abi-fcst)", fig.width=5, fig.height=4}
 files <- Sys.glob(here("data/derived_data/FSS/fss_6h_fcst_det_2018112200*d02.csv"))
 
-# files <- Sys.glob("~/datosmunin3/EXP/derived_data/fss_1h_fcst_det_2018112200_*_d02.csv")
 
 fss_det <- map(files, function(f){
   
@@ -1316,7 +1304,7 @@ Finalmente a las 00 UTC del 23 de noviembre la convección se extiende sobre tod
 exps <- c("E6", "E9", "E10", "EG3", "GFS")
 dates <- c(rep("20181122000000", 5), rep("20181122120000", 5), rep("20181123000000", 5))
 
-files_goes <- Sys.glob(paste0("~/datosmunin3/EXP/", exps, "/CRMT/G16_", dates, ".nc"))
+files_goes <- Sys.glob(here(paste0("data/derived_data/observations/", exps, "/G16_", dates, ".nc")))
 
 goes_exp <- map(files_goes, function(f) {
   
@@ -1327,7 +1315,7 @@ goes_exp <- map(files_goes, function(f) {
   
 }) %>% rbindlist()
 
-goes <- map(paste0("~/datosmunin3/EXP/derived_data/interp_goes/", "interp_goes_", c("20181122000000", "20181122120000", "20181123000000"), ".rds"), read_rds) %>% 
+goes <- map(here(paste0("data/derived_data/observations/", "interp_goes_", c("20181122000000", "20181122120000", "20181123000000"), ".rds")), read_rds) %>% 
   rbindlist() 
 
 
@@ -1336,28 +1324,7 @@ goes <- goes_exp[, .(south_north, west_east, lon, lat)] %>%
   .[goes, on = .NATURAL] %>% 
   .[, exp_factor := factor("OBS", levels = c("E6", "E9", "E10", "EG3", "GFS", "OBS"))]
 
-# xlim <- c(3000, 3700)
-# ylim <- c(3850, 4650)
-# 
-# files <- Sys.glob(here("data/derived_data/goes16/*"))
-# goes <- map(files, function(f) {
-#   nc <- ncdf4::nc_open(f)
-#   meta <- unglue::unglue(basename(f), "OR_ABI-L1b-RadF-M3{channel}_G16_s{sdate}_e{edate}_c{cdate}.nc")
-#   ReadNetCDF(f, vars = c(rad = "Rad", time = "t"), 
-#              subset = list(x = xlim, y = ylim)) %>% 
-#     .[, rad := calculate_rad(rad, nc)] %>% 
-#     .[, tb := rad_to_tb(rad, nc)] %>% 
-#     .[, time := as_datetime(time, origin = "2000-01-01 12:00:00")] %>%
-#     .[, exp := "OBS"] %>% 
-#     .[, c("lon", "lat") := goes_projection(x, y, nc)] %>% 
-#     .[]
-# }) %>% 
-#   rbindlist() %>% 
-#   .[, date := floor_date(time, "hour")]
-
-
 goes_exp %>% 
-  # goes[., on = .NATURAL]
   .[, date := factor(date)] %>% 
   .[, exp_factor := factor(exp, levels = c("E6", "E9", "E10", "EG3", "GFS", "OBS"))] %>% 
   .[date != "2018-11-23 12:00:00"] %>% 
@@ -1388,22 +1355,10 @@ Para analizar la temperatura de brillo desde un punto de vista cuantitativo, la 
 
 ```{r fss-tb, fig.cap="(ref:fss-tb)", fig.width=5, fig.height=4}
 
-files <- Sys.glob("~/datosmunin3/EXP/derived_data/interp_goes/fss_fcst_det_tb_*")
+files <- Sys.glob(here("data/derived_data/FSS/fss_fcst_det_tb_*"))
 
 fss <- map(files, fread) %>% rbindlist()
 
-# fss_det <- map(files, function(f){
-#   
-#   meta <- unglue(basename(f), "fss_1h_fcst_det_{ini_date}_{exp}_d02.csv")
-#   
-#   fread(f) %>% 
-#     .[, ini_date := meta[[1]][["ini_date"]]]
-# }) %>% 
-#   rbindlist()
-
-# fss_det[q %in% c(1, 5, 10) & w %in% c(1, 5) & exp %in% c("E6", "E9", "E10", "EG3", "GFS")] %>% 
-#   .[, ":="(q_label = factor(q, labels = c("1~mm~h^{-1}",  "5~mm~h^{-1}", "25~mm~h^{-1}")),
-#            w_label = factor(w, labels = c("2~km", "10~km")))] %>% 
 fss %>% 
   .[q %in% c(30, 70, 85) & w %in% c(1, 11, 101)] %>% 
   ggplot(aes(date, fss)) +

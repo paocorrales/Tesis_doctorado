@@ -15,7 +15,7 @@ El caso de estudio utilizado en este trabajo corresponde a un SCM que se inicio 
 (ref:caso) Presión a nivel del mar (hPa, contornos negros), espesor 1000-500 hPa (contornos rojos discontinuos) y energía potencial convectiva disponible (sombreada) según ERA5 y temperatura de brillo del canal 13 de GOES-16 para a,d) 00 y b,e) 12 UTC, 22 de Nov y c,f) 00 UTC, 23 de Nov. 
 
 ```{r caso, fig.cap="(ref:caso)", fig.align="center", fig.width=6, fig.height=4}
-#
+
 campos <- ReadNetCDF(here("data/derived_data/reanalysis/geopotential.nc")) %>% 
   dcast(time + longitude + latitude ~ level) %>% 
   .[order(time, -latitude, longitude)] %>% 
@@ -70,8 +70,6 @@ campos %>%
                                            barheight = 8,
                                            order = 99,
                                            frame.colour = "black")) +
-  # guides(fill = guide_legend(" CAPE", order = 0),
-  #        color = guide_legend("BT (ºC)", order = 2)) +
   geom_mapa() +
   coord_sf(ylim = c(-45, -22), xlim = c(-75, -52)) +
   facet_grid(source ~ time, labeller = labeller(time = c("2018-11-22 00:00:00" = "00 UTC, 22 de Nov",
@@ -347,8 +345,6 @@ La Figura \@ref(fig:wf-goes) muestra las funciones de peso calculadas para una a
 (ref:wf-goes) Funciones de peso calculada sobre cielo claro para ABI, canal 8 - 6.2 $\mu m$, canal 9 - 6.9 $\mu m$, canal 10 - 7.3 $\mu m$.  
 
 ```{r wf-goes, fig.cap="(ref:wf-goes)", fig.width=2.5, fig.height=4.5, fig.align="center"}
-
-
 wf_goes <- fread(here("data/derived_data/weighting_functions/wf_goes16.csv")) %>% 
   .[, id := 1:.N] %>% 
   melt(measure.vars = patterns("^ch")) %>% 
@@ -583,7 +579,7 @@ Para analizar el ajuste del first guess y el análisis a un conjunto de observac
 
 
 \begin{equation}
-\mathit{BIAS} = \frac{1}{N}\sum_{i = 1}^{N} (X_i - y_{oi)
+\mathit{BIAS} = \frac{1}{N}\sum_{i = 1}^{N} (X_i - y_{oi})
 (\#eq:eq10)
 \end{equation}
 
