@@ -1,4 +1,5 @@
 fig:caso
+fig:dominio
 tab:tabla-obs
 tab:table-rad
 fig:wf
@@ -9,7 +10,6 @@ eq:eq3
 eq:eq5
 eq:eq12
 tab:miembros-desc
-fig:dominio
 eq:eq6
 eq:eq7
 eq:eq8
@@ -100,6 +100,7 @@ sat
 configmodelo
 métodos-de-verificación
 recursos-computacionales
+disponibilidad-de-los-datos
 ch1
 metodología
 config
@@ -130,3 +131,6 @@ impacto-de-las-observaciones-de-abi-en-pronósticos-determinísticos-de-alta-res
 representación-de-la-temperatura-humedad-y-viento-en-los-pronósticos
 representación-de-la-convección-y-precipitación
 conclusiones-2
+conclusiones-generales-y-perspectivas-futuras
+conclusiones-3
+perspectivas-futuras
