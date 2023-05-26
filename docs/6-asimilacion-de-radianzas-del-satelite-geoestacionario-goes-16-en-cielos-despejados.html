@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 6 Asimilacion de radianzas del satelite geoestacionario GOES-16 en cielos despejados | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo</title>
+  <meta name="description" content="Capítulo 6 Asimilacion de radianzas del satelite geoestacionario GOES-16 en cielos despejados | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 6 Asimilacion de radianzas del satelite geoestacionario GOES-16 en cielos despejados | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 6 Asimilacion de radianzas del satelite geoestacionario GOES-16 en cielos despejados | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  
+  
+  
+
+<meta name="author" content="Lic. Paola Corrales" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"/>
+<link rel="next" href="7-conclusiones-generales-y-perspectivas-futuras.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introducción</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#pronostico-de-eventos-severos"><i class="fa fa-check"></i><b>1.1</b> Pronostico de eventos severos</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#asimilación-de-datos-para-estimar-condiciones-iniciales"><i class="fa fa-check"></i><b>1.2</b> Asimilación de datos para estimar condiciones iniciales</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#asimilación-de-datos-en-sudamérica"><i class="fa fa-check"></i><b>1.3</b> Asimilación de datos en Sudamérica</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#asim-rad"><i class="fa fa-check"></i><b>1.4</b> Asimilación de radianzas de satélites</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#hipótesis-y-objetivos"><i class="fa fa-check"></i><b>1.5</b> Hipótesis y objetivos</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-resumen.html"><a href="2-resumen.html"><i class="fa fa-check"></i><b>2</b> Resumen</a><ul>
+<li class="chapter" data-level="" data-path="2-resumen.html"><a href="2-resumen.html#utilización-de-datos-satelitales-para-la-evaluación-y-mejora-de-los-pronósticos-numéricos-en-alta-resolución-a-muy-corto-plazo"><i class="fa fa-check"></i>Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="abstract.html"><a href="abstract.html"><i class="fa fa-check"></i>Abstract</a><ul>
+<li class="chapter" data-level="" data-path="abstract.html"><a href="abstract.html#use-of-satellite-data-for-the-evaluation-and-improvement-of-short-term-high-resolution-numerical-forecasts"><i class="fa fa-check"></i>Use of satellite data for the evaluation and improvement of short-term high-resolution numerical forecasts</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-metodología-y-datos.html"><a href="3-metodología-y-datos.html"><i class="fa fa-check"></i><b>3</b> Metodología y datos</a><ul>
+<li class="chapter" data-level="3.1" data-path="3-metodología-y-datos.html"><a href="3-metodología-y-datos.html#caso-de-estudio"><i class="fa fa-check"></i><b>3.1</b> Caso de estudio</a></li>
+<li class="chapter" data-level="3.2" data-path="3-metodología-y-datos.html"><a href="3-metodología-y-datos.html#observaciones"><i class="fa fa-check"></i><b>3.2</b> Observaciones</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="3-metodología-y-datos.html"><a href="3-metodología-y-datos.html#conjuntos-de-observaciones-asimiladas"><i class="fa fa-check"></i><b>3.2.1</b> Conjuntos de observaciones asimiladas</a></li>
+<li class="chapter" data-level="3.2.2" data-path="3-metodología-y-datos.html"><a href="3-metodología-y-datos.html#conjuntos-de-observaciones-para-verificación"><i class="fa fa-check"></i><b>3.2.2</b> Conjuntos de observaciones para verificación</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="3-metodología-y-datos.html"><a href="3-metodología-y-datos.html#la-asimilación-de-datos"><i class="fa fa-check"></i><b>3.3</b> La asimilación de datos</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="3-metodología-y-datos.html"><a href="3-metodología-y-datos.html#el-sistema-de-asimilación-gsi"><i class="fa fa-check"></i><b>3.3.1</b> El sistema de asimilación GSI</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="3-metodología-y-datos.html"><a href="3-metodología-y-datos.html#configmodelo"><i class="fa fa-check"></i><b>3.4</b> Configuración del sistema de asimilación</a></li>
+<li class="chapter" data-level="3.5" data-path="3-metodología-y-datos.html"><a href="3-metodología-y-datos.html#métodos-de-verificación"><i class="fa fa-check"></i><b>3.5</b> Métodos de verificación</a></li>
+<li class="chapter" data-level="3.6" data-path="3-metodología-y-datos.html"><a href="3-metodología-y-datos.html#recursos-computacionales"><i class="fa fa-check"></i><b>3.6</b> Recursos computacionales</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="3-metodología-y-datos.html"><a href="3-metodología-y-datos.html#disponibilidad-de-los-datos"><i class="fa fa-check"></i><b>3.6.1</b> Disponibilidad de los datos</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-ch1.html"><a href="4-ch1.html"><i class="fa fa-check"></i><b>4</b> Asimilacion de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares</a><ul>
+<li class="chapter" data-level="4.1" data-path="4-ch1.html"><a href="4-ch1.html#metodología"><i class="fa fa-check"></i><b>4.1</b> Metodología</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="4-ch1.html"><a href="4-ch1.html#config"><i class="fa fa-check"></i><b>4.1.1</b> Configuracion de los experimentos</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="4-ch1.html"><a href="4-ch1.html#resultados"><i class="fa fa-check"></i><b>4.2</b> Resultados</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="4-ch1.html"><a href="4-ch1.html#consistencia-del-ensamble"><i class="fa fa-check"></i><b>4.2.1</b> Consistencia del ensamble</a></li>
+<li class="chapter" data-level="4.2.2" data-path="4-ch1.html"><a href="4-ch1.html#impacto-analisis"><i class="fa fa-check"></i><b>4.2.2</b> Impacto de la asimilación de las distintas observaciones</a></li>
+<li class="chapter" data-level="4.2.3" data-path="4-ch1.html"><a href="4-ch1.html#val-analisis"><i class="fa fa-check"></i><b>4.2.3</b> Validación con observaciones independientes</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="4-ch1.html"><a href="4-ch1.html#conclusiones"><i class="fa fa-check"></i><b>4.3</b> Conclusiones</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><i class="fa fa-check"></i><b>5</b> Impacto de la asimilación de observaciones convencionales, de estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo</a><ul>
+<li class="chapter" data-level="5.1" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#metodología-1"><i class="fa fa-check"></i><b>5.1</b> Metodología</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#configuracion-de-los-experimentos"><i class="fa fa-check"></i><b>5.1.1</b> Configuracion de los experimentos</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#resultados-1"><i class="fa fa-check"></i><b>5.2</b> Resultados</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#prono-impacto"><i class="fa fa-check"></i><b>5.2.1</b> Impacto de las observaciones en el pronostico</a></li>
+<li class="chapter" data-level="5.2.2" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#verificacion-de-los-pronósticos-de-precipitación"><i class="fa fa-check"></i><b>5.2.2</b> Verificacion de los pronósticos de precipitación</a></li>
+<li class="chapter" data-level="5.2.3" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#análisis-y-verificación-por-parametrizaciones"><i class="fa fa-check"></i><b>5.2.3</b> Análisis y verificación por parametrizaciones</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html"><a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#conclusiones-1"><i class="fa fa-check"></i><b>5.3</b> Conclusiones</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html"><a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html"><i class="fa fa-check"></i><b>6</b> Asimilacion de radianzas del satelite geoestacionario GOES-16 en cielos despejados</a><ul>
+<li class="chapter" data-level="6.1" data-path="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html"><a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#metodología-2"><i class="fa fa-check"></i><b>6.1</b> Metodología</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html"><a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#asim-abi"><i class="fa fa-check"></i><b>6.1.1</b> Asimilación de observaciones de goes</a></li>
+<li class="chapter" data-level="6.1.2" data-path="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html"><a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#configuracion-de-los-experimentos-1"><i class="fa fa-check"></i><b>6.1.2</b> Configuracion de los experimentos</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html"><a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#resultados-2"><i class="fa fa-check"></i><b>6.2</b> Resultados</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html"><a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#canales"><i class="fa fa-check"></i><b>6.2.1</b> Sensibilidad a la combinación de canales</a></li>
+<li class="chapter" data-level="6.2.2" data-path="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html"><a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#thinning"><i class="fa fa-check"></i><b>6.2.2</b> Sensibilidad al thinning</a></li>
+<li class="chapter" data-level="6.2.3" data-path="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html"><a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#comparación-del-impacto-de-observaciones-de-abi-con-otras-fuentes-de-información"><i class="fa fa-check"></i><b>6.2.3</b> Comparación del impacto de observaciones de ABI con otras fuentes de información</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html"><a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#conclusiones-2"><i class="fa fa-check"></i><b>6.3</b> Conclusiones</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-conclusiones-generales-y-perspectivas-futuras.html"><a href="7-conclusiones-generales-y-perspectivas-futuras.html"><i class="fa fa-check"></i><b>7</b> Conclusiones generales y perspectivas futuras</a><ul>
+<li class="chapter" data-level="7.1" data-path="7-conclusiones-generales-y-perspectivas-futuras.html"><a href="7-conclusiones-generales-y-perspectivas-futuras.html#conclusiones-3"><i class="fa fa-check"></i><b>7.1</b> Conclusiones</a></li>
+<li class="chapter" data-level="7.2" data-path="7-conclusiones-generales-y-perspectivas-futuras.html"><a href="7-conclusiones-generales-y-perspectivas-futuras.html#perspectivas-futuras"><i class="fa fa-check"></i><b>7.2</b> Perspectivas futuras</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados" class="section level1 hasAnchor">
+<h1><span class="header-section-number">Capítulo 6</span> Asimilacion de radianzas del satelite geoestacionario GOES-16 en cielos despejados<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>En este capítulo se evaluará el impacto que genera la asimilación de observaciones en cielos despejados del sensor ABI a bordo del satélite GOES-16 tanto en el análisis como en pronósticos determinísticos de alta resolución para el caso de estudio del 22 de noviembre de 2018. Estas observaciones son de particular interés en la región de Sudamérica por su alta resolución espacial y frecuencia temporal. Usaremos las observaciones de los canales sensibles al vapor de agua que brindan información en 3 niveles de la atmósfera, algo que no era posible con los sensores previos a bordo de los satélites GOES. Esperamos que la asimilación de estas observaciones contribuya a mejorar la representación de los procesos convectivos y de mesoescala en pronósticos a corto plazo.</p>
+<p>Por ser un satélite y sensor nuevos, la última versión de GSI (V3.7) que fue publicada en julio de 2018 no incluye la posibilidad de asimilar estas observaciones. Fue necesario, entonces, modificar el código fuente del sistema de asimilación para incluir las rutinas necesarias utilizando como base los trabajos previos de <span class="citation">Lee et al. (2019)</span> y <span class="citation">Liu et al. (2019)</span>. También por esta razón, el capítulo incluirá el análisis de experimentos para definir la mejor configuración posible y evaluar técnicamente la asimilación de observaciones de ABI.</p>
+<p>Trabajos previos evaluaron el impacto de asimilar observaciones de los canales asociados al vapor de agua de ABI en escala regional. En líneas general estos trabajos (<span class="citation">Lee et al. (2019)</span>, <span class="citation">Jones et al. (2020)</span>, entre otros) utilizan las observaciones de los 3 canales en conjunto. Sin embargo <span class="citation">Honda et al. (2018)</span>, utilzaron observaciones del sensor Advanced Himawari Imager (AHI), de iguales características que ABI, y encontraron mejores resultado al asimilar los canales 8 (6.2 <span class="math inline">\(\mu m\)</span>) y 10 (7.3 <span class="math inline">\(\mu m\)</span>) observando que el canal 9 (6.9 <span class="math inline">\(\mu m\)</span>) está muy correlacionado con los dos primeros y por lo tanto no aporta información independiente en la asimilación. Por otro lado <span class="citation">Lee et al. (2019)</span> observaron que el impacto era mayor al asimilar observaciones de los 3 canales sobre el continente y el mar al mismo tiempo. También observaron que el incremento del análisis disminuye considerablemente al remover el canal 10 y en algunos casos también el canal 9.</p>
+<p>En la asimilación de datos y en particular de radianzas de satélites, muchas observaciones con alta resolución espacial deben ser descartadas porque podrían tener un impacto negativo en el análisis al no ser independientes entre si <span class="citation">(Lazarus et al., 2010; Janjić et al., 2018)</span>. En los esquemas de asimilación actuales se asume que la matriz de covarianza de los errores de las observaciones <span class="math inline">\(R\)</span> es diagonal, es decir, no hay correlación entre los errores de las distintas observaciones y cada observación es independiente. Sin embargo, las observaciones de satélites pueden estar muy correlacionadas debido a su su resolución espectral y espacial. En este contexto se utilizan estrategias como el thinning para disminuir la resolución de las observaciones asumiendo que la correlación decae con la distancia y conservando la información que aportan. Por ejemplo <span class="citation">Jones et al. (2020)</span> aplican la técnica de thinning para llevar las observaciones con resolución de 2 km a una resolución de 15 km y así evitar el impacto de la correlación espacial entre los canales 8 y 10 de ABI.</p>
+<div id="metodología-2" class="section level2 hasAnchor">
+<h2><span class="header-section-number">6.1</span> Metodología<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#metodología-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="asim-abi" class="section level3 hasAnchor">
+<h3><span class="header-section-number">6.1.1</span> Asimilación de observaciones de goes<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#asim-abi" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>La asimilación directa de radianzas de ABI requiere las mismas consideraciones descriptas previamente en la Sección <a href="index.html#asim-rad">1.4</a> en cuanto a control de calidad, corrección de bias, thnning e indentificación de pixeles nubosos. En esta Sección se describiran las deciciones metodológicas y técnicas que se tomaron a la hora de asimilar las observaciones, en base a las pruebas preliminares realizadas.</p>
+<p>La asimilación de radianzas en <em>all sky</em>, es decir tanto para cielos claros como nubosos es todavía un importante desafío ya que estos dos tipos de observaciones requieren un control de calidad y estimaciones de errores específicos. En esta primera aproximación a la asimilación de observaciones de ABI solo se utilizaron observaciones en cielos despejados. Para detectar y filtrar los pixeles nubosos utilizamos la mascara de nubes ACM (por ABI Cloud Mask) disponible con la misma frecuencia que las observaciones. Esta mascara de nubes da información binaria (cielo despejado o cielo nuboso) y tienen una exactitud del 87%. La clasificación es realizada utilizando información de 10 canales de ABI e incluye criterios espectrales, espaciales y temporales. En las Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:cld-msk">6.1</a> se presentan 2 ejemplos de máscara de nubes a las 00 UTC del 20 de noviembre y a las 18 UTC del 22 de noviembre.</p>
+
+<div class="figure"><span style="display:block;" id="fig:cld-msk"></span>
+<img src="thesis_files/figure-html/cld-msk-1.png" alt="Ubicación de píxeles nubosos (gris) según la máscara de nubes generada para GOES-16, durante el a) 06 UTC del 20 de noviembre y b) 18 UTC del 22 de noviembre." width="900"  />
+<p class="caption">
+Figure 6.1: Ubicación de píxeles nubosos (gris) según la máscara de nubes generada para GOES-16, durante el a) 06 UTC del 20 de noviembre y b) 18 UTC del 22 de noviembre.
+</p>
+</div>
+<p>Las radianzas de satélite pueden tener errores sistemáticos asociados a las condiciones de la atmósfera, a la geometría de la observación y condiciones específicas de los sensores que deben ser corregidos previo a la asimilación. Por este motivo se generó un primer experimento de asimilación para evaluar la magnitud de estos errores. Esta primera prueba utiliza la misma configuración de modelo y ensamble que los experimentos discutidos previamente e incluye la asimilación de los 3 canales de ABI sensibles al vapor de agua en conjunto.</p>
+<p>La Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:oma-dist">6.2</a> muestra la distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y entre las observaciones y el análisis (OmA) para todo el periodo. Si las observaciones no tienen bias la distribución OmF estará centrada en cero. En este caso solo el canal 9 presenta un bias positivo pequeño del orden de 0.3 K (Tabla <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#tab:oma-tabla">6.1</a>). Por esta razón y siguiendo trabajos previos (por ejemplo <span class="citation">Honda et al. (2018)</span>) en los experimentos discutidos en este capítulo no se aplica una corrección del bias a estas observaciones.</p>
+<p>La Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:oma-dist">6.2</a> y la Tabla <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#tab:oma-tabla">6.1</a> muestran además otro resultado importante. Si la asimilación de las observaciones se realizó correctamente es esperable que la diferencia OmA esté más cerca de cero que OmF y que su distribución tenga menos varianza. Esto se observa para los 3 canales asimilados y confirma que la implementación técnica dentro del sistema funciona correctamente. Notar que los cambios abruptos y simétricos en las curvas de distribución se deben al chequeo preliminar que se realiza como parte de los controles de calidad y que elimina aquellas observaciones que tienen un diferencia mayor a 2.2 K con respecto del campo preliminar.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:oma-dist"></span>
+<img src="thesis_files/figure-html/oma-dist-1.png" alt="Distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y la observacion y el análisis (OmA) para los 3 canales de ABI y a lo largo de todo el periodo de prueba." width="1050"  />
+<p class="caption">
+Figure 6.2: Distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y la observacion y el análisis (OmA) para los 3 canales de ABI y a lo largo de todo el periodo de prueba.
+</p>
+</div>
+<table class=" lightable-classic-2" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'>
+<caption>
+<span id="tab:oma-tabla">Table 6.1: </span>Observación menos análisis o campo preliminar medio calculado sobre todo el periodo.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Canal 8
+</th>
+<th style="text-align:right;">
+Canal 9
+</th>
+<th style="text-align:right;">
+Canal 10
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+OmF
+</td>
+<td style="text-align:right;">
+0.0355
+</td>
+<td style="text-align:right;">
+0.3212
+</td>
+<td style="text-align:right;">
+-0.0158
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+OmA
+</td>
+<td style="text-align:right;">
+0.0032
+</td>
+<td style="text-align:right;">
+0.3140
+</td>
+<td style="text-align:right;">
+-0.0498
+</td>
+</tr>
+</tbody>
+</table>
+<p>Debido al desarrollo de actividad convectiva en el dominio durante el periodo simulado, la cantidad de observaciones en cielos despejados varía considerablemente (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:cld-msk">6.1</a>a y b). La Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:obs-rad">6.3</a>a muestra el número de radianzas asimiladas en cada ciclo donde se aprecia una disminución del número de observaciones en las últimas 24 hs del periodo debido a la presencia de nubes. Sin embargo la cantidad de observaciones que aporta ABI es casi siempre entre 1 y 2 órdenes de magnitud mayor que el número de observaciones de satélites polares. En este caso ABI utiliza un thinning de 10 km (ver Sección <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#thinning">6.2.2</a>) pero aún cuando se utiliza un thinning de 30 km, el número de observaciones de ABI asimiladas es siempre mayor a lo que pueden aportar los satélites polares. Las observaciones de ABI, además, se distribuyen de manera homogenea en el dominio y cubren gran parte de los niveles verticales de la atmósfera. La Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:obs-rad">6.3</a>c muestra la distribución promedio de observaciones de cada canal con la altura. Si bien el nivel donde se observa máximo de observaciones para cada canal es similar a lo esperado según sus funciones de peso (Figura <a href="3-metodología-y-datos.html#fig:wf-goes">3.4</a>), la distribución de observaciones con la altura es distinta ya que depende de las condiciones particulares de la atmósfera en cada punto que difiere de la atmósfera estandar utilizada para el cálculo de las funciones de peso teóricas.</p>
+
+<div class="figure"><span style="display:block;" id="fig:obs-rad"></span>
+<img src="thesis_files/figure-html/obs-rad-1.png" alt="a) Número de radianzas asimiladas en cada ciclo, b) número medio de radianzas asimiladas por ciclo en capas verticales de 50 hPa de espesor para los experimentos RAD (radianzas de satélites polares, circulos rojos) y ABI (radianzas de ABI, cuadrados turquezas) y c) número medio de radianzas asimiladas por ciclo en capaz verticales de 50 hPa de espesor para los 3 canales de ABI." width="900"  />
+<p class="caption">
+Figure 6.3: a) Número de radianzas asimiladas en cada ciclo, b) número medio de radianzas asimiladas por ciclo en capas verticales de 50 hPa de espesor para los experimentos RAD (radianzas de satélites polares, circulos rojos) y ABI (radianzas de ABI, cuadrados turquezas) y c) número medio de radianzas asimiladas por ciclo en capaz verticales de 50 hPa de espesor para los 3 canales de ABI.
+</p>
+</div>
+</div>
+<div id="configuracion-de-los-experimentos-1" class="section level3 hasAnchor">
+<h3><span class="header-section-number">6.1.2</span> Configuracion de los experimentos<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#configuracion-de-los-experimentos-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>En este capítulo se analizan una serie de experimentos, primero para evaluar la sensibilidad a distintas combinaciones de canales y a la resolución del thinning y finalmente para comparar el impacto de la asimilación de observaciones de ABI en conjunto o no con observaciones de satélites polares. Los experimentos SATWND y RAD fueron analizados previamente en el Capítulo <a href="4-ch1.html#ch1">4</a>. SATWND asimila observaciones de EMC, EMA y vientos deriados de satélite y RAD suma a lo anterior radianzas en aire claro de sensores a bordo de satélites polares. RAD+ABI incluye además observaciones de los 3 canales de vapor de agua de ABI con un thinning de 10 km. Finalmente el conjunto de experimentos ABI, descriptos en la Tabla <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#tab:exp-rad">6.2</a>, incluyen radianzas de ABI pero no de satélites polares, y usan distintas combinaciones de canales y resolución de thinning para evaluar la sensibilidad de la asimilación de distintos canales y la resolución del thinning.</p>
+<table class=" lightable-classic-2" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'>
+<caption>
+<span id="tab:exp-rad">Table 6.2: </span>Experimentos realizados. Todos los experimentos incluyen observaciones de EMC, EMA y vientos derivados de satélite.
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Experimento
+</th>
+<th style="text-align:left;">
+Radianzas asimiladas
+</th>
+<th style="text-align:center;">
+Canales ABI
+</th>
+<th style="text-align:center;">
+Thining ABI
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;width: 10em; ">
+SATWND
+</td>
+<td style="text-align:left;width: 16em; ">
+–
+</td>
+<td style="text-align:center;width: 4em; ">
+–
+</td>
+<td style="text-align:center;width: 4em; ">
+–
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 10em; ">
+RAD
+</td>
+<td style="text-align:left;width: 16em; ">
+Radianzas de satélites polares
+</td>
+<td style="text-align:center;width: 4em; ">
+–
+</td>
+<td style="text-align:center;width: 4em; ">
+–
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 10em; ">
+RAD+ABI
+</td>
+<td style="text-align:left;width: 16em; ">
+Radianzas de satélites polares y ABI
+</td>
+<td style="text-align:center;width: 4em; ">
+8, 9, 10
+</td>
+<td style="text-align:center;width: 4em; ">
+10 km
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 10em; ">
+ABI_ch890_th10 (ABI)
+</td>
+<td style="text-align:left;width: 16em; ">
+Radianzas de ABI
+</td>
+<td style="text-align:center;width: 4em; ">
+8, 9, 10
+</td>
+<td style="text-align:center;width: 4em; ">
+10 km
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 10em; ">
+ABI_ch890_th30
+</td>
+<td style="text-align:left;width: 16em; ">
+Radianzas de ABI
+</td>
+<td style="text-align:center;width: 4em; ">
+8, 9, 10
+</td>
+<td style="text-align:center;width: 4em; ">
+30 km
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 10em; ">
+ABI_ch90_th30
+</td>
+<td style="text-align:left;width: 16em; ">
+Radianzas de ABI
+</td>
+<td style="text-align:center;width: 4em; ">
+9, 10
+</td>
+<td style="text-align:center;width: 4em; ">
+30 km
+</td>
+</tr>
+<tr>
+<td style="text-align:left;width: 10em; ">
+ABI_ch0_th30
+</td>
+<td style="text-align:left;width: 16em; ">
+Radianzas de ABI
+</td>
+<td style="text-align:center;width: 4em; ">
+10
+</td>
+<td style="text-align:center;width: 4em; ">
+30 km
+</td>
+</tr>
+</tbody>
+</table>
+<p>Todos los experimentos previamente descriptos usan la configuración del ensamble multifísica y del sistema de asimilación explicada en la Sección <a href="3-metodología-y-datos.html#configmodelo">3.4</a>. De la misma manera los ciclos de análisis horarios se realizan desde las 18 UTC del 20 de noviembre hasta las 12 UTC del 23 de noviembre para cubrir el desarrollo y maduración del SCM.</p>
+<p>Para estudiar el impacto de la asimilación de radianzas también se generaron pronósticos determinísticos en alta resolución inicializados a las 00 del 22 de noviembre (Figura <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#fig:cycle-fcst">5.1</a>). En la Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:dominio-det">6.4</a> se muestra el dominio <em>d01</em> con 10 km de resolución (línea negra), identico al dominio utilizado para el resto de las simulaciones numéricas y el dominio anidado <em>d02</em> con 2 km de resolución (línea turquesa). Las condiciones iniciales están dadas por los análisis de los distintos experimentos y las condiciones de borde son generadas a partir del GFSF determinístico. Además las variables atmosféricas para el <em>d02</em> fueron inicializadas haciendo un escalado de la información del análisis. Todos los pronósticos utilizan las mismas parametrizaciones: del modelo de superficie terrestre (Noah-MP, <span class="citation">Chen and Dudhia (2001)</span>), de microfísica (esquema de un solo momento de 6 clases del WRF, <span class="citation">Hong, Kim, et al. (2006)</span>) de procesos radiativos (esquema de onda corta y onda larga del RRTMG, <span class="citation">Iacono et al. (2008)</span>), YSU <span class="citation">(Hong, Noh, et al., 2006)</span> para capa límite y KF <span class="citation">(Kain, 2004)</span> para covección (solo aplicado al <em>d01</em>).</p>
+<p>Además de los pronósticos inicializados a partir de los análisis, se generó un pronóstico inicializado a partir del análisis global de GFS, es decir, sin asimilación de datos regional. Este pronóstico tiene la misma configuración y usa el mismo conjunto de parametrizaciones que los los pronósticos descriptos previamente.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:dominio-det"></span>
+<img src="thesis_files/figure-html/dominio-det-1.png" alt="Dominio de baja resolución (d01, 10 km) marcado con un recuadro negro y dominio anidado de alta resolución (d02, 2 km) marcado en color turquesa." width="450"  />
+<p class="caption">
+Figure 6.4: Dominio de baja resolución (d01, 10 km) marcado con un recuadro negro y dominio anidado de alta resolución (d02, 2 km) marcado en color turquesa.
+</p>
+</div>
+</div>
+</div>
+<div id="resultados-2" class="section level2 hasAnchor">
+<h2><span class="header-section-number">6.2</span> Resultados<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#resultados-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="canales" class="section level3 hasAnchor">
+<h3><span class="header-section-number">6.2.1</span> Sensibilidad a la combinación de canales<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#canales" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>En este trabajo se generaron 3 experimentos de prueba que comparten la misma configuración que los experimentos previamente descriptos pero utilizando distintas combinaciones de canales de ABI para evaluar la sensibilidad a la asimilación de distintas cobinaciones de canales. El experimento ABI_ch890_th30 asimila observaciones de los 3 canales, ABI_ch90_th30 asimila observaciones de los 9 y 10 (vapor de agua en niveles medios y bajos respectivamente) y ABI_ch0_th30 solo utliza observaciones del canal 10. Estos 3 experimentos utilizan un thinning de 30 km mientras que un análisis más detallado del thinning se realizará en la siguiente Sección.</p>
+
+<div class="figure"><span style="display:block;" id="fig:area-canales"></span>
+<img src="thesis_files/figure-html/area-canales-1.png" alt="Porcentaje de área cubierta por precipitación a 1 hora superior a a) \(1 mmh^{-1}\), b) \(5 mmh^{-1}\) y c) \(10 mmh^{-1}\) a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), ABI_ch90_th30 (línea violeta) y ABI_ch0_th30 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura 3.2a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG." width="900"  />
+<p class="caption">
+Figure 6.5: Porcentaje de área cubierta por precipitación a 1 hora superior a a) <span class="math inline">\(1 mmh^{-1}\)</span>, b) <span class="math inline">\(5 mmh^{-1}\)</span> y c) <span class="math inline">\(10 mmh^{-1}\)</span> a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), ABI_ch90_th30 (línea violeta) y ABI_ch0_th30 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura <a href="3-metodología-y-datos.html#fig:dominio">3.2</a>a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.
+</p>
+</div>
+<p>La Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:area-canales">6.5</a> muestra el porcetanje de área cubierta por precipitación superior a distintos umbrales calculado sobre el pronóstico a 1 hora (first-guess) y compara los experimentos para estudiar la sensibilidad al uso de canales con SATWND como experimento control y la estimación de precipitación de IMERG. Al igual que en otros experimentos, los experimentos ABI subestiman la precipitación observada aunque en menor medida que SATWND para el umbral de 1 mm (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:area-canales">6.5</a>a). En algunos casos, logran representar mejor la precipitación que SATWND particularmente para umbrales de precipitación mayores (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:area-canales">6.5</a>b-c) y algunas subregiones como la provincia de Córdoba (no se muestra). Comparando los experimentos ABI entre si, no se observan grandes diferencias y solo en algunos tiempos y/o umbrales ABI_ch890_th30 es mejor que los otros dos. Desde este punto de vista, la asimilación de las observaciones de los canales 8 y 9 en niveles altos y medios no aporta mucha información al análisis. Esto podría deberse a que los canales 8 y 9, o sus errores, están muy correlacionados y sería necesario realizar nuevos experimentos que aislen el impacto de los canales 8 y 9 por separado para determinar si su asimilación independiente no produce mejores resultados que la asmilación del canal 10.</p>
+<p>Desde el punto de vista del FSS (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:fss-canales">6.6</a>) los experimentos que incluyen observaciones de ABI tienen un impacto positivo mucho mayor que SATWND. Además, los 3 experimentos de ABI tienen un comportamiento similar entre si aunque en este caso ABI_ch890_th30 representa ligeramente mejor la precipitación por encima de 25 mm (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:fss-canales">6.6</a>b y d).</p>
+<p>Teniendo en cuenta que la asimilación de los 3 canales de ABI en conjunto no degradan el análisis y por el contrario, en algunos casos parecen tener un rendimiento mejor, para los experimentos de este capítulo se asimilaran los 3 canales asociados al vapor del agua al mismo tiempo.</p>
+
+<div class="figure"><span style="display:block;" id="fig:fss-canales"></span>
+<img src="thesis_files/figure-html/fss-canales-1.png" alt="FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), ABI_ch90_th30 (línea violeta) y ABI_ch0_th30 (línea celeste)." width="900"  />
+<p class="caption">
+Figure 6.6: FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), ABI_ch90_th30 (línea violeta) y ABI_ch0_th30 (línea celeste).
+</p>
+</div>
+</div>
+<div id="thinning" class="section level3 hasAnchor">
+<h3><span class="header-section-number">6.2.2</span> Sensibilidad al thinning<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#thinning" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Existen diversos algoritmos para realizar el thinning, GSI en particular utiliza una metodología simple que consiste en definir una retícula de baja resolución y seleccionar las observaciones en alta resolución de acuerdo la distancia de estás a los puntos de la retícula gruesa y según criterios de calidad descriptos en la Sección <a href="3-metodología-y-datos.html#sat">3.3.1.2</a>.</p>
+<p>Es importante definir entonces la resolución apropiada para la reticula de baja resolución y estudiar el impacto que esto tiene en el análisis. Para esto se realizaron 2 experimentos ABI_ch890_th30 con un thinning de 30 km, es decir, que lleva las observaciones con una resolución de 2 km a una reticula de 30 km siguiendo trabajos previos (por ejemplo <span class="citation">Lee et al. (2019)</span> y <span class="citation">Singh et al. (2016)</span>) y ABI_ch890_th10 con un thinning de 10 km, igual a la resolución de las simulaciones numéricas. Las 2 resoluciones elegidas tienen en cuenta por un lado el efecto de la correlación entre los errores de las observaciones y la resolución del modelo y por el otro, no perder información importante que podría incluirse en el análisis. En particular, si bien la resolución del modelo en los experimentos es de 10 km, los procesos que puede representar explicitamente son de escala mayor y por lo tanto es posible que asimilar observaciones con una resolución muy cercana al modelo, que representa procesos en escalas no resueltas, no genere el impacto esperado.</p>
+
+<div class="figure"><span style="display:block;" id="fig:area-thinning"></span>
+<img src="thesis_files/figure-html/area-thinning-1.png" alt="Porcentaje de área cubierta por precipitación a 1 hora superior a a) \(1 mmh^{-1}\), b) \(5 mmh^{-1}\) y c) \(10 mmh^{-1}\) a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), y ABI_ch890_th10 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura 3.2a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG." width="900"  />
+<p class="caption">
+Figure 6.7: Porcentaje de área cubierta por precipitación a 1 hora superior a a) <span class="math inline">\(1 mmh^{-1}\)</span>, b) <span class="math inline">\(5 mmh^{-1}\)</span> y c) <span class="math inline">\(10 mmh^{-1}\)</span> a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), y ABI_ch890_th10 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura <a href="3-metodología-y-datos.html#fig:dominio">3.2</a>a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muetra la estimación de IMERG.
+</p>
+</div>
+<p>La Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:area-thinning">6.7</a> muestra el porcentaje de área cubierta por precipitación superior a distintos umbrales a lo largo del tiempo para los experimentos de thinning y SATWND como experimento control. En todos los casos el experimento con un thinning de 10 km es el que representa mejor el área cuberta por precipitación, particularmente en las horas de mayor actividad convectiva. Si bien todos los experimentos subestiman la precipitación en comparación con IMERG, ABI_ch890_th10 se acerca a esta estimación sobre todo cuando observamos el valor máximo del ensamble.</p>
+
+<div class="figure"><span style="display:block;" id="fig:thinning-fss"></span>
+<img src="thesis_files/figure-html/thinning-fss-1.png" alt="FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde) y ABI_ch890_th10 (línea celeste)." width="900"  />
+<p class="caption">
+Figure 6.8: FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde) y ABI_ch890_th10 (línea celeste).
+</p>
+</div>
+<p>Desde el punto de vista del FSS y para <span class="math inline">\(1 mm h^{-1}\)</span> (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:thinning-fss">6.8</a>a y c) ABI_ch890_th10 tiene igual o mejor rendimiento que ABI_ch890_th30 pero ocurre lo contrario para el umbral de <span class="math inline">\(25 mm h^{-1}\)</span> (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:thinning-fss">6.8</a>b y d). Si bien las diferencias de FSS entre los experimentos de thinning son muy pequeñas, el área cubierta por precipitación y otros análisis como la comparación cualitativa con estimaciones de IMERG y cuantitativa con sondeos de RELAMPAGO (no mostrados), resalta la necesidad de utilizar un thinning cercano a la resolución del modelo. Por esta razón la configuración de thinning a utilizar en los experimentos posteriores será de 10 km.</p>
+</div>
+<div id="comparación-del-impacto-de-observaciones-de-abi-con-otras-fuentes-de-información" class="section level3 hasAnchor">
+<h3><span class="header-section-number">6.2.3</span> Comparación del impacto de observaciones de ABI con otras fuentes de información<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#comparación-del-impacto-de-observaciones-de-abi-con-otras-fuentes-de-información" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="impacto-de-las-observaciones-de-abi-en-el-análisis" class="section level4 hasAnchor">
+<h4><span class="header-section-number">6.2.3.1</span> Impacto de las observaciones de ABI en el análisis<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#impacto-de-las-observaciones-de-abi-en-el-análisis" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Al igual que en la Sección <a href="4-ch1.html#impacto-analisis">4.2.2</a>, es importante primero entender el impacto de asimilar este conjunto de observaciones en el análisis. En particular, este impacto podría variar en presencia de otros conjuntos de observaciones tales como otras radianzas de satélites polares. Por esta razón se comparará el experimento ABI (previamente ABI_ch890_th10) que asimila los 3 canales de vapor de agua con SATWND donde no se asimilan radianzas y es considerado el experimento control, RAD donde se asimilan radianzas de satelites en orbitas polares y RAD+ABI donde se incluyen todas las observaciones al mismo tiempo. De esta manera podremos evaluar cuál es el impacto de de las observaciones de ABI de manera independiente y cuando son asimiladas en conjunto con radianzas de satélites polares.</p>
+<p>En primer lugar calculamos perfiles verticales de temperatura y humedad específica promediando espacialmente la media del ensamble de cada experimento a lo largo de todo el periodo. Posteriormente para evaluar el impacto de la asimilación de las radianzas, calculamos la diferencia entre los perfiles verticales de los experimentos con estas observaciones y SATWND que no las incluye (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:TQ-diff-abi">6.9</a>). Previamente habíamos observado que la asimilación de radianzas de satélites polares producía un calentamiento en niveles bajos (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:TQ-diff-abi">6.9</a>a), la asimilación de observaciones de ABI en este caso produce, además, un enfriamento en niveles medios y un calentamiento previo al paso del frente frío y desarrollo de la convección durante el 21 de noviembre lo que puede contribuir a incrementar el CAPE y por lo tanto las condiciones para el desarrollo de convección intensa. A las 12 UTC del 22 de noviembre se observa un dipolo en niveles medios y altos que se intensifica con la asimilación de ABI. Esto puede estar relacionado a un menor desarrollo de la conveccion en ABI a esa hora respecto de SATWND. Pero a partir de las 00 UTC del 23 de novimebre el dipolo se invierte indicando que la convección se intensifica en ABI. Esto también podría explicar el enfriamiento que se observa en superficie debido a una pileta de aire frio mas intensa asociada al sistema convectivo.
+Al comparar la diferencia entre los perfiles verticales de cada experimento y ERA5 (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:era5-abi">6.10</a>a-d), vemos que este enfriamiento en niveles medios (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:era5-abi">6.10</a>c-d) produce una mayor diferencia entre los análisis que incluyen ABI y ERA5.</p>
+<p>La diferencia en la humedad específica para los distintos experimentos se muestra en las Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:TQ-diff-abi">6.9</a>d-f, donde vemos que la asimilación de observaciones de ABI produce un humedecimiento por encima de 850 hPa y este efecto es mayor cuando no se asimilan radianzas de satélites polares en el experimento ABI(Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:TQ-diff-abi">6.9</a>f). Este humedecimiento junto con los cambios en la temperatura generan un aumento en el CAPE previo al desarrollo de la convección. El secamiento que se observa en los experimentos con radianzas y que ya se observaba previamente en RAD, no es consistente con el desarrollo de la precipitación, que ocurre primero en SATWND consumiendo la humedad presente en la capa límite, por lo que son necesarios nuevos experimentos para entender mejor el mecanismo que genera este efecto. Nuevamente, la diferencia entre los experimentos y ERA5 para esta variable (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:era5-abi">6.10</a>e-h) muestra que la asimilación de obsevaciones de ABI aleja los análisis del estado de la atmósfera que representa ERA5.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:TQ-diff-abi"></span>
+<img src="thesis_files/figure-html/TQ-diff-abi-1.png" alt="Diferencia entre la media del ensamble de los análisis a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en \(^\circ\)C) y la humedad específica (d, e y f en \(g\ kg^{-1}\)) calculados sobre el dominio interior (recuadro rojo en la Figura 3.2a) para cada ciclo de análisis." width="1050"  />
+<p class="caption">
+Figure 6.9: Diferencia entre la media del ensamble de los análisis a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en <span class="math inline">\(^\circ\)</span>C) y la humedad específica (d, e y f en <span class="math inline">\(g\ kg^{-1}\)</span>) calculados sobre el dominio interior (recuadro rojo en la Figura <a href="3-metodología-y-datos.html#fig:dominio">3.2</a>a) para cada ciclo de análisis.
+</p>
+</div>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:era5-abi"></span>
+<img src="thesis_files/figure-html/era5-abi-1.png" alt="Diferencia entre la media del ensamble del análisis de cada experimento y el ERA5 para los perfiles verticales espacialmente promediados de la temperatura del aire (K, a–d), la humedad específica (\(g\ kg^{-1}\), e–h) y el viento meridional (\(m\ s^{-1}\), i–l) calculados sobre el dominio interior (recuadro rojo en la Figura 3.2a) para cada ciclo de análisis." width="975"  />
+<p class="caption">
+Figure 6.10: Diferencia entre la media del ensamble del análisis de cada experimento y el ERA5 para los perfiles verticales espacialmente promediados de la temperatura del aire (K, a–d), la humedad específica (<span class="math inline">\(g\ kg^{-1}\)</span>, e–h) y el viento meridional (<span class="math inline">\(m\ s^{-1}\)</span>, i–l) calculados sobre el dominio interior (recuadro rojo en la Figura <a href="3-metodología-y-datos.html#fig:dominio">3.2</a>a) para cada ciclo de análisis.
+</p>
+</div>
+<p>Las Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:UV-diff-abi">6.11</a> muestran la comparación entre los experimentos que incluyen radianzas y SATWND para las componentes del viento. En este caso las diferencias entre experimentos son más sutiles sin embargo, se aprecia una disminución en el viento zonal, y por lo tanto de la cortante de vertical de viento, por encima de la 700 hPa en los experimentos RAD+ABI y ABI. Esta disminución es más marcada cuando se asimilan radianzas de satélites polares y ABI en conjunto. En ese caso la comparación con ERA5 (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:era5-abi">6.10</a>i-l) muestra el viento zonal en los experimentos RAD y ABI se acerca más a ERA5 que SATWND que no incluye radianzas o RAD+ABI que asimila todas las radianzas en conjunto. Esto indicaría que los experimentos que incluyen observaciones de ABI representan mejor el flujo zonal para este caso de estudio. En niveles bajos las diferencias son pequeñas y solo se observa un ligero aumento del viento zonal en ABI respecto de SATWND (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:UV-diff-abi">6.11</a>c) asociado al flujo postfrontal.</p>
+<p>Las Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:UV-diff-abi">6.11</a>d-f muestran que los experimentos que asimilan ABI tienen una mayor diferencia respecto de SATWND en el viento meridional en altura a partir del 22 de noviembre a las 12 UTC cuando hay mayor convección en el dominio. Este efecto ya era notorio al analizar el impacto de las radianzas de satelites polares (Figura <a href="4-ch1.html#fig:UV-diff">4.8</a>f) que ahora se intensifica cuando se incluyen radianzas de ABI. Estas diferencias están asociadas a un retrazo en el desarrollo de la convección en los experimentos que incluyen radianzas respecto de SATWND. Al igual que para el viento meridional, la comparación entre los experimentos y ERA5 (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:era5-abi">6.10</a>m-o)) muestra que, por encima de 500 hPa, los experimentos que incluyen radianzas tienen un viento meridional más parecido a ERA5 que SATWND. Esta mejora es más notoria en ABI donde no se incluyen observaciones de satélites polares.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:UV-diff-abi"></span>
+<img src="thesis_files/figure-html/UV-diff-abi-1.png" alt="Diferencia entre la media del ensamble de los análisis a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en \(K\)) y viento meridional (d, e y f en \(g\ kg^{-1}\)) calculados sobre el dominio interior (recuadro rojo en la Figura 3.2a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) RAD, (b,e) RAD+ABI, y (c,f) ABI ya que son los experimentos tienen más observaciones asimiladas en cada panel." width="1050"  />
+<p class="caption">
+Figure 6.11: Diferencia entre la media del ensamble de los análisis a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en <span class="math inline">\(K\)</span>) y viento meridional (d, e y f en <span class="math inline">\(g\ kg^{-1}\)</span>) calculados sobre el dominio interior (recuadro rojo en la Figura <a href="3-metodología-y-datos.html#fig:dominio">3.2</a>a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) RAD, (b,e) RAD+ABI, y (c,f) ABI ya que son los experimentos tienen más observaciones asimiladas en cada panel.
+</p>
+</div>
+<p>Habiendo analizado el impacto de la asimilación de radianzas en términos generales, la Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:sondeos-abi">6.12</a> muestra el RMSE y BIAS calculado al comparar los experimentos con los radiosondeos de RELAMPAGO en la región que se observa la Figura <a href="3-metodología-y-datos.html#fig:dominio">3.2</a>b. Por debajo de 5 km las observaciones de ABI generan una degradación de la temperatura de rocío durante el IOP 7 y de la temperatura en el IOP 8 con aumento tanto del RMSE como del BIAS. Pero se observa una mejora en la representación del viento zonal y meridional en niveles bajos durante el IOP 8. Sin embargo, las mayores diferencias entre SATWND o RAD y los experimentos que incluyen observaciones de ABI se observan por encima de 5 km donde se ubican los máximos de las funciones de peso de los canales de vapor de agua (Figura <a href="3-metodología-y-datos.html#fig:wf-goes">3.4</a>). La asimilación de observaciones de ABI, en este caso, ayuda a disminuir el RMSE y el BIAS en todas las variables durante el IOP 7 por encima de la capa límite. Este IOP estuvo caracterizado por ser un periodo relativamente estable con cielos mayoritariamente despejados y un flujo del norte en niveles bajos asociado a una advección cálida y húmeda por lo que se asimilaron una mayor cantidad de observaciones de radianzas en comparación con el día siguiente. Esta es una de las razones que podrían explicar el impacto que se observa en todas las variables. Es interesante notar que el error en la humedad durante el IOP 7 mejora tanto en ABI como en RAD+ABI, mientras que RAD es el experimeno con mayor RMSE. Esto muestra que la combinación de distintas fuentes de observaciones genera impactos que no son lineales. Durante el IOP 8 las mejoras se observan principalmente en la temperatura y temperatura de punto de rocío y en menor medida en el viento meridional en niveles altos. Finalmente, la característica sobresaliente de este análisis es la mejora sustancial en la representación de la humedad en niveles medios cuando se asimilan observaciones de ABI. Si bien esto es opuesto a lo observado al analizar las diferencias entre ABI y RAD+ABI con ERA5, es importante notar en este punto que la comparación con el ranálisis tiene límitaciones tanto por la resolución del reanálisis como por las observaciones disponibles para su generación.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sondeos-abi"></span>
+<img src="thesis_files/figure-html/sondeos-abi-1.png" alt="RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura (\(K\)), b) la temperatura del punto de rocío (\(K\)), c) el viento zonal (\(m\ s^{-1}\)) y d) el viento meridional (\(m\ s^{-1}\)) calculados comparando el análisis de cada experimento con los sondeos de RELAMPAGO durante el IOP 7 y el IOP 8. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde y ABI con una línea turqueza." width="900"  />
+<p class="caption">
+Figure 6.12: RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura (<span class="math inline">\(K\)</span>), b) la temperatura del punto de rocío (<span class="math inline">\(K\)</span>), c) el viento zonal (<span class="math inline">\(m\ s^{-1}\)</span>) y d) el viento meridional (<span class="math inline">\(m\ s^{-1}\)</span>) calculados comparando el análisis de cada experimento con los sondeos de RELAMPAGO durante el IOP 7 y el IOP 8. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde y ABI con una línea turqueza.
+</p>
+</div>
+<div id="impacto-en-la-precipitación" class="section level5 hasAnchor">
+<h5><span class="header-section-number">6.2.3.1.1</span> Impacto en la precipitación<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#impacto-en-la-precipitación" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>En esta Sección ponemos el foco nuevamente en la precipitación para evaluar la habilidad de los análisis al representar la precipitación acumulada horaria del first-guess cuando incluyen o no información de las observaciones de ABI. En primer lugar analizamos el porcetaje de área cubierta por precipitación para distintos umbrales (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:area-abi">6.13</a>) donde se observa una mejora cosiderable en la ubicación temporal del área para los experimentos ABI, RAD+ABI y RAD cuando se los compara con SATWND que no asimila radianzas. Sin embargo, la incorporación de observaciones de ABI es lo que genera el mayor impacto en la magnitud del área cubierta por precipitación que aumenta más de un 5% para el umbral de 1 mm en comparación con RAD que solo incluye radianzas de satélites polares.</p>
+<p>En este punto es interesante observar las posibles diferencias entre RAD+ABI y ABI para evaluar el aporte de las radianzas de satélites polares cuando se asimilan en conjunto con radianzas de ABI. Desde el punto de vista del área cubierta por precipitación, las diferencias son pequeñas, RAD+ABI subestima el área previo al máximo de precipitación respecto de ABI y lo contrario ocurre posterior al máximo. Esto podría indicar que las radianzas de ABI son suficientes para representar la precipitación y que la asimilación de radianzas de satélites polares no agrega información, al menos para este caso de estudio.</p>
+
+<div class="figure"><span style="display:block;" id="fig:area-abi"></span>
+<img src="thesis_files/figure-html/area-abi-1.png" alt="Porcentaje de área cubierta por precipitación a 1 hora superior a a) \(1 mmh^{-1}\), b) \(5 mmh^{-1}\) y c) \(10 mmh^{-1}\) a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), y ABI (línea turqueza) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura 3.2a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble. En línea discontinua negra se muetra la estimación de IMERG." width="900"  />
+<p class="caption">
+Figure 6.13: Porcentaje de área cubierta por precipitación a 1 hora superior a a) <span class="math inline">\(1 mmh^{-1}\)</span>, b) <span class="math inline">\(5 mmh^{-1}\)</span> y c) <span class="math inline">\(10 mmh^{-1}\)</span> a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), y ABI (línea turqueza) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura <a href="3-metodología-y-datos.html#fig:dominio">3.2</a>a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble. En línea discontinua negra se muetra la estimación de IMERG.
+</p>
+</div>
+<p>Finalmente, la Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:fss-abi">6.14</a> muestra el FSS calculado comparando la estimación de IMERG con cada experimento para distintos umbrales y escalas espaciales, siendo 10 km igual a la resolución del modelo. En todos los casos RAD+ABI y ABI tienen valores mayores de FSS que RAD que ya mostraba mejoras importantes respecto de SATWND para umbrales bajos de precipitación. Solo para el umbral de 25 <span class="math inline">\(mmh^{-1}\)</span> hay un periodo alrededor de las 12 UTC del 22 de noviembre donde todos los análisis que asimilan radianzas no logran representar correctamente la convección y muestran un FSS menor a SATWND. Esto se repite para umbrales de precipitación mayores donde SATWND genera precipitación más intensa pero menos ordenada que ABI durante las primeras 12 horas del 22 de noviembre. Comparando RAD+ABI y ABI vemos que entre las 06 y las 18 UTC del 22 de noviembre ABI representa la precipitación ligeramente mejor que RAD+ABI, lo que podría indicar que las radianzas de satélites polares tienen un impacto negativo en el análisis. Sin embargo hacia el final del periodo simulado, la relación es opuesta. RAD+ABI tiene valores de FSS mayores que ABI y cercanos a RAD. En la siguiente Sección por lo tanto, se evaluará el impacto de asimilar radianzas en pronósticos a corto plazo y se analizará si el impacto observado en los análisis perdura en los pronósticos y mejora la representación de la convección.</p>
+
+<div class="figure"><span style="display:block;" id="fig:fss-abi"></span>
+<img src="thesis_files/figure-html/fss-abi-1.png" alt="FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), y ABI (línea turqueza) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre." width="900"  />
+<p class="caption">
+Figure 6.14: FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), y ABI (línea turqueza) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre.
+</p>
+</div>
+</div>
+</div>
+<div id="impacto-de-las-observaciones-de-abi-en-pronósticos-determinísticos-de-alta-resolución" class="section level4 hasAnchor">
+<h4><span class="header-section-number">6.2.3.2</span> Impacto de las observaciones de ABI en pronósticos determinísticos de alta resolución<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#impacto-de-las-observaciones-de-abi-en-pronósticos-determinísticos-de-alta-resolución" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>A continuación se analizará el impacto de la asimilación de observaciones de ABI en los pronósticos de alta resolución generados a partir de los análisis. También se incluye en la comparación un pronóstico inicializado a partir del análisis global de GFS (generado con el Global Data Assimilation System (GDAS)), que se utiliza como condición inicial y de borde para la generación de pronósticos operativos en Argentina.</p>
+<div id="representación-de-la-temperatura-humedad-y-viento-en-los-pronósticos" class="section level5 hasAnchor">
+<h5><span class="header-section-number">6.2.3.2.1</span> Representación de la temperatura, humedad y viento en los pronósticos<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#representación-de-la-temperatura-humedad-y-viento-en-los-pronósticos" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>En primer lugar se analiza la representación de la temperatura, humedad y viento en los pronósticos de alta resolución. En este caso se compararan los experimentos RAD, RAD+ABI y ABI con SATWND como experimento control para evaluar el impacto de incorporar las radianzas de satélites polares y de ABI. Posteriormente se compararán los experimentos con observaciones independientes de EMA y radiosondeos de RELAMPAGO.</p>
+<p>En primer lugar calculamos perfiles verticales de temperatura y humedad específica promediados espacialmente a partir de los pronósticos determinísticos a 36 hs, con los que generamos la diferencia entre los perfiles verticales de los experimentos con asimilación de radianzas y SATWND. La diferencia en los perfiles promediados de temperatura (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:TQ-diff-fcst">6.15</a>a-c) muestra que las radianzas de satélites polares producen un calentamiento en niveles bajos en comparación con SATWND y esto se repite, aunque en menor medida, con la asimilación de observaciones de ABI. De hecho luego de las 16 UTC del 22 de noviembre, los pronósticos inicializados a partir de RAD+ABI y ABI muestran una capa límite más fría que SATWND lo que podría indicar que desarrollaron un frente frío o una pileta de aire frío asociada a la convección más intensos. En niveles medios y altos las características de las diferencias, si bien de mayor magnitud, reflejan lo observado en los análisis (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:TQ-diff-abi">6.9</a>a-c) por lo que, nuevamente, la información aportada por la asimilación regional de las observaciones produce un impacto prolongado en el pronóstico que determinan el momento de inicio e intensificación de la convección. Respecto de la humedad (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:TQ-diff-fcst">6.15</a>d-f)), la comparación con SATWND muestra que la asimilación de observaciones de ABI en las condiciones iniciales luego genera una disminución de la humedad en niveles bajos del pronóstico en comparación con RAD, luego de las 12 UTC del 22 de noviembre y particularmente en las últimas 12 horas de pronóstico. Esta diferencia puede estar asociada al desarrollo de la convección que consume la humedad disponible en capaz bajas y que podrlía ser más intensa en ABI que en RAD.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:TQ-diff-fcst"></span>
+<img src="thesis_files/figure-html/TQ-diff-fcst-1.png" alt="Diferencia entre los pronósticos determinísticos de a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en \(K\)) y la humedad específica (d, e y f en \(g\ kg^{-1}\)) calculados sobre el dominio interior (recuadro rojo en la Figura 3.2a) para cada ciclo de análisis." width="1050"  />
+<p class="caption">
+Figure 6.15: Diferencia entre los pronósticos determinísticos de a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados de la temperatura (a, b y c, en <span class="math inline">\(K\)</span>) y la humedad específica (d, e y f en <span class="math inline">\(g\ kg^{-1}\)</span>) calculados sobre el dominio interior (recuadro rojo en la Figura <a href="3-metodología-y-datos.html#fig:dominio">3.2</a>a) para cada ciclo de análisis.
+</p>
+</div>
+<p>Las diferencias para el viento zonal (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:UV-diff-fcst">6.16</a>a-c) muestran que la asimilación de observaciones de satélites polares y ABI en conjunto produce el mayor impacto en los pronósticos respecto de SATWND en todos los niveles pero en particular por encima de la capa límite. En cuanto al viento meridional (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:UV-diff-fcst">6.16</a>d-f), se observa que los pronósticos con condiciones iniciales que incluyen observaciones de ABI son más cercanos a SATWND que previamente había demostrado ser el pronóstico con mejor representación de la precipitación (Ver Secctión <a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html#prono-impacto">5.2.1</a>). Por otro lado, la evolución del viento meridional a lo largo del tiempo para cada pronóstico (contornos en la Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:UV-diff-fcst">6.16</a>d-f) muestra que los experimentos ABI y RAD+ABI tiene un flujo en altura por detrá del sistema convectivo es más intenso (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:UV-diff-fcst">6.16</a>e-f) que RAD. El dipolo que se observa en la diferencia entre los pronósticos, nuevamente indica que la convección que genera RAD o ABI está retrasada en el tiempo respecto de SATWND. Sin embargo, las diferencias entre ABI-SATWND disminuyen respecto de RAD-SATWND, lo que podría ser el resultado del uso de condiciones iniciales con mayor información del entorno convectivo en conjunto con una mayor resolución del modelo que permite resolver la convección de manera explicita.</p>
+<p>Si bien todo lo anterior corresponde es una comparación relativa al pronóstico SATWND, en líneas generales el signo del impacto observado en los pronósticos inicializados a partir de los análisis que asimilan radianzas (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:TQ-diff-fcst">6.15</a> y <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:UV-diff-fcst">6.16</a>) coincide con lo observado en la evaluación del impacto de los análisis (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:TQ-diff-abi">6.9</a> y <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:UV-diff-abi">6.11</a>).</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:UV-diff-fcst"></span>
+<img src="thesis_files/figure-html/UV-diff-fcst-1.png" alt="Diferencia entre los pronósticos determinósticos de a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en \(K\)) y viento meridional (d, e y f en \(g\ kg^{-1}\)) calculados sobre el dominio interior (recuadro rojo en la Figura 3.2a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) RAD, (b,e) RAD+ABI, y (c,f) ABI." width="1050"  />
+<p class="caption">
+Figure 6.16: Diferencia entre los pronósticos determinósticos de a) y d) RAD-SATWND, b) y e) RAD+ABI-SATWND, y c) y f) ABI-SATWND para los perfiles verticales espacialmente promediados del viento zonal (a, b y c, en <span class="math inline">\(K\)</span>) y viento meridional (d, e y f en <span class="math inline">\(g\ kg^{-1}\)</span>) calculados sobre el dominio interior (recuadro rojo en la Figura <a href="3-metodología-y-datos.html#fig:dominio">3.2</a>a) para cada ciclo de análisis. Los contornos negros corresponden al viento zonal y meridional para (a,d) RAD, (b,e) RAD+ABI, y (c,f) ABI.
+</p>
+</div>
+<p>En la comparación de los pronósticos con observaciones independientes se incluye también el pronóstico determinístico inicializado a partir del análisis de GFS. En la Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:sondeos-abi-fcst">6.17</a> se muestran los perfiles de RMSE y BIAS calculados comparando los pronósticos con los radiosondeos de RELAMPAGO. La Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:sondeos-abi-fcst">6.17</a>a muestra que los errores asociados a la temperatura en niveles bajos son mayores en los experimentos que incluyen radianzas de satélites polares en comparación con GFS o ABI. En niveles medios y altos GFS presenta el mayor RMSE y BIAS en la temperatura, lo que pone en evidencia el impacto positivo de la asimilación de observaciones a escala regional. Esto mismo ocurre para la temperatura de punto de rocío (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:sondeos-abi-fcst">6.17</a>b) que muestra que el RMSE y BIAS de GFS es hasta 5<span class="math inline">\(^\circ\)</span>K mayor que para el resto de los pronósticos en niveles medios. El RMSE del viento zonal también muestra que GFS es el pronóstico con mayor error alrededor de 5 km mientras que por encima de los 10 km el error en RAD aumenta por sobre los otros (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:sondeos-abi-fcst">6.17</a>c). Para el viento meridional, el RMSE de todos los pronósticos tiene un comportamiento similar aunque en algunos niveles (alrededor de 5 y 11 km) SATWND muestra un aumento en el error. En lineas generales ninguno de los pronósticos inicializados a partir de análisis con asimilación regional es consistentemente mejor para todas las variables analizadas.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:sondeos-abi-fcst"></span>
+<img src="thesis_files/figure-html/sondeos-abi-fcst-1.png" alt="RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura (\(K\)), b) la temperatura del punto de rocío (\(K\)), c) el viento zonal (\(m\ s^{-1}\)) y d) el viento meridional (\(m\ s^{-1}\)) calculados comparando los pronósticos determinísticos de cada experimento con los sondeos de RELAMPAGO. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra la comparación con el pronóstico inicializado con GFS." width="900"  />
+<p class="caption">
+Figure 6.17: RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura (<span class="math inline">\(K\)</span>), b) la temperatura del punto de rocío (<span class="math inline">\(K\)</span>), c) el viento zonal (<span class="math inline">\(m\ s^{-1}\)</span>) y d) el viento meridional (<span class="math inline">\(m\ s^{-1}\)</span>) calculados comparando los pronósticos determinísticos de cada experimento con los sondeos de RELAMPAGO. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra la comparación con el pronóstico inicializado con GFS.
+</p>
+</div>
+<p>El RMSE y BIAS calculado comparando los pronósticos con las observaciones de EMA se muestra en la Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:aut-rmse-fcst">6.18</a> para todo el periodo pronosticado. Si bien en general todos los pronósticos tienen errores similares, se observa que los pronósticos inicializados a partir de análisis con asimilación regional tienen errores grandes al inicio del pronóstico que luego disminuyen rápidamente en la primera hora. Esto posiblemente esté asociado a que el sistema de asimilación solo actualiza las variables 3D del modelo durante la asimilación y no así la temperatura o humedad a 2 metros que se utiliza en esta verificación. Por otro lado el BIAS de SATWND es consistentemente menor en las primeras 10 horas de pronóstico posiblemente gracias a la asimilación de observaciones de EMA que mejoran la representación de la humedad en las condiciones iniciales. Para la temperatura, GFS mantiene un error menor al resto de los experimentos durante las últimas 12 horas de pronóstico aunque el comportamiento general de los errores no difiere del resto. En lineas generales ninguno de los pronósticos inicializados a partir de análisis con asimilación regional es consistentenmente mejor para todas las variables analizadas hasta ahora.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:aut-rmse-fcst"></span>
+<img src="thesis_files/figure-html/aut-rmse-fcst-1.png" alt="Evolución del RMSE y BIAS de a) humedad específica (\(g\ kg{^-1}\)), b) temperatura (\(K\)), c) el viento zonal (\(m\ s^{-1}\)) y d) el viento meridional (\(m\ s^{-1}\)) calculados comparando los pronósticos determinísticos de cada experimento con las observaciones de EMA. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra el pronóstico inicializado con GFS." width="900"  />
+<p class="caption">
+Figure 6.18: Evolución del RMSE y BIAS de a) humedad específica (<span class="math inline">\(g\ kg{^-1}\)</span>), b) temperatura (<span class="math inline">\(K\)</span>), c) el viento zonal (<span class="math inline">\(m\ s^{-1}\)</span>) y d) el viento meridional (<span class="math inline">\(m\ s^{-1}\)</span>) calculados comparando los pronósticos determinísticos de cada experimento con las observaciones de EMA. La línea naranja corresponde a SATWND, la línea roja a RAD, RAD+ABI se representa con una línea verde, ABI con una línea turqueza y en negro se muestra el pronóstico inicializado con GFS.
+</p>
+</div>
+</div>
+<div id="representación-de-la-convección-y-precipitación" class="section level5 hasAnchor">
+<h5><span class="header-section-number">6.2.3.2.2</span> Representación de la convección y precipitación<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#representación-de-la-convección-y-precipitación" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>Para analizar la representación de la precipitación se compararon los pronósticos determinísticos con las estimaciones de IMERG para calcular el FSS y el porcentaje de área cubierta por precipitación. En cuanto a la convección, se utilizó el modelo de transferencia radiativa CRTM para calcular la temperatura de brillo asociada al canal 13 (infrarrojo) de ABI a partir de los pronósticos y así compararlos cualitativamente con las observaciones de GOES-16. Además se calculó el FSS para distintos umbrales de temperatura de brillo para hacer una comparación cuantitativa del desarrollo de la convección observada por el satélite GOES-16.</p>
+<p>El porcentaje de área cubierta por precipitación (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:area-abi-fcst">6.19</a>) muestra que los pronósticos subestiman la ocurrencia de precipitación aún cuando la resolución del modelo es alta y representa la convección de manera explicita. Si bien los pronósticos inicializados a partir de GFS y SATWND tienen un mayor porcentaje de área cubierta por precipitación mayor a 1 mm y en algunos tiempos también para precipitación mayor a 5 mm, los pronósticos que incluyen información de las observaciones de ABI representan muy bien el máximo observado para todos los umbrales. GFS es el pronóstico que genera precipitación más rápidamente, ya que el área cubierta en todos los umbrales es mayor durante las primeras 6 a 12 horas. Sin embargo, hacia el final del periodo pronosticado GFS es el que muestra un porcentaje de área cubierta menor en comparación con el resto de los pronósticos.</p>
+
+<div class="figure"><span style="display:block;" id="fig:area-abi-fcst"></span>
+<img src="thesis_files/figure-html/area-abi-fcst-1.png" alt="Porcentaje de área cubierta por precipitación a 1 hora superior a a) \(1 mmh^{-1}\), b) \(5 mmh^{-1}\) y c) \(10 mmh^{-1}\) a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), ABI (línea turqueza) y GFS (línea negra continua) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura 3.2a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea discontinua negra se muetra la estimación de IMERG." width="900"  />
+<p class="caption">
+Figure 6.19: Porcentaje de área cubierta por precipitación a 1 hora superior a a) <span class="math inline">\(1 mmh^{-1}\)</span>, b) <span class="math inline">\(5 mmh^{-1}\)</span> y c) <span class="math inline">\(10 mmh^{-1}\)</span> a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), ABI (línea turqueza) y GFS (línea negra continua) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura <a href="3-metodología-y-datos.html#fig:dominio">3.2</a>a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea discontinua negra se muetra la estimación de IMERG.
+</p>
+</div>
+<p>El FSS calculado comparando los pronósticos de precipitación con la estimación de IMERG (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:fss-abi-fcst">6.20</a>) muestra nuevamente que GFS representa de manera más precisa la precipitación al comienzo del pronóstico, seguido por SATWND. Sin embargo con el paso de las horas de pronóstico, los experimentos con asimilación de radianzas pasan a tener valores de FSS mayores que GFS y esto se mantiene hasta el final del periodo pronosticado. Esto indica, para este caso de estudio, que si bien los pronósticos inicializados a partir de análisis con asimilación regional demoran en producir precipitación, luego mantienen la generación de la misma por más tiempo. Para esta métrica no se ven diferencias apreciables entre los distintos umbrales o escalas espaciales.</p>
+
+<div class="figure"><span style="display:block;" id="fig:fss-abi-fcst"></span>
+<img src="thesis_files/figure-html/fss-abi-fcst-1.png" alt="FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y d), 5 mm (b y e) y 25 mm (c y f), en escalas de 10 km (a-c) y 100 km (d-f), para los pronósticos determinísticos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), ABI (línea turqueza) y GFS (línea negra) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre." width="750"  />
+<p class="caption">
+Figure 6.20: FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y d), 5 mm (b y e) y 25 mm (c y f), en escalas de 10 km (a-c) y 100 km (d-f), para los pronósticos determinísticos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), ABI (línea turqueza) y GFS (línea negra) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre.
+</p>
+</div>
+<p>Por otro lado, la Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:tb">6.21</a> muestra la temperatura de brillo simulada para el canal 13 de GOES-16 en el tiempo inicial del pronósticos a las 00 UTC del 22 de noviembre y luego a las 12 UTC del mismo día cuando el sistema convectivo comienza a desarrollarse y a las 00 UTC del 23 de noviembre cuando el sistema convectivo ya se encuentra en el norte de Argentina y presenta mayor intensidad. A las 00 UTC del 22 de noviembre los pronósticos desarrollan nubosidad débil en gran parte del dominio que no está presente en las observaciones (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:tb">6.21</a>f). Sin embargo los pronósticos inicializados a partir de RAD+ABI y ABI ubica mejor la nubosidad y la generación de cumulos con desarrollo vertical al norte de la provincia de Salta. Además al incluir información sobre las regiones con cielo despejado, gracias a la asimilación de radianzas de ABI, también representa mejor las zonas despejadas al este del dominio. Debido a que el GFS no se inicializa con información sobre el contenido de agua de nube no muestra nubosidad para el primer tiempo de pronóstico (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:tb">6.21</a>e).</p>
+<p>A las 12 UTC, cuando la convección se encuentra cruzando el dominio, todos los pronósticos ubican la nubosidad en la región correcta aunque menos organizada y con menor intensidad. De todos los pronósticos SATWND es el que muestra valores de temperatura de brillo más bajos (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:tb">6.21</a>g). Por otro lado, la nubosidad que se observa sobre Chaco también está presente en los pronósticos inicializados a partir de análisis con asimilación observaciones de ABI (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:tb">6.21</a>i y j). Sin embargo no logran generar la nubosidad sobre Uruguay que si se muestra en el pronóstico de GFS (Figuras <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:tb">6.21</a>k).</p>
+<p>Finalmente a las 00 UTC del 23 de noviembre la convección se extiende sobre todo el noreste del dominio con temperaturas de brillo por debajo de los -85<span class="math inline">\(^\circ\)</span>C asociada a los topes nubosos más altos (Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:tb">6.21</a>r). Si bien todos los pronósticos logran representar las características principales del sistema convectivo la temperatura de brillo es ligeramente mayor y solo en algunas regiones llega a valores por debajo de -85<span class="math inline">\(^\circ\)</span>C. En este caso GFS es el único pronóstico que represeta con mayor detalle la región con menores temperaturas de brillo dividida en 2 subregiones como se observa en la imagen de brillo de GOES-16.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:tb"></span>
+<img src="thesis_files/figure-html/tb-1.png" alt="Temperatura de brillo simulada por CRTM a partir de los pronósticos determinósticos a las 00 y 12 UTC del 22 de noviembre y las 00 UTC del 23 de noviembre. Las observaciones de temperatura de brillo del canal 13 de GOES-16 se muestran en la ultima columna (f, l, r)." width="1050"  />
+<p class="caption">
+Figure 6.21: Temperatura de brillo simulada por CRTM a partir de los pronósticos determinósticos a las 00 y 12 UTC del 22 de noviembre y las 00 UTC del 23 de noviembre. Las observaciones de temperatura de brillo del canal 13 de GOES-16 se muestran en la ultima columna (f, l, r).
+</p>
+</div>
+<p>Para analizar la temperatura de brillo desde un punto de vista cuantitativo, la Figura <a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#fig:fss-tb">6.22</a> muestra el FSS calculado para umbrales de temperatura de brillo de -30<span class="math inline">\(^\circ\)</span>C, sociado al borde externo de la nubosidad, -70<span class="math inline">\(^\circ\)</span>C que corresponde a la región de colores rojizos y -85<span class="math inline">\(^\circ\)</span>C asociado a los topes nubosos. Al igual que con la precipitación, GFS tiene una mejor representación de la temperatura de primer desde el comienzo del periodo pronosticado pero luego es igual o peor que los pronósticos inicilizados a partir de los análisis. Para el umbral de -30<span class="math inline">\(^\circ\)</span>C no se ven diferencias apreciables entre los experimentos y tampoco en las distintas escalas. Sin embargo es destacable que los valores de FSS son cercanos a 1. Al observar el umbral de -70<span class="math inline">\(^\circ\)</span>C, vemos que solo en escalas de 200 km los pronósticos simulan temperaturas de brillo suficientemente bajas lo que indica que las regiones donde la nubosidad es más alta y por lo tanto más fría en los pronósticos no coincide exatamente con las regiones observadas durante las primeras horas de pronóstico. Finalmente, la temperatura de brillo por debajo de -85<span class="math inline">\(^\circ\)</span>C, es la más dificil de pronosticar porque solo se observa en regiones muy pequeñas dentro de la nube convectiva donde se encuentran las corrientes ascendentes más intensas. En este caso los pronósticos simulan temperaturas de brillo de esta magnitud pero en regiones muy limitadas y que no coinciden exactamente con las observaciones. Solo al mirar la escala de 200 km se ve que tanto ABI como GFS logran representar topes nubosos intensos. Es importante notar que si bien el FSS de los pronósticos inicializados a partir de la asimilación regional es es alto, luego cae rápidamente debido a una disminución en el contenido de condensados en el modelo. Esto ocurre porque si bien los pronósticos son inicializados usando la información de condensados del la media del ensamble del análisis, estos campos no son compatibles con el conjunto de parametrizaciones utilizado en el pronóstico que comienzan a generar los condensados desde cero.</p>
+
+<div class="figure"><span style="display:block;" id="fig:fss-tb"></span>
+<img src="thesis_files/figure-html/fss-tb-1.png" alt="FSS calculado sobre la temperatura de brillo simulada para umbrales de -30\(^\circ\)C (a, d, g), -70\(^\circ\)C (b, e, h) y -85\(^\circ\)C (c, f, i), en escalas de 2 km (a-c), 20 km (d-f) y 200 km (g-i), para los pronósticos determinísticos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), ABI (línea turqueza) y GFS (línea negra) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre." width="750"  />
+<p class="caption">
+Figure 6.22: FSS calculado sobre la temperatura de brillo simulada para umbrales de -30<span class="math inline">\(^\circ\)</span>C (a, d, g), -70<span class="math inline">\(^\circ\)</span>C (b, e, h) y -85<span class="math inline">\(^\circ\)</span>C (c, f, i), en escalas de 2 km (a-c), 20 km (d-f) y 200 km (g-i), para los pronósticos determinísticos SATWND (línea naranja), RAD (línea roja), RAD+ABI (línea verde), ABI (línea turqueza) y GFS (línea negra) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="conclusiones-2" class="section level2 hasAnchor">
+<h2><span class="header-section-number">6.3</span> Conclusiones<a href="6-asimilacion-de-radianzas-del-satelite-geoestacionario-goes-16-en-cielos-despejados.html#conclusiones-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>En este capítulo evaluamos el impacto que produce la asimilación de observaciones de los canales de vapor de agua del sensor ABI a bordo del satélite geoestacionario GOES-16 tanto en el análisis como en pronósticos determinísticos de alta resolución a corto plazo. La asimilación de estas observaciones es de particular interés en Sudamética por su alta resolución espacial y frecuencia temporal en comparación con otras fuentes de observación como sensores a bordo de satélites polares. Además, al momento de la escritura de esta tesis, no se conocen trabajos que utilicen observaciones de sensor ABI en la región, por lo que estos resultados podrían contribuir al desarrollo de los sistemas de pronósticos en Sudamérica.</p>
+<p>Para asimilar estas observaciones fue primero necesario incorporar las rutinas necesarias en el sistema de asimilación GSI. Por esto y por que se trata de observaciones nuevas, se generaron experimentos de sensibilidad a la combinación de canales de vapor de agua y al thinning y se estudió la distribución de los errores de las observaciones para determinar la mejor configuración del sistema de asimilación. En este trabajo, entonces, se utilizaron los 3 canales de vapor de agua que aportan información en niveles altos (~350 hPa), medios (~400 hPa) y bajos (~600 hPa) de la atmósfera, con una resolución de 10 km y sin aplicar ningún tipo de corrección de bias.</p>
+<p>En primer lugar, de la comparación de los análisis de los experimentos con y sin asimilación de radianzas podemos ver que estas produce impactos en todos los niveles de la atmósfera. Si bien estos experimentos incrementan ligeramente el bias cálido y seco presente en niveles bajos del modelo, también generan cambios en la temperatura y humedad en niveles medios que son consistentes con un aumento de la inestabilidad previo al desarrollo del sistema convectivo. Los perfiles de las componentes de viento muestran que la iniciación de la convección en los experimentos que asimilan ABI tiene un retrazo con respecto del experimento control sin asimilación de radianzas. Sin embargo, la comparación con estimaciones de precipitación muestran que la asimilación de observaciones de ABI mejora sustancialmente el área cubierta por precipitación y la representación general de la precipitación particularmente para umbrales bajos. Esto último podría deberse en parte a una mejor representación de la humedad en niveles medios y altos, algo que resulta evidente al comparar los distintos experimentos con los radiosondeos de RELAMPAGO.</p>
+<p>Los pronósticos determinísticos en alta resolución inicializados a partir de la media del análisis de cada experimento y que resuelven los procesos convectivos explicitamente nos permiten analizar el desarrollo de la convección en más detalle. Es notorio que las condiciones iniciales tienen un impacto a lo largo de todo el pronóstico e influyen en el momento de la iniciación de la convección y su intensidad. Si bien analizando el área cubierta por precipitación o la comparación con las estimaciones de precipitación, todos los pronósticos tiene un comportamiento similar, al compararlos con un pronóstico sin asimilación regional, vemos mejoras tanto en la representación de la temperatura y humedad en niveles medios y altos como en la precipitación en las últimas horas de pronóstico.</p>
+<p>Un análisis cualitativo del desarrollo de la convección a partir de la temperatura de brillo del canal de 10.3 <span class="math inline">\(\mu m\)</span> de GOES-16 muestra que los pronósticos con condiciones iniciales que tienen asimilación de ABI representan muy bien el desarrollo convectivo y también las regiones del dominio donde hay cielos despejados, eliminando en muchos casos celdas convectivas generadas por el modelo en otros experimentos. Por otro lado, del análisis cuantitativo de la temperatura de brillo surge que solo el pronóstico con observaciones de ABI que no incluye radianzas de satélites polares y el pronóstico sin asimilación regional, logran representar los valores de más bajos de temperatura asociados a las ascendentes intensas en los sistemas convectivos.</p>
+<p>Finalmente, de la comparación entre los experimentos es importante evaluar el impacto de las observaciones de ABI en presencia o no de otras radianzas de satélites polares. Para este caso de estudio se observó que, en general, la asimilación de radianzas de satélites polares no produjo un impacto por encima de la asimilación de radianzas de ABI cuando se las asimilaba en conjunto. Además, en algunos casos los resultados asociados a al experimentos que incluye solo radianzas de ABI fueron mejores que en los experimentos donde se incluian también radianzas de satélites polares. Es posible entonces, que la asimilación de radianzas de satélites polares, con todos los desafíos que implica no sea necesaria si se asimilan radianzas de ABI para generar una buena representación de procesos convectivos.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="5-impacto-de-la-asimilación-de-observaciones-convencionales-de-estaciones-automáticas-vientos-derivados-de-satélite-y-radianzas-de-satelites-polares-en-pronósticos-a-corto-plazo.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="7-conclusiones-generales-y-perspectivas-futuras.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": [["thesis.pdf", "PDF"]],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
