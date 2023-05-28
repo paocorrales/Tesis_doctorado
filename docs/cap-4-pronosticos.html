@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 4 Impacto de la asimilación de diferentes fuentes en los pronosticos a corto plazo | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo</title>
+  <meta name="description" content="Capítulo 4 Impacto de la asimilación de diferentes fuentes en los pronosticos a corto plazo | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 4 Impacto de la asimilación de diferentes fuentes en los pronosticos a corto plazo | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 4 Impacto de la asimilación de diferentes fuentes en los pronosticos a corto plazo | Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo" />
+  
+  
+  
+
+<meta name="author" content="Lic. Paola Corrales" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="cap-3-analisis.html"/>
+<link rel="next" href="cap-5-goes.html"/>
+<style type="text/css">
+p.abstract{
+  text-align: center;
+  font-weight: bold;
+}
+div.abstract{
+  margin: auto;
+  width: 90%;
+}
+</style>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introducción</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#pronostico-de-eventos-severos"><i class="fa fa-check"></i><b>1.1</b> Pronostico de eventos severos</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#asimilación-de-datos-para-estimar-condiciones-iniciales"><i class="fa fa-check"></i><b>1.2</b> Asimilación de datos para estimar condiciones iniciales</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#asimilación-de-datos-en-sudamérica"><i class="fa fa-check"></i><b>1.3</b> Asimilación de datos en Sudamérica</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#asim-rad"><i class="fa fa-check"></i><b>1.4</b> Asimilación de radianzas de satélites</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#hipótesis-y-objetivos"><i class="fa fa-check"></i><b>1.5</b> Hipótesis y objetivos</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="metodología-y-datos.html"><a href="metodología-y-datos.html"><i class="fa fa-check"></i><b>2</b> Metodología y datos</a><ul>
+<li class="chapter" data-level="2.1" data-path="metodología-y-datos.html"><a href="metodología-y-datos.html#caso-de-estudio"><i class="fa fa-check"></i><b>2.1</b> Caso de estudio</a></li>
+<li class="chapter" data-level="2.2" data-path="metodología-y-datos.html"><a href="metodología-y-datos.html#observaciones"><i class="fa fa-check"></i><b>2.2</b> Observaciones</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="metodología-y-datos.html"><a href="metodología-y-datos.html#conjuntos-de-observaciones-asimiladas"><i class="fa fa-check"></i><b>2.2.1</b> Conjuntos de observaciones asimiladas</a></li>
+<li class="chapter" data-level="2.2.2" data-path="metodología-y-datos.html"><a href="metodología-y-datos.html#conjuntos-de-observaciones-para-verificación"><i class="fa fa-check"></i><b>2.2.2</b> Conjuntos de observaciones para verificación</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="metodología-y-datos.html"><a href="metodología-y-datos.html#la-asimilación-de-datos"><i class="fa fa-check"></i><b>2.3</b> La asimilación de datos</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="metodología-y-datos.html"><a href="metodología-y-datos.html#el-sistema-de-asimilación-gsi"><i class="fa fa-check"></i><b>2.3.1</b> El sistema de asimilación GSI</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="metodología-y-datos.html"><a href="metodología-y-datos.html#configmodelo"><i class="fa fa-check"></i><b>2.4</b> Configuración del sistema de asimilación</a></li>
+<li class="chapter" data-level="2.5" data-path="metodología-y-datos.html"><a href="metodología-y-datos.html#métodos-de-verificación"><i class="fa fa-check"></i><b>2.5</b> Métodos de verificación</a></li>
+<li class="chapter" data-level="2.6" data-path="metodología-y-datos.html"><a href="metodología-y-datos.html#recursos-computacionales"><i class="fa fa-check"></i><b>2.6</b> Recursos computacionales</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="metodología-y-datos.html"><a href="metodología-y-datos.html#disponibilidad-de-los-datos"><i class="fa fa-check"></i><b>2.6.1</b> Disponibilidad de los datos</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="cap-3-analisis.html"><a href="cap-3-analisis.html"><i class="fa fa-check"></i><b>3</b> Asimilación de observaciones de estaciones meteorológicas automáticas, vientos derivados de satélite y radianzas de satelites polares</a><ul>
+<li class="chapter" data-level="3.1" data-path="cap-3-analisis.html"><a href="cap-3-analisis.html#metodología"><i class="fa fa-check"></i><b>3.1</b> Metodología</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="cap-3-analisis.html"><a href="cap-3-analisis.html#config"><i class="fa fa-check"></i><b>3.1.1</b> Configuración de los experimentos</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="cap-3-analisis.html"><a href="cap-3-analisis.html#resultados"><i class="fa fa-check"></i><b>3.2</b> Resultados</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="cap-3-analisis.html"><a href="cap-3-analisis.html#consistencia-del-ensamble"><i class="fa fa-check"></i><b>3.2.1</b> Consistencia del ensamble</a></li>
+<li class="chapter" data-level="3.2.2" data-path="cap-3-analisis.html"><a href="cap-3-analisis.html#impacto-analisis"><i class="fa fa-check"></i><b>3.2.2</b> Impacto de la asimilación de las distintas observaciones</a></li>
+<li class="chapter" data-level="3.2.3" data-path="cap-3-analisis.html"><a href="cap-3-analisis.html#val-analisis"><i class="fa fa-check"></i><b>3.2.3</b> Validación con observaciones independientes</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="cap-3-analisis.html"><a href="cap-3-analisis.html#conclusiones"><i class="fa fa-check"></i><b>3.3</b> Conclusiones</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="cap-4-pronosticos.html"><a href="cap-4-pronosticos.html"><i class="fa fa-check"></i><b>4</b> Impacto de la asimilación de diferentes fuentes en los pronosticos a corto plazo</a><ul>
+<li class="chapter" data-level="4.1" data-path="cap-4-pronosticos.html"><a href="cap-4-pronosticos.html#metodología-1"><i class="fa fa-check"></i><b>4.1</b> Metodología</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="cap-4-pronosticos.html"><a href="cap-4-pronosticos.html#configuración-de-los-experimentos"><i class="fa fa-check"></i><b>4.1.1</b> Configuración de los experimentos</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="cap-4-pronosticos.html"><a href="cap-4-pronosticos.html#resultados-1"><i class="fa fa-check"></i><b>4.2</b> Resultados</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="cap-4-pronosticos.html"><a href="cap-4-pronosticos.html#prono-impacto"><i class="fa fa-check"></i><b>4.2.1</b> Impacto de las observaciones en el pronostico</a></li>
+<li class="chapter" data-level="4.2.2" data-path="cap-4-pronosticos.html"><a href="cap-4-pronosticos.html#verificacion-de-los-pronósticos-de-precipitación"><i class="fa fa-check"></i><b>4.2.2</b> Verificacion de los pronósticos de precipitación</a></li>
+<li class="chapter" data-level="4.2.3" data-path="cap-4-pronosticos.html"><a href="cap-4-pronosticos.html#verificacion-a-partir-de-observaciones-independientes"><i class="fa fa-check"></i><b>4.2.3</b> Verificacion a partir de observaciones independientes</a></li>
+<li class="chapter" data-level="4.2.4" data-path="cap-4-pronosticos.html"><a href="cap-4-pronosticos.html#análisis-y-verificación-por-parametrizaciones"><i class="fa fa-check"></i><b>4.2.4</b> Análisis y verificación por parametrizaciones</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="cap-4-pronosticos.html"><a href="cap-4-pronosticos.html#conclusiones-1"><i class="fa fa-check"></i><b>4.3</b> Conclusiones</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="cap-5-goes.html"><a href="cap-5-goes.html"><i class="fa fa-check"></i><b>5</b> Asimilacion de radianzas del satelite geoestacionario GOES-16 en cielos despejados</a><ul>
+<li class="chapter" data-level="5.1" data-path="cap-5-goes.html"><a href="cap-5-goes.html#metodología-2"><i class="fa fa-check"></i><b>5.1</b> Metodología</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="cap-5-goes.html"><a href="cap-5-goes.html#asim-abi"><i class="fa fa-check"></i><b>5.1.1</b> Asimilación de observaciones de GOES-16</a></li>
+<li class="chapter" data-level="5.1.2" data-path="cap-5-goes.html"><a href="cap-5-goes.html#configuracion-de-los-experimentos"><i class="fa fa-check"></i><b>5.1.2</b> Configuracion de los experimentos</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="cap-5-goes.html"><a href="cap-5-goes.html#resultados-2"><i class="fa fa-check"></i><b>5.2</b> Resultados</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="cap-5-goes.html"><a href="cap-5-goes.html#canales"><i class="fa fa-check"></i><b>5.2.1</b> Sensibilidad a la combinación de canales</a></li>
+<li class="chapter" data-level="5.2.2" data-path="cap-5-goes.html"><a href="cap-5-goes.html#thinning"><i class="fa fa-check"></i><b>5.2.2</b> Sensibilidad al thinning</a></li>
+<li class="chapter" data-level="5.2.3" data-path="cap-5-goes.html"><a href="cap-5-goes.html#comparación-del-impacto-de-asimilar-observaciones-de-abi-con-otras-fuentes-de-información"><i class="fa fa-check"></i><b>5.2.3</b> Comparación del impacto de asimilar observaciones de ABI con otras fuentes de información</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="cap-5-goes.html"><a href="cap-5-goes.html#conclusiones-2"><i class="fa fa-check"></i><b>5.3</b> Conclusiones</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="conclusiones-generales-y-perspectivas-futuras.html"><a href="conclusiones-generales-y-perspectivas-futuras.html"><i class="fa fa-check"></i><b>6</b> Conclusiones generales y perspectivas futuras</a><ul>
+<li class="chapter" data-level="6.1" data-path="conclusiones-generales-y-perspectivas-futuras.html"><a href="conclusiones-generales-y-perspectivas-futuras.html#conclusiones-3"><i class="fa fa-check"></i><b>6.1</b> Conclusiones</a></li>
+<li class="chapter" data-level="6.2" data-path="conclusiones-generales-y-perspectivas-futuras.html"><a href="conclusiones-generales-y-perspectivas-futuras.html#perspectivas-futuras"><i class="fa fa-check"></i><b>6.2</b> Perspectivas futuras</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="referencias.html"><a href="referencias.html"><i class="fa fa-check"></i>Referencias</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Utilización de datos satelitales para la evaluación y mejora de los pronósticos numéricos en alta resolución a muy corto plazo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="cap-4-pronosticos" class="section level1 hasAnchor">
+<h1><span class="header-section-number">Capítulo 4</span> Impacto de la asimilación de diferentes fuentes en los pronosticos a corto plazo<a href="cap-4-pronosticos.html#cap-4-pronosticos" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>En este capítulo se evalua el impacto de la asimilación de distintas fuentes de observación en pronósticos por ensable a corto plazo utilizando como condiciones iniciales los análisis de los distintos experimentos descriptos en la Sección <a href="cap-3-analisis.html#config">3.1.1</a>. Estos pronósticos abarcan el periodo de iniciación, madurez y dearrollo del SCM observado durante el 22 y 23 de noviembre de 2022. Otros autores estudiaron los pronósticos generados a partir de sistemas de asimilación regionales, <span class="citation">Jones et al. (2014)</span> por ejemplo, evaluaron pronósticos de eventos de precipitación utilizando condiciones iniciales generadas a partir de la asimilación de observaciones de radar y radianzas infrarrojas sintéticas. Encontraron que la combinación de estas fuentes de observación generaban el mayor impacto en comparación con la asimilación de la observaciones por separado y en particular, que las observaciones del canal 6.95 <span class="math inline">\(\mu m\)</span> mejoraban la representación de la humedad en niveles medios. Sin embargo el impacto en los pronósticos no perduraba más allá de las 3 horas. Por otro lado, <span class="citation">Bao et al. (2015)</span> estudiaron el impacto de la asimilación de observaciones convencionales y radianzas de satelites polares con sensores de microondas e infrarrojo sobre la temperatura y humedad pronosticadas para distintas capas de la atmósfera sobre un dominio regional en Estados Unidos. Observaron una disminición del RMSE de la temperatura en la tropósfera alta y la estratósfera baja gracias a observaciones de microondas pero un impacto negativo asociados a las observaciones en el espectro infrarrojo. El bias asociado a la humedad disminuyó con la asimilación de observaciones satelitales, en particular de infrarrojo en toda la tropósfera.</p>
+<p>En este capítulo además se utilizó el ensamble multifísica, que permite mejorar la representación del aporte de los errores de modelo a la incertidumbre del pronóstico dentro del sistema de asimilación de datos, para estudiar el desempeño de las parametrizaciones utilizadas. En muchos trabajos donde se utiliza un ensamble multifísica, no se hace un análisis por parametrizaciones ya que los resultados pueden depender fuertemente del caso de estudio, de la región o de los fenónemos involucrados. Un ejemplo local es <span class="citation">Dillon et al. (2021)</span> donde aplicaron la misma combinación de parametrizaciones que usan los experimentos de este trabajo y encontraron que las combinaciones de parametrizaciones que mejor representan las variables en superficie como temperatura y humedad a 2 metros eran distintas de las combinaciones que lograban el mejor pronóstico de precipitación.</p>
+<p>En este contexto, en el capítulo se analizará el impacto de la asimilación de observaciones convencionales, de
+estaciones automáticas, vientos derivados de satélite y radianzas de satelites polares en pronósticos a corto plazo en un contexto de convección húmeda profunda y se evaluará si las mejoras observadas en los análisis al respresentar este caso de estudio se trasladan a los pronósticos. En particular se hará foco en la representación de la temperatura y humedad en la tropósfera para evaluar el entorno en el cual se desarrolla la convección y en el viento meridional para analizar el desplazamiento del frente frío asociado al SCM. Para evaluar la intensidad del SCM estudiaremos la precipitación generada por los pronósticos evaluando tanto la ubicación como su intensidad. Finalmente, un análisis por conjuntos de parametrizaciones nos permitirá establecer cuales tienen un rol más importante en la representación de estos fenómenos.</p>
+<div id="metodología-1" class="section level2 hasAnchor">
+<h2><span class="header-section-number">4.1</span> Metodología<a href="cap-4-pronosticos.html#metodología-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="configuración-de-los-experimentos" class="section level3 hasAnchor">
+<h3><span class="header-section-number">4.1.1</span> Configuración de los experimentos<a href="cap-4-pronosticos.html#configuración-de-los-experimentos" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para estudiar el impacto de la asimilación de observaciones en pronósticos independientes, se generaron pronósticos por ensambles inicializados a partir de los análisis de los experimentos previamente descriptos. Estos pronósticos toman el nombre del análisis que utilizan como condición inicial, por ejemplo el pronóstico CONV será aquel que fue incializado a partir del análisis del experimento CONV. Todos los pronósticos utilizan la misma configuración de dominio y de ensamble multifísica que los análisis. Las condiciones de borde de los miembros del ensamble se generaron añadiendo perturbaciones aleatorias al pronóstico determinístico del GFS (GFSF, 0.25<span class="math inline">\(^{\circ}\)</span> de resolución horizontal y resolución temporal de 6 horas; <span class="citation">National Centers for Environmental Prediction, National Weather Service, NOAA, U.S. Department of Commerce (2015)</span>) como se muestra en la Figura <a href="cap-4-pronosticos.html#fig:cycle-fcst">4.1</a>. Estas perturbaciones son las mismas que se utilizaron para la generación de las condiciones de borde de los análisis.</p>
+<p>Los pronósticos se inicializaron a las 00 y 06 UTC del 22 de noviembre para capturar la inicialización y desarrollo del SCM y además evaluar las posibles diferencias entre los experimentos debido a la asimilación de nuevas observaciones entre las 00 y las 06 UTC. Todos los pronósticos finalizan a las 12 UTC del 23 de noviembre cuando el SCM se encuentra en el borde noroeste del dominio (Figura <a href="metodología-y-datos.html#fig:caso">2.1</a>f).</p>
+
+<div class="figure"><span style="display:block;" id="fig:cycle-fcst"></span>
+<img src="figure/forecast_diag.png" alt="Diagrama de los pronósticos por ensambles inicializados a las 00 y 06 UTC del 22 de noviembre y que se extienden hasta las 12 UTC del 23 de noviembre. Las condiciones de borde corresponden al pronóstico de GFS y se incorporan cada 6 horas." width="100%"  />
+<p class="caption">
+Figure 4.1: Diagrama de los pronósticos por ensambles inicializados a las 00 y 06 UTC del 22 de noviembre y que se extienden hasta las 12 UTC del 23 de noviembre. Las condiciones de borde corresponden al pronóstico de GFS y se incorporan cada 6 horas.
+</p>
+</div>
+</div>
+</div>
+<div id="resultados-1" class="section level2 hasAnchor">
+<h2><span class="header-section-number">4.2</span> Resultados<a href="cap-4-pronosticos.html#resultados-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="prono-impacto" class="section level3 hasAnchor">
+<h3><span class="header-section-number">4.2.1</span> Impacto de las observaciones en el pronostico<a href="cap-4-pronosticos.html#prono-impacto" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Al igual que en la Sección <a href="cap-3-analisis.html#impacto-analisis">3.2.2</a>, se compararon los pronósticos con ERA5 sobre la región definida en la Figura <a href="metodología-y-datos.html#fig:dominio">2.2</a>. La diferencia entre los perfiles de temperatura de la media del ensamble promediados espacialmente y ERA5 a lo largo del tiempo se muestran en la Figura <a href="cap-4-pronosticos.html#fig:era5-fcst-1">4.2</a>. En lineas generales la temperatura por encima de 750 hPa es subestimada por los pronósticos y esto ocurre independientemente de las condiciones iniciales que se utilicen. Sin embargo, y al igual que en los análisis, se observa una mejor representación de la temperatura por encima de 750 hPa cuando las condiciones iniciales incluyen observaciones de EMA. En niveles bajos se observa la misma tendencia que en los análisis, los pronósticos inicializados a partir de AWS y SATWND muestran un bias cálido mucho menor que CONV gracias a las condiciones iniciales que incluyen la asimilación de observaciones de EMA.</p>
+
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:era5-fcst-1"></span>
+<img src="thesis_files/figure-html/era5-fcst-1.png" alt="Diferencia entre la media del ensamble del pronóstico inicializado a partir de cada experimento y ERA5 de los perfiles verticales promediados espacialmente de la temperatura del aire (\(K\)) calculado sobre el dominio de validación (cuadro rojo en la Figura 2.2a) para cada tiempo de pronóstico." width="1050"  />
+<p class="caption">
+Figure 4.2: Diferencia entre la media del ensamble del pronóstico inicializado a partir de cada experimento y ERA5 de los perfiles verticales promediados espacialmente de la temperatura del aire (<span class="math inline">\(K\)</span>) calculado sobre el dominio de validación (cuadro rojo en la Figura <a href="metodología-y-datos.html#fig:dominio">2.2</a>a) para cada tiempo de pronóstico.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:era5-fcst-2"></span>
+<img src="thesis_files/figure-html/era5-fcst-2.png" alt="Cómo en la Figura 4.2 pero para la humedad específica (\(gkg^{-1}\))." width="1050"  />
+<p class="caption">
+Figure 4.3: Cómo en la Figura <a href="cap-4-pronosticos.html#fig:era5-fcst-1">4.2</a> pero para la humedad específica (<span class="math inline">\(gkg^{-1}\)</span>).
+</p>
+</div>
+<p>En RAD el bias cálido vuelve a aumentar ligeramente manteniendo la tendencia observada en los análisis de RAD (Figuras <a href="cap-4-pronosticos.html#fig:era5-fcst-1">4.2</a>d y h). Es importante notar que el impacto que genera la asimilación de las distintas fuentes de observación persiste en los pronósticos, aunque la persistencia del bias cálido en la capa límite podría indicar que los errores en el modelo contribuyen a este error. En la capa límite sí se ven diferencias entre las dos inicializaciones, en particular se observan mejoras para la inicialización de las 06 UTC en los casos de AWS y SATWND, indicando que las observaciones asimiladas entre las 00 y las 06 UTC tienen un impacto positivo en la representación de la temperatura cerca de superficie que se traslada a los pronósticos.</p>
+<p>Las diferencias entre los pronósticos y ERA5 para los perfiles promediados de humedad específica (Figuras <a href="cap-4-pronosticos.html#fig:era5-fcst-2">4.3</a>) muestran nuevamente el bias seco presente en el modelo y que es más importante en horas nocturnas. Sin embargo es notaria la mejora en los pronósticos inicializados a partir de AWS y SATWND y RAD, en comparación con CONV. Los pronósticos inicializados a partir de CONV mantienen un bias seco muy marcado a lo largo de todo el periodo y que nuevamente puede estar asociado con errores sistemáticos en el modelo (Figuras <a href="cap-4-pronosticos.html#fig:era5-fcst-2">4.3</a>a y e). Las dos inicialización, en este caso, no muestran diferencias apreciables.</p>
+
+(ref:era5-fcst-u) Cómo en la Figura <a href="cap-4-pronosticos.html#fig:era5-fcst-1">4.2</a> pero para el viento zonal (<span class="math inline">\(ms^{-1}\)</span>).
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:era5-fcst-uv-1"></span>
+<img src="thesis_files/figure-html/era5-fcst-uv-1.png" alt="Cómo en la Figura 4.2 pero para el viento meridional (\(ms^{-1}\))." width="1050"  />
+<p class="caption">
+Figure 4.4: Cómo en la Figura <a href="cap-4-pronosticos.html#fig:era5-fcst-1">4.2</a> pero para el viento meridional (<span class="math inline">\(ms^{-1}\)</span>).
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:era5-fcst-uv-2"></span>
+<img src="thesis_files/figure-html/era5-fcst-uv-2.png" alt="(ref:era5-fcst-u)" width="1050"  />
+<p class="caption">
+Figure 4.5: (ref:era5-fcst-u)
+</p>
+</div>
+<p>Es interesante notar que la asimilación de radianzas que aportan información en niveles medios y altos, también produce un impacto en niveles bajos de la atmósfera. Es posible que el desarrollo nuboso que se ve influenciado por cambios de temperatura y humedad genere también cambios en la temperatura en superficie. En este caso las mayores temperaturas observadas en los pronósticos de RAD se pueden explicar por un aumento de la radiación de onda larga saliente, posiblemente asociado a una disminución en el desarrollo de nubes (no se muestra).</p>
+<p>La mayor diferencia en los perfiles promediados para el viento meridional se observa en niveles altos y está asociado al periodo de mayor actividad convectiva sobre el norte del dominio (Figuras <a href="cap-4-pronosticos.html#fig:era5-fcst-uv-1">4.4</a>). En particular SATWND es el pronóstico que mejor representa el viento meridional, particularmente en el pronóstico inicializado a las 06 UTC (Figura <a href="cap-4-pronosticos.html#fig:era5-fcst-uv-1">4.4</a>g). Esto es particularmente intererante ya que el impacto de las observaciones de viento derivadas de satélite asimiladas en el experimento SATWND era marginal comparado al impacto de otra fuentes de observaciones. Sin embargo los pronósticos inicializados con condiciones inciales que incluye información de viento derivado de satélite representan mejor el viento meridional aún en los periodos de mayor convección. Si se analizan los experimentos individualmente alrededor de las 00 UTC del 23 de noviembre, se observa que SATWND presenta mayor convergencia en niveles bajos y mayor divergencia en niveles altos cuando se lo compara con RAD (no se muestra). Esto podría indica que la convección en SATWND es más intensa.</p>
+<p>Algo similar se observa en la diferencia entre perfiles vericales del viento zonal en las Figuras <a href="cap-4-pronosticos.html#fig:era5-fcst-uv-2">4.5</a>. Los pronósticos inicializados a partir de los experimentos AWS, SATWND y RAD muestran una mejor representación del viento zonal en todos los niveles. Sin embargo las observaciones de satelites polares parecen generar un impacto negativo en las condiciones iniciales de RAD que se traslada al pronóstico aumentando la diferencia respecto de ERA5. En todos los casos los pronósticos subestiman el viento zonal cerca de superficie luego del paso del frente frío, esto podría deberse a un retraso en el avance del frente o una disminución en la intensidad del viento postfrontal. Al comparar la ubicación del frente en los pronósticos y en ERA5, aproximado por la isolínea de viento meridional igual a 0 <span class="math inline">\(ms^{-1}\)</span> en las Figuras <a href="cap-4-pronosticos.html#fig:frente">4.6</a>, se observa que la ubicación del frente es similar en todos los casos y solo se retrasa en los pronósticos respecto de ERA5 hacia el final del periodo y por encima de 900 hPa (Figuras <a href="cap-4-pronosticos.html#fig:frente">4.6</a>c y f). Por lo anterior, las diferencias entre los pronósticos y ERA5 para el viento zonal parecen deberse principalmente a una disminución en el flujo postfrontal.</p>
+
+<div class="figure"><span style="display:block;" id="fig:frente"></span>
+<img src="thesis_files/figure-html/frente-1.png" alt="Viento meridional igual a 0 \(ms^{-1}\) en 800 (a-c), 900 (d-f) y 1000 hPa (g-i) en los pronósticos que verifican a las 12 (a,d,g) del 22 de noviembre y las 00 (b,e,h) y 12 UTC (c,f,i) del 23 de noviembre. Se muestra ERA5 (línea negra) y la media del ensamble de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja)." width="1050"  />
+<p class="caption">
+Figure 4.6: Viento meridional igual a 0 <span class="math inline">\(ms^{-1}\)</span> en 800 (a-c), 900 (d-f) y 1000 hPa (g-i) en los pronósticos que verifican a las 12 (a,d,g) del 22 de noviembre y las 00 (b,e,h) y 12 UTC (c,f,i) del 23 de noviembre. Se muestra ERA5 (línea negra) y la media del ensamble de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja).
+</p>
+</div>
+<p>Finalmente, para evaluar si las condiciones iniciales de los pronósticos perduran en el tiempo se compararon los experimentos CONV y RAD por ser los que tienen la menor y mayor cantidad de observaciones asimiladas respectivamente. Para realizar la comparación se calculó la raíz de la diferencia cuadrática media (RDCM) entre RAD y CONV a lo largo del periodo pronosticado para temperatura y humedad específica. La Figura <a href="cap-4-pronosticos.html#fig:ci">4.7</a> muestra campos de esta diferencia en distintos tiempos de pronóstico. Para ambas variables los campos de RDCM iniciales muestran los valores más altos y las diferencias se encuentran distribuidas en todo el dominio (Figura <a href="cap-4-pronosticos.html#fig:ci">4.7</a>a y e). Esto muestra que las condiciones iniciales de RAD y CONV tienen características muy distintas, y particularmente difieren en el contenido de humedad debido a la asimilación previa de observaciones de EMA. Aún más interesante es que estas diferencias iniciales perduran a lo largo del todo el pronóstico hasta las 12 UTC del 23 de noviembre. Si bien estas diferencias disminuyen en magnitud, muestran que el impacto positivo de la asimilación de observaciones de EMA, vientos derivados de satélite y radianzas se traslada a los pronósticos y se mantienen en el tiempo. Por la ubicación de las diferencias a lo largo del tiempo, es posible que los procesos de mesoescala y escala convectiva tengan una contribución importante. Será importante estudiar en el futuro las posibles causas que llevan al decaimiento de las diferencias en otras regiones dominio, particularmente en variables como la humedad.</p>
+
+<div class="figure" style="text-align: left"><span style="display:block;" id="fig:ci"></span>
+<img src="thesis_files/figure-html/ci-1.png" alt="Raíz de la diferencia cuadrática media (RDCM) para la humedad específica (\(gkg^{-1}\), a-d) y temperatura (K, e-h) calculada sobre la diferencia entre RAD y CONV sobre todos los niveles del modelo para distintos tiempos a lo largo del pronóstico inicializado a las 00 UTC del 22 de noviembre." width="900"  />
+<p class="caption">
+Figure 4.7: Raíz de la diferencia cuadrática media (RDCM) para la humedad específica (<span class="math inline">\(gkg^{-1}\)</span>, a-d) y temperatura (K, e-h) calculada sobre la diferencia entre RAD y CONV sobre todos los niveles del modelo para distintos tiempos a lo largo del pronóstico inicializado a las 00 UTC del 22 de noviembre.
+</p>
+</div>
+</div>
+<div id="verificacion-de-los-pronósticos-de-precipitación" class="section level3 hasAnchor">
+<h3><span class="header-section-number">4.2.2</span> Verificacion de los pronósticos de precipitación<a href="cap-4-pronosticos.html#verificacion-de-los-pronósticos-de-precipitación" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Para cuantificar la habilidad de los pronósticos en distintos plazos al representar la precipitación en la Figura <a href="cap-4-pronosticos.html#fig:fssfcst">4.8</a> se calculó el FSS a partir de los pronósticos por ensambles en ventanas móviles de 6 horas para los mismos umbrales y escalas espaciales usados para la precipitación acumulada horaria del campo preliminar en la Sección <a href="cap-3-analisis.html#val-analisis">3.2.3</a>. Los pronósticos de CONV generan valores muy bajos de FSS en comparación con los experimentos que incluyen otras fuentes de observaciones, lo que habla de una subestimación de la precipitación en todas las escalas. AWS, SATWND y RAD muestran mejoras en los valores de FSS, especialmente para el umbral de 25 mm (Figura <a href="cap-4-pronosticos.html#fig:fssfcst">4.8</a>b, d). Además, la inicialización de las 06 UTC muestra mejores resultados que los pronósticos inicializados a las 00 UTC para todos los experimentos, lo que pone de relieve el impacto positivo de las observaciones asimiladas entre las 00 y las 06 UTC en la representación de la precipitación, como así también la incorporación de condiciones de borde provenientes del GFSF.</p>
+<p>A diferencia de lo que se observó al comparar el pronóstico a 1 hora con observaciones independientes en la verificación de los análisis, las observaciones de viento derivadas de satélite muestran un impacto claramente positivo en los pronósticos. Esto evidencia el desarrollo de convección más intensa y es coherente con lo analizado en la Sección <a href="cap-4-pronosticos.html#prono-impacto">4.2.1</a>. Por el contrario, las radiancias tuvieron un impacto neutro a ligeramente negativo en los pronósticos inicializados a las 00 y 06 UTC particularmente en los umbrales altos de precipitación. Esto puede deberse en parte a un menor MCAPE presente en las condiciones inciales de RAD al compararlo con SATWND. Además, SATWND muestra un MCAPE más intenso que RAD durante las primeras 12 horas de pronóstico, lo que muestra que las condiciones iniciales de los distintos experimentos se mantienen a lo largo del periodo pronósticado (no se muestra).</p>
+<p>Existen muchos posibles motivos por los que los pronósticos inicializados a partir de RAD se degradan con el tiempo y en consecuencia generan menor precipitación. Por ejemplo, <span class="citation">Lim et al. (2014)</span> observó un impacto limitado al asimilar las observaciones de AIRS y atribuye este resultado al uso de canales superficiales en los que las incertidumbres asociadas a la emisividad de la superficie son grandes. Teniendo en cuenta la cantidad de radianzas asimiladas cerca de superfice (Figura <a href="cap-3-analisis.html#fig:obs-cycle">3.2</a>b), es posible que la asimilación de observaciones asociadas a canales afectados por la superficie contribuya a la degradación de la capa límite en el análisis y, posteriormente, en los pronósticos. Sin embargo es necesario realizar nuevos experimentos para evaluar esto en profundidad y definir que canales deberían ser asimilados.</p>
+
+<div class="figure"><span style="display:block;" id="fig:fssfcst"></span>
+<img src="thesis_files/figure-html/fssfcst-1.png" alt="FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre." width="900"  />
+<p class="caption">
+Figure 4.8: FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre.
+</p>
+</div>
+<p>El porcentaje de área cubierta por precipitación superior a determinados umbrales se muestra en la Figura <a href="cap-4-pronosticos.html#fig:area">4.9</a> y permite analizar la distribución espacial de la lluvia generada por los pronósticos. Nuevamente, los experimentos muestran una importante subestimación de la precipitación media, en particular CONV. El área sombreada que muestra el área máxima estimada sobre todos los miembros del ensamble se acerca al área estimada por IMERG, sin embargo todos los experimentos y sobre todo en el umbral de 1 <span class="math inline">\(mmh^{-1}\)</span>, la precipitación se adelantan en el tiempo. En este sentido, RAD es el experimento que mejor representa la precipitación respecto de su inicialización. Los pronósticos inicializados a partir de CONV subestiman el área cubierta por precipitación durante el periodo más activo y luego la sobreestiman durante el 23 de noviembre cuando ya no se observa precipitación intensa dentro del dominio de estudio.</p>
+
+<div class="figure"><span style="display:block;" id="fig:area"></span>
+<img src="thesis_files/figure-html/area-1.png" alt="Porcentaje de área cubierta por precipitación superior a 1 \(mmh^{-1}\) (a y c) y 5 \(mmh^{-1}\) (b y d) a lo largo del tiempo para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre. En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble de pronósticos. En línea continua negra se muetra la estimación de IMERG." width="900"  />
+<p class="caption">
+Figure 4.9: Porcentaje de área cubierta por precipitación superior a 1 <span class="math inline">\(mmh^{-1}\)</span> (a y c) y 5 <span class="math inline">\(mmh^{-1}\)</span> (b y d) a lo largo del tiempo para los pronósticos inicializados a partir de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja) a las 00 UTC (línea sólida) y 06 UTC (linea punteada) del 22 de noviembre. En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble de pronósticos. En línea continua negra se muetra la estimación de IMERG.
+</p>
+</div>
+<p>Los pronósticos por ensambles permiten obtener información probabilistica al calcular, por ejemplo, la proporción de miembros del ensamble que pronostican precipitación por encima de 1 mm en un determinado lugar. Para evaluar el pronóstico de precipitación desde el punto de vista probabilístico, se generaron diagramas de confiabilidad usando probabilidades pronósticadas de 0, 20, 40, 60, 80 y 100% calculadas sobre el ensamble para los pronósticos inicializados a las 00 UTC (Figuras <a href="cap-4-pronosticos.html#fig:reliability-1">4.10</a>) y 06 UTC (Figuras <a href="cap-4-pronosticos.html#fig:reliability-2">4.11</a>) utilizando umbrales de precipitación de 1, 5 y 10 mm. En un diagrama de confiabilidad, la línea diagonal representa un pronóstico totalmente confiable. Por el contrario, pronósticos por debajo de la diagonal sobreestiman la probabilidad ocurrencia del evento observado y pronósticos por encima de la diagonal, subestiman la probabilidad ocurrencia del evento. Debido a que los pronósticos generados subestiman fuertemente la precipitación, se incluye además la frecuencia relativa de eventos asociados a cada intervalo de probalidad donde se observa este bias negativo.</p>
+
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:reliability-1"></span>
+<img src="thesis_files/figure-html/reliability-1.png" alt="Diagrama de confiabilidad calculado sobre el pronóstico inicializado a las 00 UTC para probabilidades de 0, 20, 40, 60, 80 y 100% de ocurrencia de precipitación acumulada en 3 horas mayor al umbral a) 1 mm, b) 5 mm y c) 10. Los gráficos secundarios dentro de cada diagrama muestran la frecuencia relativa de los diferentes valores de probabilidad pronosticada (x 1e5) asociada a cada intervalo de probabilidad para cada percentil." width="900"  />
+<p class="caption">
+Figure 4.10: Diagrama de confiabilidad calculado sobre el pronóstico inicializado a las 00 UTC para probabilidades de 0, 20, 40, 60, 80 y 100% de ocurrencia de precipitación acumulada en 3 horas mayor al umbral a) 1 mm, b) 5 mm y c) 10. Los gráficos secundarios dentro de cada diagrama muestran la frecuencia relativa de los diferentes valores de probabilidad pronosticada (x 1e5) asociada a cada intervalo de probabilidad para cada percentil.
+</p>
+</div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:reliability-2"></span>
+<img src="thesis_files/figure-html/reliability-2.png" alt="Como en la Figura 4.10 pero para el pronóstico inicializado a las 06 UTC" width="900"  />
+<p class="caption">
+Figure 4.11: Como en la Figura <a href="cap-4-pronosticos.html#fig:reliability-1">4.10</a> pero para el pronóstico inicializado a las 06 UTC
+</p>
+</div>
+<p>Para el umbral más bajo de 1 mm, los dos pronósticos muestran curvas de confiabilidad con tendencia positiva, por lo que son considerados confiables (Figuras <a href="cap-4-pronosticos.html#fig:reliability-1">4.10</a>a y <a href="cap-4-pronosticos.html#fig:reliability-2">4.11</a>a). Sin embargo, para probabilidades de precipitación hasta 40%, los pronósticos subestiman la ocurrencia de precipitación. Esta subestimación aumenta a medida que aumenta el umbral, particularmente para 10 mm (Figuras <a href="cap-4-pronosticos.html#fig:reliability-2">4.11</a>b), lo que indica nuevamente que los pronósticos subestiman la ocurrencia de precipitación muy intensa. En probabilidades del ensamble superiores al 40%, los pronósticos sobreestiman la ocurrencia de precipitación en todos los umbrales pero, en particular las curvas de los umbrales de 5 y 10 mm dejan de tener una tendencia positiva perdiendo confiabilidad.</p>
+<p>Los pronósticos inicializados a las 06 UTC (Figuras <a href="cap-4-pronosticos.html#fig:reliability-2">4.11</a>) muestran tendencias similares a los pronósticos de las 00 UTC, sin embargo se observan ligeras mejoras, es decir curvas de confiabilidad están más cerca a la diagonal. Es posible que las condiciones iniciales que incluyen nuevas observaciones en conjunto con condiciones de borde actualizadas de GFSF favorezcan un aumento de la precipitación.</p>
+<p>En líneas generales los experimentos AWS, SATWND y RAD muestran un comportamiento similar con pequeñas diferencias que aumentan al aumentar el umbral. Por otro lado CONV muestra los peores resultados con una perdida de confiabilidad para pronósticos con probabilidades por encima del 40% en el caso del umbral de 5 mm y 20% para el umbral de 10 mm. Esto es consistente con resultados previos donde se ve que subestima el área cubierta por precipitación (Figura <a href="cap-4-pronosticos.html#fig:area">4.9</a>) y tiene los valores más bajos de FSS (Figura <a href="cap-4-pronosticos.html#fig:fssfcst">4.8</a>).</p>
+<p>Para complementar el análisis probabilistico las Figuras <a href="cap-4-pronosticos.html#fig:brier">4.12</a> muestran en índice de Brier (BS por su nombre en inglés) calculado para los mismo umbrales y las 2 inicializaciones de pronóstico. Este índice cuantifica el error medio asociado a las probabilidad pronosticadas y por lo tanto valores cercanos a cero indican que el pronóstico será mejor desde este punto de vista. En este caso los resultados son consistentes con lo analizado previamente, CONV es el experimento con mayor BS y solo es mejor para el umbral de 1 mm al comienzo de los pronósticos. Para el resto de los umbrales AWS y SATWND muestra un BS menores que RAD y estas diferencias aumentan con el paso del tiempo.</p>
+
+<div class="figure" style="text-align: left"><span style="display:block;" id="fig:brier"></span>
+<img src="thesis_files/figure-html/brier-1.png" alt="Índice de Brier calculado sobre el ensamble de pronósticos inicializados a las 00 UTC y 06 UTC y cada experimento utilizando los mismo umbrales seleccionados en las Figuras 4.10 y 4.11." width="900"  />
+<p class="caption">
+Figure 4.12: Índice de Brier calculado sobre el ensamble de pronósticos inicializados a las 00 UTC y 06 UTC y cada experimento utilizando los mismo umbrales seleccionados en las Figuras <a href="cap-4-pronosticos.html#fig:reliability-1">4.10</a> y <a href="cap-4-pronosticos.html#fig:reliability-2">4.11</a>.
+</p>
+</div>
+<p>Finalmente las Figuras <a href="cap-4-pronosticos.html#fig:prob">4.13</a> muestran la probabilidad de ocurrencia de precipitación acumulada en 36 hs para los pronósticos inicializados a las 00 UTC y 30 hs para los pronósticos inicializados a las 06 UTC; para distintos umbrales de precipitación.</p>
+<p>Los campos de probabilidad de precipitación mayor a 10 mm (Figuras <a href="cap-4-pronosticos.html#fig:prob">4.13</a>a-h), muestra que la precipitación se genera más hacia el norte y oeste de lo estimado por IMERG (línea negra). Al igual que en los análisis (Figura <a href="cap-3-analisis.html#fig:pp-hov">3.11</a>), los pronósticos no son capaces de representar correctamente la precipitación en la región sur del dominio. Esto también se observa en la Figura <a href="cap-4-pronosticos.html#fig:fssfcst">4.8</a> donde se ve que los valores de FSS van aumentando en las primeras horas de pronóstico, es decir, la precipitación se acerca a lo observado tanto en magnitud como en localización. Sin embargo, es notoria la mejora que se produce en los experimentos que se generaron a partir de condiciones iniciales con asimilación de EMA y vientos derivados de satélite respecto de CONV. Los pronósticos RAD si bien son mejores que CONV, subestiman la intensidad de la precipitación en mayor medida que SATWND.</p>
+<p>Las Figuras <a href="cap-4-pronosticos.html#fig:prob">4.13</a>i-p muestran los campos de probabilidad de precipitación superior a 50 mm donde se puede apreciar una vez más como los pronósticos subestiman la precipitación, en particular para los umbrales más altos. Al igual que para el umbral de 10 mm, es interesante notar la mejora que se produce entre las inicializaciones. La inicializacion de las 06 UTC logra representar mucho mejor la distribución de precipitación en el dominio que los pronósticos de las 00 UTC. Por ejemplo, el pronóstico SATWND de las 06 UTC (Figura <a href="cap-4-pronosticos.html#fig:prob">4.13</a>o) captura casi la totalidad del área de precipitación observada, aunque solo con un 10% probabilidad.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:prob"></span>
+<img src="thesis_files/figure-html/prob-1.png" alt="Probabilidad de ocurrencia de precipitación acumulada en 36 y 30 hs superior a 10 mm (a-h) y 50 mm (i-p) para los pronósticos inicializados a las 00 y 06 UTC respectivamente. Los contornos negros representan la estimación de IMERG para cada umbral de precipitación." width="1050"  />
+<p class="caption">
+Figure 4.13: Probabilidad de ocurrencia de precipitación acumulada en 36 y 30 hs superior a 10 mm (a-h) y 50 mm (i-p) para los pronósticos inicializados a las 00 y 06 UTC respectivamente. Los contornos negros representan la estimación de IMERG para cada umbral de precipitación.
+</p>
+</div>
+</div>
+<div id="verificacion-a-partir-de-observaciones-independientes" class="section level3 hasAnchor">
+<h3><span class="header-section-number">4.2.3</span> Verificacion a partir de observaciones independientes<a href="cap-4-pronosticos.html#verificacion-a-partir-de-observaciones-independientes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>En esta sección evaluamos los pronósticos de manera cuantitatva comparándolos con radiosondeos de la campaña RELAMPAGO y observaciones de EMA, que si bien son asimiladas en los experimentos de análisis, son observaciones independientes para los pronósticos.</p>
+<p>En primer lugar se calculó el RMSE y BIAS respecto de las observaciones de EMA a lo largo del tiempo para cada pronóstico e inicialización. El BIAS y RMSE de la humedad específica (Figuras <a href="cap-4-pronosticos.html#fig:rmse-bias-aut">4.14</a>a y e) al comienzo de los pronósticos es coherente con las condiciones iniciales. Por ejemplo el BIAS seco asociado a CONV es mucho más importante que el de los pronósticos inicializados a partir de AWS. También se observan mejoras en la inicialización de las 06 UTC, algo que no era evidente en la comparacion con ERA5 (Figura <a href="cap-4-pronosticos.html#fig:era5-fcst-2">4.3</a>). Los errores asociados a la temperatura (Figuras <a href="cap-4-pronosticos.html#fig:rmse-bias-aut">4.14</a>b y f) son muy dependientes del momento del día, con un aumento del RMSE y del BIAS cálido durante las horas nocturnas. Los pronósticos CONV y RAD para la inicialización de las 06 UTC tienen un mejor densempeño en las primeras horas de pronóstico pero luego se degradan más rápidamente que AWS o SATWND.</p>
+
+<div class="figure" style="text-align: centern"><span style="display:block;" id="fig:rmse-bias-aut"></span>
+<img src="thesis_files/figure-html/rmse-bias-aut-1.png" alt="Evolución del RMSE y BIAS de a) humedad específica (\(gkg{^-1}\)), b) temperatura (\(K\)), c) el viento zonal (\(ms^{-1}\)) y d) el viento meridional (\(ms^{-1}\)) calculados comparando los pronósticos de cada experimento con las observaciones de EMA. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja. El pronóstico inicializado a las 00 UTC se muestra en línea sólida y el pronóstico de las 06 UTC en línea discontinua." width="900"  />
+<p class="caption">
+Figure 4.14: Evolución del RMSE y BIAS de a) humedad específica (<span class="math inline">\(gkg{^-1}\)</span>), b) temperatura (<span class="math inline">\(K\)</span>), c) el viento zonal (<span class="math inline">\(ms^{-1}\)</span>) y d) el viento meridional (<span class="math inline">\(ms^{-1}\)</span>) calculados comparando los pronósticos de cada experimento con las observaciones de EMA. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja. El pronóstico inicializado a las 00 UTC se muestra en línea sólida y el pronóstico de las 06 UTC en línea discontinua.
+</p>
+</div>
+<p>Mientras que no hay características sobresalientes en los errores del viento zonal, en el viento meridional (Figuras <a href="cap-4-pronosticos.html#fig:rmse-bias-aut">4.14</a>d y h), es interesante notar que el RMSE de los pronósticos de las 06 UTC es más bajo que para los pronósticos de las 00 UTC y esta mejora se mantiene por al menos 6 horas. Esto también ocurre en el BIAS aunque en menor medida.</p>
+<p>La Figura <a href="cap-4-pronosticos.html#fig:soundings-fcst">4.15</a> muestra el RMSE y BIAS calculado comparando los pronósticos con los radiosondeos disponibles durante el periodo pronósticado. En líneas generales no se observan grandes diferencias entre las dos inicializaciones. Si bien los pronósticos de las 06 UTC utilizan condiciones iniciales que incluyen información actualizada del entorno, la mayoría de los radiosondeos utilizados en esta verificación fueron lanzados en un área muy pequeña en el centro del dominio (Figura <a href="metodología-y-datos.html#fig:dominio">2.2</a>b) que podría no haber sido particularmente influenciada por la asimilación de nuevas observaciones y por lo tanto el RMSE y BIAS asociado a cada inicialización no es muy diferente.</p>
+<p>Es interesante comparar en este punto los errores asociados a los pronósticos con los errores observados en el análisis (Figura <a href="cap-3-analisis.html#fig:soundings">3.14</a>e-h). En general, el rango de valores que toma el RMSE y BIAS para cada variable es similar tanto en los pronósticos como en los análisis, lo que indica que los pronósticos logran representar adecuadamente la situacición en esa región del dominio. Además el RMSE y BIAS son, en general, menores en los experimentos inicializados con condiciones iniciales que incluyen observaciones de EMA si se los compara con CONV, lo que habla de una persistencia del impacto de la asimilación en estos pronósticos.</p>
+<p>En esta comparación, la característica sobresaliente es la disminución del RMSE y BIAS en niveles bajos en casi todas las variables pero particularmente el viento meridional. El aumento de los errores en los análisis puede atribuirse a la asimilación de observaciones de EMA, que si bien en general producen impactos muy positivos en la representación de la capa límite (comparando la Figura <a href="cap-4-pronosticos.html#fig:soundings-fcst">4.15</a> con la Figura <a href="cap-3-analisis.html#fig:era5">3.9</a>), en esta región limitada parece generar el efecto contrario. En los pronósticos a corto plazo los errores en niveles bajos disminuyen a valores cercanos a los observados en los análisis de CONV.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:soundings-fcst"></span>
+<img src="thesis_files/figure-html/soundings-fcst-1.png" alt="RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura (\(K\)), b) la temperatura del punto de rocío (\(K\)), c) el viento zonal (\(m\ s^{-1}\)) y d) el viento meridional (\(m\ s^{-1}\)) calculados comparando los pronósticos de cada experimento con los sondeos operativos y de RELAMPAGO. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja." width="900"  />
+<p class="caption">
+Figure 4.15: RMSE (línea sólida) y BIAS (línea discontinua) de a) la temperatura (<span class="math inline">\(K\)</span>), b) la temperatura del punto de rocío (<span class="math inline">\(K\)</span>), c) el viento zonal (<span class="math inline">\(m\ s^{-1}\)</span>) y d) el viento meridional (<span class="math inline">\(m\ s^{-1}\)</span>) calculados comparando los pronósticos de cada experimento con los sondeos operativos y de RELAMPAGO. La línea azul corresponde a CONV, la línea celeste a AWS, SATWND se representa con una línea naranja y RAD con una línea roja.
+</p>
+</div>
+</div>
+<div id="análisis-y-verificación-por-parametrizaciones" class="section level3 hasAnchor">
+<h3><span class="header-section-number">4.2.4</span> Análisis y verificación por parametrizaciones<a href="cap-4-pronosticos.html#análisis-y-verificación-por-parametrizaciones" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>En esta sección analizamos el desempeño de las distintas parametrizaciones de capa límite y convección utilizadas en el ensamble multifísica, comparando los miembros del ensamble con los radiosondeos de RELAMPAGO y las observaciones de EMA.</p>
+<p>La Figura <a href="cap-4-pronosticos.html#fig:aut-all">4.16</a> muestra el RMSE y BIAS calculado comparando con las observaciones de EMA sobre los miembros del ensamble que utilizan cada una de las parametrizaciones de capa límite. En este caso no se muestran las dos inicializaciones por separado ya que ambos pronósticos presentan tendencias muy similares. Al analizar los resultados generados por los miembros que comparten las parametrizaciones de capa límite hay que tener en cuenta que todos usan, además, distintas parametrizaciones de convección, por lo que parte de la sensibilidad a las parametrizaciones observada podría estar parcialmente influenciada por esto. Sin embargo, el análisis de sensibilidad sobre las parametrizaciones de convección sobre variables cercanas a superficies mostró que estas tienen poco impacto en la representación del viento, humedad y temperatura en la capa límite.</p>
+<p>Si bien sería deseable encontrar una parametrización de capa límite que represente correctamente todas las variables de interés, estudios previos en la región (por ejemplo <span class="citation">Ruiz et al. (2010)</span> y <span class="citation">Dillon et al. (2021)</span>) mostraron que la combinación de parametrizaciones que produzca mejores resultados, puede depender de la variable que se considere para la validacion de los pronósticos. Para esta situación, la parametrización MYJ presenta un menor RMSE y BIAS para las variables termodinámicas (humedad relativa y temperatura) mientras que MYNN2 representa mejor el viento. Sin embargo, a exepción del RMSE del viento, los errores tienen una variabilidad pequeña por lo que la elección de una parametrización u otra podría no tener un impacto importante en la representación de la capa límite. Sin embargo, que las parametrizaciones tengan errores asociados similares no necesariamente quiere decir que representen los procesos de pequeña escala de la misma manera. Esto refuerza la necesidad de generar un ensamble multifísica como el utilizado en este trabajo para poder capturar los posibles errores asociados al modelo y la representación de los procesos parametrizados.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:aut-all"></span>
+<img src="thesis_files/figure-html/aut-all-1.png" alt="RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (círculo), MYNN2 (triángulo) e YSU (cuadrado) para todos los pronósticos en conjunto." width="1050"  />
+<p class="caption">
+Figure 4.16: RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (círculo), MYNN2 (triángulo) e YSU (cuadrado) para todos los pronósticos en conjunto.
+</p>
+</div>
+<p>Si se analizan los errores asociados a las parametrizaciones de capa límite a lo largo del periodo pronosticado (Figura <a href="cap-4-pronosticos.html#fig:aut-rad">4.17</a>), en este caso solo para el experimento RAD, la tendencia observada previamente se mantiene. Más importante aún, los errores de ninguna de las parametrizaciones aumenta por sobre el resto, indicando que tienen un comportamiento consistente a lo largo de las 30 y 36 hs de pronóstico.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:aut-rad"></span>
+<img src="thesis_files/figure-html/aut-rad-1.png" alt="RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (línea llena), MYNN2 (línea a rayas) e YSU (línea punteada) para todos los pronósticos en conjunto a lo largo del tiempo de pronóstico." width="900"  />
+<p class="caption">
+Figure 4.17: RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (línea llena), MYNN2 (línea a rayas) e YSU (línea punteada) para todos los pronósticos en conjunto a lo largo del tiempo de pronóstico.
+</p>
+</div>
+<p>La Figura <a href="cap-4-pronosticos.html#fig:soudings-all">4.18</a> muestra el RMSE y BIAS calculado comparando con los radiosondeos de RELAMPAGO sobre los miembros del ensamble que utilizan cada una de las parametrizaciones de convección. En este caso hacemos la verificación de estas parametrizaciones utilizando observaciones en altura donde estas parametrizaciones juegan un rol importante. Sin embargo es importante notar que las características de la capa límite también juegan un rol importante en el desarrollo de la convección y ambos conjuntos de parametrizaciones están fuertemente relacionados. Para estas comparaciones también se muestran las dos inicializaciones en conjunto ya que ambos pronósticos presentan tendencias muy similares. Si bien el comportamiento de las parametrizaciones de convección no es tan honomegeo como si sucedía con las de capa límite, es posible identificar algunos patrones. La parametrización BMJ tiene el menor RMSE tanto para la temperatura como para la temperatura de punto de rocio, mientras que la parametrización con menor RMSE en el viento meridional es KF.</p>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:soudings-all"></span>
+<img src="thesis_files/figure-html/soudings-all-1.png" alt="RMSE y BIAS calculados comparando los pronósticos con sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de convección BMJ (círculo), GF (triángulo) e KF (cuadrado) para todos los pronósticos en conjunto." width="1050"  />
+<p class="caption">
+Figure 4.18: RMSE y BIAS calculados comparando los pronósticos con sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de convección BMJ (círculo), GF (triángulo) e KF (cuadrado) para todos los pronósticos en conjunto.
+</p>
+</div>
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:soudings-pbl"></span>
+<img src="thesis_files/figure-html/soudings-pbl-1.png" alt="RMSE y BIAS calculados comparando los pronósticos con sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (círculo), MYNN2 (triángulo) e YSU (cuadrado) para todos los pronósticos en conjunto." width="1050"  />
+<p class="caption">
+Figure 4.19: RMSE y BIAS calculados comparando los pronósticos con sondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (círculo), MYNN2 (triángulo) e YSU (cuadrado) para todos los pronósticos en conjunto.
+</p>
+</div>
+<p>Si analizamos el RMSE y BIAS para cada parametrización de capa límite calculados solo sobre los radiosondeos (Figura <a href="cap-4-pronosticos.html#fig:soudings-pbl">4.19</a>), vemos que en general todas las parametrizaciones tienen valores de RMSE similares en todas las variables con una menor variabilidad que entre las parametrizaciones de convección. Algo similar ocurre con el BIAS y a diferencia de lo que se observaba al analizar las variables de superficie, en este caso ninguna parametrización parece ser la mejor al representar todas las variables en altura o en todos los experimentos.</p>
+<p>Si bien no es posible elegir solo una parametrización de convección que mejor represente todas las variables, es interesante observar la buena performance de BMJ al representar la temperatura y humedad en altura. Sin embargo, <span class="citation">Dillon et al. (2021)</span>, utilizando una configuración del ensamble multifísica similar a este trabajo, encontraron que esta parametrización era la que peor representaba la precipitación cuantificada utilizando el FSS. Un análisis similar sobre los experimentos discutidos en este capítulo mostraron la misma tendencia encontrada por <span class="citation">Dillon et al. (2021)</span>, por ejemplo la Figura <a href="cap-4-pronosticos.html#fig:fss-param">4.20</a> muestra el FSS calculado sobre el ensamble completo de RAD y los miebros que usan cada parametrización de campa límite o convección. En esta Figura se observa que BMJ es la parametrización de convección que peor representa la precipitación desde el punto de vista del FSS mientras que los miembros que utilizan KF y GF muestran los mejores resultados de todo el conjunto de parametrizaciones. Teniendo en cuenta este resultado y ante la poca variabilidad en los valores de los errores asociados a temperatura, humedad y viento, es posible que el reemplazo de BMJ por otra parametrización de convección de mejores resultados en términos de la representación de la precipitación sin producir mayor impacto en la representación de otras variasbles. También es interesante notar que MYNN2 es la paramerización de capa límite que junto con BMJ tiene un FSS sistemáticamente menor que el resto de las parametrizaciones y el ensamble completo. Teniendo en cuenta los buenos resultados de MYNN2 al representar el viento meridional, sería importante realizar nuevos experimentos de sensibilidad a esta parametrización para evaluar si debería seguir usándose dentro del ensamble multifísica.</p>
+
+
+<div class="figure" style="text-align: left"><span style="display:block;" id="fig:fss-param"></span>
+<img src="thesis_files/figure-html/fss-param-1.png" alt="FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para el umbral de 25 mm y 10 km de escala sobre el pronóstico RAD inicializado a las 00 UTC. La línea roja (RAD) corresponde al ensamble completo, las líneas punteandas se calculan sobre los miembros del ensamble que usan cada parametrización de capa límite o convección." width="900"  />
+<p class="caption">
+Figure 4.20: FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para el umbral de 25 mm y 10 km de escala sobre el pronóstico RAD inicializado a las 00 UTC. La línea roja (RAD) corresponde al ensamble completo, las líneas punteandas se calculan sobre los miembros del ensamble que usan cada parametrización de capa límite o convección.
+</p>
+</div>
+</div>
+</div>
+<div id="conclusiones-1" class="section level2 hasAnchor">
+<h2><span class="header-section-number">4.3</span> Conclusiones<a href="cap-4-pronosticos.html#conclusiones-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Este capítulo evalua el impacto de la asimilación de los distintos sistemas de observación considerados en pronósticos por ensambles a corto plazo inicializados usando los ánalisis estudiados en el Capítulo <a href="cap-3-analisis.html#cap-3-analisis">3</a>. Se evalua el impacto en las distintas variables meteorológicas y las diferencias entre las 2 inicializaciones (00 y 06 UTC del 22 de noviembre) generadas por la asimilación continua y la actualización de las condiciones de borde. Los pronósticos abarcan la iniciación, desarrollo y madurez del SCM en estudio para estudiar la capacidad de los pronóstico de representar este sistema convectivo y la precipitación que genera. Finalmente se pone el foco en el ensamble y se evalua el desempeño de las distintas parametrizaciones de capa límite y convección al representar tanto la temperatura, humedad y viento como la representación de la precipitación.</p>
+<p>En general, los pronósticos inicializados usando condiciones iniciales con asimilación de estaciones meteorológicas automáticas, los vientos estimados por satélites y las radiancias de cielo despejado son de mejor calidad que el pronóstico inicializado utilizando solo la red de observación convencional. La disminución del bias cálido y seco del modelo gracias a la asimilación de observaciones de estaciones meteorológicas automáticas también se observa en los pronósticos. Los pronósticos inicializados con condiciones inciales que incluye información de viento derivado de satélite representan mejor el viento meridional aún cuando estas observaciones habían producido un impacto marginal en el análisis. Los pronósticos inicializados con asimilación de radianzas mantienen las tendencias que se observaban en el análisis, por ejemplo se observa un aumento en la temperatura en niveles bajos y por lo tanto un ligero aumento del bias cálido. Lo más interesante en este punto es notar que las mejoras introducidas por las nuevas observaciones persisten a lo largo de todo el periodo pronosticado. Las inicializaciones de los pronósticos producen diferencias aunque solo en algunas variables, en particular se observan mejoras para la inicialización de las 06 UTC lo que indica que las observaciones de estaciones meteorológicas automáticas asimiladas entre las 00 y las 06 UTC tienen un impacto positivo en la representación de la temperatura cerca de superficie que luego se traslada a los pronósticos.</p>
+<p>Los pronósticos por ensambles, si bien logran representar la precipitación en cuanto la ubicación espacial y temporal, la subestiman fuertemente respecto de lo observado. Esto es particularmente notorio cuando las condiciones iniciales solo incluyen observaciones convencionales. Desde este punto de vista si se observan mejoras importantes entre los pronósticos inicializados a las 00 y a las 06 UTC y estas mejoras en la representación de la precipitación perduran hasta el final del periodo pronosticado. Desde el punto de vista de la precipitación, los pronósticos con condiciones iniciales que incluyen la asimilación de vientos derivados de satélite son los que mejor la representan particularmente cuando analizamos la probabilidad de precipitación para umbrales altos. A diferencia de lo que pasaba en el análisis (Capítulo <a href="cap-3-analisis.html#cap-3-analisis">3</a>), los pronósticos inicializados a partir de análisis con asimilación de radianzas no generan sufiente precipitación. Es posible que estos pronósticos generen una atmósfera más estable, y por lo tanto un menor desarrollo de la convección, debido al menor contenido de humedad presente en la capa límite.</p>
+<p>Finalmente, del análisis por parametrizaciones surge en primer lugar poca o ausensia de variabilidad entre las distintas inicializaciones. En todos los casos MYJ representa mejor las variables termodinámicas en la capa límite mientras que MYNN2 representa mejor el viento. Entre las parametrizaciones de convección no se observa un patrón muy definido pero se destaca BMJ en la representación de la temperatura y humedad en altura y KF en la representación del viento meridional cuando se compara los pronósticos con observaciones independientes. Sin embargo, desde el punto de vista de la representación de la precipitación surge que tanto BMJ como MYNN2 son las parametrizaciones de convección y capa límite respectivamente que peor simulan la precipitación observada. Teniendo en cuenta estos resultados es posible que estas parametrizaciones no sean las más adecuadas para representar los procesos asociados en esta región. Además, esto refuerza la necesidad de generar un ensamble multifísica como el utilizado en este trabajo para poder capturar los posibles errores asociados al modelo y la representación de los procesos parametrizados.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="cap-3-analisis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="cap-5-goes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": [["thesis.pdf", "PDF"]],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
