@@ -137,7 +137,31 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \Acknowledgements{
-I want to thank a few people.
+Al Consejo Nacional de Investigaciones Científicas y Técnicas por otorgarme la beca doctoral que me permitió hacer el doctorado y este trabajo de tesis, y a la Facultad de Ciencias Exactas y Naturales, en particular al Departamento de Ciencias de la Atmósfera y los Océanos, por brindarme una educación gratuita y de calidad.
+
+Al Centro de Investigaciones del Mar y la Atmósfera por brindarme el lugar de trabajo para realizar las tareas de investigación, proporcionando además los recursos computacionales necesarios para realizar el análisis de los experimentos realizados.
+
+Al Dr.~Luiz Sapucci y su equipo en IMPE por recibirme al comienzo del doctorado y brindarme las herramientas necesarias para trabajar con datos en formato bufr. También por mantener el contacto, la colaboración y el intercambio de ideas todos estos años.
+
+Al Dr.~Craig Schwartz por recibirme durante mi visita al Mesoscale and Microscale Meteorology Laboratory, de NCEP y por su generosidad al compartir su conocimiento y experiencia en el uso del sitema de asimilación GSI.
+
+A Steve Nesbitt y Craig Schwartz por bridarme, a traves de sus proyectos, la posibilidad de acceder a los recursos de la supercomputadora Cheyenene de NCAR a lo largo de todo el doctorado, sin los cuales los experimentos no hubieran sido posibles.
+
+Al Servicio Meteorológico Nacional y en particular al equipo de Investigación y Desarrollo por siempre abrirme las puertas para colaborar en distintos proyectos e intercambiar ideas.
+
+A los miembros del jurado, Lluis Fita Borel, Fabrício Pereira Härter y Malaquias Peña Mendez por aceptar a ser jurados y contribuir a la evaluación de este trabajo de tesis.
+
+A mis directores, Vito y Juan por acompañarme esta montaña rusa que es el doctorado. Por su generosidad, paciencia y confianza siempre.
+
+A la comunidad de usuaries de R en latinoamérica y el mundo, de quienes aprendí muchas de las herramientas que me permitieron hacer mi trabajo de manera abierta y reproducible. Por su generosidad al compartir su trabajo, por aprender y enseñar en comunidad y por contribuir a que el mundo, al menos de la programación, sea más diverso. Gracias también por permitirme conocer a personas increibles con las que trabajar y colaborar en distintos proyectos es siempre un placer.
+
+A todes quienes hacen que Expedición Ciencia sea lo que es, por contagiarme el placer por hacer preguntas y mostrarme que hacer ciencia no era inalcansable.
+
+A Pira, Santi, Bel y Jona por estar siempre cerca, acompañándonos en las buenas y en las malas donde sea que estemos todos estos años.
+
+A mi mamá, mi papá y mis hermanos Lucas y Javi por apoyarme incondicionalmente y ayudarme a ser quien soy hoy.
+
+Finalmente a Elio, no me alcanzan las páginas para escribir todas las razones que tengo para agradecerte.
 }
 
 \Dedication{
@@ -230,7 +254,31 @@ The results obtained show that the assimilation of observations with high tempor
   \end{abstract}
 
   \begin{acknowledgements}
-    I want to thank a few people.
+    Al Consejo Nacional de Investigaciones Científicas y Técnicas por otorgarme la beca doctoral que me permitió hacer el doctorado y este trabajo de tesis, y a la Facultad de Ciencias Exactas y Naturales, en particular al Departamento de Ciencias de la Atmósfera y los Océanos, por brindarme una educación gratuita y de calidad.
+    
+    Al Centro de Investigaciones del Mar y la Atmósfera por brindarme el lugar de trabajo para realizar las tareas de investigación, proporcionando además los recursos computacionales necesarios para realizar el análisis de los experimentos realizados.
+    
+    Al Dr.~Luiz Sapucci y su equipo en IMPE por recibirme al comienzo del doctorado y brindarme las herramientas necesarias para trabajar con datos en formato bufr. También por mantener el contacto, la colaboración y el intercambio de ideas todos estos años.
+    
+    Al Dr.~Craig Schwartz por recibirme durante mi visita al Mesoscale and Microscale Meteorology Laboratory, de NCEP y por su generosidad al compartir su conocimiento y experiencia en el uso del sitema de asimilación GSI.
+    
+    A Steve Nesbitt y Craig Schwartz por bridarme, a traves de sus proyectos, la posibilidad de acceder a los recursos de la supercomputadora Cheyenene de NCAR a lo largo de todo el doctorado, sin los cuales los experimentos no hubieran sido posibles.
+    
+    Al Servicio Meteorológico Nacional y en particular al equipo de Investigación y Desarrollo por siempre abrirme las puertas para colaborar en distintos proyectos e intercambiar ideas.
+    
+    A los miembros del jurado, Lluis Fita Borel, Fabrício Pereira Härter y Malaquias Peña Mendez por aceptar a ser jurados y contribuir a la evaluación de este trabajo de tesis.
+    
+    A mis directores, Vito y Juan por acompañarme esta montaña rusa que es el doctorado. Por su generosidad, paciencia y confianza siempre.
+    
+    A la comunidad de usuaries de R en latinoamérica y el mundo, de quienes aprendí muchas de las herramientas que me permitieron hacer mi trabajo de manera abierta y reproducible. Por su generosidad al compartir su trabajo, por aprender y enseñar en comunidad y por contribuir a que el mundo, al menos de la programación, sea más diverso. Gracias también por permitirme conocer a personas increibles con las que trabajar y colaborar en distintos proyectos es siempre un placer.
+    
+    A todes quienes hacen que Expedición Ciencia sea lo que es, por contagiarme el placer por hacer preguntas y mostrarme que hacer ciencia no era inalcansable.
+    
+    A Pira, Santi, Bel y Jona por estar siempre cerca, acompañándonos en las buenas y en las malas donde sea que estemos todos estos años.
+    
+    A mi mamá, mi papá y mis hermanos Lucas y Javi por apoyarme incondicionalmente y ayudarme a ser quien soy hoy.
+    
+    Finalmente a Elio, no me alcanzan las páginas para escribir todas las razones que tengo para agradecerte.
   \end{acknowledgements}
   \hypersetup{linkcolor=black}
   \setcounter{secnumdepth}{5}
@@ -595,7 +643,7 @@ El cálculo de las observaciones simuladas tiene un costo computacional muy alto
 
 Para obtener resultados rápidos, CRTM aplica ciertas simplificaciones y aproximaciones a la hora de resolver la ecuación de transferencia radiativa. En primer lugar asume que la atmósfera terrestre está formada por capas plano-paralelas y homogéneas en equilibrio termodinámico y donde los efectos tridimensionales y de polarización pueden ser ignorados.
 
-En contextos de cielos despejados y canales en el infrarrojo, además se asume que no existe dispersión y solo se considera la absorción de los gases en la atmósfera. En cielos nubosos y canales en el infrarrojo se usa la aproximación de ``nube gris'' que también asume que no existe dispersión. Sin embargo, en el caso de canales de microondas la dispersión generada por las nubes es incluida. En este último caso, la ecuación de transferencia radiativa no se puede resolver analíticamente y se recurre a modelos numéricos.
+En contextos de cielos despejados, además se asume que no existe dispersión y solo se considera la absorción de los gases en la atmósfera. En cielos nubosos, la dispersión generada por las nubes si es incluida. En este último caso, la ecuación de transferencia radiativa no se puede resolver analíticamente y se recurre a modelos numéricos.
 
 \hypertarget{sat}{%
 \subsubsection{Asimilación de radianzas en GSI}\label{sat}}
@@ -696,7 +744,9 @@ Para aquellas observaciones disponibles en punto de grilla tales cómo la precip
 \mathit{FSS} = 1-\frac{\sum_{i=1}^{N} ({P_x}_i-{P_o}_i)^{2}}{\sum_{i=1}^{N} ({P_x}_i)^{2}+\sum_{i=1}^{N} ({P_o}_i)^{2}}
 \label{eq:eq11}
 \end{equation}
-donde \(P_{oi}\) es la proporción de puntos de retícula en el subdominio \(i-ésimo\), definido por el radio de influencia, donde la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a Roberts et al. (2020), \(P_{xi}\) se calcula sobre el ensamble completo y cuantifica la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de retícula, que luego es promediando sobre el subdominio \(i-ésimo\). Esta métrica, a diferencia de otras como el RMSE que se calcula punto a punto, permite permite comparar el pronóstico con observaciones en distintas escalas espaciales. Esto es particularmente importante para variables como la precipitación o la temperatura de brillo que muchas veces es representada correctamente por el modelo en forma y magnitud pero en posiciones ligeramente distintas a lo observado.
+donde \(P_{oi}\) es la proporción de puntos de retícula en el subdominio \(i-ésimo\), definido por el radio de influencia, donde la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a Roberts et al. (2020), \(P_{xi}\) se calcula sobre el ensamble completo y cuantifica la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de retícula, que luego es promediando sobre el subdominio \(i-ésimo\).
+
+Esta métrica, a diferencia de otras como el RMSE que se calcula punto a punto, permite permite comparar el pronóstico con observaciones en distintas escalas espaciales. Esto es particularmente importante para variables como la precipitación o la temperatura de brillo que muchas veces es representada correctamente por el modelo en forma y magnitud pero en posiciones ligeramente distintas a lo observado.
 
 Para los pronósticos por ensambles se calculó la probabilidad de precipitación por encima de determinados umbrales en cada punto de retícula como la proporción de miembros del ensamble que pronosticaron precipitación por encima de cada umbral. Además se generaron gráficos de confiabilidad (Wilks, 2011) con intervalos de probabilidades pronosticadas de 10\% para analizar la calibración de los pronósticos inicializados a partir de los análisis de cada experimento.
 
