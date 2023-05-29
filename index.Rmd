@@ -62,7 +62,31 @@ output:
 # like below, use a command like that for the abstract above.  Note that a tab 
 # is needed on the line after the `|`.
 acknowledgements: |
-  I want to thank a few people.
+  Al Consejo Nacional de Investigaciones Científicas y Técnicas por otorgarme la beca doctoral que me permitió hacer el doctorado y este trabajo de tesis, y a la Facultad de Ciencias Exactas y Naturales, en particular al Departamento de Ciencias de la Atmósfera y los Océanos, por brindarme una educación gratuita y de calidad.
+
+  Al Centro de Investigaciones del Mar y la Atmósfera por brindarme el lugar de trabajo para realizar las tareas de investigación, proporcionando además los recursos computacionales necesarios para realizar el análisis de los experimentos realizados.
+
+  Al Dr. Luiz Sapucci y su equipo en IMPE por recibirme al comienzo del doctorado y brindarme las herramientas necesarias para trabajar con datos en formato bufr. También por mantener el contacto, la colaboración y el intercambio de ideas todos estos años. 
+
+  Al Dr. Craig Schwartz por recibirme durante mi visita al Mesoscale and Microscale Meteorology Laboratory, de NCEP y por su generosidad al compartir su conocimiento y experiencia en el uso del sitema de asimilación GSI. 
+
+  A Steve Nesbitt y Craig Schwartz por bridarme, a traves de sus proyectos, la posibilidad de acceder a los recursos de la supercomputadora Cheyenene de NCAR a lo largo de todo el doctorado, sin los cuales los experimentos no hubieran sido posibles. 
+
+  Al Servicio Meteorológico Nacional y en particular al equipo de Investigación y Desarrollo por siempre abrirme las puertas para colaborar en distintos proyectos e intercambiar ideas.
+
+  A los miembros del jurado, Lluis Fita Borel, Fabrício Pereira Härter y Malaquias Peña Mendez por aceptar a ser jurados y contribuir a la evaluación de este trabajo de tesis.
+
+  A mis directores, Vito y Juan por acompañarme esta montaña rusa que es el doctorado. Por su generosidad, paciencia y confianza siempre.
+
+  A la comunidad de usuaries de R en latinoamérica y el mundo, de quienes aprendí muchas de las herramientas que me permitieron hacer mi trabajo de manera abierta y reproducible. Por su generosidad al compartir su trabajo, por aprender y enseñar en comunidad y por contribuir a que el mundo, al menos de la programación, sea más diverso. Gracias también por permitirme conocer a personas increibles con las que trabajar y colaborar en distintos proyectos es siempre un placer.  
+
+  A todes quienes hacen que Expedición Ciencia sea lo que es, por contagiarme el placer por hacer preguntas y mostrarme que hacer ciencia no era inalcansable.
+
+  A Pira, Santi, Bel y Jona por estar siempre cerca, acompañándonos en las buenas y en las malas donde sea que estemos todos estos años.
+
+  A mi mamá, mi papá y mis hermanos Lucas y Javi por apoyarme incondicionalmente y ayudarme a ser quien soy hoy. 
+  
+  Finalmente a Elio, no me alcanzan las páginas para escribir todas las razones que tengo para agradecerte. 
 #dedication: |
 #  You can have a dedication here if you wish. 
 #preface: |
