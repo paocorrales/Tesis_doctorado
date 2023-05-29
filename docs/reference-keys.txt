@@ -89,7 +89,7 @@ conjuntos-de-observaciones-asimiladas
 convencionales
 ema
 vientos-estimados-por-satélite
-radiancias-de-satélite
+radianzas-de-satélite
 satélites-polares
 goes-16
 conjuntos-de-observaciones-para-verificación
