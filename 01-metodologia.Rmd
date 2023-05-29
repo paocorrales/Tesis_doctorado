@@ -462,7 +462,7 @@ El cálculo de las observaciones simuladas tiene un costo computacional muy alto
 
 Para obtener resultados rápidos, CRTM aplica ciertas simplificaciones y aproximaciones a la hora de resolver la ecuación de transferencia radiativa. En primer lugar asume que la atmósfera terrestre está formada por capas plano-paralelas y homogéneas en equilibrio termodinámico y donde los efectos tridimensionales y de polarización pueden ser ignorados.
 
-En contextos de cielos despejados y canales en el infrarrojo, además se asume que no existe dispersión y solo se considera la absorción de los gases en la atmósfera. En cielos nubosos y canales en el infrarrojo se usa la aproximación de "nube gris" que también asume que no existe dispersión. Sin embargo, en el caso de canales de microondas la dispersión generada por las nubes es incluida. En este último caso, la ecuación de transferencia radiativa no se puede resolver analíticamente y se recurre a modelos numéricos. 
+En contextos de cielos despejados, además se asume que no existe dispersión y solo se considera la absorción de los gases en la atmósfera. En cielos nubosos, la dispersión generada por las nubes si es incluida. En este último caso, la ecuación de transferencia radiativa no se puede resolver analíticamente y se recurre a modelos numéricos. 
 
 
 #### Asimilación de radianzas en GSI {#sat}
@@ -590,7 +590,9 @@ Para aquellas observaciones disponibles en punto de grilla tales cómo la precip
 \end{equation}
 
 
-donde $P_{oi}$ es la proporción de puntos de retícula en el subdominio $i-ésimo$, definido por el radio de influencia, donde la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a @roberts2020, $P_{xi}$ se calcula sobre el ensamble completo y cuantifica la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de retícula, que luego es promediando sobre el subdominio $i-ésimo$. Esta métrica, a diferencia de otras como el RMSE que se calcula punto a punto, permite permite comparar el pronóstico con observaciones en distintas escalas espaciales. Esto es particularmente importante para variables como la precipitación o la temperatura de brillo que muchas veces es representada correctamente por el modelo en forma y magnitud pero en posiciones ligeramente distintas a lo observado. 
+donde $P_{oi}$ es la proporción de puntos de retícula en el subdominio $i-ésimo$, definido por el radio de influencia, donde la precipitación acumulada observada es mayor que un umbral especificado. Siguiendo a @roberts2020, $P_{xi}$ se calcula sobre el ensamble completo y cuantifica la probabilidad de que la precipitación sea mayor al mismo umbral en cada punto de retícula, que luego es promediando sobre el subdominio $i-ésimo$. 
+
+Esta métrica, a diferencia de otras como el RMSE que se calcula punto a punto, permite permite comparar el pronóstico con observaciones en distintas escalas espaciales. Esto es particularmente importante para variables como la precipitación o la temperatura de brillo que muchas veces es representada correctamente por el modelo en forma y magnitud pero en posiciones ligeramente distintas a lo observado. 
 
 Para los pronósticos por ensambles se calculó la probabilidad de precipitación por encima de determinados umbrales en cada punto de retícula como la proporción de miembros del ensamble que pronosticaron precipitación por encima de cada umbral. Además se generaron gráficos de confiabilidad [@wilks2011] con intervalos de probabilidades pronosticadas de 10% para analizar la calibración de los pronósticos inicializados a partir de los análisis de cada experimento.  
 
