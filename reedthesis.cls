@@ -238,7 +238,7 @@
   % \else
   %   \@restonecolfalse
   \fi
-  \chapter*{Abstract}
+  \chapter{Abstract}
   \fontsize{12}{14}\selectfont
 }{\clearpage \if@restonecol\twocolumn\fi}%
 
@@ -248,7 +248,7 @@
   % \else
   %   \@restonecolfalse
   \fi
-  \chapter*{Resumen}
+  \chapter{Resumen}
   \fontsize{12}{14}\selectfont
 }{\clearpage \if@restonecol\twocolumn\fi}%
 
