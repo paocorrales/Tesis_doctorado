@@ -175,7 +175,7 @@ div.abstract{
 <div id="asim-abi" class="section level3 hasAnchor">
 <h3><span class="header-section-number">5.1.1</span> Asimilación de observaciones de GOES-16<a href="cap-5-goes.html#asim-abi" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>La asimilación directa de radianzas de ABI requiere las mismas consideraciones descriptas previamente en la Sección <a href="index.html#asim-rad">1.4</a> en cuanto a control de calidad, corrección de bias, thinning e identificación de pixeles nubosos. En esta Sección se describen las decisiones metodológicas y técnicas que se tomaron a la hora de asimilar las observaciones, en base a las pruebas preliminares realizadas.</p>
-<p>La asimilación de radianzas en <em>all sky</em>, es decir tanto para cielos claros como nubosos es todavía un importante desafío ya que estos dos tipos de observaciones requieren un control de calidad y estimaciones de errores específicos. En esta primera aproximación a la asimilación de observaciones de ABI solo se utilizaron observaciones en cielos despejados. Para detectar y filtrar los pixeles nubosos utilizamos la mascara de nubes ACM (por ABI Cloud Mask, <span class="citation">Heidinger and Straka III (2013)</span>) disponible con la misma frecuencia que las observaciones. Esta mascara de nubes da información binaria (cielo despejado o cielo nuboso) y tienen una exactitud del 87% <span class="citation">(Heidinger and Straka III, 2013)</span>. La clasificación es realizada utilizando información de 10 canales de ABI e incluye criterios espectrales, espaciales y temporales. En las Figuras <a href="cap-5-goes.html#fig:cld-msk">5.1</a> se presentan 2 ejemplos de máscara de nubes a las 00 UTC del 20 de noviembre y a las 18 UTC del 22 de noviembre.</p>
+<p>La asimilación de radianzas en <em>all sky</em>, es decir tanto para cielos claros como nubosos es todavía un importante desafío ya que estos dos tipos de observaciones requieren un control de calidad y estimaciones de errores específicos. En esta primera aproximación a la asimilación de observaciones de ABI solo se utilizaron observaciones en cielos despejados. Para detectar y filtrar los pixeles nubosos utilizamos la mascara de nubes ACM <span class="citation">(por <em>ABI Cloud Mask,</em> Heidinger and Straka III, 2013)</span> disponible con la misma frecuencia que las observaciones. Esta mascara de nubes da información binaria (cielo despejado o cielo nuboso) y tienen una exactitud del 87% <span class="citation">(Heidinger and Straka III, 2013)</span>. La clasificación es realizada utilizando información de 10 canales de ABI e incluye criterios espectrales, espaciales y temporales. En las Figuras <a href="cap-5-goes.html#fig:cld-msk">5.1</a> se presentan 2 ejemplos de máscara de nubes a las 00 UTC del 20 de noviembre y a las 18 UTC del 22 de noviembre.</p>
 
 <div class="figure"><span style="display:block;" id="fig:cld-msk"></span>
 <img src="thesis_files/figure-html/cld-msk-1.png" alt="Ubicación de píxeles nubosos (gris) según la máscara de nubes generada para GOES-16, durante el a) 06 UTC del 20 de noviembre y b) 18 UTC del 22 de noviembre." width="900"  />
@@ -184,7 +184,7 @@ Figure 5.1: Ubicación de píxeles nubosos (gris) según la máscara de nubes ge
 </p>
 </div>
 <p>Las radianzas de satélite pueden tener errores sistemáticos asociados a las condiciones de la atmósfera, a la geometría de la observación y condiciones específicas de los sensores que deben ser corregidos previo a la asimilación. Por este motivo se generó un primer experimento de asimilación para evaluar la magnitud de estos errores. Esta primera prueba utiliza la misma configuración de modelo y ensamble que los experimentos discutidos previamente e incluye la asimilación de los 3 canales de ABI sensibles al vapor de agua en conjunto.</p>
-<p>La Figura <a href="cap-5-goes.html#fig:oma-dist">5.2</a> muestra la distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y entre las observaciones y el análisis (OmA) para todo el periodo. Si las observaciones no tienen bias la distribución OmF estará centrada en cero. En este caso solo el canal 9 presenta un bias positivo pequeño del orden de 0.3 K (Tabla <a href="cap-5-goes.html#tab:oma-tabla">5.1</a>). Por esta razón y siguiendo trabajos previos (por ejemplo <span class="citation">Honda et al. (2018)</span>) en los experimentos discutidos en este capítulo no se aplica una corrección del bias a estas observaciones.</p>
+<p>La Figura <a href="cap-5-goes.html#fig:oma-dist">5.2</a> muestra la distribución de la diferencia entre las observaciones y el campo preliminar (OmF) y entre las observaciones y el análisis (OmA) para todo el periodo. Si las observaciones no tienen bias la distribución OmF estará centrada en cero. En este caso solo el canal 9 presenta un bias positivo pequeño del orden de 0.3 K (Tabla <a href="cap-5-goes.html#tab:oma-tabla">5.1</a>). Por esta razón y siguiendo trabajos previos <span class="citation">(por ejemplo Honda et al., 2018)</span> en los experimentos discutidos en este capítulo no se aplica una corrección del bias a estas observaciones.</p>
 <p>La Figura <a href="cap-5-goes.html#fig:oma-dist">5.2</a> y la Tabla <a href="cap-5-goes.html#tab:oma-tabla">5.1</a> muestran además otro resultado importante. Si la asimilación de las observaciones se realizó correctamente es esperable que la diferencia OmA esté más cerca de cero que OmF y que su distribución tenga menos varianza. Esto se observa para los 3 canales asimilados y confirma que la implementación técnica dentro del sistema funciona correctamente. Notar que los cambios abruptos y simétricos en las curvas de distribución se deben al chequeo preliminar que se realiza como parte de los controles de calidad y que elimina aquellas observaciones que tienen un diferencia mayor a 2.2 K con respecto del campo preliminar.</p>
 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:oma-dist"></span>
@@ -255,8 +255,8 @@ Figure 5.3: a) Número de radianzas asimiladas en cada ciclo, b) número medio d
 <div id="configuracion-de-los-experimentos" class="section level3 hasAnchor">
 <h3><span class="header-section-number">5.1.2</span> Configuracion de los experimentos<a href="cap-5-goes.html#configuracion-de-los-experimentos" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>En este capítulo se analizan una serie de experimentos, primero para evaluar la sensibilidad a distintas combinaciones de canales y a la resolución del thinning y finalmente para comparar el impacto de la asimilación de observaciones de ABI en conjunto o no con observaciones de satélites polares. Los experimentos SATWND y RAD fueron analizados previamente en el Capítulo <a href="cap-3-analisis.html#cap-3-analisis">3</a>. SATWND asimila observaciones convencionales, EMA y vientos derivados de satélite y RAD suma a lo anterior radianzas en aire claro de sensores a bordo de satélites polares. RAD+ABI incluye además observaciones de los 3 canales de vapor de agua de ABI con un thinning de 10 km. Finalmente el conjunto de experimentos ABI, descriptos en la Tabla <a href="cap-5-goes.html#tab:exp-rad">5.2</a>, incluyen radianzas de ABI pero no de satélites polares, y usan distintas combinaciones de canales y resolución de thinning para evaluar la sensibilidad de la asimilación de distintos canales y la resolución del thinning.</p>
-<table class=" lightable-classic-2" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto;'>
-<caption>
+<table class=" lightable-classic-2 table" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto; font-size: 9px; margin-left: auto; margin-right: auto;'>
+<caption style="font-size: initial !important;">
 <span id="tab:exp-rad">Table 5.2: </span>Experimentos realizados. Todos los experimentos incluyen observaciones convencionales, EMA y vientos derivados de satélite.
 </caption>
 <thead>
@@ -277,7 +277,7 @@ Thining ABI
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;width: 10em; ">
+<td style="text-align:left;width: 11em; ">
 SATWND
 </td>
 <td style="text-align:left;width: 16em; ">
@@ -291,7 +291,7 @@ SATWND
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 10em; ">
+<td style="text-align:left;width: 11em; ">
 RAD
 </td>
 <td style="text-align:left;width: 16em; ">
@@ -305,7 +305,7 @@ Radianzas de satélites polares
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 10em; ">
+<td style="text-align:left;width: 11em; ">
 RAD+ABI
 </td>
 <td style="text-align:left;width: 16em; ">
@@ -319,7 +319,7 @@ Radianzas de satélites polares y ABI
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 10em; ">
+<td style="text-align:left;width: 11em; ">
 ABI_ch890_th10 (ABI)
 </td>
 <td style="text-align:left;width: 16em; ">
@@ -333,7 +333,7 @@ Radianzas de ABI
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 10em; ">
+<td style="text-align:left;width: 11em; ">
 ABI_ch890_th30
 </td>
 <td style="text-align:left;width: 16em; ">
@@ -347,7 +347,7 @@ Radianzas de ABI
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 10em; ">
+<td style="text-align:left;width: 11em; ">
 ABI_ch90_th30
 </td>
 <td style="text-align:left;width: 16em; ">
@@ -361,7 +361,7 @@ Radianzas de ABI
 </td>
 </tr>
 <tr>
-<td style="text-align:left;width: 10em; ">
+<td style="text-align:left;width: 11em; ">
 ABI_ch0_th30
 </td>
 <td style="text-align:left;width: 16em; ">
@@ -377,7 +377,7 @@ Radianzas de ABI
 </tbody>
 </table>
 <p>Todos los experimentos previamente descriptos usan la configuración del ensamble multifísica y del sistema de asimilación explicada en la Sección <a href="metodología-y-datos.html#configmodelo">2.4</a>. De la misma manera los ciclos de análisis horarios se realizan desde las 18 UTC del 20 de noviembre hasta las 12 UTC del 23 de noviembre para cubrir el desarrollo y maduración del SCM.</p>
-<p>Para estudiar el impacto de la asimilación de radianzas también se generaron pronósticos determinísticos en alta resolución inicializados a las 00 del 22 de noviembre (Figura <a href="cap-4-pronosticos.html#fig:cycle-fcst">4.1</a>). Debido al altísimo costo computación que requiere una simulación en alta resolución, no fue posible generar pronósticos por ensambles como en el Capítulo <a href="cap-4-pronosticos.html#cap-4-pronosticos">4</a> y entre otras cosas analizar los pronósticos de precipitación desde el punto de vista probabilístico. Sin embargo, estos pronósticos permiten analizar el desarrollo convectivo que el modelo resuelve explicitamente en mayor detalle, característica que puede mejorar con la asimilación de observaciones de ABI. En la Figura <a href="cap-5-goes.html#fig:dominio-det">5.4</a> se muestra el dominio <em>d01</em> con 10 km de resolución (línea negra), idéntico al dominio utilizado para el resto de las simulaciones numéricas y el dominio anidado <em>d02</em> con 2 km de resolución (línea turquesa). Las condiciones iniciales están dadas por los análisis de los distintos experimentos y las condiciones de borde son generadas a partir del GFSF determinístico. Además las variables atmosféricas para el <em>d02</em> fueron inicializadas haciendo un escalado de la información del análisis. Todos los pronósticos utilizan las mismas parametrizaciones: del modelo de superficie terrestre (Noah-MP, <span class="citation">Chen and Dudhia (2001)</span>), de microfísica (esquema de un solo momento de 6 clases del WRF, <span class="citation">Hong, Kim, et al. (2006)</span>) de procesos radiativos (esquema de onda corta y onda larga del RRTMG, <span class="citation">Iacono et al. (2008)</span>), YSU <span class="citation">(Hong, Noh, et al., 2006)</span> para capa límite y KF <span class="citation">(Kain, 2004)</span> para covección (solo aplicado al <em>d01</em>).</p>
+<p>Para estudiar el impacto de la asimilación de radianzas también se generaron pronósticos determinísticos en alta resolución inicializados a las 00 del 22 de noviembre (Figura <a href="cap-4-pronosticos.html#fig:cycle-fcst">4.1</a>). Debido al altísimo costo computación que requiere una simulación en alta resolución, no fue posible generar pronósticos por ensambles como en el Capítulo <a href="cap-4-pronosticos.html#cap-4-pronosticos">4</a> y entre otras cosas analizar los pronósticos de precipitación desde el punto de vista probabilístico. Sin embargo, estos pronósticos permiten analizar el desarrollo convectivo que el modelo resuelve explicitamente en mayor detalle, característica que puede mejorar con la asimilación de observaciones de ABI. En la Figura <a href="cap-5-goes.html#fig:dominio-det">5.4</a> se muestra el dominio <em>d01</em> con 10 km de resolución (línea negra), idéntico al dominio utilizado para el resto de las simulaciones numéricas y el dominio anidado <em>d02</em> con 2 km de resolución (línea turquesa). Las condiciones iniciales están dadas por los análisis de los distintos experimentos y las condiciones de borde son generadas a partir del GFSF determinístico. Además las variables atmosféricas para el <em>d02</em> fueron inicializadas haciendo un escalado de la información del análisis. Todos los pronósticos utilizan las mismas parametrizaciones: del modelo de superficie terrestre <span class="citation">(Noah-MP, Chen and Dudhia, 2001)</span>, de microfísica <span class="citation">(esquema de un solo momento de 6 clases del WRF, Hong, Kim, et al., 2006)</span> de procesos radiativos <span class="citation">(esquema de onda corta y onda larga del RRTMG, Iacono et al., 2008)</span>, YSU <span class="citation">(Hong, Noh, et al., 2006)</span> para capa límite y KF <span class="citation">(Kain, 2004)</span> para covección (solo aplicado al <em>d01</em>).</p>
 <p>Además de los pronósticos inicializados a partir de los análisis, se generó un pronóstico inicializado a partir del análisis global de GFS, es decir, sin asimilación de datos regional. Este pronóstico tiene la misma configuración y usa el mismo conjunto de parametrizaciones que los pronósticos descriptos previamente.</p>
 
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:dominio-det"></span>
@@ -414,7 +414,7 @@ Figure 5.6: FSS calculado sobre la precipitación acumulada a 1 hora en una vent
 <div id="thinning" class="section level3 hasAnchor">
 <h3><span class="header-section-number">5.2.2</span> Sensibilidad al thinning<a href="cap-5-goes.html#thinning" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Existen diversos algoritmos para realizar el thinning, GSI en particular utiliza una metodología simple que consiste en definir una retícula de baja resolución y seleccionar las observaciones en alta resolución de acuerdo la distancia de estás a los puntos de la retícula gruesa y según criterios de calidad descriptos en la Sección <a href="metodología-y-datos.html#sat">2.3.1.2</a>.</p>
-<p>Es importante definir entonces la resolución apropiada para la retícula de baja resolución y estudiar el impacto que esto tiene en el análisis. Para esto se realizaron 2 experimentos ABI_ch890_th30 con un thinning de 30 km, es decir, que lleva las observaciones con una resolución de 2 km a una retícula de 30 km siguiendo trabajos previos (por ejemplo <span class="citation">Lee et al. (2019)</span> y <span class="citation">Singh et al. (2016)</span>) y ABI_ch890_th10 con un thinning de 10 km, igual a la resolución de las simulaciones numéricas. Las 2 resoluciones elegidas tienen en cuenta por un lado el efecto de la correlación entre los errores de las observaciones y la resolución del modelo y por el otro, no perder información importante que podría incluirse en el análisis. En particular, si bien la resolución del modelo en los experimentos es de 10 km, los procesos que puede representar explicitamente son de escala mayor y por lo tanto es posible que asimilar observaciones con una resolución muy cercana al modelo, que contiene información de procesos en escalas no totalmente resueltas por el modelo, no genere el impacto esperado.</p>
+<p>Es importante definir entonces la resolución apropiada para la retícula de baja resolución y estudiar el impacto que esto tiene en el análisis. Para esto se realizaron 2 experimentos ABI_ch890_th30 con un thinning de 30 km, es decir, que lleva las observaciones con una resolución de 2 km a una retícula de 30 km siguiendo trabajos previos <span class="citation">(por ejemplo Lee et al., 2019 y <span class="citation">@singh2016</span>)</span> y ABI_ch890_th10 con un thinning de 10 km, igual a la resolución de las simulaciones numéricas. Las 2 resoluciones elegidas tienen en cuenta por un lado el efecto de la correlación entre los errores de las observaciones y la resolución del modelo y por el otro, no perder información importante que podría incluirse en el análisis. En particular, si bien la resolución del modelo en los experimentos es de 10 km, los procesos que puede representar explicitamente son de escala mayor y por lo tanto es posible que asimilar observaciones con una resolución muy cercana al modelo, que contiene información de procesos en escalas no totalmente resueltas por el modelo, no genere el impacto esperado.</p>
 
 <div class="figure"><span style="display:block;" id="fig:area-thinning"></span>
 <img src="thesis_files/figure-html/area-thinning-1.png" alt="Porcentaje de área cubierta por precipitación a 1 hora superior a a) 1 \(mmh^{-1}\), b) 5 \(mmh^{-1}\) y c) 10 \(mmh^{-1}\) a lo largo del tiempo para el campo preliminar de los experimentos SATWND (línea naranja), ABI_ch890_th30 (línea verde), y ABI_ch890_th10 (línea celeste) entre las 00 UTC del 22 de noviembre y las 12 UTC del 23 de noviembre en el dominio de verificación (cuadro rojo en la Figura 2.2a). En sombreado y para cada experimento se muestra el área máxima y mínima estimada por el ensamble del análisis. En línea continua negra se muestra la estimación de IMERG." width="900"  />
@@ -495,7 +495,7 @@ Figure 5.14: FSS calculado sobre la precipitación acumulada a 1 hora en una ven
 </div>
 <div id="impacto-de-las-observaciones-de-abi-en-pronósticos-determinísticos-de-alta-resolución" class="section level4 hasAnchor">
 <h4><span class="header-section-number">5.2.3.2</span> Impacto de las observaciones de ABI en pronósticos determinísticos de alta resolución<a href="cap-5-goes.html#impacto-de-las-observaciones-de-abi-en-pronósticos-determinísticos-de-alta-resolución" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>A continuación se analizará el impacto de la asimilación de observaciones de ABI en los pronósticos de alta resolución generados a partir de los análisis. También se incluye en la comparación un pronóstico inicializado a partir del análisis global de GFS (generado con el Global Data Assimilation System (GDAS)), que se utiliza como condición inicial y de borde para la generación de pronósticos operativos en Argentina.</p>
+<p>A continuación se analizará el impacto de la asimilación de observaciones de ABI en los pronósticos de alta resolución generados a partir de los análisis. También se incluye en la comparación un pronóstico inicializado a partir del análisis global de GFS (generado con el <em>Global Data Assimilation System</em>, GDAS), que se utiliza como condición inicial y de borde para la generación de pronósticos operativos en Argentina.</p>
 <div id="representación-de-la-temperatura-humedad-y-viento-en-los-pronósticos" class="section level5 hasAnchor">
 <h5><span class="header-section-number">5.2.3.2.1</span> Representación de la temperatura, humedad y viento en los pronósticos<a href="cap-5-goes.html#representación-de-la-temperatura-humedad-y-viento-en-los-pronósticos" class="anchor-section" aria-label="Anchor link to header"></a></h5>
 <p>En primer lugar se analiza la representación de la temperatura, humedad y viento en los pronósticos de alta resolución. En este caso se compararan los experimentos RAD, RAD+ABI y ABI con SATWND como experimento control para evaluar el impacto de incorporar las radianzas de satélites polares y de ABI. Posteriormente se comparan los experimentos con observaciones independientes de EMA y radiosondeos de RELAMPAGO.</p>
@@ -556,8 +556,8 @@ Figure 5.20: FSS calculado sobre la precipitación acumulada en una ventana móv
 <p>A las 12 UTC, cuando la convección se encuentra cruzando el dominio, todos los pronósticos ubican la nubosidad en la región correcta aunque menos organizada y asociadas a temperaturas de tope más altas que lo observado. De todos los pronósticos SATWND es el que muestra valores de temperatura de brillo más bajos (Figura <a href="cap-5-goes.html#fig:tb">5.21</a>g). Por otro lado, la nubosidad que se observa sobre Chaco también está presente en los pronósticos inicializados a partir del análisis con asimilación observaciones de ABI (Figuras <a href="cap-5-goes.html#fig:tb">5.21</a>i y j). Sin embargo no logran generar la nubosidad sobre Uruguay que si se muestra en el pronóstico de GFS (Figuras <a href="cap-5-goes.html#fig:tb">5.21</a>k).</p>
 <p>Finalmente a las 00 UTC del 23 de noviembre la convección se extiende sobre todo el noreste del dominio con temperaturas de brillo por debajo de los -85<span class="math inline">\(^\circ\)</span>C asociada a los topes nubosos más altos (Figura <a href="cap-5-goes.html#fig:tb">5.21</a>r). Si bien todos los pronósticos logran representar las características principales del sistema convectivo la temperatura de brillo es ligeramente mayor y solo en algunas regiones llega a valores por debajo de -85<span class="math inline">\(^\circ\)</span>C. En este caso GFS es el único pronóstico que representa con mayor detalle la región con menores temperaturas de brillo dividida en 2 subregiones como se observa en la imagen de brillo de GOES-16.</p>
 
-<div class="figure" style="text-align: center"><span style="display:block;" id="fig:tb"></span>
-<img src="thesis_files/figure-html/tb-1.png" alt="Temperatura de brillo simulada por CRTM a partir de los pronósticos determinísticos a las 00 y 12 UTC del 22 de noviembre y las 00 UTC del 23 de noviembre. Las observaciones de temperatura de brillo del canal 13 de GOES-16 se muestran en la ultima columna (f, l, r)." width="1050"  />
+<div class="figure" style="text-align: left"><span style="display:block;" id="fig:tb"></span>
+<img src="thesis_files/figure-html/tb-1.png" alt="Temperatura de brillo simulada por CRTM a partir de los pronósticos determinísticos a las 00 y 12 UTC del 22 de noviembre y las 00 UTC del 23 de noviembre. Las observaciones de temperatura de brillo del canal 13 de GOES-16 se muestran en la ultima columna (f, l, r)." width="975"  />
 <p class="caption">
 Figure 5.21: Temperatura de brillo simulada por CRTM a partir de los pronósticos determinísticos a las 00 y 12 UTC del 22 de noviembre y las 00 UTC del 23 de noviembre. Las observaciones de temperatura de brillo del canal 13 de GOES-16 se muestran en la ultima columna (f, l, r).
 </p>
