@@ -8,7 +8,7 @@ Este capítulo busca contribuir a la cuantificación y comparación del impacto 
 
 ### Configuración de los experimentos {#config}
 
-Para investigar el impacto de las diferentes observaciones en el análisis, se realizaron cuatro experimentos de asimilación de datos utilizando diferentes conjuntos de observaciones (Tabla \@ref(tab:table-exp)). El experimento CONV utiliza únicamente las observaciones convencionales de PREPBUFR. En un segundo experimento, denominado AWS, se asimilan todas las observaciones incluidas en CONV más las observaciones de EMA con 10 minutos de frecuencia. En el tercer experimento, denominado SATWND, se asimilan las observaciones del experimento AWS junto con los vientos estimados por satélite. Por último, un cuarto experimento, denominado RAD, asimila todas las observaciones mencionadas previamente más las radianzas en cielo despejado procedentes de los sensores a bordo de los satélites de órbita polar, como se describe en la sección \@ref(sat).
+Para investigar el impacto de las diferentes observaciones en el análisis, se realizaron cuatro experimentos de asimilación de datos utilizando diferentes conjuntos de observaciones (Tabla \@ref(tab:table-exp)). El experimento CONV utiliza únicamente las observaciones convencionales de PREPBUFR. En un segundo experimento, denominado AWS, se asimilan todas las observaciones incluidas en CONV más las observaciones de EMA con 10 minutos de frecuencia. En el tercer experimento, denominado SATWND, se asimilan las observaciones del experimento AWS junto con los vientos estimados por satélite. Por último, un cuarto experimento, denominado RAD, asimila todas las observaciones mencionadas previamente más las radianzas en cielo despejado procedentes de los sensores a bordo de los satélites de órbita polar, como se describe en la Sección \@ref(sat).
 
 
 ```{r table-exp}
@@ -116,7 +116,7 @@ rbind(conv, aut, satwnd, rad_conv) %>%
   ggplot(aes(ConvertLongitude(lon.box), lat.box)) +
   geom_raster(aes(fill = obs_cycle), alpha = 0.8) +
   scale_fill_viridis_c(option = "D", trans = scales::log10_trans(),
-                       guide = guide_colorbar(barwidth = 18,
+                       guide = guide_colorbar(barwidth = 12,
                                               barheight = 0.5, 
                                               title.position = "left", 
                                               title.vjust = 1,
@@ -193,7 +193,7 @@ rbind(conv, aut, satwnd, rad_conv) %>%
 
 ```
 
-Todos los experimentos de asimilación comienzan a las 18 UTC del 20 de noviembre de 2018 y continúan hasta las 12 UTC del 23 de noviembre (un total de 67 horas/ciclos de asimilación). El ensamble inicial de 60 miembros se genera según se explica en la sección \@ref(configmodelo) y todos los experimentos se inician con un periodo de spin up sin asimilación de observaciones entre las 12 UTC y las 18 UTC del 20 de Noviembre (Figura \@ref(fig:cycle)). 
+Todos los experimentos de asimilación comienzan a las 18 UTC del 20 de noviembre de 2018 y continúan hasta las 12 UTC del 23 de noviembre (un total de 67 horas/ciclos de asimilación). El ensamble inicial de 60 miembros se genera según se explica en la Sección \@ref(configmodelo) y todos los experimentos se inician con un periodo de spin up sin asimilación de observaciones entre las 12 UTC y las 18 UTC del 20 de Noviembre (Figura \@ref(fig:cycle)). 
 
 (ref:cycle) Diagrama de los ciclos de asimilación entre las 18 UTC del 20 de noviembre y las 12 UTC del 23 de noviembre más el periodo de spin up de 6 horas. La sección ampliada muestra la asimilación horaria que se realiza dentro de una ventana centrada de una hora y la incorporación de condiciones de borde del GFS cada 6 horas. Se muestran las dos misiones IOP de la campaña RELAMPAGO.
 
@@ -729,7 +729,7 @@ La distribución de la temperatura y la humedad en la PBL (Figura \@ref(fig:summ
 (ref:summary-fields) a) Agua precipitable (sombreada, $kgm^{-2}$) y componte meridional del viento promediada sobre los primeros los primeros 7 niveles sigma (desde la superficie hasta aproximadamente 800 hPa, contornos, $ms^{-1}$), b) Temperatura potencial media para la PBL (primeros 10 niveles sigma), y c) CAPE máximo y cortante del viento en ~0-6 km para 15 y 30 $ms^{-1}$ en cada experimento. Todos los campos corresponden a la media del ensamble del análisis para las 00 UTC del 22 de noviembre. Los contornos rellenos de color gris corresponden a la topografía de más de 1500 metros sobre el nivel del mar.
 
 
-```{r summary-fields, fig.cap="(ref:summary-fields)", fig.height=10, fig.width=9, out.width="100%"}
+```{r summary-fields, fig.cap="(ref:summary-fields)", fig.height=10, fig.width=8, out.width="100%"}
 
 files <- Sys.glob(here("data/derived_data/analysis_variables/pw/pw_ana_E[2569]_20181122000000.nc"))
 
@@ -891,7 +891,7 @@ ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)),
 
 ### Validación con observaciones independientes {#val-analisis}
 
-En primer lugar, se analizó el impacto de la asimilación de diferentes tipos de observación en la representación del SCM y su precipitación asociada. La figura \@ref(fig:pp-hov)a muestra la precipitación acumulada horaria estimada por IMERG, y la media calibrada mediante una técnica de ajuste de la función de distribución de probabilidad (PM, @clark2017) para la precipitación acumulada horaria del campo preliminar promediada entre 67$^{\circ}$W y 54,5$^{\circ}$W en función del tiempo y la latitud en los diferentes experimentos. Las precipitaciones más intensas comienzan durante la tarde del 22 de noviembre y continúan durante el 23 de noviembre posterior al periodo simulado (Figura \@ref(fig:pp-hov)a). En todos los experimentos, la precipitación acumulada en los pronósticos de corto plazo es subestimada. Esto es particularmente evidente en CONV (Figura \@ref(fig:pp-hov)b), donde el inicio de la convección se retrasa y ocurre más al norte con respecto al inicio observado. AWS, SATWND y RAD captan mejor el momento y la ubicación de la iniciación de la convección (Figuras \@ref(fig:pp-hov)c-e). AWS y RAD muestran una distribución más fragmentada en comparación con SATWND, posiblemente debido al desarrollo de una convección menos organizada durante el 22 de noviembre. Después de las 18 UTC del 22 de noviembre, RAD muestra mejoras en la tasa de precipitación y su distribución en comparación con los otros experimentos como resultado de un desarrollo de la convección más intenso.
+En primer lugar, se analizó el impacto de la asimilación de diferentes tipos de observación en la representación del SCM y su precipitación asociada. La figura \@ref(fig:pp-hov)a muestra la precipitación acumulada horaria estimada por IMERG, y la media calibrada mediante una técnica de ajuste de la función de distribución de probabilidad [PM, @clark2017] para la precipitación acumulada horaria del campo preliminar promediada entre 67$^{\circ}$W y 54,5$^{\circ}$W en función del tiempo y la latitud en los diferentes experimentos. Las precipitaciones más intensas comienzan durante la tarde del 22 de noviembre y continúan durante el 23 de noviembre posterior al periodo simulado (Figura \@ref(fig:pp-hov)a). En todos los experimentos, la precipitación acumulada en los pronósticos de corto plazo es subestimada. Esto es particularmente evidente en CONV (Figura \@ref(fig:pp-hov)b), donde el inicio de la convección se retrasa y ocurre más al norte con respecto al inicio observado. AWS, SATWND y RAD captan mejor el momento y la ubicación de la iniciación de la convección (Figuras \@ref(fig:pp-hov)c-e). AWS y RAD muestran una distribución más fragmentada en comparación con SATWND, posiblemente debido al desarrollo de una convección menos organizada durante el 22 de noviembre. Después de las 18 UTC del 22 de noviembre, RAD muestra mejoras en la tasa de precipitación y su distribución en comparación con los otros experimentos como resultado de un desarrollo de la convección más intenso.
 
 
 (ref:pphov) Diagrama de Hövmoller de la media ajustada a la probabilidad de la precipitación acumulada horaria para cada banda de latitud estimada por IMERG (a) y simulada (b-e) por cada experimento, promediada en un rango de longitudes entre 67$^{\circ}$W y 54,5$^{\circ}$W. Los contornos se dibujan cada 0,5 $mm^{-1}$, comenzando en 0,5 $mm^{-1}$.
@@ -975,7 +975,7 @@ El FSS se calcula para cuantificar la coincidencia espacial en distintas escalas
 
 (ref:fss) FSS calculado sobre la precipitación acumulada a 1 hora en una ventana móvil de 6 horas para umbrales de 1 mm (a y c) y 25 mm (b y d), en escalas de 10 km (a y b) y 100 km (c y d), para el campo preliminar de los experimentos CONV (línea azul), AWS (línea celeste), SATWND (línea naranja) y RAD (línea roja).
 
-```{r fss, fig.cap="(ref:fss)", fig.width=5, fig.height=5}
+```{r fss, fig.cap="(ref:fss)", fig.width=5, fig.height=5, fig.align="center"}
 files <- Sys.glob(here("data/derived_data/FSS/fss_6h_ana_ens_E[2569].csv"))
 
 fss <- purrr::map(files, function(f) {
@@ -1008,12 +1008,12 @@ Para complementar el análisis, la Figura \@ref(fig:dbz-mean) muestra la reflect
 
 Finalmente, la Figura \@ref(fig:soundings) muestra el RMSE y el bias calculados comparando los experimentos con los datos de radiosondeos durante las misiones de observación intensiva del experimento RELAMPAGO, IOP 7 del 15 al 21 UTC de noviembre (incluyendo 30 radiosondeos), e IOP 8 del 14 al 20 UTC de noviembre (incluyendo 22 radiosondeos). 
 
-El IOP 7 (Figuras \@ref(fig:soundings)a-d) proporciona una buena caracterización del entorno preconvectivo durante el primer día de nuestros experimentos. La zona donde se realizaron las observaciones se caracterizó por cielos mayoritariamente despejados y un flujo de norte en niveles bajos asociado a una advección cálida y húmeda. En general, los experimentos muestran un RMSE y un bias similares para todas las variables. Las observaciones de EMA lograron reducir el RMSE para la temperatura y la temperatura del punto de rocío y un bias seco en la PBL. Sin embargo, en esta región (Figura \@ref(fig:dominio)b) y para este periodo, los incrementos generados por EMAs en el análisis (Figura \@ref(fig:UV-diff)d) degradan el viento zonal entre 7 y 12 km aumentando el bias y el RMSE (Figura \@ref(fig:soundings)c).
+El IOP 7 (Figuras \@ref(fig:soundings)a-d) proporciona una buena caracterización del entorno preconvectivo durante el primer día de nuestros experimentos. La zona donde se realizaron las observaciones se caracterizó por cielos mayoritariamente despejados y un flujo de norte en niveles bajos asociado a una advección cálida y húmeda. En general, los experimentos muestran un RMSE y un bias similares para todas las variables. Las observaciones de EMA lograron reducir el RMSE para la temperatura y la temperatura del punto de rocío y un bias seco en la PBL. Sin embargo, en esta región (Figura \@ref(fig:dominio)b) y para este periodo, los incrementos generados por observaciones de EMA en el análisis (Figura \@ref(fig:UV-diff)d) degradan el viento zonal entre 7 y 12 km aumentando el bias y el RMSE (Figura \@ref(fig:soundings)c).
 
 
 (ref:dbz-mean) Reflectividad máxima en la columna (COLMAX en $dBZ$), observada (fila superior) y pronosticada a 1 hora por los experimentos CONV (segunda fila) y RAD (tercera fila) a las 10 UTC (primera columna), 13 UTC (segunda columna), 16 UTC (tercera columna) y 19 UTC (cuarta columna) del 22 de noviembre de 2018. Los círculos negros en la primera fila muestran el rango de observación de cada radar. 
 
-```{r dbz-mean, fig.cap="(ref:dbz-mean)", out.width="100%", fig.height=6.5, fig.width=8}
+```{r dbz-mean, fig.cap="(ref:dbz-mean)", out.width="100%", fig.height=6.5, fig.width=7}
 proj_radar <- "+proj=tmerc +lon_0=-61.5 +lat_0=-32 +k_0=1 +ellps=WGS84"
 
 rad_loc <- fread(here("data/derived_data/sample_obs/radar_loc.csv")) %>% 

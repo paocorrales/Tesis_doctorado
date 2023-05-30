@@ -11,7 +11,7 @@ estaciones automáticas, vientos derivados de satélite y radianzas de satélite
 
 ### Configuración de los experimentos
 
-Para estudiar el impacto de la asimilación de observaciones en pronósticos independientes, se generaron pronósticos por ensambles inicializados a partir de los análisis de los experimentos previamente descriptos. Estos pronósticos toman el nombre del análisis que utilizan como condición inicial, por ejemplo el pronóstico CONV será aquel que fue incializado a partir del análisis del experimento CONV. Todos los pronósticos utilizan la misma configuración de dominio y de ensamble multifísica que los análisis. Las condiciones de borde de los miembros del ensamble se generaron añadiendo perturbaciones aleatorias al pronóstico determinístico del GFS (GFSF, 0.25$^{\circ}$ de resolución horizontal y resolución temporal de 6 horas; @cisl_rda_ds084.1) como se muestra en la Figura \@ref(fig:cycle-fcst). Estas perturbaciones son las mismas que se utilizaron para la generación de las condiciones de borde de los análisis.
+Para estudiar el impacto de la asimilación de observaciones en pronósticos independientes, se generaron pronósticos por ensambles inicializados a partir de los análisis de los experimentos previamente descriptos. Estos pronósticos toman el nombre del análisis que utilizan como condición inicial, por ejemplo el pronóstico CONV será aquel que fue incializado a partir del análisis del experimento CONV. Todos los pronósticos utilizan la misma configuración de dominio y de ensamble multifísica que los análisis. Las condiciones de borde de los miembros del ensamble se generaron añadiendo perturbaciones aleatorias al pronóstico determinístico del GFS [GFSF, 0.25$^{\circ}$ de resolución horizontal y resolución temporal de 6 horas; @cisl_rda_ds084.1] como se muestra en la Figura \@ref(fig:cycle-fcst). Estas perturbaciones son las mismas que se utilizaron para la generación de las condiciones de borde de los análisis.
 
 Los pronósticos se inicializaron a las 00 y 06 UTC del 22 de noviembre para capturar la inicialización y desarrollo del SCM y además evaluar las posibles diferencias entre los experimentos debido a la asimilación de nuevas observaciones entre las 00 y las 06 UTC. Todos los pronósticos finalizan a las 12 UTC del 23 de noviembre cuando el SCM se encuentra en el borde noroeste del dominio (Figura \@ref(fig:caso)f). 
 
@@ -32,7 +32,7 @@ Al igual que en la Sección \@ref(impacto-analisis), se compararon los pronósti
 
 (ref:era5-fcst-t) Diferencia entre la media del ensamble del pronóstico inicializado a partir de cada experimento y ERA5 de los perfiles verticales promediados espacialmente de la temperatura del aire ($K$) calculado sobre el dominio de validación (cuadro rojo en la Figura \@ref(fig:dominio)a) para cada tiempo de pronóstico.
 
-(ref:era5-fcst-q) Cómo en la Figura \@ref(fig:era5-fcst-1) pero para la humedad específica ($gkg^{-1}$).
+(ref:era5-fcst-q) Como en la Figura \@ref(fig:era5-fcst-1) pero para la humedad específica ($gkg^{-1}$).
 
 
 ```{r era5-fcst, fig.cap=c("(ref:era5-fcst-t)", "(ref:era5-fcst-q)"), fig.align="center", fig.pos="ht"}
@@ -110,9 +110,9 @@ En RAD el bias cálido vuelve a aumentar ligeramente manteniendo la tendencia ob
 
 Las diferencias entre los pronósticos y ERA5 para los perfiles promediados de humedad específica (Figuras \@ref(fig:era5-fcst-2)) muestran nuevamente el bias seco presente en el modelo y que es más importante en horas nocturnas. Sin embargo es notaria la mejora en los pronósticos inicializados a partir de AWS y SATWND y RAD, en comparación con CONV. Los pronósticos inicializados a partir de CONV mantienen un bias seco muy marcado a lo largo de todo el periodo y que nuevamente puede estar asociado con errores sistemáticos en el modelo (Figuras \@ref(fig:era5-fcst-2)a y e). Las dos inicialización, en este caso, no muestran diferencias apreciables.
 
-(ref:era5-fcst-v) Cómo en la Figura \@ref(fig:era5-fcst-1) pero para el viento meridional ($ms^{-1}$).
+(ref:era5-fcst-v) Como en la Figura \@ref(fig:era5-fcst-1) pero para el viento meridional ($ms^{-1}$).
 
-(ref:era5-fcst-u) Cómo en la Figura \@ref(fig:era5-fcst-1) pero para el viento zonal ($ms^{-1}$).
+(ref:era5-fcst-u) Como en la Figura \@ref(fig:era5-fcst-1) pero para el viento zonal ($ms^{-1}$).
 ```{r era5-fcst-uv, fig.cap=c("(ref:era5-fcst-v)", "(ref:era5-fcst-u)"), fig.align="center", fig.pos="ht"}
 perfiles %>%
   .[variable == "V"] %>% 
@@ -206,7 +206,7 @@ front %>%
                                                       E6 = "SATWND", E9 = "RAD")) +
   coord_sf(ylim = c(-38, -20), xlim = c(-68, -54)) +
   labs(color = NULL) +
-  facet_grid(date ~ lev, labeller = labeller(lev = c("1000" = "1000 hPa",
+  facet_grid(lev ~ date, labeller = labeller(lev = c("1000" = "1000 hPa",
                                                      "900" = "900 hPa",
                                                      "800" = "800 hPa"),
                                              date = c("2018-11-22 12:00:00" = "12 UTC, 22 de Nov",
@@ -453,13 +453,13 @@ prop %>%
   scale_y_continuous(breaks = seq(0, 1, 0.1)) +
   scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
                                                       E6 = "SATWND", E9 = "RAD"),
-                     guide = guide_legend(nrow = 2)) +
+                     guide = guide_legend(nrow = 4)) +
   coord_cartesian(ylim = c(0, 1)) +
   facet_wrap(~ percentil, ncol = 2) +
   tagger::tag_facets(position = list(x = 0.02, y = 0.95)) +
   labs(color = NULL, x = "Probabilidad pronosticada", y = "Frecuencia relativa observada") +
   theme_minimal(base_size = 9) +
-  theme(legend.position = c(0.75, 0.1),
+  theme(legend.position = c(0.6, 0.2),
         legend.box.margin = margin(0, 0, 0, 0),
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 
@@ -491,13 +491,13 @@ prop %>%
   scale_y_continuous(breaks = seq(0, 1, 0.1)) +
   scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
                                                       E6 = "SATWND", E9 = "RAD"),
-                     guide = guide_legend(nrow = 2)) +
+                     guide = guide_legend(nrow = 4)) +
   coord_cartesian(ylim = c(0, 1)) +
   facet_wrap(~ percentil, ncol = 2) +
   tagger::tag_facets(position = list(x = 0.02, y = 0.95)) +
   labs(color = NULL, x = "Probabilidad pronosticada", y = "Frecuencia relativa observada") +
   theme_minimal(base_size = 9) +
-  theme(legend.position = c(0.75, 0.1),
+  theme(legend.position = c(0.6, 0.2),
         legend.box.margin = margin(0, 0, 0, 0),
         panel.background = element_rect(fill = "#fbfbfb", color = NA))
 
@@ -557,7 +557,7 @@ Las Figuras \@ref(fig:prob)i-p muestran los campos de probabilidad de precipitac
 
 (ref:prob) Probabilidad de ocurrencia de precipitación acumulada en 36 y 30 hs superior a 10 mm (a-h) y 50 mm (i-p) para los pronósticos inicializados a las 00 y 06 UTC respectivamente. Los contornos negros representan la estimación de IMERG para cada umbral de precipitación.
 
-```{r prob, fig.cap="(ref:prob)", fig.width=7, fig.height=9, fig.align="center"}
+```{r prob, fig.cap="(ref:prob)", fig.width=6.5, fig.height=7.5, fig.align="left"}
 files <- Sys.glob(here("data/derived_data/forecast_variables/ppacum/E[2,5,6,9]_fcst_*_prop_acum_30h.rds"))
 
 pp_wrf <- purrr::map(files, function(f) {
@@ -726,7 +726,7 @@ En esta sección analizamos el desempeño de las distintas parametrizaciones de 
 
 La Figura \@ref(fig:aut-all) muestra el RMSE y BIAS calculado comparando con las observaciones de EMA sobre los miembros del ensamble que utilizan cada una de las parametrizaciones de capa límite. En este caso no se muestran las dos inicializaciones por separado ya que ambos pronósticos presentan tendencias muy similares. Al analizar los resultados generados por los miembros que comparten las parametrizaciones de capa límite hay que tener en cuenta que todos usan, además, distintas parametrizaciones de convección, por lo que parte de la sensibilidad a las parametrizaciones observada podría estar parcialmente influenciada por esto. Sin embargo, el análisis de sensibilidad sobre las parametrizaciones de convección sobre variables cercanas a superficies mostró que estas tienen poco impacto en la representación del viento, humedad y temperatura en la capa límite. 
 
-Si bien sería deseable encontrar una parametrización de capa límite que represente correctamente todas las variables de interés, estudios previos en la región (por ejemplo @ruiz2010 y @dillon2021) mostraron que la combinación de parametrizaciones que produzca mejores resultados, puede depender de la variable que se considere para la validación de los pronósticos. Para esta situación, la parametrización MYJ presenta un menor RMSE y BIAS para las variables termodinámicas (humedad relativa y temperatura) mientras que MYNN2 representa mejor el viento. Sin embargo, a excepción del RMSE del viento, los errores tienen una variabilidad pequeña por lo que la elección de una parametrización u otra podría no tener un impacto importante en la representación de la capa límite. Sin embargo, que las parametrizaciones tengan errores asociados similares no necesariamente quiere decir que representen los procesos de pequeña escala de la misma manera. Esto refuerza la necesidad de generar un ensamble multifísica como el utilizado en este trabajo para poder capturar los posibles errores asociados al modelo y la representación de los procesos parametrizados. 
+Si bien sería deseable encontrar una parametrización de capa límite que represente correctamente todas las variables de interés, estudios previos en la región [por ejemplo @ruiz2010 y @dillon2021] mostraron que la combinación de parametrizaciones que produzca mejores resultados, puede depender de la variable que se considere para la validación de los pronósticos. Para esta situación, la parametrización MYJ presenta un menor RMSE y BIAS para las variables termodinámicas (humedad relativa y temperatura) mientras que MYNN2 representa mejor el viento. Sin embargo, a excepción del RMSE del viento, los errores tienen una variabilidad pequeña por lo que la elección de una parametrización u otra podría no tener un impacto importante en la representación de la capa límite. Sin embargo, que las parametrizaciones tengan errores asociados similares no necesariamente quiere decir que representen los procesos de pequeña escala de la misma manera. Esto refuerza la necesidad de generar un ensamble multifísica como el utilizado en este trabajo para poder capturar los posibles errores asociados al modelo y la representación de los procesos parametrizados. 
 
 (ref:aut-all) RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (círculo), MYNN2 (triángulo) e YSU (cuadrado) para todos los pronósticos en conjunto. 
 
