@@ -28,7 +28,7 @@ knitr::include_graphics(here("figure/forecast_diag.png"))
 
 ### Impacto de las observaciones en el pronostico {#prono-impacto}
 
-Al igual que en la Sección \@ref(impacto-analisis), se compararon los pronósticos con ERA5 sobre la región definida en la Figura \@ref(fig:dominio). La diferencia entre los perfiles de temperatura de la media del ensamble promediados espacialmente y ERA5 a lo largo del tiempo se muestran en la Figura \@ref(fig:era5-fcst-1). En lineas generales la temperatura por encima de 750 hPa es subestimada por los pronósticos y esto ocurre independientemente de las condiciones iniciales que se utilicen. Sin embargo, y al igual que en los análisis, se observa una mejor representación de la temperatura por encima de 750 hPa cuando las condiciones iniciales incluyen observaciones de EMA. En niveles bajos se observa la misma tendencia que en los análisis, los pronósticos inicializados a partir de AWS y SATWND muestran un bias cálido mucho menor que CONV gracias a las condiciones iniciales que incluyen la asimilación de observaciones de EMA. 
+Al igual que en la Sección \@ref(impacto-analisis), se compararon los pronósticos con ERA5 sobre la región definida en la Figura \@ref(fig:dominio). La diferencia entre los perfiles de temperatura de la media del ensamble promediados espacialmente y ERA5 a lo largo del tiempo se muestran en la Figura \@ref(fig:era5-fcst-1). En lineas generales la temperatura por encima de 750 hPa es subestimada por los pronósticos y esto ocurre independientemente de las condiciones iniciales que se utilicen. Sin embargo, y al igual que en los análisis, se observa una mejor representación de la temperatura por encima de 750 hPa cuando las condiciones iniciales incluyen observaciones de EMA. En niveles bajos se observa el mismo mismo patrón que en los análisis, los pronósticos inicializados a partir de AWS y SATWND muestran un bias cálido mucho menor que CONV gracias a las condiciones iniciales que incluyen la asimilación de observaciones de EMA. 
 
 (ref:era5-fcst-t) Diferencia entre la media del ensamble del pronóstico inicializado a partir de cada experimento y ERA5 de los perfiles verticales promediados espacialmente de la temperatura del aire ($K$) calculado sobre el dominio de validación (cuadro rojo en la Figura \@ref(fig:dominio)a) para cada tiempo de pronóstico.
 
@@ -106,7 +106,7 @@ perfiles %>%
         panel.grid = element_line(linetype = 3))
 ```
 
-En RAD el bias cálido vuelve a aumentar ligeramente manteniendo la tendencia observada en los análisis de RAD (Figuras \@ref(fig:era5-fcst-1)d y h). Es importante notar que el impacto que genera la asimilación de las distintas fuentes de observación persiste en los pronósticos, aunque la persistencia del bias cálido en la capa límite podría indicar que los errores en el modelo contribuyen a este error. En la capa límite sí se ven diferencias entre las dos inicializaciones, en particular se observan mejoras para la inicialización de las 06 UTC en los casos de AWS y SATWND, indicando que las observaciones asimiladas entre las 00 y las 06 UTC tienen un impacto positivo en la representación de la temperatura cerca de superficie que se traslada a los pronósticos. 
+En RAD el bias cálido vuelve a aumentar ligeramente manteniendo el patrón observado en los análisis de RAD (Figuras \@ref(fig:era5-fcst-1)d y h). Es importante notar que el impacto que genera la asimilación de las distintas fuentes de observación persiste en los pronósticos, aunque la persistencia del bias cálido en la capa límite podría indicar que los errores en el modelo contribuyen a este error. En la capa límite sí se ven diferencias entre las dos inicializaciones, en particular se observan mejoras para la inicialización de las 06 UTC en los casos de AWS y SATWND, indicando que las observaciones asimiladas entre las 00 y las 06 UTC tienen un impacto positivo en la representación de la temperatura cerca de superficie que se traslada a los pronósticos. 
 
 Las diferencias entre los pronósticos y ERA5 para los perfiles promediados de humedad específica (Figuras \@ref(fig:era5-fcst-2)) muestran nuevamente el bias seco presente en el modelo y que es más importante en horas nocturnas. Sin embargo es notaria la mejora en los pronósticos inicializados a partir de AWS y SATWND y RAD, en comparación con CONV. Los pronósticos inicializados a partir de CONV mantienen un bias seco muy marcado a lo largo de todo el periodo y que nuevamente puede estar asociado con errores sistemáticos en el modelo (Figuras \@ref(fig:era5-fcst-2)a y e). Las dos inicialización, en este caso, no muestran diferencias apreciables.
 
@@ -202,7 +202,7 @@ front %>%
                 breaks = c(0), proj = norargentina_lambert, 
                 color = "black") +
   # scale_fill_divergent_discretised() +
-  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AUT",
+  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
                                                       E6 = "SATWND", E9 = "RAD")) +
   coord_sf(ylim = c(-38, -20), xlim = c(-68, -54)) +
   labs(color = NULL) +
@@ -290,7 +290,7 @@ fss %>%
   ggplot(aes(date, fss)) +
   geom_hline(yintercept = 1, color = "darkgray") +
   geom_line(aes(color = exp, linetype = factor(ini_date))) +
-  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AUT",
+  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS",
                                                       E6 = "SATWND", E9 = "RAD")) +
   scale_linetype_manual(values = c(1, 2), labels = c("2018-11-22 00:00:00" = "OO UTC", 
                                                      "2018-11-22 06:00:00" = "06 UTC")) +
@@ -353,11 +353,11 @@ pp_area %>%
   geom_ribbon(aes(ymin = min_area, ymax = max_area, fill = exp, group = interaction(exp, ini_date)), alpha = .1) +
   geom_line(aes(color = exp, linetype = factor(ini_date))) +
   scale_color_manual(values = c(OBS = "grey20", colores_exp),
-                     labels =  c(E2 = "CONV", E5 = "ASWS", E6 = "SATWND",
+                     labels =  c(E2 = "CONV", E5 = "AWS", E6 = "SATWND",
                                  E9 = "RAD", OBS = "IMERG")) +
   scale_fill_manual(values = c(OBS = "grey20", colores_exp),
                     guide = NULL,
-                    labels = c(E2 = "CONV", E5 = "ASWS", E6 = "SATWND",
+                    labels = c(E2 = "CONV", E5 = "AWS", E6 = "SATWND",
                                E9 = "RAD", OBS = "OBS")) +
   scale_y_continuous(label = scales::percent_format()) +
   scale_linetype_manual(values = c(1, 2), labels = c("2018-11-22 00:00:00" = "00 UTC", 
@@ -707,7 +707,7 @@ media %>%
   ggplot(aes(lev/1000, value.est)) +
   geom_hline(yintercept = 0, color = "darkgrey") +
   geom_line(aes(color = exp, linetype = estadistico)) +
-  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AUT", 
+  scale_color_manual(values = colores_exp, labels = c(E2 = "CONV", E5 = "AWS", 
                                                       E6 = "SATWND", E9 = "RAD")) +
   coord_flip(xlim = c(0, 15)) +
   facet_grid(fcst_exp_label ~ variable_labels, scales = "free_x", 
@@ -724,9 +724,9 @@ media %>%
 
 En esta sección analizamos el desempeño de las distintas parametrizaciones de capa límite y convección utilizadas en el ensamble multifísica, comparando los miembros del ensamble con los radiosondeos de RELAMPAGO y las observaciones de EMA.
 
-La Figura \@ref(fig:aut-all) muestra el RMSE y BIAS calculado comparando con las observaciones de EMA sobre los miembros del ensamble que utilizan cada una de las parametrizaciones de capa límite. En este caso no se muestran las dos inicializaciones por separado ya que ambos pronósticos presentan tendencias muy similares. Al analizar los resultados generados por los miembros que comparten las parametrizaciones de capa límite hay que tener en cuenta que todos usan, además, distintas parametrizaciones de convección, por lo que parte de la sensibilidad a las parametrizaciones observada podría estar parcialmente influenciada por esto. Sin embargo, el análisis de sensibilidad sobre las parametrizaciones de convección sobre variables cercanas a superficies mostró que estas tienen poco impacto en la representación del viento, humedad y temperatura en la capa límite. 
+La Figura \@ref(fig:aut-all) muestra el RMSE y BIAS calculado comparando con las observaciones de EMA sobre los miembros del ensamble que utilizan cada una de las parametrizaciones de capa límite. En este caso no se muestran las dos inicializaciones por separado ya que ambos pronósticos presentan patrones muy similares. Al analizar los resultados generados por los miembros que comparten las parametrizaciones de capa límite hay que tener en cuenta que todos usan, además, distintas parametrizaciones de convección, por lo que parte de la sensibilidad a las parametrizaciones observada podría estar parcialmente influenciada por esto. Sin embargo, el análisis de sensibilidad sobre las parametrizaciones de convección sobre variables cercanas a superficies mostró que estas tienen poco impacto en la representación del viento, humedad y temperatura en la capa límite. 
 
-Si bien sería deseable encontrar una parametrización de capa límite que represente correctamente todas las variables de interés, estudios previos en la región [por ejemplo @ruiz2010 y @dillon2021] mostraron que la combinación de parametrizaciones que produzca mejores resultados, puede depender de la variable que se considere para la validación de los pronósticos. Para esta situación, la parametrización MYJ presenta un menor RMSE y BIAS para las variables termodinámicas (humedad relativa y temperatura) mientras que MYNN2 representa mejor el viento. Sin embargo, a excepción del RMSE del viento, los errores tienen una variabilidad pequeña por lo que la elección de una parametrización u otra podría no tener un impacto importante en la representación de la capa límite. Sin embargo, que las parametrizaciones tengan errores asociados similares no necesariamente quiere decir que representen los procesos de pequeña escala de la misma manera. Esto refuerza la necesidad de generar un ensamble multifísica como el utilizado en este trabajo para poder capturar los posibles errores asociados al modelo y la representación de los procesos parametrizados. 
+Si bien sería deseable encontrar una parametrización de capa límite que represente correctamente todas las variables de interés, estudios previos en la región [por ejemplo @ruiz2010; @dillon2021] mostraron que la combinación de parametrizaciones que produzca mejores resultados, puede depender de la variable que se considere para la validación de los pronósticos. Para esta situación, la parametrización MYJ presenta un menor RMSE y BIAS para las variables termodinámicas (humedad relativa y temperatura) mientras que MYNN2 representa mejor el viento. Sin embargo, a excepción del RMSE del viento, los errores tienen una variabilidad pequeña por lo que la elección de una parametrización u otra podría no tener un impacto importante en la representación de la capa límite. Sin embargo, que las parametrizaciones tengan errores asociados similares no necesariamente quiere decir que representen los procesos de pequeña escala de la misma manera. Esto refuerza la necesidad de generar un ensamble multifísica como el utilizado en este trabajo para poder capturar los posibles errores asociados al modelo y la representación de los procesos parametrizados. 
 
 (ref:aut-all) RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (círculo), MYNN2 (triángulo) e YSU (cuadrado) para todos los pronósticos en conjunto. 
 
@@ -767,7 +767,7 @@ pbl %>%
   geom_point(aes(color = exp, shape = param),
              size = 3) +
   scale_color_manual(guide = NULL, values = colores_exp, 
-                     labels = c(E2 = "CONV", E5 = "AUT", 
+                     labels = c(E2 = "CONV", E5 = "AWS", 
                                 E6 = "SATWND", E9 = "RAD")) +
   scale_shape_manual(values = c(19, 17, 15, 3, 0, 8)) +
   scale_y_discrete(labels = c(E2 = "CONV", E5 = "AWS", 
@@ -782,7 +782,7 @@ pbl %>%
 
 ```
 
-Si se analizan los errores asociados a las parametrizaciones de capa límite a lo largo del periodo pronosticado (Figura \@ref(fig:aut-rad)), en este caso solo para el experimento RAD, la tendencia observada previamente se mantiene. Más importante aún, los errores de ninguna de las parametrizaciones aumenta por sobre el resto, indicando que tienen un comportamiento consistente a lo largo de las 30 y 36 hs de pronóstico. 
+Si se analizan los errores asociados a las parametrizaciones de capa límite a lo largo del periodo pronosticado (Figura \@ref(fig:aut-rad)), en este caso solo para el experimento RAD, el patrón observado previamente se mantiene. Más importante aún, los errores de ninguna de las parametrizaciones aumenta por sobre el resto, indicando que tienen un comportamiento consistente a lo largo de las 30 y 36 hs de pronóstico. 
 
 (ref:aut-rad) RMSE y BIAS calculados comparando los pronósticos con observaciones de EMA y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de capa límite MYJ (línea llena), MYNN2 (línea a rayas) e YSU (línea punteada) para todos los pronósticos en conjunto a lo largo del tiempo de pronóstico. 
 
@@ -816,7 +816,7 @@ pbl %>%
 ```
 
 
-La Figura \@ref(fig:soudings-all) muestra el RMSE y BIAS calculado comparando con los radiosondeos de RELAMPAGO sobre los miembros del ensamble que utilizan cada una de las parametrizaciones de convección. En este caso hacemos la verificación de estas parametrizaciones utilizando observaciones en altura donde estas parametrizaciones juegan un rol importante. Sin embargo es importante notar que las características de la capa límite también juegan un rol importante en el desarrollo de la convección y ambos conjuntos de parametrizaciones están fuertemente relacionados. Para estas comparaciones también se muestran las dos inicializaciones en conjunto ya que ambos pronósticos presentan tendencias muy similares. Si bien el comportamiento de las parametrizaciones de convección no es tan homogeneo como si sucedía con las de capa límite, es posible identificar algunos patrones. La parametrización BMJ tiene el menor RMSE tanto para la temperatura como para la temperatura de punto de rocío, mientras que la parametrización con menor RMSE en el viento meridional es KF. 
+La Figura \@ref(fig:soudings-all) muestra el RMSE y BIAS calculado comparando con los radiosondeos de RELAMPAGO sobre los miembros del ensamble que utilizan cada una de las parametrizaciones de convección. En este caso hacemos la verificación de estas parametrizaciones utilizando observaciones en altura donde estas parametrizaciones juegan un rol importante. Sin embargo es importante notar que las características de la capa límite también juegan un rol importante en el desarrollo de la convección y ambos conjuntos de parametrizaciones están fuertemente relacionados. Para estas comparaciones también se muestran las dos inicializaciones en conjunto ya que ambos pronósticos presentan patrones muy similares. Si bien el comportamiento de las parametrizaciones de convección no es tan homogeneo como si sucedía con las de capa límite, es posible identificar algunos patrones. La parametrización BMJ tiene el menor RMSE tanto para la temperatura como para la temperatura de punto de rocío, mientras que la parametrización con menor RMSE en el viento meridional es KF. 
 
 (ref:soudings-all) RMSE y BIAS calculados comparando los pronósticos con radiosondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de convección BMJ (círculo), GF (triángulo) e KF (cuadrado) para todos los pronósticos en conjunto. 
 
@@ -856,10 +856,10 @@ cum %>%
   geom_point(aes(color = exp, shape = param),
              size = 3) +
   scale_color_manual(guide = NULL, values = colores_exp, 
-                     labels = c(E2 = "CONV", E5 = "AUT", 
+                     labels = c(E2 = "CONV", E5 = "AWS", 
                                 E6 = "SATWND", E9 = "RAD")) +
   scale_shape_manual(values = c(19, 17, 15, 3, 0, 8)) +
-  scale_y_discrete(labels = c(E2 = "CONV", E5 = "AUT", 
+  scale_y_discrete(labels = c(E2 = "CONV", E5 = "AWS", 
                               E6 = "SATWND", E9 = "RAD")) +
   facet_grid(var_label ~ variable_label, scales = "free", labeller = label_parsed) +
   labs(y = NULL, x = NULL, shape = NULL) +
@@ -900,10 +900,10 @@ pbl %>%
   geom_point(aes(color = exp, shape = param),
              size = 3) +
   scale_color_manual(guide = NULL, values = colores_exp, 
-                     labels = c(E2 = "CONV", E5 = "AUT", 
+                     labels = c(E2 = "CONV", E5 = "AWS", 
                                 E6 = "SATWND", E9 = "RAD")) +
   scale_shape_manual(values = c(19, 17, 15, 3, 0, 8)) +
-  scale_y_discrete(labels = c(E2 = "CONV", E5 = "AUT", 
+  scale_y_discrete(labels = c(E2 = "CONV", E5 = "AWS", 
                               E6 = "SATWND", E9 = "RAD")) +
   facet_grid(var_label ~ variable_label, scales = "free", labeller = label_parsed) +
   labs(y = NULL, x = NULL, shape = NULL) +
@@ -918,7 +918,7 @@ pbl %>%
 
 Si analizamos el RMSE y BIAS para cada parametrización de capa límite calculados solo sobre los radiosondeos (Figura \@ref(fig:soudings-pbl)), vemos que en general todas las parametrizaciones tienen valores de RMSE similares en todas las variables con una menor variabilidad que entre las parametrizaciones de convección. Algo similar ocurre con el BIAS y a diferencia de lo que se observaba al analizar las variables de superficie, en este caso ninguna parametrización parece ser la mejor al representar todas las variables en altura o en todos los experimentos.
 
-Si bien no es posible elegir solo una parametrización de convección que mejor represente todas las variables, es interesante observar la buena performance de BMJ al representar la temperatura y humedad en altura. Sin embargo, @dillon2021, utilizando una configuración del ensamble multifísica similar a este trabajo, encontraron que esta parametrización era la que peor representaba la precipitación cuantificada utilizando el FSS. Un análisis similar sobre los experimentos discutidos en este capítulo mostraron la misma tendencia encontrada por @dillon2021, por ejemplo la Figura \@ref(fig:fss-param) muestra el FSS calculado sobre el ensamble completo de RAD y los miembros que usan cada parametrización de campa límite o convección.  En esta Figura se observa que BMJ es la parametrización de convección que peor representa la precipitación desde el punto de vista del FSS mientras que los miembros que utilizan KF y GF muestran los mejores resultados de todo el conjunto de parametrizaciones. Teniendo en cuenta este resultado y ante la poca variabilidad en los valores de los errores asociados a temperatura, humedad y viento, es posible que el reemplazo de BMJ por otra parametrización de convección de mejores resultados en términos de la representación de la precipitación sin producir mayor impacto en la representación de otras variables. También es interesante notar que MYNN2 es la parametrización de capa límite que junto con BMJ tiene un FSS sistemáticamente menor que el resto de las parametrizaciones y el ensamble completo. Teniendo en cuenta los buenos resultados de MYNN2 al representar el viento meridional, sería importante realizar nuevos experimentos de sensibilidad a esta parametrización para evaluar si debería seguir usándose dentro del ensamble multifísica.
+Si bien no es posible elegir solo una parametrización de convección que mejor represente todas las variables, es interesante observar la buena performance de BMJ al representar la temperatura y humedad en altura. Sin embargo, @dillon2021, utilizando una configuración del ensamble multifísica similar a este trabajo, encontraron que esta parametrización era la que peor representaba la precipitación cuantificada utilizando el FSS. Un análisis similar sobre los experimentos discutidos en este capítulo mostraron el mismo patrón encontrado por @dillon2021, por ejemplo la Figura \@ref(fig:fss-param) muestra el FSS calculado sobre el ensamble completo de RAD y los miembros que usan cada parametrización de campa límite o convección.  En esta Figura se observa que BMJ es la parametrización de convección que peor representa la precipitación desde el punto de vista del FSS mientras que los miembros que utilizan KF y GF muestran los mejores resultados de todo el conjunto de parametrizaciones. Teniendo en cuenta este resultado y ante la poca variabilidad en los valores de los errores asociados a temperatura, humedad y viento, es posible que el reemplazo de BMJ por otra parametrización de convección de mejores resultados en términos de la representación de la precipitación sin producir mayor impacto en la representación de otras variables. También es interesante notar que MYNN2 es la parametrización de capa límite que junto con BMJ tiene un FSS sistemáticamente menor que el resto de las parametrizaciones y el ensamble completo. Teniendo en cuenta los buenos resultados de MYNN2 al representar el viento meridional, sería importante realizar nuevos experimentos de sensibilidad a esta parametrización para evaluar si debería seguir usándose dentro del ensamble multifísica.
 
 (ref:souding-rad) RMSE y BIAS calculados comparando los pronósticos con observaciones de radiosondeos de RELAMPAGO y promediados sobre los miembros del ensamble que utilizan las parametrizaciones de convección BMJ (línea llena), GF (línea a rayas) e KF (línea punteada) para todos los pronósticos en conjunto. 
 
@@ -988,7 +988,7 @@ rbind(fss, fss_param) %>%
 
 Este capítulo evalúa el impacto de la asimilación de los distintos sistemas de observación considerados en pronósticos por ensambles a corto plazo inicializados usando los análisis estudiados en el Capítulo \@ref(cap-3-analisis). Se evalúa el impacto en las distintas variables meteorológicas y las diferencias entre las 2 inicializaciones (00 y 06 UTC del 22 de noviembre) generadas por la asimilación continua y la actualización de las condiciones de borde. Los pronósticos abarcan la iniciación, desarrollo y madurez del SCM en estudio para estudiar la capacidad de los pronóstico de representar este sistema convectivo y la precipitación que genera. Finalmente se pone el foco en el ensamble y se evalúa el desempeño de las distintas parametrizaciones de capa límite y convección al representar tanto la temperatura, humedad y viento como la representación de la precipitación. 
 
-En general, los pronósticos inicializados usando condiciones iniciales con asimilación de estaciones meteorológicas automáticas, los vientos estimados por satélites y las radianzas de cielo despejado son de mejor calidad que el pronóstico inicializado utilizando solo la red de observación convencional. La disminución del bias cálido y seco del modelo gracias a la asimilación de observaciones de estaciones meteorológicas automáticas también se observa en los pronósticos. Los pronósticos inicializados con condiciones iniciales que incluye información de viento derivado de satélite representan mejor el viento meridional aún cuando estas observaciones habían producido un impacto marginal en el análisis. Los pronósticos inicializados con asimilación de radianzas mantienen las tendencias que se observaban en el análisis, por ejemplo se observa un aumento en la temperatura en niveles bajos y por lo tanto un ligero aumento del bias cálido. Lo más interesante en este punto es notar que las mejoras introducidas por las nuevas observaciones persisten a lo largo de todo el periodo pronosticado. Las inicializaciones de los pronósticos producen diferencias aunque solo en algunas variables, en particular se observan mejoras para la inicialización de las 06 UTC lo que indica que las observaciones de estaciones meteorológicas automáticas asimiladas entre las 00 y las 06 UTC tienen un impacto positivo en la representación de la temperatura cerca de superficie que luego se traslada a los pronósticos. 
+En general, los pronósticos inicializados usando condiciones iniciales con asimilación de estaciones meteorológicas automáticas, los vientos estimados por satélites y las radianzas de cielo despejado son de mejor calidad que el pronóstico inicializado utilizando solo la red de observación convencional. La disminución del bias cálido y seco del modelo gracias a la asimilación de observaciones de estaciones meteorológicas automáticas también se observa en los pronósticos. Los pronósticos inicializados con condiciones iniciales que incluye información de viento derivado de satélite representan mejor el viento meridional aún cuando estas observaciones habían producido un impacto marginal en el análisis. Los pronósticos inicializados con asimilación de radianzas mantienen los patrones que se observaban en el análisis, por ejemplo se observa un aumento en la temperatura en niveles bajos y por lo tanto un ligero aumento del bias cálido. Lo más interesante en este punto es notar que las mejoras introducidas por las nuevas observaciones persisten a lo largo de todo el periodo pronosticado. Las inicializaciones de los pronósticos producen diferencias aunque solo en algunas variables, en particular se observan mejoras para la inicialización de las 06 UTC lo que indica que las observaciones de estaciones meteorológicas automáticas asimiladas entre las 00 y las 06 UTC tienen un impacto positivo en la representación de la temperatura cerca de superficie que luego se traslada a los pronósticos. 
  
 Los pronósticos por ensambles, si bien logran representar la precipitación en cuanto la ubicación espacial y temporal, la subestiman fuertemente respecto de lo observado. Esto es particularmente notorio cuando las condiciones iniciales solo incluyen observaciones convencionales. Desde este punto de vista si se observan mejoras importantes entre los pronósticos inicializados a las 00 y a las 06 UTC y estas mejoras en la representación de la precipitación perduran hasta el final del periodo pronosticado. Desde el punto de vista de la precipitación, los pronósticos con condiciones iniciales que incluyen la asimilación de vientos derivados de satélite son los que mejor la representan particularmente cuando analizamos la probabilidad de precipitación para umbrales altos. A diferencia de lo que pasaba en el análisis (Capítulo \@ref(cap-3-analisis)), los pronósticos inicializados a partir de análisis con asimilación de radianzas no generan suficiente precipitación. Es posible que estos pronósticos generen una atmósfera más estable, y por lo tanto un menor desarrollo de la convección, debido al menor contenido de humedad presente en la capa límite.
 
