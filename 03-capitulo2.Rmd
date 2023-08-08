@@ -113,6 +113,7 @@ Las diferencias entre los pronósticos y ERA5 para los perfiles promediados de h
 (ref:era5-fcst-v) Como en la Figura \@ref(fig:era5-fcst-1) pero para el viento meridional ($ms^{-1}$).
 
 (ref:era5-fcst-u) Como en la Figura \@ref(fig:era5-fcst-1) pero para el viento zonal ($ms^{-1}$).
+
 ```{r era5-fcst-uv, fig.cap=c("(ref:era5-fcst-v)", "(ref:era5-fcst-u)"), fig.align="center", fig.pos="ht"}
 perfiles %>%
   .[variable == "V"] %>% 
