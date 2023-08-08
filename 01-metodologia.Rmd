@@ -347,7 +347,8 @@ wf_goes <- fread(here("data/derived_data/weighting_functions/wf_goes16.csv")) %>
   melt(measure.vars = patterns("^ch")) %>% 
   na.omit() %>% 
   separate(variable, into = c("channel", "axes")) %>% 
-  dcast(id + channel ~ axes, value.var = "value") 
+  dcast(id + channel ~ axes, value.var = "value") %>% 
+  .[, channel := factor(channel, levels = c("ch8", "ch9", "ch10"))]
 
   wf_goes %>% 
   ggplot(aes(x, y)) +
