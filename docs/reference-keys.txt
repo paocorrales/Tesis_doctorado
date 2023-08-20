@@ -10,6 +10,7 @@ eq:eq3
 eq:eq5
 eq:eq12
 tab:miembros-desc
+fig:flujo-asimilacion
 eq:eq6
 eq:eq7
 eq:eq8
