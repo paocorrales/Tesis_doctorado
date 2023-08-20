@@ -896,7 +896,7 @@ En primer lugar, se analizó el impacto de la asimilación de diferentes tipos d
 
 (ref:pphov) Diagrama de Hövmoller de la media ajustada a la probabilidad de la precipitación acumulada horaria para cada banda de latitud estimada por IMERG (a) y simulada (b-e) por cada experimento, promediada en un rango de longitudes entre 67$^{\circ}$W y 54,5$^{\circ}$W. Los contornos se dibujan cada 0,5 $mm^{-1}$, comenzando en 0,5 $mm^{-1}$.
 
-```{r pp-hov, fig.cap="(ref:pphov)", fig.height=5, fig.width=5, fig.align="center"}
+```{r pp-hov, fig.cap="(ref:pphov)", fig.height=5, fig.width=6.5, fig.align="center"}
 
 files <- Sys.glob(here("data/derived_data/analysis_variables/pp_pmm/E[2569]_ana*_pp_pmm.rds"))
 
@@ -914,7 +914,7 @@ ppacum_1h <- purrr::map(files, function(f) {
 readRDS(here("data/derived_data/observations/IMERG_1h.rds")) %>% 
   .[, c("lon", "lat") := wrf_project(x, y, inverse = TRUE, round = FALSE)] %>% 
   .[x %between% c(-300000, 800000) & y %between% c(-800000, 1090000)] %>% 
-  .[end_date %between% c(as_datetime("20181121180000"), as_datetime("20181123120000"))] %>% 
+  .[end_date %between% c(as_datetime("20181122000000"), as_datetime("20181123120000"))] %>% 
   .[, .(pp_acum = mean(pp_acum),
         lat = mean(lat),
         exp = "IMERG"), by = .(end_date, y)] %>% 
@@ -930,7 +930,7 @@ readRDS(here("data/derived_data/observations/IMERG_1h.rds")) %>%
                                                 title.position = "left", 
                                                 title.vjust = 1,
                                                 frame.colour = "black")) +
-  scale_date(ini = 20181121000000, break_bin = "12 hours") +
+  scale_date(ini = 20181121000000, end = 20181123000000, break_bin = "12 hours") +
   scale_y_latitude(breaks = seq(-40, -20, 5)) +
   facet_wrap(~ exp) +
   tag_facets(position = list(x = 0.1, y = 0.96)) +
@@ -958,16 +958,17 @@ readRDS(here("data/derived_data/observations/IMERG_1h.rds")) %>%
                                                 frame.colour = "black")) +
   scale_date(ini = 20181121000000, end = 20181123000000, break_bin = "12 hours") +
   scale_y_latitude(breaks = seq(-40, -20, 5)) +
-  facet_wrap(~ exp, ncol = 2, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
+  facet_wrap(~ exp, ncol = 4, labeller = labeller(exp = c(E2 = "CONV", E5 = "AWS", 
                                                           E6 = "SATWND", E9 = "RAD"))) +
   tag_facets(tag_pool = c("b", "c", "d", "e"), position = list(x = 0.1, y = 0.96)) +
   labs(x = NULL, y = NULL, fill = latex2exp::TeX("Precipitación\nacumulada ($mm$ $h^{-1}$)")) +
   theme_minimal(base_size = 9) +
   theme(legend.position = "bottom",
         panel.spacing = unit(1, "lines"),
-        tagger.panel.tag.text = element_text(size = 9)) +
+        tagger.panel.tag.text = element_text(size = 9),
+        axis.text.y = element_blank()) +
   
-  plot_layout(ncol = 2, widths = c(0.4, 0.6), guides = "collect") & theme(legend.position = 'bottom')
+  plot_layout(ncol = 2, widths = c(0.18, 0.82), guides = "collect") & theme(legend.position = 'bottom')
 ```
 
 
