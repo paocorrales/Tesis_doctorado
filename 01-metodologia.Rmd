@@ -546,7 +546,7 @@ La Figura \@ref(fig:flujo-asimilacion) muestra el proceso de asimilación de dat
 
 (ref:flujo-asimilacion) Diagrama del proceso de asimilación de datos.
 
-```{r flujo-asimilacion, echo=FALSE, fig.cap="(ref:flujo-asimilacion)", out.width="100%"}
+```{r flujo-asimilacion, echo=FALSE, fig.cap="(ref:flujo-asimilacion)", out.width="100%", fig.align="center"}
 
 knitr::include_graphics(here("figure", "flujo.png"))
 
