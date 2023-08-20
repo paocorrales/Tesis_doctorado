@@ -896,7 +896,7 @@ En primer lugar, se analizó el impacto de la asimilación de diferentes tipos d
 
 (ref:pphov) Diagrama de Hövmoller de la media ajustada a la probabilidad de la precipitación acumulada horaria para cada banda de latitud estimada por IMERG (a) y simulada (b-e) por cada experimento, promediada en un rango de longitudes entre 67$^{\circ}$W y 54,5$^{\circ}$W. Los contornos se dibujan cada 0,5 $mm^{-1}$, comenzando en 0,5 $mm^{-1}$.
 
-```{r pp-hov, fig.cap="(ref:pphov)", fig.height=5, fig.width=7, fig.align="center"}
+```{r pp-hov, fig.cap="(ref:pphov)", fig.height=5, fig.width=6.5, fig.align="center"}
 
 files <- Sys.glob(here("data/derived_data/analysis_variables/pp_pmm/E[2569]_ana*_pp_pmm.rds"))
 
