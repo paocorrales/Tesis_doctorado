@@ -66,9 +66,9 @@ acknowledgements: |
 
   Al Centro de Investigaciones del Mar y la Atmósfera por brindarme el lugar de trabajo para realizar las tareas de investigación, proporcionando además los recursos computacionales necesarios para realizar el análisis de los experimentos realizados.
 
-  Al Dr. Luiz Sapucci y su equipo en INPE por recibirme al comienzo del doctorado y brindarme las herramientas necesarias para trabajar con datos en formato bufr. También por mantener el contacto, la colaboración y el intercambio de ideas todos estos años. 
+  Al Dr. Luiz Sapucci y su equipo en IMPE por recibirme al comienzo del doctorado y brindarme las herramientas necesarias para trabajar con datos en formato bufr. También por mantener el contacto, la colaboración y el intercambio de ideas todos estos años. 
 
-  Al Dr. Craig Schwartz por recibirme durante mi visita al Mesoscale and Microscale Meteorology Laboratory, de NCAR y por su generosidad al compartir su conocimiento y experiencia en el uso del sitema de asimilación GSI. 
+  Al Dr. Craig Schwartz por recibirme durante mi visita al Mesoscale and Microscale Meteorology Laboratory, de NCEP y por su generosidad al compartir su conocimiento y experiencia en el uso del sitema de asimilación GSI. 
 
   A Steve Nesbitt y Craig Schwartz por bridarme, a traves de sus proyectos, la posibilidad de acceder a los recursos de la supercomputadora Cheyenene de NCAR a lo largo de todo el doctorado, sin los cuales los experimentos no hubieran sido posibles. 
 
@@ -316,34 +316,6 @@ Este trabajo estudia el impacto de la asimilación de observaciones tanto en el 
 El estudio de la asimilación de radianzas a nivel regional cobra aún mayor importancia en Sudamérica ya que no se conocen estudios realizados previamente. Por esta razón, el segundo objetivo de este trabajo será el estudio de la asimilación de radianzas y los controles de calidad necesarios para trabajar con estas observaciones. En primer lugar se estudiará el impacto de la asimilación de observaciones de satélites polares con sensores sensibles al espectro infrarrojo y microondas. Y en segundo lugar, se estudiará la implementación de la asimilación de observaciones del satélite geoestacionario GOES-16 y el impacto de asimilar observaciones en alta resolución espacial y temporal en un contexto regional. Finalmente, como tercer objetivo, se buscará evaluar el impacto de asimilar observaciones GOES-16, disponibles con una gran resolución espacial y frecuencia temporal, en comparación con radianzas de satélites polares.
 
 Para alcanzar los objetivos de este trabajo, se realizaron distintos experimentos de asimilación de datos de actualización frecuente y basado en ensambles aplicados a un estudio de caso de un SCM que se desarrolló sobre el sur de Sudamérica durante el 22 y 23 de noviembre de 2018 durante el período de observación intensiva de la campaña de campo RELAMPAGO. Se utilizará el sistema WRF-GSI-LETFK para la generación de los experimentos de asimilación. Mientras que el modelo WRF es uno de los más utilizados y en constante avance, con importantes antecedentes en Argentina [por ejemplo @dillon2021], el sistema de asimilación *Gridpoint Statistical Interpolation system* [GSI, @shao2016] y en particular su versión de LETKF, no ha sido probado en Argentina y es otro de los aportes originales de esta tesis junto con la implementación de la asimilación de observaciones de GOES-16. 
-
-Finalmente, este trabajo de tesis ha dado lugar a una publicación en una revista con referato y una serie de presentaciones en congresos nacionales e internacionales:
-
-*Capítulo 3*
-
-* Corrales P., Galligani V., Ruiz J., Sapucci L., Dillon M.E., Garcia Skabar Y., Sacco M., Schwartz C., and Nesbitt Stephen, 2022: Hourly Assimilation of Different Sources of Observations Including Satellite Radiances in a  Mesoscale Convective System Case During RELAMPAGO campaign, Atmospheric Research, vol. 281, 106456, doi: [10.1016/j.atmosres.2022.106456](doi:10.1016/j.atmosres.2022.106456). 
-* Corrales P., Galligani, V., Ruiz, J., Dillon, M. E., García Skabar, Y., Sacco, M. Asimilación horaria de observaciones convencionales y de satélite para un caso de estudio durante RELAMPAGO. Congremet XIV. 7-11 Noviembre, 2022. Buenos Aires, Argentina. Resumen y poster.
-* Corrales P., J. Ruiz, V.S. Galligani, M. Sacco, M. E. Dillon, Y. Garcia Skabar, L. Sapucci, and S. Nesbitt. Assimilation of conventional observations in a deep convection case during RELAMPAGO using the WRF-GSI-LETFK system. RELAMPAGO-CACTI Data Analysis Workshop. 19-22 November, 2019. Buenos Aires, Argentina. Resumen y poster.
-
-*Capítulo 4*
-
-* Corrales P., Galligani V.S., Ruiz J., Sapucci L., Dillon M.E., Garcia Skabar Y., Sacco M., and Nesbitt Stephen. Assimilation of conventional and satellite observations in a deep convection case during RELAMPAGO using the WRF-GSI-LETFK system. The International EnKF Workshop 2021 (online). June, 2021. Resumen y poster. 
-* Corrales P., J. Ruiz, V.S. Galligani. Forecast Evaluation of a Deep Convection Case During Relampago Assimilating Conventional and Satellite Observations with the WRF-GSI-LETKF System. WCRP-WWRP Symposium on Data Assimilation and Reanalysis (online). September, 2021. Resumen y poster. 
-* Corrales P., Ruiz J., Galligani V. y otros. “Assimilation of conventional and satellite observations in a deep convection case during RELAMPAGO using the WRF-GSI-LETFK system” NORCE (2021). Resumen y presentación.
-
-*Capítulo 5*
-
-* Corrales P., Galligani, V., Ruiz, J. Asimilación de observaciones de GOES-16 en cielo claro para aplicaciones de mesoescala utilizando el sistema GSI-LETKF-WRF. Congremet XIV. 7-11 Noviembre, 2022. Buenos Aires, Argentina. Resumen y presentación.
-* Corrales P., Schwartz, C., Ruiz, J. and Galligani, V. Assimilation of polar and geostationary satellite observations during RELAMPAGO using a WRF‐GSI‐LETKF system. 8th International Symposium on Data Assimilation (ISDA). Colorado, USA. June 2022. Resumen y presentación.
-* Corrales P., J. Ruiz, V.S. Galligani. Forecast Evaluation of a Deep Convection Case During Relampago Assimilating Conventional and Satellite Observations with the WRF-GSI-LETKF System. International TOVS Study Conferences (ITSC) XXIII (online). June, 2021. Resumen y poster. 
-
-
-
-
-
-
- 
-
 
 
 
