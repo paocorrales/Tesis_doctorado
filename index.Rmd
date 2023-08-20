@@ -68,7 +68,7 @@ acknowledgements: |
 
   Al Dr. Luiz Sapucci y su equipo en INPE por recibirme al comienzo del doctorado y brindarme las herramientas necesarias para trabajar con datos en formato bufr. También por mantener el contacto, la colaboración y el intercambio de ideas todos estos años. 
 
-  Al Dr. Craig Schwartz por recibirme durante mi visita al Mesoscale and Microscale Meteorology Laboratory, de NCEP y por su generosidad al compartir su conocimiento y experiencia en el uso del sitema de asimilación GSI. 
+  Al Dr. Craig Schwartz por recibirme durante mi visita al Mesoscale and Microscale Meteorology Laboratory, de NCAR y por su generosidad al compartir su conocimiento y experiencia en el uso del sitema de asimilación GSI. 
 
   A Steve Nesbitt y Craig Schwartz por bridarme, a traves de sus proyectos, la posibilidad de acceder a los recursos de la supercomputadora Cheyenene de NCAR a lo largo de todo el doctorado, sin los cuales los experimentos no hubieran sido posibles. 
 
