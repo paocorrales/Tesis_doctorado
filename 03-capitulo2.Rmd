@@ -18,7 +18,7 @@ Los pronósticos se inicializaron a las 00 y 06 UTC del 22 de noviembre para cap
 
 (ref:cycle-fcst) Diagrama de los pronósticos por ensambles inicializados a las 00 y 06 UTC del 22 de noviembre y que se extienden hasta las 12 UTC del 23 de noviembre. Las condiciones de borde corresponden al pronóstico de GFS y se incorporan cada 6 horas.
 
-```{r cycle-fcst, echo=FALSE, fig.cap="(ref:cycle-fcst)", out.width="100%"}
+```{r cycle-fcst, echo=FALSE, fig.cap="(ref:cycle-fcst)", out.width="80%", fig.align='center'}
 
 knitr::include_graphics(here("figure/forecast_diag.png"))
 
