@@ -793,7 +793,7 @@ cor <- ana[bottom_top %in% c(1, 16)] %>%
 ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)), 
     by = .(south_north, west_east, date, exp)] %>% 
   .[pw, on = .NATURAL] %>% 
-  .[, v_mean_suave := metR:::smooth2d(x, y, v_mean, kx = 0.2, ky = 0.2), by = .(exp)] %>% 
+  .[, v_mean_suave := metR::Smooth2D(x, y, v_mean, method = smooth_dct(kx = 0.2, ky = 0.2)), by = .(exp)] %>% 
   ggplot(aes(x, y)) +
   geom_contour_fill(aes(z = value, fill = stat(level_d)),
                     proj = norargentina_lambert) +
@@ -853,7 +853,7 @@ ana[bottom_top %between% c(1, 7), .(v_mean = mean(v)),
   .[variable == "mcape"] %>% 
   .[, c("x", "y") := wrf_project(lon, lat)] %>% 
   .[cor, on = .NATURAL] %>% 
-  .[, cortante_suave := metR:::smooth2d(x, y, cortante, kx = 0.2, ky = 0.2), by = .(exp)] %>% 
+  .[, cortante_suave := metR::Smooth2D(x, y, cortante, method = smooth_dct(kx = 0.2, ky = 0.2)), by = .(exp)] %>% 
   ggplot(aes(x, y)) +
   geom_contour_fill(aes(z = value, fill = stat(level_d)), 
                     proj = norargentina_lambert, limits = c(500, 6000)) +
